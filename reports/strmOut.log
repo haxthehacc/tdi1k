@@ -1,0 +1,61 @@
+********************************************************************************
+Product   : Virtuoso(R) XStream Out
+Program   : @(#)$CDS: virtuoso version 6.1.8-64b 11/15/2022 19:45 (cpgbld01) $
+          : sub-version  IC6.1.8-64b.500.29 
+Started at: 21-Apr-2026  06:22:10
+User Name : cmos
+Host Name : pescad-12.pes.edu
+Directory : /home/cmos/projects/tdi1k
+CADENCE Design Systems, Inc.
+********************************************************************************
+Info: Cellview Rev Num:99,  Tech Rev Num:59
+
+INFO (XSTRM-217): Reading the layer map file, /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_4M1L/rev2.0/ref_libs/ts018_scl_prim/ts018_scl_prim.layermap
+INFO (XSTRM-217): Reading the object map file, /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_4M1L/rev2.0/ref_libs/ts018_scl_prim/ts018_scl_prim.objectmap
+INFO (XSTRM-162): You have not used the '-viaMap' option. If the OpenAccess design has native oaVia instances, use the '-viaMap' option for preserving oaVia instances in a XStream Out - XStream In round trip. Using the '-viaMap' option improves performance and VM usage of applications using the Streamed-In design.
+
+Summary of Options :
+library                                 tdi1k
+strmFile                                pixel_array_1024x60_1.gds
+topCell                                 pixel_array_1024x60
+view                                    layout
+logFile                                 strmOut.log
+layerMap                                /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_4M1L/rev2.0/ref_libs/ts018_scl_prim/ts018_scl_prim.layermap
+objectMap                                /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_4M1L/rev2.0/ref_libs/ts018_scl_prim/ts018_scl_prim.objectmap
+case                                    Preserve
+convertDot                              node
+virtualMemory
+
+INFO (XSTRM-223): 1. Translating cellView ts018_scl_prim/pdio_sal/layout as STRUCTURE pdio_sal_CDNS_776732730800.
+WARNING (XSTRM-35): The objects in the layer-purpose pair 'instance:drawing' are ignored. This is because the layer-purpose pair used in the design is not specified in the layer map file. Specify the layer-purpose pair in the layer map file and try again.
+INFO (XSTRM-223): 2. Translating cellView ts018_scl_prim/nmos_18/layout as STRUCTURE nmos_18_CDNS_776732730801.
+INFO (XSTRM-223): 3. Translating cellView tdi1k/pixel_4T/layout as STRUCTURE pixel_4T.
+INFO (XSTRM-223): 4. Translating cellView tdi1k/pixel_array_1024x60/layout as STRUCTURE pixel_array_1024x60.
+
+Summary of Objects Translated:
+	Scalar Instances:                       61445
+	Array Instances:                        0
+	Polygons:                               0
+	Paths:                                  3
+	Rectangles:                             216
+	Lines:                                  0
+	Arcs:                                   0
+	Donuts:                                 0
+	Dots:                                   0
+	Ellipses:                               0
+	Boundaries:                             1
+	Area Blockages:                         0
+	Layer Blockages:                        0
+	Area Halos:                             0
+	Markers:                                0
+	Rows:                                   0
+	Standard Vias                           0
+	Custom Vias:                            0
+	CdsGen Vias:                            0
+	Pathsegs:                               22
+	Text:                                   2
+	TextDisplay:                            0
+	Cells:                                  4
+
+Elapsed Time: 0.1s   User Time: 0.0s   CPU Time: 0.0s   Peak VM: 676KB
+INFO (XSTRM-234): Translation completed. '0' error(s) and '1' warning(s) found.

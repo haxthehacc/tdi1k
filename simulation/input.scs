@@ -1,0 +1,42 @@
+// Generated for: spectre
+// Generated on: Apr 24 10:25:58 2026
+// Design library name: tdi1k
+// Design cell name: column_isource_tb
+// Design view name: schematic
+simulator lang=spectre
+global 0
+include "/home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/models/ts18scl/v2.0/hspice/header.lib"
+
+// Library name: tdi1k
+// Cell name: column_isource
+// View name: schematic
+subckt column_isource GND IOUT VDD
+    POUT_0 (IOUT net1 VDD VDD) p18 w=4.0 l=1.0 as=1.92 ad=1.92 ps=8.96 \
+        pd=8.96 m=(1)*(1)
+    PREF (net1 net1 VDD VDD) p18 w=4.0 l=1.0 as=1.92 ad=1.92 ps=8.96 \
+        pd=8.96 m=(1)*(1)
+    I0 (net1 GND) isource dc=1u type=dc
+ends column_isource
+// End of subcircuit definition.
+
+// Library name: tdi1k
+// Cell name: column_isource_tb
+// View name: schematic
+I0 (0 net2 net1) column_isource
+V1 (net2 0) vsource dc=900.0m type=dc
+V0 (net1 0) vsource dc=1.8 type=dc
+simulatorOptions options psfversion="1.4.0" reltol=1e-3 vabstol=1e-6 \
+    iabstol=1e-12 temp=27 tnom=27 scalem=1.0 scale=1e-06 gmin=1e-12 \
+    rforce=1 maxnotes=5 maxwarns=5 digits=5 cols=80 pivrel=1e-3 \
+    sensfile="../psf/sens.output" checklimitdest=both 
+dcOp dc write="spectre.dc" maxiters=150 maxsteps=10000 annotate=status
+dcOpInfo info what=oppoint where=rawfile
+dc dc dev=V0 param=dc start=1.6 stop=1.9 step=0.01 oppoint=rawfile \
+    maxiters=150 maxsteps=10000 annotate=status
+modelParameter info what=models where=rawfile
+element info what=inst where=rawfile
+outputParameter info what=output where=rawfile
+designParamVals info what=parameters where=rawfile
+primitives info what=primitives where=rawfile
+subckts info what=subckts where=rawfile
+saveOptions options save=allpub subcktprobelvl=2
