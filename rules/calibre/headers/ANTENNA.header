@@ -1,0 +1,30 @@
+
+
+// The following lines May need to be uncommented , depending on run mode (Calibre Interactive/Include/command line or other ).
+// In order to run as stand alone (Not using SCL customization) you must define metal combination
+// #define <one of the below>
+// STd top metal:
+//	4M1L,5M1L,6M1L
+// Thick 2um Aluminum top metal
+//	4M1T,5M1T,6M1T
+// Thick 2.8um Aluminum top metal
+//	4M1T3,5M1T3,6M1T3
+
+// Input GDS/Cellname/System Definition .
+ LAYOUT PATH "layout_path.gds"
+ LAYOUT PRIMARY "layout_top_cell"
+ LAYOUT SYSTEM GDSII
+
+// Output Database/report
+ DRC SUMMARY REPORT "top_cell.report" REPLACE HIER
+ DRC RESULTS DATABASE "top_cell.db" ASCII 
+
+ DRC MAXIMUM RESULTS ALL
+ DRC MAXIMUM VERTEX ALL
+ DRC CELL NAME YES CELL SPACE XFORM
+ DRC ICSTATION YES
+
+// User defined options.
+//---------------------
+
+INCLUDE "$RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/ANTENNA_TS18SL_SCL_CALIBRE"
