@@ -1,0 +1,247 @@
+<HTML><HEAD>CA18QG/QH/QHB/QJ/QM Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 06/24/2015
+Version: 2.0.5
+
+General:
+* This release contains updated support of Cadence's
+  EAD tools. This is a beta release of support for
+  these tools. (OA only)
+
+Verification:
+DRC:
+* Added a check to flag layer 12/0 (dgate/drawing) as unsupported.
+  (5V processes use 12/47 for HV dgate.)
+ESD/LUP:
+* Added support for NTAP in guard ring to be connected to power pad 
+  through a properly oriented diode.
+LVS:
+* Updated Assura LVS for CA18QHB to support dnw_soi
+PEX:
+* Updated Assura and Calibre PEX to extract internal parasitics of RF FETs,
+  and external coupling to RF FETs
+* Updated Calibre PEX for CA18QM/QMA to remove duplicate layer definitions
+
+___________________________________
+Date: 04/14/2015
+Version: 2.0.4
+
+Highlights:
+* Fixed DRC errors in Jazz supplied cells for CA18QG kit v2.0
+* Fixed OA Transient Operating points
+* Created new variant CA18QMA
+
+General:
+* Created new variant CA18QMA = CA18QM + Deep Nwell
+
+Device Library:
+* Modified FETs Dgate Overlay to allow easier selection in Virtuoso
+* Added "remove left/right" feature to FET Body ties to simplify abuttment
+* Enable separate handling of FET S/D Metal and Contacts
+* Defaulting FET Style to unconnected
+
+Verification:
+DRC:
+* modifications to 2.D, 2.E, and 2.F rules to reduce false errors
+LVS:
+* Update cpoly & cpoly5p5 Assura LVS to check W & L individually 
+  instead of WxL (now matched Calibre)
+
+___________________________________
+Date: 01/22/2015
+Version: 2.0.3
+
+Highlights:
+* Fixed DRC issue in 2T zener. (CA18QHB)
+
+Device Library Updates:
+* Modified 2T zener pcell to correct DRC issue.   (CA18QHB)
+  No change in cell footprint.
+
+Verification Updates:
+* Updated DRC deck to fix DRC issue with 2T zener. (CA18QHB)
+
+___________________________________
+Date: 01/16/2015
+Version: 2.0.2
+
+Highlights:
+* Added HV diode and 2T zener diode (CA18QHB only).
+* Updated ESD/LUP rules to reduce false errors.
+* Updated models to v5.8.
+* Technology file update.
+
+Device Library Updates:
+Technology File
+* Modified metal overlap of contacts to match minimun design rules
+  (previously set to larger RF design rules). (IC6.1 only)
+Diodes
+* Added HV diode (dnw_soi) and 2T zener (dz5p5_2) in CA18QHB.
+- NOTE: The 2T zener if currently not DRC clean.  We are
+  reviewing the device and the design rules to determine
+  if the smaller 2T device is viable.  It is made available here
+  for evaluation purposes only.
+
+Verification Updates:
+ESD/LUP
+* Updated ESD/LUP rules to reduce false errors.
+
+Models:
+* Added model for soi and deep-trench isolated nwell diode (dnw_soi)
+* Added corner model for capacitance and breakdown for nwell diode (nwdiode)
+
+___________________________________
+Date: 02/21/2014
+Version: 2.0.1
+
+Highlights:
+* Add support for CA18QM variant
+
+Device Library Updates:
+Bipolars
+* Enable 5V vertical PNP (vpnp5v) in CA18QJ
+
+Verification Updates:
+DRC
+* Fix typos in Assura switch names (inside ca18q*_switch.rsf)
+* Enable check to flag unsupported hvpdrift40 layer in CA18QH/QHB
+* Add "automatic data rejection" message to min. active spacing (2.C.a) check
+
+
+___________________________________
+Date: 07/23/2013
+Version: v2.0
+Library: ca18 for CA18QG/QH/QHB/QJ
+
+Highlights:
+* Add support for CA18QHB variant
+* Add improved poly fuse device
+* Add 5V N-well resistor and vertical PNP devices
+* Add missing vias in ESD library cells
+* Add support for Assura verification
+
+Device Library Updates:
+General
+* Make text layer valid by default
+Bipolars
+* Add 5V vertical PNP (vpnp5v)
+Capacitors
+* Add MOM capacitor (cmom) for CA18QHB only
+* Update CDL netlisting of MIM caps to include W and L
+Diodes
+* Add Zener diode (dz5p5) for CA18QHB only
+ESD
+* Fix improperly translated symbolic vias in ESD library
+Fuses
+* Add new poly fuse (efuse2)
+MOSFETs
+* Change minimum channel length of nfet_esd to 0.18um
+Resistors
+* Add 5V N-well resistor (rnwell5v)
+
+Verification Updates:
+Density
+* Add option to prevent display of metal fill as a violation
+DRC
+* Fix minimum width/spacing checks for metal4 fill shapes
+* Fix bug that could prevent rules 2.H (min. N-well overplot of N+ diffusion),
+  12.E (min. dgate5 to N-well spacing), and 12.H (min. dgate5 overplot of N-well)
+  from being checked
+* Fix bug that could mis-identify regular N-wells as N-well resistors,
+  thus requiring larger spacing
+LVS
+* Add support for 5V N-well resistor and vertical PNP devices
+Stress
+* Add option to disable corner spacing checks for small die
+
+
+___________________________________
+Date: 02/21/2013
+Library: ca18 for CA18QG/QH/QJ
+
+Device Library Updates:
+* Update CDL netlisting of MIM caps to include W and L
+* Update CDL netlisting of nfet_esd to include m-factor
+* Update dw and rend parameters of rppoly_hi to match E-spec
+* Revert to 2.6u dgate5 overplot of Nwell in 5V PFETs with legacy option
+
+Verification Updates:
+DRC
+* Add check for active spacing outside of SRAM (2.C)
+* Flag hvndrift40 instead of dgate5 inside NPN marking layer (VN.BAD.1)
+* Revise metal fill checks to make them more robust (8/18/28/38/48/58.fill)
+* Update ptap definition to exclude P+ active in Nwell5 or PWE
+* Revise PWE enclosure of Nwell check (DGRHV.3)
+* Revise PWE to unrelated active spacing check (DGRHV.4)
+* Restore 1.8V active to tap maximum spacing checks (LUP.I.a & LUP.I.b)
+* Restore max. active spacing check for multiple 12V PFET rows (P12.30B)
+* Remove ESDDEV.* and SBESD.* checks not applicable to these variants
+* Add check to flag dnwell40 drawn outside of PWE (BAD.dnw40)
+* Update 36.46.V check to allow dnwell40 enclosed by analog layer
+ERC
+* Add option to check isolated ptub connectivity to active, instead of ground
+* Update ptap definition to exclude P+ active in PWE
+ESD/Latchup
+* Restore 1.8V active to tap maximum spacing checks (LUP.I.a & LUP.I.b)
+* Ignore LUP.F.a, LUP.F.a.S, and LUP.F.b violations in ESD diodes
+* Allow deep trench ouside analog to cut and isolate substrate and N-wells
+LVS
+* Enable swapping of source/drain pins in RF FETs
+* Change bottom plate of 2-term MIMs to enable parasitic extraction to ground
+* Disable stacked MIM cap recognition if top & bottom plates are not shorted
+* Prevent duplicate extraction of caps/resistors placed over NW and DNW
+* Prevent recognition of stacked 2-term MIMs as a stacked MIM cap device
+* Fix recognition layer for 5.4x5.4 vpnp5p0 device
+* Update dw and rend parameters of rppoly_hi to match E-spec
+
+
+_________________________________________________________________________________________________________
+Date: 05/06/2012
+Library: ca18 release for ca18qg/ca18qh/ca18qj
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.15 (CA18 Family)
+Electrical Spec: NPB-PS-0173, rev.13 (CA18 Family)
+Design Application Note: NPB-PS-0711, rev.07 (5V/HV CMOS)
+Design Application Note: NPB-PS-1026, Rev.02 (eFuse)
+
+Highlights:
+* Initial development-level kit release for ca18qg process
+* Initial development-level kit release for ca18qh process
+* Initial development-level kit release for ca18qj process
+* Reduced mask count version of ca18ha with:
+  - 1.8V MOSFETs removed (ca18qj only)
+  - drain-extended 12V MOSFETs removed (ca18qj only)
+  - drain-extended 20-40V MOSFETs removed
+  - 40V N-drift diode removed
+  - all 40V diodes removed (ca18qh only)
+  - 40V NPN removed (ca18qh only)
+  - N-well resistor removed (ca18qh only)
+  - triple isolation deep N-well removed (ca18qh only)
+  - SOI with deep trench added (ca18qh only)
+  - four level metal backend with 2.8um thick metal4
+
+Software versions tested with this release:
+* Cadence IC release IC6.1.3.500.10
+* Cadence Spectre release MMSIM10.1
+* Synopsys Hspice release Z-2010.12_SP2
+* ADS release v2009a update1
+* Mentor Calibre release v2010.2_38.23
+* Cadence Assura not supported in this release
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in customizing layers and devices.  This utility
+  is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+
+Kit Installation and Environment:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits.  This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+</PLAINTEXT></BODY></HTML>

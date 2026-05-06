@@ -1,0 +1,24 @@
+/**************************************************
+README for npn current density calculation in sbc35x
+**************************************************/
+
+The current density calculation uses the M1, M2, CONT, and Via2   
+average current density values for ac operation (frequency > 1KHz) at
+85 degrees celsius. It then finds the lowest current density value of the layers present
+on the emitter and makes that the device current density.
+
+I.E.
+
+0.3ux0.5u npn
+emitter metal = metal1
+The layers analyzed would be:
+CONT
+Metal1
+
+0.3ux0.5u npn
+emitter metal = metal2
+The layers analyzed would be:
+CONT
+Metal1
+Via
+Metal2

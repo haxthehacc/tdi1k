@@ -1,0 +1,196 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 05/14/06
+Library: sbl13 (sbl13ha)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.3
+* Electrical Spec: NPB-PS-0577, rev.3
+* Design Application Note: NPB-PS-0746, rev.1
+
+Highlights:
+* This is an initial development-level kit release for the sbl13ha
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+Software versions tested with this release:
+* Cadence IC releases IC51.41USR1 (minimum), IC51.41USR3
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+* Cadence Assura releases 3.1.5USR1 (minimum)
+
+Process Synopsis:
+* This sbl13 design kit library supports only the sbl13ha process variant.
+* The sbl13ha process has 6 layers of aluminum metal.  It supports the following:
+  - low and medium breakdown npns
+  - 1.2V and 3.3V fets
+  - low value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4 and metal 5
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre and ads simulators are supported.
+
+Process Variant Support:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Environment and Kit Updates:
+* Changed the approach used to define the device library in cadence.  Based
+  on the value of $RDS_CDSLIBS and $RDS_CDS_TECH, the appropriate library
+  will be included.
+* Fixed library processing issues in trigger callbacks utility.
+* Updated Technology Library web pages to include sbl13 devices.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Device Updates:
+* Front-end (simulation) support available for spectre and ADSSim.
+* Pcells included for all devices.
+
+Device limitations, Design Library:
+* Ind/Res
+  - ca18hr octagonal inductors and resistors have been implemented in this
+    process.  When the sbl13 versions are integrated into the design kit, the
+    pcell footprint may change.  Additionally the electrical specifications for these
+    devices may change.
+* Var
+  - The sbc35qtx mos varactor has been implemented in this process.  When the
+    sbl13 version is integrated into the design kit, the pcell footprint may change.  
+
+Techfile Updates:
+* Initial release of techfile 
+  
+Model Updates: Model version v1.3
+* The following models are included in the model release. Models that are based on
+  predicted data or are copies of data from other process nodes are indicated.
+* Model cards may be provided that are not supported by the Cadence Design Kit
+  design library.
+
+All Devices:
+   - New x-sigma models that allow user to sweep process sigma from +x FAST to -x SLOW
+     ((FETs, NPNs, Diodes ; Resistors, PC, Mos Varactor)) 
+Fets:
+   - Changed flicker noise model in 3.3v FETs from gm-based to bsim3 (from CA13 v1.1) 
+     to better capture bias dependence.  No change in 1.2v Mixed-signal FETs.
+   - Removed offsets in gate resistance defintion in SLOWFAST and FASTSLOW corners for 
+     all RF FETs.
+   - Fixed area and perimeter junction capacitance partitioning bug for 3.3v RF FETs. 
+     Minimal change in total Cj.
+   - Fix in lint_nom definition for 1.2v pfet stat. and MM models.  Reduces offsets in 
+     Coverlap due to statistical process spreads.
+NPNs:
+   - Rename npn models to match Low/Med/High voltage types. Previously used
+     Dig/Low/High.
+   - New l-scalable standard and high-speed nom models from measured silicon
+   - Corner, Stat. models for above from E-specs
+   - MM model copied from sbc18 NPNs 
+IND:
+   - Predicted model from ca18: ind_1u, ind_3u, ind_6u
+     (inductor compact model for 1/3/6um MT)
+   - Predicted model from ca18: balun1_ca13m6_3u, balun5_ca13m6_3u, balun10_ca13m6_3u
+     (balun fixed compact model for 1/5/10nH fixed layout)
+RES:
+   - Unsalicided P-type resistor model (rpp3t), mainly copy from ca18 res.scs with
+     new x_sigma format
+RNW:
+   - Nwell resistor model (rw3t), mainly copy from ca18 rnw.scs with new x_sigma format
+CAP:
+   - Vertical mim capacitor models (c3t_mim3 and c4t_mimw3 for 2.8fF/um2 density) and
+     stacked mim capacitor models (c3t_smim6 and c4t_smimw6 for 5.6fF/um2 density) mainly
+      copy from ca13 cap.scs with new x_sigma format
+PC:
+   - Poly capacitor models (pc and pc3p3), with new pc model based on sbl13 fets model
+     and pc3p3 copy from sbc18 model. All have new x_sigma format.
+MOSVAR:
+   - MOS varactor model (mosvar_3p3), mainly copy from sbc35x mosvar.scs model with new
+     x_sigma format.
+
+Verification:
+General:
+* Generated c13_ext library for parasitic extraction support
+  - Was previously called ca13_rcx
+
+Calibre:
+* For calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - The following npn rules have not been implemented: B15, B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - BMP.2 does not completely check all cases
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - 51.B flags the terminals of the inductors
+  - xRC support will be available in a future release.
+
+DRC
+* Initial release of deck
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ERC
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+XRC
+* Not provided at this time. Will be available in a future release.
+
+Assura:
+* Limitations
+  - The following npn rules have not been implemented : B15, B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - Metal1 on single ended octagonal inductor shield violates 8.B.b
+  - BMP.2 does not completely check all cases
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - 51.B flags the terminals of the inductors
+DRC
+* Initial release of deck
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ERC
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+RCX
+* Initial release of deck
+</PLAINTEXT></BODY></HTML>

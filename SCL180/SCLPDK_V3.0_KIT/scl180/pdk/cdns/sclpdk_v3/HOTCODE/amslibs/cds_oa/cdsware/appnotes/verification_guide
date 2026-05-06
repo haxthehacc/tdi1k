@@ -1,0 +1,33 @@
+Check	  Description				Requirement
+========  ====================================  =========================
+DRC	  Basic design rule checks- layer 	Must be run on all 
+	  width, spacing, enclosure, area,	hierarchical levels.
+	  shape, etc. 
+========  ====================================  =========================
+DRC_LUPI  DRC+ Internal CMOS Latchup rules.     Can be run at cell levels
+========  ====================================  =========================
+LUPI  	  Internal CMOS Latchup rules.     	Can be run at cell levels
+========  ====================================  =========================
+LVS 	  Layout vs. Schematic- extracting 	Must be run on all 
+	  components and connections from	hierarchical levels.
+          layout to form a netlist, which 
+	  is used to compared with schematic. 
+========  ====================================  =========================
+Softerc	  Checks for floating metal, MOSFET 	Should be run on
+	  gates, un/misconnected substrate/	the top level 
+	  well ties, unusual circuit 		of a design.
+          topologies, etc. 
+========  ====================================  =========================
+ESD_LUP	  Checks rules regarding Electrostatic  Should be run on
+	  Discharge (ESD) and CMOS Latchup 	the top level 
+	  (LUP); should be run on the top 	of a design.
+	  level of a design.
+========  ====================================  =========================
+Antenna	  Checks for antenna issues; 		Should be run on 
+						the top level of design.
+========  ====================================  =========================
+Stress	  Checks for metal stress issues- 	Should be run on 
+	  slots, size, shape and spacing	the top level
+	  of stress-relieving slots, metal 	of a design.
+	  clearance from chip corners, etc.
+========  ====================================  =========================

@@ -1,0 +1,115 @@
+**** Diodes for 5V I/O PAD *********************
+.lib diodes_IO
+.subckt dnpwcpl  1 2 
+.param area=20p pj=40u nf=1
++ Al='log10(pj*10)/abs(log10(pj*10))'
++ pj_um='0.5*pj*((1+Al)+(1-Al)*1e6)'
++ area_m='0.5*area*((1+Al)*1e-6+(1-Al))'
++ iesd='50e-3*pj_um'
+
+r1 1 11 r='144/pj_um'
+d1 11 2 esd_prim area=area pj=pj
+
+.model esd_prim d
++level = 3  is = 0.0001559  jsw = 8.642e-010
++n = 1.639  rs =0   ik = 2.11e+007
++ikr = 0.00  vb = 11.13  ibv = 0.001
++lm = 0.00  lp = 0.00  wm = 0.00
++wp = 0.00  xm = 0.00  xoi = 1.00e+04
++xom = 1.00e+04  xp = 0.00 xw = 0.00
++trs = 0 cta = 0.0006095   ctp = 0.0005266
++eg = 1.16 tcv = -0.0006  gap1 = 4.73e-04
++gap2 = 1.11e+03  tlev = 1  fc = 0
++tref = 25.0  tlevc = 1  fcs    = 0
++tpb = 0.000915 tphp = 0.0006033 xti = 1
++cj = 0.000861  mj = 0.3132 pb = 0.6969
++cjsw = 4e-011  mjsw = 0.33  php = 1
+*+imax=iesd imelt=1E30
+
+.ends dnpwcpl
+
+.subckt dnpwcpl5 1 2  
+.param area=20p pj=40u nf=1
++ Al='log10(pj*10)/abs(log10(pj*10))'
++ pj_um='0.5*pj*((1+Al)+(1-Al)*1e6)'
++ area_m='0.5*area*((1+Al)*1e-6+(1-Al))'
++ iesd='50e-3*pj_um'
+
+r1 1 11 r='144/pj_um'
+d1 11 2 esd_prim area=area pj=pj
+
+.model esd_prim d
++ level=3 is= 1.87e-07 jsw= 1.26e-13
++ n= 1  rs=0  ik=2.11E+007
++ ikr = 0.00 bv= 11.5  ibv= 0.001
++ lm = 0.00  lp = 0.00  wm = 0.00
++ wp = 0.00  xm = 0.00  xoi = 1.00e+04            
++ xom = 1.00e+04  xp = 0.00 xw = 0.00     
++ trs=0  cta= 9.52e-04  ctp= 3.65e-04
++ eg=1.16  tcv= -0.0006  gap1=4.73e-04
++ gap2=1.11e+03  tlev=1  fc=0
++ tref=25.0  tlevc=1  fcs= 0                 
++ tpb= 0.001385  tphp= 0.001153  xti= 3
++ cj= 0.0009592  mj= 0.2997  pb= 0.5929
++ cjsw=2.66E-011  mjsw=0.066  php=1.372
++ tt=5e-09
+.ends dnpwcpl5
+
+.subckt dpnwcpl 1 2 
+.param area=20p pj=40u nf=1
++ Al='log10(pj*10)/abs(log10(pj*10))'
++ pj_um='0.5*pj*((1+Al)+(1-Al)*1e6)'
++ area_m='0.5*area*((1+Al)*1e-6+(1-Al))'
++ iesd='50e-3*pj_um'
+
+r1 1 11 r='144/pj_um'
+d1 11 2 esd_prim area=area pj=pj
+
+.model esd_prim d
++level = 3  is = 2.761e-007  jsw = 1.929e-013
++n = 1.074  rs = 0 ik = 2.11e+007
++ikr = 0.00  vb = 10.8  ibv = 0.005105
++lm = 0.00  lp = 0.00  wm = 0.00
++wp = 0.00  xm = 0.00  xoi = 1.00e+04
++xom = 1.00e+04  xp = 0.00 xw = 0.00
++trs = 0 cta = 0.0006304   ctp = 0.0007391
++eg = 1.16 tcv = -0.0006  gap1 = 4.73e-04
++gap2 = 1.11e+03  tlev = 1  fc = 0
++tref = 25.0  tlevc = 1  fcs    = 0
++tpb = 0.0009459 tphp = 0 xti = 2.672
++cj = 0.0009174  mj = 0.3428 pb = 0.7578
++cjsw = 3.5e-011  mjsw = 0.33  php = 1
+*+imax=iesd imelt=1E30
+
+.ends dpnwcpl
+
+.subckt dpnwcpl5 1 2 
+.param area=20p pj=40u nf=1
++ Al='log10(pj*10)/abs(log10(pj*10))'
++ pj_um='0.5*pj*((1+Al)+(1-Al)*1e6)'
++ area_m='0.5*area*((1+Al)*1e-6+(1-Al))'
++ iesd='50e-3*pj_um'
+
+r1 1 11 r='144/pj_um' 
+d1 11 2 esd_prim area=area pj=pj 
+
+.model esd_prim d
++ level=3  is= 2.262e-007  jsw=  1.142e-013
++ n= 1  rs=0 ik=2.11E+007
++ ikr = 0.00 bv= 11.5  ibv= 0.005105
++ lm = 0.00  lp = 0.00  wm = 0.00
++ wp = 0.00  xm = 0.00  xoi = 1.00e+04            
++ xom = 1.00e+04  xp = 0.00 xw = 0.00     
++ trs=0  cta= 0.0006349  ctp= 0.0007433
++ eg=1.16  tcv=-0.0006  gap1=4.73e-04
++ gap2=1.11e+03  tlev=1  fc=0
++ tref=25.0  tlevc=1 fcs= 0                 
++ tpb= 0.000968  tphp=0.0004376  xti= 3
++ cj= 0.0009174  mj= 0.3234  pb= 0.5548
++ cjsw= 5.11e-011 mjsw= 0.2166  php= 1.192
++ tt=5e-09
+
+.ends dpnwcpl5
+
+.endl diodes_IO
+

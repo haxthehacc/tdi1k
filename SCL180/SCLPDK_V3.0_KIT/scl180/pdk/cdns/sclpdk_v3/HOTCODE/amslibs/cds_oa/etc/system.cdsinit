@@ -1,0 +1,268 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; $Id: system.cdsinit 1 2019/07/01 11:04:09 GMT ronenha Exp $
+;; $Log: Revision 1 2019/07/01 11:04:09 GMT ronenha $
+;;   Initial revision.
+;; 
+;;  Revision: 1.10 Wed Nov  7 13:51:29 2018 tomf
+;;  Remove setting of MGC_CALIBRE_OLD_MENU_TRIGGER variable.
+;; 
+;;  Revision: 1.9 Wed Nov  7 13:48:21 2018 tomf
+;;  Load EMX init file.
+;; 
+;;  Revision: 1.8 Tue May  8 16:45:24 2018 tomf
+;;  Add additional commands for electrical/optical simulation environment.
+;; 
+;;  Revision: 1.7 Wed Mar 14 11:27:50 2018 tomf
+;;  Update Lumerical loading code.
+;; 
+;;  Revision: 1.6 Thu Mar  8 15:29:15 2018 tomf
+;;  Load Lumerical files.
+;; 
+;;  Revision: 1.5 Thu Nov 15 15:19:51 2012 milkovr
+;;  Remove schematic view checker settings.
+;;  Remove VXL permute pins / auto pin swap setting changes
+;; 
+;;  Revision: 1.4 Wed Aug  16 01:18:33 2012 cadm
+;;  Do not load htmlIndex.il for FAB2 processes
+;; 
+;;  Revision: 1.3 Wed Dec  7 01:18:33 2011 milkovr
+;;  Make rdstest an optional load
+;;  Change default tech to sbc18
+;;  Move simulation defaults to simulation asiIndex file
+;;  Remove ICC legacy code
+;;  Update CIW menu install to use Cadence recommended procedure
+;; 
+;;  Revision: 1.2 Tue Aug  30 15:15:04 2011 cadm
+;;  add tjsystem.cdsinit
+;; 
+;;  Revision: 1.1 Thu Sep  4 15:15:04 2008 bani
+;;  ic6.1 etc dir
+;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Print current time (for debugging purposes)
+printf( "RDS Start Time: %s\n" getCurrentTime() )
+
+;; Set dialog box count for process warning
+_jazzWarnCount = 0
+
+;; Load critical base files
+let( (file)
+	;; Load in code to define globals from Shell Environment variables
+	if( getShellEnvVar( "RDS_ROOT" ) && getShellEnvVar( "RDS_CDSWARE" ) then
+		foreach( name list( "baseGlob.il" "baseGetEnv.il" "baseProcVarList.il")
+			sprintf( file "%s/base/bin/skill/%se" getShellEnvVar("RDS_CDSWARE") name )
+			unless( isFile(file)
+				sprintf( file "%s/base/src/skill/%s" getShellEnvVar("RDS_CDSWARE") name )
+			)
+			if( isFile(file) then
+				load(file)
+			else
+				printf( "ERROR: Cannot find base skill files...\n" )
+				error( "Cannot continue with Jazz Design Kit loading\n")
+			)
+		)
+	else
+		printf( "ERROR: Env variable RDS_ROOT is not set\n" )
+		error( "Cannot continue with Jazz Design Kit loading\n")
+	)
+)
+
+printf( "RDS_ROOT = %s\nCDS Version = %s\n"
+	rdsBaseGetGB('RdsRoot) getVersion()
+)
+
+printf( "Loading Jazz Design Kit system.cdsinit from %s\n"
+	getShellEnvVar("RDS_ETC")
+)
+
+;; Set system defined bindkeys and strokes
+foreach( f '("samples/local/schBindKeys.il" "samples/local/leBindKeys.il")
+	when( isFile(prependInstallPath(f))
+		load( prependInstallPath(f) )
+	)
+)
+
+;; Load in RSS cdsware from skill directories
+rdsLoad( "cdsware" "base" "baseIndex.il" )
+rdsLoad( "cdsware" "framework" "fwkIndex.il" )
+rdsLoad( "cdsware" "simulation" "asiIndex.il" )
+rdsLoad( "cdsware" "rdstest" "rdstestIndex.il" ?failOK t)
+;; Only load these if in icfb or icms (not layout or layout+)
+when( member( "analogArtist-Simulation" hiGetBindKeyPrefixList() )
+	rdsLoad( "cdsware" "schematic" "schIndex.il" )
+)
+rdsLoad( "cdsware" "layout" "layIndex.il" )
+rdsLoad( "cdsware" "calibre" "cbrIndex.il" )
+rdsLoad( "cdsware" "assura" "assuraIndex.il" )
+;rdsLoad( "cdsware" "html" "htmlIndex.il" )
+
+;; Load in technology env variable RDS_CDS_TECH
+if( null(rdsBaseGetGB('TechDir)) || rdsBaseGetGB('TechDir) == "default" then
+	printf("WARNING: env variable \"RDS_CDS_TECH\" not set - default to sbc18\n")
+	rdsBaseSetGB('TechDir "sbc18")
+)
+if(!strncmp(rdsBaseGetGB('TechDir) "ts" 2) then
+rdsLoad( "cdsware" "html" "htmlIndex.il" )
+)
+if( rdsBaseGetGB('TechGrp) then
+	tech_group = rdsBaseGetGB('TechGrp)
+	tech_list = parseString(tech_group)
+)
+
+;; Check that RDS_CDS_VERIFY_TECH is set to a valid process
+jazzCheckProcVar()
+
+;; Check for existence of process data file
+jazzCreateProcData()
+
+;; Default display.drf to set color palette
+printf("Setting display.drf\n")
+if( isFile(strcat( getShellEnvVar("RDS_ETC") "/display.drf" )) then
+	envSetVal(
+		"graphic" "drfPath" 'string
+		strcat( getShellEnvVar("RDS_ETC") "/display.drf" )
+	)
+else
+	envSetVal(
+		"graphic" "drfPath" 'string
+		strcat(
+			rdsBaseGetGB('LibraryPath) "/" rdsBaseGetGB('TechDir)
+			"/devices/display.drf"
+		)
+	)
+); if
+
+;; set jazz kit version and show it if not nil
+jazzGetKitVersion()
+when( jazzKitVersion
+	printf( "Jazz Design Kit version = %s\n" jazzKitVersion )
+)
+
+;; Load technology specific skill code
+rdsLoad( "cdslibs" rdsBaseGetGB('TechDir) "init.il" )
+
+;; Setup default environment for RFCAD system
+printf("Setting Cadence env variables\n")
+
+;; Setup default environment for symbol editor
+envSetVal( "schematic" "symbolPinUsage" 'string "square" )
+envSetVal( "schematic" "tsgTemplateType" 'string "analog" )
+
+;; Install CIW RDS pulldown menu
+ciwMenuInit()
+rdsFwkInstallCIWRDSmenu()
+
+;; If RdsRoot $RDS_ROOT/amslibs/cds_default/etc/tjsystem.cdsinit  exists, load it
+if( isFile( strcat( rdsBaseGetGB('RdsRoot) "/amslibs/cds_default/etc/tjsystem.cdsinit" ) ) then
+	printf( "Loading TJ_CUSTOM file %s...\n"
+		strcat( rdsBaseGetGB('RdsRoot) "/amslibs/cds_default/etc/tjsystem.cdsinit" )
+	)
+	loadi(strcat( rdsBaseGetGB('RdsRoot) "/amslibs/cds_default/etc/tjsystem.cdsinit" ) )
+	towerJazzProcVarCB()
+)
+
+;; If $RDS_CUSTOM/cadence/site.cdsinit exists, load it
+if( and(
+		rdsBaseGetGB('RdsCustom)
+		isFile( strcat( rdsBaseGetGB('RdsCustom) "/cadence/site.cdsinit" ) )
+	)
+	then
+	printf( "Loading RDS_CUSTOM file %s...\n"
+		strcat( rdsBaseGetGB('RdsCustom) "/cadence/site.cdsinit" )
+	)
+	loadi( strcat( rdsBaseGetGB('RdsCustom) "/cadence/site.cdsinit" ) )
+)
+
+;; If $RDS_ETC/templates/emx.cdsinit exists, load it
+if( isFile( strcat( getShellEnvVar( "RDS_ETC" ) "/templates/emx.cdsinit" ) ) then
+	printf( "Loading EMX init file %s...\n"
+		strcat( getShellEnvVar( "RDS_ETC" ) "/templates/emx.cdsinit" )
+	)
+	loadi( strcat( getShellEnvVar( "RDS_ETC" ) "/templates/emx.cdsinit" ) )
+)
+
+;; If $PROJ_ROOT/$PROJ_ID/proj.cdsinit exists, load it
+let( (myPath)
+	when( rdsBaseGetGB('ProjRoot) && rdsBaseGetGB('ProjId)
+		myPath = strcat(
+			rdsBaseGetGB('ProjRoot) "/"
+			rdsBaseGetGB('ProjId) "/cds_master/proj.cdsinit"
+		)
+		when( isFile( myPath )
+			printf("Loading %s...\n" myPath)
+			load( myPath )
+		); when
+	); when
+
+	;; If $HOME/home.cdsinit exists, else load $HOME/.cdsinit if exists
+	when( rdsBaseGetGB('Home)
+		myPath = strcat( rdsBaseGetGB('Home) "/home.cdsinit")
+		if( isFile( myPath ) then
+			printf("Loading %s...\n" myPath)
+			load( myPath )
+		else
+			myPath = strcat( rdsBaseGetGB('Home) "/.cdsinit")
+			when( isFile( myPath )
+				printf("Loading %s...\n" myPath)
+				load( myPath )
+			); when
+		); if
+	); when
+); let
+
+;; If Unix Env Var IDF_INSTALL_DIR exists then load this section for HP ADS IDF setup
+if( getShellEnvVar( "IDF_INSTALL_DIR" ) then
+	unless( getShellEnvVar("HPEESOF_DIR")
+		printf( "WARNING: HPEESOF_DIR is not defined. ADS DLC may not work!\n" )
+	)
+
+	let( (fileName)
+		fileName = strcat(getShellEnvVar("IDF_INSTALL_DIR") "/config/.cdsinit")
+		if( isFile( fileName )
+		then
+			printf("Loading HPADS IDF init scripts\n")
+			printf("Loading %s...\n" fileName)
+			load( fileName )
+			setShellEnvVar(sprintf(nil "IDF_CDS_VERSION=%s"
+					nth(1 parseString(index(getVersion() "version")))))
+		else
+			printf( strcat("WARNING: " getShellEnvVar("IDF_INSTALL_DIR") "/config/.cdsinit not found! DLC may not work!\n") )
+		)
+	)
+)
+
+;Load XPEDION/Agilent GoldenGate files
+if( getShellEnvVar("XPEDION") then
+	load(sprintf(nil "%s/aa/.cdsinit" getShellEnvVar("XPEDION")))
+); if
+
+;Call triggers to grab userApp, userMenu, and userPI procs
+let( (allViewTypes)
+	allViewTypes = deGetAllViewTypes()
+	foreach( viewType '("schematic" "schSynthesisXL" "maskLayout" "maskLayoutXL")
+		when(member(viewType allViewTypes)
+			_jazzRegUserTriggers(viewType nil nil nil)
+		)
+	)
+)
+
+;; Load Lumerical files
+let( ( ICHOME )
+	if( ICHOME = getShellEnvVar( "INTERCONNECTHOME" ) then
+		ICHOME = strcat( ICHOME "/interfaces/cadence/virtuoso" )
+		loadi( strcat( ICHOME "/INTERCONNECT.ini" ) )
+		loadContext( strcat( ICHOME "/INTERCONNECT.cxt" ) t )
+		envSetVal( "ui" "ciwNameCompletion" 'cyclic "Manual" )
+
+		asiAnalogAutoloadProc()
+		loadContext(prependInstallPath("etc/context/asimenv.cxt"))
+		envSetVal("asimenv.startup" "sessInitTrigFunc" 'string "CreateADECoSimMenu")
+		CreateInteropMenu("t")
+		RegisterCustomizedData("t")
+	)
+)
+
+;License Expiration Warning
+_jazzStatusWarning('args)

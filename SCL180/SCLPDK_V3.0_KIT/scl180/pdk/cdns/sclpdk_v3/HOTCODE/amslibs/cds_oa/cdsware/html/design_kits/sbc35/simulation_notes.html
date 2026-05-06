@@ -1,0 +1,30 @@
+<html><body>
+<h1 align=center>Simulation Notes For sbc35x</h1>
+
+The following considerations apply to versions 'v1.4' or later of sbc35x simulation models:
+<ul>
+ <li>Scaling factor "sigma_hr" added for selection of rph3t process corner</li>
+ <ul>
+  <li>Factor applies globally to all rph3t devices in the netlist.</li>
+  <li>Relies on design variable "sigma_hr" being defined in the netlist.</li>
+  <li>Valid physical range of parameter: -3 <= sigma_hr <= 3</li>
+  <li>To choose 'FAST' corner, set "sigma_hr" to -3</li>
+  <li>To choose 'NOM' corner, set "sigma_hr" to 0</li>
+  <li>To choose 'SLOW' corner, set "sigma_hr" to 3</li>
+  <li>Any value between -3 and 3 is legal for this parameter</li>
+ </ul>
+ <li>Scaling factor "sigma_lr" added for selection of rnp3t process corner</li>
+ <ul>
+  <li>Factor applies globally to all rnp3t devices in the netlist.</li>
+  <li>Relies on design variable "sigma_lr" being defined in the netlist.</li>
+  <li>Valid physical range of parameter: -3 <= sigma_lr <= 3</li>
+  <li>To choose 'FAST' corner, set "sigma_lr" to -3</li>
+  <li>To choose 'NOM' corner, set "sigma_lr" to 0</li>
+  <li>To choose 'SLOW' corner, set "sigma_lr" to 3</li>
+  <li>Any value between -3 and 3 is legal for this parameter</li>
+ </ul>
+ <li>If user does not add the above parameters as design variables, Analog Artist will automatically add the parameters to the set of design variables prior to netlisting. The values are determined automatically based on the current model corner selection.</li>
+ <li>If you change model setup to a predetermined corner, such as 'FAST' or 'SLOW', the parameter values are automatically adjusted to the appropriate values by the model selection GUI or prior to netlisting in the Analog Artist environment.</li>
+</ul>
+
+</body></html>

@@ -1,0 +1,4 @@
+TDMCHECKPOINT="1.0"
+ts018_scl_prim/pdio_33 type="cell"
+ts018_scl_prim/ndio_33 type="cell"
+ts018_scl_prim/nwldio_33 type="cell"

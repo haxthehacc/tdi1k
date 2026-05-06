@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec $PERL5 $0.pl "$@"
+exit 1
+

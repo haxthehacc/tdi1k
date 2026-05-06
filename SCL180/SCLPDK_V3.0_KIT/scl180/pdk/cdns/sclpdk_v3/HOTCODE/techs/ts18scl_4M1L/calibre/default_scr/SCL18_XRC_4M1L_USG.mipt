@@ -1,0 +1,242 @@
+mipt_version = 2.0
+process = 4M1L_USG
+version = 1.0
+calibration_type = ALL
+cap_unit = ff
+distance_unit = um
+background_dielectric = 1.0
+svrf_verbatim = {
+UNIT CAPACITANCE ff
+
+CAPACITANCE ORDER NSRC_1 PSRC_1 NTAP PTAP POLYGATE POLYO MT11 MT21 middle_stack_metal MT31 MiMCAP TOP_M1
+PEX GROUND LAYER isp IPW_SL IPW_FE NWELL NWELL_conn DeepNWELL SNU DNWELL CFD2_SL PSUB OVERALL
+
+PEX MAP MiMCAP MiMCAP NRCAP
+PEX IGNORE CAPACITANCE ALL MiMCAP NRCAP MT31
+
+PEX MAP POLYO POLYO POLYGATE
+PEX IGNORE CAPACITANCE INTRINSIC ALL NSRC_1 
+PEX IGNORE CAPACITANCE INTRINSIC ALL PSRC_1 
+PEX IGNORE CAPACITANCE INTRINSIC ALL NTAP 
+PEX IGNORE CAPACITANCE INTRINSIC ALL PTAP 
+PEX IGNORE CAPACITANCE INTRINSIC ALL POLYGATE
+PEX IGNORE CAPACITANCE ALL POLYGATE POLYO NSRC_1 
+PEX IGNORE CAPACITANCE ALL POLYGATE POLYO PSRC_1 
+PEX IGNORE CAPACITANCE ALL POLYGATE POLYO NTAP 
+PEX IGNORE CAPACITANCE ALL POLYGATE POLYO PTAP 
+
+PEX VIA CAPACITANCE YES
+PEX CONTACT CAPACITANCE NO
+}
+
+dielectric = base_diel {
+	   thickness = 0.02
+	   diel_type = planar
+	   eps = 4.2
+}
+
+diffusion = diff {
+	  thickness = 0.33
+	  min_width = 0.22
+ 	  min_spacing = 0.28
+          r_sheet = 7.0
+	  src_drn_layers = {NSRC_1 PSRC_1 NTAP PTAP}
+}
+
+contact	= CONT_AA {
+ 	min_width = 0.22
+ 	min_spacing = 0.25
+ 	enclosure_up = 0.005
+ 	enclosure_down = 0.1
+ 	measured_from = diff
+ 	measured_to = MT11
+	resistance = 10
+ 	gate_to_cont_spacing_min = 0.16 
+ 	tc1 = 1341e-6
+	tc2 = 1.07e-6
+}
+
+dielectric = diff_diel {
+	thickness = 0.36
+ 	eps = 4.1
+	diel_type = planar
+}
+
+poly = POLYO {
+     thickness	= 0.2
+     min_width	= 0.18
+     min_spacing = 0.25
+     r_sheet	= 6.0
+     tc1 = 1420e-6
+     tc2 = 0.032e-6
+}
+
+contact = CONT {
+	resistance = 7	
+ 	min_width = 0.22
+ 	min_spacing = 0.25
+ 	enclosure_up = 0.005
+ 	enclosure_down = 0.1
+ 	measured_from = POLYO
+ 	measured_to = MT11
+	tc1 = 1420e-6
+	tc2 = 0.032e-6
+}
+
+dielectric = poly_diel {
+ 	thickness = 0.67
+ 	eps = 4.2
+	diel_type = planar
+}
+
+conductor = MT11 {
+ thickness	= 0.54
+ min_width	= 0.23
+ min_spacing	= 0.23
+ r_sheet	= 0.080
+ tc1 		= 3248e-6
+ tc2 		= -0.43e-6
+}
+
+via = VI2 {
+ min_width	= 0.26
+ min_spacing	= 0.26
+ enclosure_up	= 0.01
+ enclosure_down = 0.01
+ measured_from 	= MT11
+ measured_to 	= MT21
+ resistance = 6
+ tc1 = 946e-6
+ tc2 = -0.41e-6
+}
+
+dielectric = metal1_diel {
+	   diel_type = planar
+ thickness	= 0.54
+ eps		= 4.2
+}
+
+dielectric = v2_diel {
+	   diel_type = planar
+ thickness	= 0.82
+ eps		= 4.2
+}
+
+conductor = MT21 {
+ thickness	= 0.54
+ min_width	= 0.28
+ min_spacing	= 0.28
+ r_sheet	= 0.08
+ tc1 		= 3248e-6
+ tc2 		= -0.43e-6
+}
+
+via = VI3 {
+ min_width	= 0.26
+ min_spacing	= 0.26
+ enclosure_up	= 0.01
+ enclosure_down = 0.01
+ measured_from 	= MT21
+ measured_to 	= MT31
+ resistance = 6
+ tc1 = 946e-6
+ tc2 = -0.41e-6
+}
+
+dielectric = metal2_diel {
+	   diel_type = planar
+ thickness	= 0.54
+ eps		= 4.2
+}
+
+dielectric = v3_diel {
+	   diel_type = planar
+ thickness	= 0.82
+ eps		= 4.2
+}
+
+conductor = MT31 {
+ thickness	= 0.54
+ min_width	= 0.28
+ min_spacing	= 0.28
+ r_sheet	= 0.08
+ tc1 		= 3248e-6
+ tc2 		= -0.43e-6
+}
+
+dielectric = metal3_diel {
+	   diel_type = planar
+ thickness	= 0.54
+ eps		= 4.2
+}
+
+dielectric = vmim_diel {
+	   diel_type = planar
+ thickness	= 0.0395
+ eps		= 4.2
+}
+
+conductor = MiMCAP {
+ thickness	= 0.2
+ min_width	= 0.4
+ min_spacing	= 0.8
+ r_sheet	= 6.5
+}
+
+via = VCE {
+ min_width	= 0.36
+ min_spacing	= 0.35
+ enclosure_up	= 0.01
+ enclosure_down = 0.009
+ measured_from 	= MiMCAP
+ measured_to 	= TOP_M1
+ resistance = 2.5
+ tc1 = 1184e-6
+ tc2 = 0.11e-6
+}
+
+via = VL1 {
+ min_width	= 0.36
+ min_spacing	= 0.35
+ enclosure_up	= 0.01
+ enclosure_down = 0.009
+ measured_from 	= MT31
+ measured_to 	= TOP_M1
+ resistance = 2.5
+ tc1 = 1184e-6
+ tc2 = 0.11e-6
+}
+
+dielectric = ml_diel {
+	   diel_type = planar
+ thickness	= 0.7605
+ eps		= 4.2
+}
+
+conductor = TOP_M1 {
+ thickness	= 0.84
+ min_width	= 0.44
+ min_spacing	= 0.46
+ r_sheet	= 0.04
+ tc1 		= 3215e-6
+ tc2 		= -3.87e-6
+}
+
+dielectric = teos {
+	diel_type = conformal
+	ref_layer = TOP_M1
+	eps =  3.81
+	thickness = 0.8
+	topthk = 0.8
+	swslope = 90
+        swthk = 0.56
+}
+dielectric = sin {
+	diel_type = conformal
+	ref_layer = teos
+	eps = 7.0
+	thickness = 0.3
+	topthk = 0.3
+	swslope = 90
+        swthk = 0.21
+}

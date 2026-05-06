@@ -1,0 +1,110 @@
+#!/usr/local/bin/wish
+
+frame .mbar -bd 1p -relief raised
+pack .mbar -fill x
+    menubutton .mbar.file -text File -menu .mbar.file.menu
+    pack .mbar.file -side left
+        menu .mbar.file.menu
+            .mbar.file.menu add command -label "Select" -underline 0 -accelerator "Ctrl+s" -command selectData
+            .mbar.file.menu add command -label "Quit" -underline 0 -accelerator "Ctrl+q" -command exit
+
+	bind . "<Control-s>" {selectData}
+	bind . "<Control-q>" {exit}
+	frame .top
+	pack .top
+    frame .d
+    pack .d -in .top
+        label .d.lab -text "Dir:" -width 6 -anchor w
+        entry .d.ent -textvariable curDir -width 60
+        pack .d.lab .d.ent -side left -fill x
+    frame .f
+    pack .f -in .top
+        label .f.lab -text "File:" -width 6 -anchor w
+        entry .f.ent -textvariable curFile -width 60
+        pack .f.lab .f.ent -side left -fill x
+
+frame .b -relief sunken -bd 2
+pack .b -expand 1 -fill x
+    button .b.select -text "Select Data" -command selectData
+    pack .b.select -side left
+    button .b.draw -text "Show Density" -command draw
+    button .b.drawAll -text "Show ALL density" -command drawAll
+    button .b.drawSaveAll -text "Save ALL density" -command drawSaveAll
+
+    frame .opt
+    pack .opt -in .b -side left -expand 1
+        radiobutton .opt.cov -text coverage \
+            -variable drawMode -value coverage
+        radiobutton .opt.ovr -text overlap \
+            -variable drawMode -value overlap
+        pack .opt.cov .opt.ovr -side left
+        frame .opt.low
+        pack .opt.low -side left
+            label .opt.low.lab -text "below" -width 5
+            entry .opt.low.ent -textvariable lowPct -width 3
+            pack .opt.low.lab .opt.low.ent -side left
+        label .opt.pct -text "% or above"
+        pack .opt.pct -side left
+        frame .opt.high
+        pack .opt.high -side left
+            entry .opt.high.ent -textvariable highPct -width 3
+            label .opt.high.pct -text "%"
+            pack .opt.high.ent .opt.high.pct -side left
+
+    pack .b.draw -side left -expand 1
+	 pack .b.drawAll -side left -expand 1
+	 pack .b.drawSaveAll -side left -expand 1
+
+proc selectData {} {
+    global curDir curFile 
+	set filetypes { {Density {.density}} {All {*}} }
+	set filename [tk_getOpenFile -filetypes $filetypes]
+    if {$filename == ""} { return }
+    set curDir [file dirname $filename]
+	 set curFile [file tail $filename]
+}
+
+proc draw {} {
+    global curDir curFile drawMode lowPct highPct densGlob
+    if {$drawMode == "coverage"} {
+        eval exec $densGlob(denscov) $curDir/$curFile &
+    } else {
+        eval exec $densGlob(densovr) $curDir/$curFile $lowPct $highPct &
+    }
+}
+
+proc drawAll {} {
+	global curDir drawMode lowPct highPct densGlob
+	foreach {curFile} [glob -type f M?.density StackToM?.density ] {
+	  eval exec $densGlob(densovr) $curDir/$curFile $lowPct $highPct &
+	}
+	foreach {curFile} [glob -type f M?_overlap.density StackToM?_overlap.density ] {
+	  eval exec $densGlob(denscov) $curDir/$curFile &
+	}
+}
+
+proc drawSaveAll {} {
+	global curDir drawMode lowPct highPct densGlob
+	foreach {curFile} [glob -type f M?.density StackToM?.density ] {
+	  eval exec $densGlob(densovr) --saveEPS $curDir/$curFile $lowPct $highPct
+	}
+	foreach {curFile} [glob -type f M?_overlap.density StackToM?_overlap.density ] {
+	  eval exec $densGlob(denscov) --saveEPS $curDir/$curFile
+	}
+}
+
+set curDir [pwd]
+set curFile "M1.density"
+set drawMode coverage
+set lowPct 20
+set highPct 80
+if {[info exists env(TK)] == 1} {
+    set densGlob(wish) "$env(TK)/bin/wish"
+}
+if {[info exists env(DENS_ROOT)] == 1} {
+    set densGlob(denscov) "$densGlob(wish) $env(DENS_ROOT)/denscov"
+    set densGlob(densovr) "$densGlob(wish) $env(DENS_ROOT)/densovr"
+} else {
+    set densGlob(denscov) "denscov"
+    set densGlob(densovr) "densovr"
+}

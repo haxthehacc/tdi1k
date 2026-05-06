@@ -1,0 +1,33 @@
+* library nat.lib
+
+.LIB NOM
+.LIB 'ts18sl_scl.lib' tt_nlv
+.LIB 'ts18sl_scl.lib' tt_nhv
+.LIB 'ts18sl_scl_2019.lib' tt_n5v
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl.lib' ff_nlv
+.LIB 'ts18sl_scl.lib' ff_nhv
+.LIB 'ts18sl_scl_2019.lib' ff_n5v
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl.lib' ss_nlv
+.LIB 'ts18sl_scl.lib' ss_nhv
+.LIB 'ts18sl_scl_2019.lib' ss_n5v
+.ENDL SLOW
+
+.LIB FASTSLOW
+.LIB 'ts18sl_scl.lib' fs_nlv
+.LIB 'ts18sl_scl.lib' fs_nhv
+.LIB 'ts18sl_scl_2019.lib' fs_n5v
+.ENDL FASTSLOW
+
+.LIB SLOWFAST
+.LIB 'ts18sl_scl.lib' sf_nlv
+.LIB 'ts18sl_scl.lib' sf_nhv
+.LIB 'ts18sl_scl_2019.lib' fs_n5v
+.ENDL SLOWFAST
+
+* end library fetlib

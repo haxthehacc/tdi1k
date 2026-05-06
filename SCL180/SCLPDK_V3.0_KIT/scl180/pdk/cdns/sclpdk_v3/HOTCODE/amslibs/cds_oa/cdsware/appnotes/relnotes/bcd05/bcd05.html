@@ -1,0 +1,218 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 12/18/2006
+Library: bcd05 Design Kit for bcd05/pbc4 process
+Relevant Specification Documents:
+Design Rules: NPB-PS-0736, Rev.4
+Electrical Spec: NPB-PS-0736, Rev.4
+
+
+Highlights:
+* This kit is based on the PBC4 Design Kit release v4.01
+* The bcd05 process node includes the following functionality:
+- 0.5um CMOS technology with dual gate oxides (5V and 16V)
+- Support for broad voltage range: 5V, 7V, 16V, 30V and 40V capability
+- Thick metal top (2.0um or 2.5um)
+- Two or three metal options
+* Major updated to DIVA DRC deck for BCD05
+* New DIVA DRC deck provided for BCD35
+* Layout migration tool provided for BCD05->BCD35
+* "New" symbol library provided for pbc4_common library
+
+Software versions tested with this release:
+* Cadence IC releases IC51.41USR1 (minimum)
+* Cadence DIVA verification tool  IC51.41USR1 (minimum)
+
+Environment and Kit Updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* The run_cal or Jazz verification flow is not supported in this kit.
+  Only the Cadence DIVA verification tool is supported.
+* MakeProjectTree: remove call to set umask to 002 on project directory creation.
+  Your current umask will be used instead.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+
+
+
+General Device Updates:
+* Changed from the "Old Symbol" library to the "New Symbol" library.
+  - The symbol views of many devices have changed to match the latest
+    PBC4 library update. It is strongly recommended that you update
+	 your schematics to use the new symbol views.
+  + A schematic migration / update utility is provided.
+    - In the schematic, press the "/" key to access the "PolarFab" pull down menu.
+	 - Choose "Updated Schematic (PBC4 only)" to perform the first part of the migration
+	 - Choose "Move Symbols (PBC4 only)" to perform the second part of the migration
+	 - These two functions can automate the conversion. However, you may have to
+	   re-do "Set Global Pins" to make sure global pins are placed at the right
+		locations.
+  - If you are unable to update your schematics, you can revert back
+    to the old library by modifying the "current" link in the directory:
+	 $RDS_CDSLIBS/bcd05/PBC4/DEV_LIBS
+	 so that it points to the "version_4.00.1os" directory
+* New verification decks are provided for BCD05 which have more robust rule
+  checks. Previously clean data may show DRC violations when checked with
+  this new deck. More details are provided below, under Verification.
+* Updated many "PBC4_Example_Lib" library layouts so they are DRC clean.
+  Cells that have been updated include:
+  5V_Mos_layout, Dcap_layout, ESD_layout, HV_layout, PBC4_Device_Examples,
+  Rescappoly_layout, Resgatepoly_layout, Respplus_layout,
+  Tubbing_examples
+* Updated cells in pbc4_common library to correct DRC violations and
+  labels:
+  desd1, desd2, lpnp, npnhv
+* Add warning message on "ds" Schottky diode indicating the device
+  is not fully qualified at Jazz.
+
+Technology updates:
+* BCD35 DRC deck included in kit. To use this deck, change your DIVA
+  DRC deck patch to DivaDRC_bcd35.rul
+* Migration tool to convert contact/via1/via2 from BCD05 to BCD35 is
+  provided. The tool performs the following changes:
+  - contact: 0.7x0.7 to 0.5x0.5 by shifting each side -0.10 inward
+  - via:     0.6x0.6 to 0.5x0.5 by shifting each side -0.05 inward
+  - via2     1.4x1.4 to a 2x2 array of 0.5x0.5 with 0.5 space
+  - Contact and via center is retained
+  - The tool can be run multiple times on the same layout. It will only
+    resize contacts/vias that match these original dimensions.
+
+  To use this tool, you must do the following:
+  - Make backup of your design. The changes from this utility cannot
+    be undone.
+  - The utility can only work on designs that do NOT contain symbolic vias, 
+    pcell references, or paths.
+  - The simplest way to make a backup and remove references is to stream
+    out the design, then stream back in to new library. Be sure
+	 you do not overwrite your existing design library when you stream in.
+  - You can update each layout, or the whole library.
+  - Open a layout from the new streamin library.
+  - Select the Jazz->Layout Migration menu item.
+  - Set the Mapping to "bcd05_bcd35_contact_migrate.lay"
+  - Set the Scope as desired to process the Whole Library or the current
+    Cellview.
+  - Set the Target Library, Source Library, and Mapped Library to be your
+    streamin library which contains the copy of the design.
+  - OK form. The utility will replace the contact and via1 rectangles with
+    resized contact and via. It will replace the via2 rectangles with a 2x2
+	 array of vias.
+  - The tool will not address contacts or vias that are noticably different
+    size from the Design Rule correct size. For example, it will not convert
+	 large via areas used in artifacts.
+
+Model Updates:
+* None
+
+Verification:
+* Verification decks are provided ONLY for Cadence DIVA
+* Minimum software versions required for Cadence Diva is IC51.41USR1
+* DIVA verification decks are provided for both BCD05 and BCD35.
+  Both decks are in the pbc4p library.
+  - BCD05 deck is divaDRC.rul
+  - BCD35 deck is divaDRC_bcd35.rul
+* Change history below is for BCD05 DRC deck.
+- Added 0.05 off-grid checks - wrote exceptions to ignore lpnp Emitter and
+  Collector circular shapes
+- Added minimum contact, via1, and via2 width checks
+- Added non-45 degree checks - wrote exceptions to ignore lpnp Emitter and
+  Collector circular shapes
+- Added the "artifact" feature checks for 74 critical rules (i.e. Rev letter
+  & part numbers covered by the drcblk layer) 
+- Corrected the rule 026.026.1 comment :
+  "026 ptub polygons should exist prior to layer generation"
+  to read
+  "026 "ptub polygons should not exist prior to layer generation - please draw using the ptuba inside ptubf layers instead" 
+- Corrected the rule 090.090.3 comment:
+  "090.090.3: =0.70 MIN 090 met1 space inside 039 cap_poly"
+  to read
+  "090.090.3: =1.20 MIN 090 met1 space inside 039 cap_poly"
+- Added new check to flag ptuba avoiding layers ptubf, res_rec, n_sea, and n_sea_7
+- Added new check to flag minimum ptuba width of 1.5 um drawn in artifacts 
+- Added new check to flag 26A.26F.2: =3.00 MIN 26F ptubf surround 26A Artifact ptuba
+- Corrected the 114.114.1 minimum width metal3 check to include proper fuse
+  portion to avoid false flag 
+- Added a new rule to check, MF.D, the minimum width metal3 fuse connection < 35.4 um 
+- Added a new rule to check the minimum metal3 fuse width < 1.8 um 
+- Added three new fuse metal rules MF.A (exact fuse W=1.8um), MF.B (exact fuse L=10um),
+  and MF.C (fuse passivation overlap fuse < 4.1um
+- Added eight additional rules 020.020.1.G, 020.020.2.G, 020.020.1.G.L40,
+  020.020.2.G.L40, and 031.031.1G , 031.031.2G, 031.031.1G.L40 , 031.031.2G.L40
+  to check generated mimimum width facing features as would be generated for
+  the nburied and field masks. These checks are in addition to the regular
+  existing minimum width checks.
+
+
+___________________________________
+Date: 01/20/2006
+Library: bcd05 Design Kit for bcd05/pbc4 process
+Relevant Specification Documents:
+Design Rules: NPB-PS-0736, Rev.1
+Electrical Spec: NPB-PS-0736, Rev.1
+
+
+Highlights:
+* This is an initial kit release for the bcd05/pbc4 process node.
+* This kit is based on the PBC4 Design Kit release v4.01
+* The bcd05 process node includes the following functionality:
+- 0.5um CMOS technology with dual gate oxides (5V and 16V)
+- Support for broad voltage range: 5V, 7V, 16V, 30V and 40V capability
+- Thick metal top (2.0m or 2.5m)
+- Two or three metal options
+
+Software versions tested with this release:
+* Cadence IC releases IC51.41USR1 (minimum)
+* Cadence DIVA verification tool  IC51.41USR1 (minimum)
+
+Environment and Kit Updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Device Updates:
+* This is an initial kit release based on the PF PBC4 Process kit 4.01
+
+Model Updates:
+
+Verification:
+* Verification decks are provided ONLY for Cadence DIVA
+* Minimum software versions required once decks are available:
+
+Cadence Diva
+* Minimum version required is IC51.41USR1
+
+
+</PLAINTEXT></BODY></HTML>

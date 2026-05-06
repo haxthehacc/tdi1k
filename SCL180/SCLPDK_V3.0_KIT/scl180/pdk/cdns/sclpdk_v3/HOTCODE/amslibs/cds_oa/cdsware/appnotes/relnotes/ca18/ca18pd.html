@@ -1,0 +1,528 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 05/04/07
+Library: ca18 release (ca18pd)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.13
+Electrical Spec: NPB-PS-0173, rev.11
+Design Application Note for High Voltage LD Fets: NPB-PS-0578, rev.1
+
+Highlights:
+* This is an initial development-level kit release for the ca18pd
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* 5 metal 0.18 RFCMOS super-set kit
+* Process variant and layer setup utility
+* X-sigma model support
+* As always, be sure to run "Trigger Callbacks" before working with this 
+  design kit.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41USR3
+* Cadence Spectre release MMSIM6.0USR2
+* Cadence IUS release 5.7QSR2
+* Synopsys Hspice release X-2005.9
+* ADS release v2005a
+* Mentor Calibre release 2006.01_19
+  - Problems have been discovered in newer versions of the
+    calibre xrc netlist formatter.
+* Cadence Assura releases 3.1.6USR1_EHF3
+  - Problems discovered in 3.1.6 USR1 caused the move to
+    the 3.1.6USR1 engineering hotfix 3.
+
+Process Synopsis:
+* The ca18pd process has 5 layers of aluminum metal.  It supports the following:
+  - 1.8V and 3.3V fets
+  - very low VT 3.3V native fet
+  - high VT 1.8V fets
+  - low value unsalicided, high value unsalicided, salicided poly, and
+    nwell resistors
+  - p+/nwell and mos varactors
+  - 2fF/um2 mim capacitors between metal3/4 and metal4/5
+  - 4fF/um2 mim stacked capacitor between metal3/4/5
+  - inductors using 3um thick top metal 5
+  - deep nwell
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in using a super-set and customizing layers
+  and devices.  This utility is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+* For users of ca18pf, the above document will describe how to go from
+  the ca18pd super-set to a ca18pf like design kit.
+
+Kit and Environment:
+*Installation 
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+- Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+* Flow Changes
+- This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com
+- The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+* Kit Updating and other utilities: 
+- Updated Technology Components web pages to include ca18pd.
+- Trigger Callbacks
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Add warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+- CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+- Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+- Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+- Update Save State functions:
+  - Fix issue with Jazz saved states and escaped characters
+  - Update code to coexist with IC51.41USR3 save state as cellview mode
+  - Prompt for checkout if Jazz saved state is DM managed
+
+General Kit Limitations:
+- Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+
+Device Library Updates:
+General
+* Added simulation support for hspiceD and AMS in ADE
+  - Updated terminal mapping and operating point information for all devices
+  - spectreS and hspiceS are no longer supported.  Please migrate to the
+    spectre and hspiceD simulators respectively.
+* cascode and tgate fets: Cascode and tgate fets are not included in this release.
+  Better control over FET layout can be achieved using Virtuoso XL abutment and
+  chain/fold functionality. If you use these devices, you will need to migrate
+  to the standard n/p fet devices and Virtuoso XL functionality.
+
+Modified Devices
+* Bipolars (vpnp)
+  - Removed region parameter.  Not supported in new simulation model.
+* Capacitors
+  - Added 4 pin MIM caps over well cmimw2_4, cmimw2_4_m3, and csmimw4_4
+  - Modified mimcap width/length minimums to pass drc and improve performance.
+    Minimum w/l for cmim2/cmimw2/cmimw2_4 is 2.52u.  The minimum value for the
+    the remaining mimcaps is 2.72u.
+  - Added non-physical parameters to support the X-sigma models.  Enabling the
+    "Show Sim Parameters" option in the Edit Object Properties form,
+    will display these parameters.
+  - Implemented cmax estimation for poly capacitors (cpoly/cpoly3p3)
+* Inductors (single and differential square/octagonal)
+  - Implemented JIT4 support
+  - Inductors instantiated from older design kits will need to be replaced in the
+    schematic and layout.  Only Inductor Toolbox version 4.0+ is supported.
+  - shield/shield_oct: These cells are the inductor shields. They are not meant to
+    be used directly in your design. Instead, enable the "shield" option in the
+    inductor properties form.
+* LD Fets
+  - Modified terminals on both devices.
+    nfet3p3_ld: Terminals are: D G S sub, with the sub shorted to the source.
+    pfet3p3_ld: Terminals are: D G S sub, with the nwell shorted to the source.
+* Mixed-signal fets (1.8/3.3V n and p fets)
+  - Modified area/perimeter s/d calculations to better handle interconnect style
+    and ablb options.
+  - Removed "Integrated" tap option from the native fet (nfet3p3_vt0).  This
+    violated rule 52.J.
+* RF fets (nfet_rf/nfet3p3_rf/pfet_rf/pfet3p3_rf):
+  - Maximum number of fingers was changed to 128.
+  - Updated area/perimeter s/d calculations to better handle interconnect style
+    and ablb options.
+  - Added warning message when s/d connection is set to 1Met or unconnected.
+    The model was extracted using metal2 as the s/d metal.
+  - Modified area/perimeter source and drain fields to always be un-editable.
+    These values are not netlisted and are provided as a reference.
+* Resistors
+  - Modified rppoly_lo resistor calculation to match new electrical specification
+    values.
+* Varactors (var_mos)
+  - Increased max fingers to 100 and max slices to 15.
+  - Updated met2_con simulation parameter to be set to 1 when either metal2
+    connection option is used.
+
+Device Library Limitations:
+* Process Variants: This kit does not hide devices or device parameters
+  when a device is used in an unsupported process variant.  Only a warning
+  message is displayed.  The DRC decks will show *.Bad violations for
+  unsupported device layers.
+
+Techfile Updates:
+* Initial support for Multi-part paths (MPP)
+  - Created MPP templates for: PTAP, NTAP, v12, v23, v34, and v45
+  - Templates can be accessed through the Layout Window->Create Mpp form.
+  - Usage guidelines are available on the Technology Library web pages for ca18.
+* Added metal boundary layers
+* Included equivalent layers section
+
+Model Updates:
+* General
+ - Spectre version MMSIM6.0 USR2 or later is required or you will receive error
+   messages like "undefined parameter m".
+ - Hspice version 2005.9 or later is required.
+ - ADS version 2005a or later is required.
+ - AMS Designer version ius 5.7qsr2 or later is required.
+ - New model library implemented that supports statistical, corner, and
+   X-Sigma simulations with one model library. A separate statistical model
+   library is no longer provided or required.
+ - Added functionality for X-Sigma models, allowing user to change device
+   performance from +x-sigma FAST to -x-sigma SLOW. See Model Design Manual
+   for full details.
+ - Added multiplicity "m" parameter to model reduction in mismatch for m>1
+ - Analog Environment Model libraries have been reorganized into different
+   files/device classes.
+ - If you use Cadence ADE to load previous states, you must reset your
+   model library entries to prevent errors.
+
+* Revision History
+  - Details for the default model version are specified below.
+
+* v4.0 (default) - 04/04/07
+FET:
+- Changed Leff calculation in  FASTSLOW and SLOWFAST corners for 1.8v and 3.3v
+  DC and RF Fets. No change in nom,slow,fast or statistical models
+- Updated pc model (pc, pc3p3 and pc5p0) based on the latest measurement data.
+  Improved model scalability across geometry.
+- Increased MOS Varactor nwell end resistance spread for process corners to be
+  aligned with e-spec. No change to NOM model or Cap. Vs. Voltage predictions.
+
+LDMOS:
+- New Philips MOS Model 20 based 40v LDMOS models (n5p0fet_ld40s, p5p0fet_ld40s).
+  This new model version currently supports only Spectre.
+- Added corner and statistical functionality to 40v LDMOS models
+- Updated Verilog-A code for HV Fet drift region to remove compile warning.
+
+PNP:
+- pnpa-pnpd vaf (early voltage) swapped between fast and slow to better match
+  process distribution.
+
+IND:
+- Updated older JIT1.4 models to work with X_SIGMA by unifying
+  stat and corner models with addition of X_SIGMA support.
+  No change in JIT1.4 model performance.
+
+RES:
+- Updated low-value poly resistor rend and dw to match latest Espec.
+- Added multiplicity to Spectre nwell resistor Verilog-A to address nfet_esd
+  simulation issue from schematic.
+- Inserted flicker noise to poly resistor models for ADS and Hspice. Previously
+  existed only for Spectre.
+
+Verification:
+General:
+* New minimum software versions are required for verification:
+- Calibre 2006.01_19
+- Assura 3.1.6 USR1 + hotfix3
+
+Calibre:
+* For the calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - HVP.Q may flag the pfet3p3_ld
+
+DRC
+  - Added BD.6
+  - Modified 2.F to better handle cram
+  - Fixed 5.C.b to filter out the pfet3p3_ld
+  - Improved accuracy of 6.C
+  - Fixed 51.* rules to not flag any inductor terminals
+  - Fixed 59.Bad to exclude the pfet3p3_ld
+  - Improved performance of OBD.E
+  - Fixed HVP.I.2 to flag only the pfet3p3_ld
+  - Fixed HVP.J to properly flag only the pfet3p3_ld
+  - Fixed SR* to flag only silicided resistors
+ANTENNA
+  - Split global antenna deck into 6, 5, and 4 metal decks
+DENSITY
+  - Updated based on new density requirements in NPB-PS-0176
+ERC
+  - Split global erc deck into 6, 5, and 4 metal decks
+ESD_LUP
+  - Split global esd_lup deck into 6, 5, and 4 metal decks
+STRESS
+  - Improved checks to eliminate false errors on mimcaps
+LVS
+  - Updated nfet3p3_ld/pfet3p3_ld definitions to handle terminal
+    changes.
+  - Updated rppoly_lo resistor calculation per NPB-PS-0173
+XRC
+  - Updated nfet3p3_ld/pfet3p3_ld definitions to handle terminal
+    changes.
+  - Updated rppoly_lo resistor calculation per NPB-PS-0173
+
+Assura:
+* Limitations
+  - Rules 1.C and 2.F may flag the esd nfets (nfet_esd/nfet3p3_esd)
+  - HVP.Q may flag the pfet3p3_ld
+DRC
+  - Added BD.6
+  - Modified 2.F to better handle cram
+  - Fixed 5.C.b to filter out the pfet3p3_ld
+  - Improved accuracy of 6.C
+  - Fixed 51.* rules to not flag any inductor terminals
+  - Fixed 59.Bad to exclude the pfet3p3_ld
+  - Modified DNW.4 to exclude the pfet3p3_ld
+  - Improved performance of OBD.E
+  - Fixed SR* to flag only silicided resistors
+  - Fixed false errors in 2.J, HVN.C, HVN.M, HVN.R, HVP.C, HVP.I.4, HVP.R,
+ANTENNA
+  - Split global antenna deck into 6, 5, and 4 metal decks
+DENSITY
+  - Updated based on new density requirements in NPB-PS-0176
+ERC
+  - Split global erc deck into 6, 5, and 4 metal decks
+ESD_LUP
+  - Split global esd_lup deck into 6, 5, and 4 metal decks
+STRESS
+  - Improved checks to eliminate false errors on mimcaps
+LVS
+  - Updated nfet3p3_ld/pfet3p3_ld definitions to handle terminal
+    changes.
+  - Updated rppoly_lo resistor calculation per NPB-PS-0173
+  - Using transferProperty command to copy simulation parameters
+    from the schematic to the extracted view for the fuse and
+    inductors.
+RCX
+  - Updated nfet3p3_ld/pfet3p3_ld definitions to handle terminal
+    changes.
+  - Updated rppoly_lo resistor calculation per NPB-PS-0173
+  - Using transferProperty command to copy simulation parameters
+    from the schematic to the extracted view for the fuse and
+    inductors.
+___________________________________
+Date: 01/18/07 
+Library: ca18 (ca18pd)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0176, Rev. 13
+* Electrical Spec: NPB PS-0173, Rev 11
+* Design App Note: NPB PS-0671, Rev 2
+
+Highlights:
+* This is an initial development-level kit release for the ca18pd
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* Includes simulation and layout support.  Limitations are described in the
+  sections below.
+* As always, be sure to run "Trigger Callbacks" before working with this 
+  design kit.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41USR3
+* Cadence Spectre release MMSIM6.0USR2
+* Mentor Calibre release 2006.01_19
+* Cadence Assura releases 3.1.6USR1
+
+Process Synopsis:
+* The ca18pd process has 5 layers of aluminum metal.  It supports the following:
+  - 1.8V and 3.3V fets
+  - very low VT 3.3V native fet
+  - high VT 1.8V fets
+  - low value unsalicided, high value unsalicided, salicided poly, and
+    nwell resistors
+  - p+/nwell and mos varactors
+  - 2fF/um2 mim capacitors between metal3/4 and metal4/5
+  - 4fF/um2 mim stacked capacitor between metal3/4/5
+  - inductors using 3um thick top metal 5
+  - deep nwell
+* This design kit is in the development phase, so issues may arise which will 
+  be addressed in future releases.
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+
+Kit and Environment:
+*Installation 
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+- Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+* Flow Changes
+- This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com
+- The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+* Kit Updating and other utilities: 
+- Updated Technology Components web pages to include ca18pd.
+- Trigger Callbacks
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Add warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+- CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+- Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+- Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+- Update Save State functions:
+  - Fix issue with Jazz saved states and escaped characters
+  - Update code to coexist with IC51.41USR3 save state as cellview mode
+  - Prompt for checkout if Jazz saved state is DM managed
+
+General Kit Limitations:
+- Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+
+General Device Updates:
+* Front-end (simulation) support available for spectre
+* Pcells included for all devices
+* ddnw/diso: New deep nwell implementation using the diso and ddnw diodes. Replaces
+  single 3 terminal ddnw diode.  See CIW->Jazz->Tech Components web pages
+  for more details.
+* ind/ind_diff: 
+  - Inductors instantiated from other design kits will need to be replaced in the
+    schematic and layout.  Only Inductor Toolbox version 4.0+ is supported.
+  - Inductor shields may cause false 51.B DRC violations when present.
+  - Octagonal inductors are not provided in this kit release.
+* shield/shield_oct: These cells are the inductor shields. They are not meant to
+  be used directly in your design. Instead, enable the "shield" option in the
+  inductor properties.
+* cascode and tgate fets: Cascode and tgate fets are not included in this release.
+  Better control over FET layout can be achieved using Virtuoso XL abutment and
+  chain/fold functionality. If you use these devices, you will need to migrate
+  to the standard n/p fet devices and Virtuoso XL functionality.
+
+Model Updates:
+v3.8
+FET:
+- Add initial predicted model for ca18 High VT 1.8V FET
+- DNW: split model so diso and ddnw diodes can be called separately.
+  Also added corner scaling factors for DNW.
+CAP:
+- Add updated CAP models that support passing of process-related parameters.
+  Default parameters are consistent with previous model releases.
+- Remove c3t_mim*_m4 model. Replace with parameterized c3t_mim* model.
+IND:
+- Update to Inductor Toolbox (JIT) version 4. This model is
+  not directly compatible with Inductor Toolkit model v1.4. Devices will
+  need to be updated to use the latest model from within the design kit.
+  Existing JIT 1.4 inductor models are unchanged.
+- Swap P1 and P2 again on single-ended inductor model l3t, l3t4, and l3tqtx
+  cox components. This resolves a discrepancy between the layout P1 and
+  model P1. Simulation results will change slightly because of the
+  changed capacitance.
+- Rename legacy "balun" and "balun4" to *_jit1 to prevent naming conflict.
+Statistical:
+- Add NOM only support for High VT fet.
+- Separate DNW diodes to match corner model. NOM support only.
+- Update models to match other corner model changes.
+
+v3.7
+General:
+- Resolve compatibility issues with Spectre MMSIM6 release
+- This model release requires Spectre MMSIM6.1 or later
+- You will see the error message "undefined parameter m" if you use
+  an earlier version of Spectre
+FET:
+- Re-centered narrow width / short channel length device to lower Idsat,
+  consistent with recent PCM data.
+   - W/L 0.22x0.18um NFET -> Slow/Nom/Fast: 140,200,260 -> 95,140,185 uA
+   - W/L 0.22x0.18um PFET -> Slow/Nom/Fast: 50,75,100 -> 40,60,80 uA
+   - Negligible change in FETs w/ W > 1um
+- Fixed partitioning of area and perimeter components of source/drain to bulk
+  junction capacitance in RF FETs. Depending on size of RF FET expected
+  change is 0-25% for effective junction capacitance and ~10-15%
+  for substrate resistances
+- Changed flicker noise model from gm-based to BSIM3 noimod=3 for both 1.8v
+  and 3.3v FETs, to better capture bias dependence of flicker noise
+- Added 5V native fet mixed-signal (DC) models based on preliminary silicon
+Statistical:
+- Updated to match changes to corner model v3.7
+- Added multiplicity "m" parameter to model reduction in mismatch for m>1
+  This change was made for MIM and resisistor models.
+- Added mismatch model for parasitic vpnp. Due to the use of inline subckts,
+  the region parameter is not supported.
+
+v3.6b * 2006/04/07
+FET:
+- Updated models for 5/12 and 5/40 HVMOS, and 1.8V and 5V RFLDMOS to use
+  new drift region model rdrift2
+- Add 5V native fet, 40V diodes
+- Remove 20V devices.
+- RFLDMOS and HVMOS devices are only supported in Spectre and ADS.
+
+v3.6a * 2006/02/10
+FET:
+- Fix issue with simulation convergence with RFLDMOS Verilog-A model
+  ldmos_pc
+- Add ADS translation of n20fethv_s/p20fethv_s 20V.
+- RFLDMOS, HVMOS, and 20V devices are only supported in Spectre and ADS.
+RES:
+- Fix issue with rmet1-rmet6 where default model r would override L/W
+  model calculation when R was not specified. Rsh is now used instead.
+
+
+Verification:
+General:
+* New minimum software versions are required for verification:
+- Calibre 2006.01_19
+- Assura 3.1.6 USR1
+
+Calibre
+* Limitations
+  - DRC errors exist in the esd library.  This will be addressed in the next release.
+ANTENNA
+- Initial release of deck. MIM may have false errors
+DRC
+- Initial release of deck
+ERC:
+- not supported in this release
+LUP:
+- not supported in this release
+LVS
+- Initial release of deck
+xRC
+- not supported in this release
+
+Assura
+* Limitations
+  - DRC errors exist in the esd library.  This will be addressed in the next release.
+ANTENNA:
+- Initial release of deck.
+DRC
+- Initial release of deck.
+ERC
+- Initial release of deck. MIM may have false errors
+LUP
+- INitial release of deck. MIM may have false errors
+LVS
+- Initial release of deck.
+RCX
+- Initial release of deck.
+
+</PLAINTEXT></BODY></HTML>

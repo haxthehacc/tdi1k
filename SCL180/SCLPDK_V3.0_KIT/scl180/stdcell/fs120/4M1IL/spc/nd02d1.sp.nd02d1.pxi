@@ -1,0 +1,12 @@
+* File: nd02d1.sp.nd02d1.pxi
+* Created: Sun Feb 14 19:18:07 2010
+* 
+cc_1 VSS A2 0.00785463f
+cc_2 VSS ZN 0.0212148f
+cc_3 VSS A1 0.00785463f
+cc_4 VDD A2 0.0585285f
+cc_5 VDD ZN 0.0503258f
+cc_6 VDD A1 0.00922492f
+cc_7 A2 ZN 0.0241942f
+cc_8 A2 A1 0.164892f
+cc_9 ZN A1 0.244225f

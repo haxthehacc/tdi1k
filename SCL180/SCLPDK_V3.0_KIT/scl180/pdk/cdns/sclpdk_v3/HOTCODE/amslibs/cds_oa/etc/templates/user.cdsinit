@@ -1,0 +1,12 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  Load in User Specific .cdsinit file 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+if( InitPath = getShellEnvVar( "RDS_CDS_INIT_FILES") then
+  load(strcat(InitPath "/system.cdsinit"))
+ else 
+    printf("ERROR: system variable \"RDS_CDS_INIT_FILES\" is not set.\n");
+    printf("Initialization aborted!!\n");
+    printf("Exit from the Cadence environment, type cdsprj ProjID, and then run the tool again!\n"); 
+)
+; 

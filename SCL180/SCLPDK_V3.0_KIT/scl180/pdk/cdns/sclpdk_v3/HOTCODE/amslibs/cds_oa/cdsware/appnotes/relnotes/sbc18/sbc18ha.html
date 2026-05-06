@@ -1,0 +1,120 @@
+<HTML><HEAD>SBC18HA Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+________________
+Date: 2015/03/11
+Version 2.0
+Library: sbc18
+
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 15
+* Electrical Spec: NPB-PS-0267, Rev. 17
+
+SBC18HA Process Synopsis:
+* The SBC18HA process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed, standard, and high voltage NPNs with deep trench,
+  - TiN resistor (between metal3/metal4), poly resistors (silicided
+    and low or high value unsilicided), N-well resistor,
+  - 2.8fF/um2 MIM capacitors between metal4/metal5 and metal3/metal4,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - Schottky diode,
+  - MOS and high performance junction varactors,
+  - triple well isolation.
+
+SBC18HX Process Synopsis:
+* The SBC18HX process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed, standard, and high voltage NPNs with deep trench,
+  - TiN resistor (between metal3/metal4), poly resistors (silicided
+    and low value unsilicided), N-well resistor,
+  - 1.0fF/um2 MIM capacitors between metal4/metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - MOS and high performance junction varactors.
+
+SBC18HXL Process Synopsis:
+* The SBC18HXL process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed, standard, and high voltage NPNs with deep trench,
+  - TiN resistor (between metal3/metal4), poly resistors (silicided
+    and low value unsilicided), N-well resistor,
+  - 1.0fF/um2 MIM capacitors between metal4/metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - Schottky diode,
+  - MOS and high performance junction varactors,
+  - triple well isolation.
+
+SBC18HLL Process Synopsis:
+* The SBC18HLL process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - standard and high voltage NPNs with deep trench,
+  - TiN resistor (between metal3/metal4), poly resistors (silicided
+    and low value unsilicided), N-well resistor,
+  - 2.0fF/um2 MIM capacitors between metal4/metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - Schottky diode,
+  - MOS varactor,
+  - triple well isolation.
+
+This is the second major release of the next-generation SBC18 kit.
+This release replaces the kit released in 2011.  
+For designs created in the legacy 2006 kit, a Generic Design
+Conversion tool is available from the TowerJazz pull-down menu to aid
+in the process of migrating legacy designs.
+
+Software versions tested with this release:
+* Cadence IC release ic5.1usr6, ic6.1.6.080
+* Cadence Assura release 4.14.116_5141, 4.14.116_616
+* Mentor Calibre release v2014.1_36
+* Cadence Spectre release 13.1.1.252.isr11 32bit
+* Synopsys HSPICE release H-2013.03-SP1
+
+Overview:
+* Updated DRC decks to align w/ Rev. 15 of DRC document (PS-0179)
+* Added 3.3V MosVar 
+* Improved LUP algorithm to reduce false errors
+* Corrected poly density calculation
+* Migrated model version from v6.4 to v7.8 (this brings the sbc18h* pdk release
+  up to the model versions being used w/ the sbc18q* and sbc18p* pdks)
+
+General:
+* fixed: Annotating DC operating point with HICUM Models
+* fixed: calview.cellmap missing l111 and m111
+
+Library:
+* Added 3.3V MosVar 
+* Added DT mesh to inductors
+* Integrate ESD diodes in DNW into sbc18* kits
+
+Verification
+DRC:
+* Updated DRC decks to align w/ Rev. 15 of DRC document (PS-0179)
+* Numerous improvements to reduce false errors
+* Added DNW.20 & DNW.21 rules to flag potential LUP conditions inside deep nwell
+LVS:
+* Fixed property errors on octagonal inductors
+Latch-up (LUP):
+* Improved LUP algorithm to reduce false errors
+Density:
+* Corrected poly density calculation
+
+Models:
+There are a large number of changes to the models since the previous 
+PDK release and are too numerous to list here. Please review the 
+$RDS_CDSLIBS/$RDS_CDS_TECH/models/spectre/RELEASE_NOTES file for changes 
+(v6.? - > v7.8). These models have been  released with other sbc18q* and 
+sbc18p* variants and are now being propagated into the sbc18h* pdks.
+
+________________
+Date: 09/09/2014
+
+Release Notes - SBC18HA - Version SBC18HA V1.0.2
+
+** DRC (antenna check only) updated
+    * [SBC18HA-36] - Antenna violation of Metal 6 connected to csmim6 is missed 
+      by antenna check (fixed).
+
+      DRC/Antenna file updated - sbc18ha_ant_assura.rules
+
+________________
+Date: 10/07/2011
+Library: sbc18
+</PLAINTEXT></BODY></HTML>

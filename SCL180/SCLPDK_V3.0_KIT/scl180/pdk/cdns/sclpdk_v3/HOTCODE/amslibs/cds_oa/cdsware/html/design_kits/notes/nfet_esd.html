@@ -1,0 +1,37 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 'nfet_esd' implements the nMOS transistor with increased ESD protection. The 'nfet_esd' has an nwell resistor embedded in the drain of each transistor finger. The value of the drain resistors can be controlled with the 'Resistor Length' attibute. Both the nMOS and pMOS ESD fets are layed out according to the ESD rules described in the design rule document. The ESD fets should be used for all input or output signals that are directly connected to a pad.
+<br><br>
+The gate width and length can be modified, and wide transistors can be generated as an array of parallel fets using the 'Number of Fingers' and 'Number of Slices' attributes. Multiple fets connected in parallel on the same active area are called 'fingers'. Very wide transistors can be split up in multiple multi-finger sub-transistors that are connected in parallel. The resulting sub-transistors are called 'slices'. Only one layout style is available. ESD fets are surrounded by a double guard ring.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Resistor Length:</b> Controls the length of the nwell resistor embedded in the drain of each transistor finger.</li>
+
+<li><b>Width (finger):</b> Controls the width of a gate finger.</li> 
+
+<li><b>Length:</b> Controls the gate length.</li>
+
+<li><a href = "../images/nfet_fingers_slices.html"><b>Number of Fingers:</b></a> Controls the number of gate fingers connected in parallel in the same active area.</li> 
+
+<li><a href = "../images/nfet_fingers_slices.html"><b>Number of Slices:</b></a> Wide transistors can be split up into multiple sub-transistors ('slices') connected in parallel in the same pcell. 'Number of Slices' controls the number of parallel sub-transitors.</li>
+
+<li><b>Current:</b> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+<li><b>Style:</b> Controls the manner in which layout pcell interconnections are made.</li> 
+
+<li><b>Bulk:</b> Controls the presence/absence and location of substrate ties in the layout pcell.</li>
+
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: width(fet), length(fet), length(resistor) and width(resistor).</li>
+</ul>
+
+</body>
+</html>

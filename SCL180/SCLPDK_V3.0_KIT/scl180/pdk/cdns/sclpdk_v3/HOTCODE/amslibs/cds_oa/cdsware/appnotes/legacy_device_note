@@ -1,0 +1,42 @@
+;/////////////////////////////////////////////////////////////////////////
+;// Legacy Device Notes                                                 // 
+;//                                                                     // 
+;//                                                                     // 
+;/////////////////////////////////////////////////////////////////////////
+
+Device Migration Table
+----------------------
+- Applicable only in processes where the new device has been implemented. 
+This device transition is recommended to take advantage of additional
+capabilities and improved modeling.
+- If only the "old" device(s) exist in a particular technology, please 
+continue to use them.
+- Jazz will be updating design kits with the newer devices.
+                          
+Old Device     New Device
+----------     ----------
+c3t_mimw       c4t_mimw
+c3t_mimw2      c4t_mimw2
+c3t_smimw4     c4t_smimw4
+cmimw          cmimw_4
+cmimw2         cmimw2_4
+csmimw4        csmimw4_4
+dp             dp_3
+dp3p3          dp3p3_3
+pdiode         pdiode_3t
+p3p3diode      p3p3diode_3t
+
+
+Summary of Devices Changes
+--------------------------
+Capacitors:
+The two terminal capacitors over well are no longer supported, but still
+included in the design kit for legacy purposes.  Customers should begin
+using their 4 terminal counterparts.  These new devices offer the ability
+to specify values for the substrate and well connections.
+
+Diodes:
+The two terminal p-type diodes are no longer supported, but still 
+included in the design kit for legacy purposes.  Customers should begin
+using their 3 terminal counterparts.  To take into account the p-type
+substrate, these new devices contain a p-type diode with an nwell diode.

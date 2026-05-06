@@ -1,0 +1,997 @@
+(cm52t
+	(ts018_scl_prim cm52t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+(usgcm52t
+	(ts018_scl_prim usgcm52t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+(mr22t
+	(ts018_scl_prim mr22t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(nwcaph3t
+	(ts018_scl_prim cnwnmos_thk3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(w w)
+		(nil mf 1)
+	)
+)
+(rpmpoly2t
+	(ts018_scl_prim rpmpoly2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(n18
+	(ts018_scl_prim nmos_18 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(nath5v
+	(ts018_scl_prim nmos_native_5 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(dnwell
+	(ts018_scl_prim nwldio spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(nhv
+	(ts018_scl_prim nmos_33 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(n18lvt
+	(ts018_scl_prim n18lvt_iso spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(cmim_uhdstk
+	(ts018_scl_prim cmim_uhdstk spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+	(
+		(w w)
+	)
+)
+(rplpoly3t
+	(ts018_scl_prim rplpoly3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(dn18
+	(ts018_scl_prim ndio_sal spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(vd5
+	(ts018_scl_prim vpnp33_5 spectre)
+	(
+		(c C)
+		(b B)
+		(e E)
+	)
+)
+(cm43t
+	(ts018_scl_prim cm43t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)
+(p18
+	(ts018_scl_prim pmos_18 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(nwcap2t
+	(ts018_scl_prim cnwnmos_thn2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(w w)
+		(nil mf 1)
+	)
+)
+(p18lvt
+	(ts018_scl_prim p18lvt spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(rpmpoly3t
+	(ts018_scl_prim rpmpoly3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rml
+	(ts018_scl_prim rmL spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(dp18
+	(ts018_scl_prim pdio_sal spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(cm42t
+	(ts018_scl_prim cm42t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+(rplpoly2t
+	(ts018_scl_prim rplpoly2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rnmpoly2t
+	(ts018_scl_prim rnmpoly2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(p18hvtb3
+	(ts018_scl_prim p18hvt spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(n18hvtb3
+	(ts018_scl_prim n18hvt_iso spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(rm5
+	(ts018_scl_prim rm5 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rphpoly3t
+	(ts018_scl_prim rphpoly3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(cmim_stk
+	(ts018_scl_prim cmim_stk spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+	(
+		(w w)
+	)
+)
+(ddwnps18
+	(ts018_scl_prim ddwnps18 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(p5v
+	(ts018_scl_prim pmos_5V spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(dn50
+	(ts018_scl_prim dn50 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(cm53t
+	(ts018_scl_prim cm53t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)
+(dp50
+	(ts018_scl_prim dp50 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(rpplus3t
+	(ts018_scl_prim rpplus3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(usgcm42t
+	(ts018_scl_prim usgcm42t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+(pasr3t
+	(ts018_scl_prim rpplus_sal3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(vd2
+	(ts018_scl_prim vpnp33_2 spectre)
+	(
+		(c C)
+		(b B)
+		(e E)
+	)
+)
+(vdn5
+	(ts018_scl_prim vnpn18_5 spectre)
+	(
+		(c C)
+		(b B)
+		(e E)
+	)
+)
+(rnplus2t
+	(ts018_scl_prim rnplus2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(nathv
+	(ts018_scl_prim nmos_native_33 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(rnlpoly3t
+	(ts018_scl_prim rnlpoly3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rpplus2t
+	(ts018_scl_prim rpplus2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rphpoly2t
+	(ts018_scl_prim rphpoly2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(epf
+	(ts018_scl_prim epf symbol)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(cmim_uhd
+	(ts018_scl_prim cmim_uhd spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+	(
+		(w w)
+	)
+)
+(nasr3t
+	(ts018_scl_prim rnplus_sal3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rnlpoly2t
+	(ts018_scl_prim rnlpoly2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(usgcm53t
+	(ts018_scl_prim usgcm53t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)
+(rnwellsti2t
+	(ts018_scl_prim rnwell_STI2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(phv
+	(ts018_scl_prim pmos_33 spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(rmt
+	(ts018_scl_prim rmt spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rmt3
+	(ts018_scl_prim rmt3 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+((p cap c)
+	(analogLib cap symbol)
+	(
+		(PLUS)
+		(MINUS)
+	)
+)
+(dnh
+	(ts018_scl_prim ndio_nosal spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(ddwnpw18
+	(ts018_scl_prim ddwnpw18 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(rnwellaa3t
+	(ts018_scl_prim rnwell_AA3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rnplus3t
+	(ts018_scl_prim rnplus3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(dnwell33
+	(ts018_scl_prim nwldio_33 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(nwcaph2t
+	(ts018_scl_prim cnwnmos_thk2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(w w)
+		(nil mf 1)
+	)
+)
+(rm4
+	(ts018_scl_prim rm4 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(cm32t
+	(ts018_scl_prim cm32t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+(dph
+	(ts018_scl_prim pdio_nosal spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+)
+(nasr2t
+	(ts018_scl_prim rnplus_sal2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rm2
+	(ts018_scl_prim rm2 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(vd10
+	(ts018_scl_prim vpnp33_10 spectre)
+	(
+		(c C)
+		(b B)
+		(e E)
+	)
+)
+(ch53t
+	(ts018_scl_prim ch53t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(w w)
+		(nil mf 1)
+	)
+)
+(cmim_sq
+	(ts018_scl_prim cmim_mt spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+	(
+		(w w)
+	)
+)
+(natlv
+	(ts018_scl_prim nmos_native spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(rm3
+	(ts018_scl_prim rm3 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(rnwellaa2t
+	(ts018_scl_prim rnwell_AA2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(cm33t
+	(ts018_scl_prim cm33t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)
+(usgcm32t
+	(ts018_scl_prim usgcm32t spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+)
+((p res r)
+	(analogLib res symbol)
+	(
+		(PLUS)
+		(MINUS)
+	)
+)
+(rnwellsti3t
+	(ts018_scl_prim rnwell_STI3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(pasr2t
+	(ts018_scl_prim rpplus_sal2t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(n5v
+	(ts018_scl_prim nmos_5V spectre)
+	(
+		(D D)
+		(G G)
+		(S S)
+		(B B)
+	)
+	(
+		(pd fpd)
+		(ps fps)
+		(ad fad)
+		(as fas)
+		(w w)(w wf)
+		(nil mnf 1)
+	)
+)
+(usgcm43t
+	(ts018_scl_prim usgcm43t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)
+(rnmpoly3t
+	(ts018_scl_prim rnmpoly3t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(cmim_hc
+	(ts018_scl_prim cmim_hc spectre)
+	(
+		(POS PLUS)
+		(NEG MINUS)
+	)
+	(
+		(w w)
+	)
+)
+(mr23t
+	(ts018_scl_prim mr23t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+((p ind l)
+	(analogLib ind symbol)
+	(
+		(PLUS)
+		(MINUS)
+	)
+)
+(rm1
+	(ts018_scl_prim rm1 spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+	)
+	(
+		(nil segments 1)
+		(w cdlWidth) (w w)
+		(l cdlLen)
+		(nil ssegs 1)
+		(nil psegs 1)
+	)
+)
+(usgcm33t
+	(ts018_scl_prim usgcm33t spectre)
+	(
+		(pos PLUS)
+		(neg MINUS)
+		(sub B)
+	)
+)

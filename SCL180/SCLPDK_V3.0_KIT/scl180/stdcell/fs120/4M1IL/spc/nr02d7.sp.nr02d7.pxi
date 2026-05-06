@@ -1,0 +1,22 @@
+* File: nr02d7.sp.nr02d7.pxi
+* Created: Sun Feb 14 19:48:56 2010
+* 
+cc_1 A2 U36_in 0.24042f
+cc_2 A2 VSS 0.0494334f
+cc_3 A2 A1 0.0875117f
+cc_4 A2 VDD 0.0410375f
+cc_5 U36_in VSS 0.377203f
+cc_6 U36_in A1 0.411487f
+cc_7 U36_in VDD 0.287999f
+cc_8 U36_in U36_out 0.147162f
+cc_9 U36_in ZN 8.15472e-19
+cc_10 U36_in u1_source 0.0672845f
+cc_11 VSS A1 0.0151409f
+cc_12 VSS U36_out 0.270624f
+cc_13 VSS ZN 0.21412f
+cc_14 A1 VDD 0.0667438f
+cc_15 A1 U36_out 0.130514f
+cc_16 VDD U36_out 0.438589f
+cc_17 VDD ZN 0.800858f
+cc_18 VDD u1_source 0.0131177f
+cc_19 U36_out ZN 1.19938f

@@ -1,0 +1,7 @@
+TDMCHECKPOINT="1.0"
+ts018_scl_prim/ndio_sal type="cell"
+ts018_scl_prim/ndio_nosal type="cell"
+ts018_scl_prim/pdio_sal type="cell"
+ts018_scl_prim/ddwnps18 type="cell"
+ts018_scl_prim/pdio_nosal type="cell"
+ts018_scl_prim/ddwnpw18 type="cell"

@@ -1,0 +1,945 @@
+// $Id: ANTENNA_TS18SL_SCL_CALIBRE 1 2020/01/13 12:26:58 GMT ronenha Exp $
+// BEGIN_HEADER
+//                                         ********************************************
+//                                         *          RESTRICTED CIRCULATION          *
+//                                         *                                          *
+//                                         *   THIS SPEC IS PART OF A CUSTOMER DCB    *
+//                                         *                                          *
+//                                         ********************************************
+//    ----------------------------------------------------------------------------------------------------------------
+//    TITLE:  ANTENNA RUNSET FOR TS018SL SCL CALIBRE
+//    ----------------------------------------------------------------------------------------------------------------
+//    SPEC NAME: ANTENNA_TS18SL_SCL_CALIBRE
+//    ----------------------------------------------------------------------------------------------------------------
+//    REFERENCE DESIGN RULES: DR2 0018SL SCL rev. 0.0
+//    ----------------------------------------------------------------------------------------------------------------
+//                  R E V I S I O N         H I S T O R Y
+//    ----------------------------------------------------------------------------------------------------------------
+//    REV |ECN #| ORIGINATOR |  DATE        |BY|PAGE/PARAGRAPH-CHANGED/DELETED
+//    ----------------------------------------------------------------------------------------------------------------
+//    0.0 |     |Ronen Hasnes| 18.11.2009   |  | New runset per DRM  
+//        |     |Rachip1     | 15.12.2019   |  | New version acc DR2_TS18SL_07Oct2019
+//    ------------------------------------------------------------------------------------------------------------
+//        |     |            |              |  |                            
+//    ------------------------------------------------------------------------------------------------------------
+// END_HEADER
+//            ALL PAGES OF THIS SPECIFICATION ARE THE SAME REVISION AS PAGE 1 
+//
+//                             COMPANY PRIVATE
+//
+//                   DO NOT REPRODUCE WITHOUT WRITTEN PERMISSION
+//                           SCL  SEMICONDUCTOR  LIMITED
+//    ------------------------------------------------------------------------------------------------------------
+// 
+//
+//  _____________________________________________________________ 
+//
+//  STATEMENT OF USE 
+//
+//  This information contains confidential and proprietary information of SCL. No part of this information may be reproduced,
+//  transmitted, transcribed, stored in a retrieval system, or translated into any human or computer language, in any form or by any
+//  means, electronic, mechanical, magnetic, optical, chemical, manual, or otherwise, without the prior written permission of
+//  SCL. SCL reserves the right to make changes in the information at any time and without notice.
+//
+//  _____________________________________________________________ 
+//
+//
+//1.0 PURPOSE AND SCOPE
+//
+//1.1 Purpose
+//       This document defines the CALIBRE DRC runset 
+//       on layout designs for TS18SL processes for ANTENNA Rules. 
+//
+//1.2 Scope
+//       All products to be manifactured in TSL in process TS18SL ,
+//       according to Design Rules DR2-0018SL must use this runset for DRC.
+//
+//
+//2.0 TABLE OF CONTENTS
+//
+// Section Title                        Section Number
+// -------------                        --------------
+//   2.1 Purpose and Scope                 1.0
+//   2.2 Table of Contents                 2.0
+//   2.3 Applicable Documents              3.0
+//   2.4 Definitions                       4.0
+//   2.5 Equipment                         5.0
+//   2.6 Safety                            6.0
+//   2.7 Supplies/Materials                7.0
+//   2.8 Updating this Spec                8.0
+//   2.8 Procedures                        9.0
+//
+//3.0 APPLICABLE DOCUMENTS
+//
+//4.0 DEFINITIONS
+//
+//N/A
+//
+//
+//5.0 EQUIPMENT AND S/W
+//
+//5.1 Equipment
+//    UNIX Computer terminal linked to TSL lan.
+//
+//
+//6.0 SUPPLIES AND MATERIAL
+//
+//N/A
+//
+//
+//
+//7.0 SAFETY
+//
+//
+//8.0 UPDATING THIS SPEC
+//
+//8.1 Changes to Document
+//       An ECN should be submitted detailing all the changes to be made to
+//       the spec
+//
+//8.2 Marking Modifications
+//
+//
+//
+//9.0 PROCEDURE
+//
+//9.1 CALIBRE DRC runset inputs:
+//       The user should run the runset on a stream format (binary) file representing
+//       the graphic database.
+//
+//9.2 CALIBRE DRC runset
+//    The runset to use is as specified below:
+//
+//	This file includes SVRF/TVF Technology under license by Mentor Graphics Corporation.
+//	"SVRF/TVF Technology" shall mean Mentor Graphics' Standard Verification Rule Format ("SVRF") and Tcl Verification Format ("TVF")
+//	proprietary syntaxes for expressing process rules.  You shall not use SVRF/TVF Technology unless you are a Mentor Graphics
+//	customer with a license to use the applicable Mentor Graphics software.  The exact terms of your obligations and rights are
+//	governed by your respective license.
+//	You shall not use SVRF/TVF Technology except: (a) for your internal business purposes and (b) for use with Mentor Graphics' Calibre tools.
+//	All SVRF/TVF Technology constitutes or contains trade secrets and confidential information of Mentor Graphics or its licensors.
+//	You shall not make SVRF/TVF Technology available in any form to any person other than your employees and on-site contractors,
+//	excluding Mentor Graphics competitors, whose job performance requires access and who are under obligations of confidentiality.
+//
+//
+//	  =====================================================
+//	  Note:   Checked with Calibre revision: v2008.2_11.12
+//	  =====================================================
+
+
+//###################################################################################
+//###################################################################################
+//
+//	TO VIEW ALL ANTENNA NET AND TO GET MORE DETAILED ANTENNA REPORT 
+//	SEE antenna_results.ant FILE
+//	**THIS FILE CREATED AFTER EACH ANTENNA RUN
+//
+//###################################################################################
+//###################################################################################
+
+
+
+// ----------------------------------------------
+//  Runtime Environment Settings and Definitions 
+// ----------------------------------------------
+
+// The following lines May need to be uncommented , depending on run mode (Calibre Interactive/Include/command line or other ).
+
+// Input GDS/Cellname/System Definition .
+// LAYOUT PATH CELLNAME.gds
+// LAYOUT PRIMARY CELLNAME
+// LAYOUT SYSTEM GDSII
+
+// Output Database/report 
+// DRC SUMMARY REPORT "CELLNAME.report" REPLACE HIER
+// DRC RESULTS DATABASE "CELLNAME.db" ASCII 
+
+//   DRC MAXIMUM RESULTS ALL
+//   DRC MAXIMUM VERTEX ALL
+//   DRC CELL NAME YES CELL SPACE XFORM
+
+   virtual connect colon yes
+   DRC keep empty no
+   text depth primary
+
+   flag skew yes
+   flag offgrid yes
+   flag acute yes
+
+   DRC incremental connect yes
+
+// MUST - Please Select Metal Level for DRC Run.
+//
+//#define 4LM
+//#define 4M1L
+//#define 4M1T
+//#define 4M1T3
+//#define 5LM
+//#define 5M1L
+//#define 5M1T
+//#define 5M1T3
+//#define 6LM
+//#define 6M1L
+//#define 6M1T
+//#define 6M1T3
+
+// ----------------------------------------------
+
+layer AA 1000
+layer map 9 datatype 0 1000
+
+layer CS 1001
+layer map 34 datatype 0 1001
+
+layer GC 1002
+layer map 8 datatype 0 1002
+
+layer GCi_text 1003
+layer map 8 texttype 7 1003
+text layer GCi_text
+
+layer M1 1004
+layer map 40 datatype 0 1004
+layer M1i_text 1005
+layer map 40 texttype 7 1005
+text layer M1i_text
+
+layer M2 1006
+layer map 42 datatype 0 1006
+layer M2i_text 1007
+layer map 42 texttype 7 1007
+text layer M2i_text
+
+layer M3 1008
+layer map 44 datatype 0 1008
+layer M3i_text 1009
+layer map 44 texttype 7 1009
+text layer M3i_text
+
+layer M4 1010
+layer map 46 datatype 0 1010
+layer M4i_text 1011
+layer map 46 texttype 7 1011
+text layer M4i_text
+
+layer M5 1012
+layer map 48 datatype 0 1012
+layer M5i_text 1013
+layer map 48 texttype 7 1013
+text layer M5i_text
+
+layer MT3 1840
+layer map 184 datatype 0 1840
+
+//---------- Metal Define Check ----------
+
+#undefine selected_m
+#ifdef 4LM //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 5LM //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 6LM //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 4M1L //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 5M1L //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 6M1L //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 4M1T //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 5M1T //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 6M1T //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 4M1T3 //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 5M1T3 //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //}
+
+#ifdef 6M1T3 //{
+	#ifdef selected_m //{
+		#define multi_select
+	#endif //}
+	#define selected_m
+#endif //
+
+#ifdef multi_select //{
+	SVRF ERROR "PLEASE SELECT ONLY ONE METAL LEVEL"
+#endif //}
+
+#ifndef selected_m //{
+	SVRF ERROR "PLEASE SELECT METAL LEVEL"
+#endif //}
+//---------- End Metal Define Check ----------
+
+#ifdef 4M1L //{
+	#define 4LM
+#endif //}
+
+#ifdef 5M1L //{
+	#define 5LM
+#endif //}
+
+#ifdef 6M1L //{
+	#define 6LM
+#endif //}
+
+#ifdef 4M1T//{
+	#define 4LM
+	#define THICK_TOP_METAL 
+#endif//}
+
+#ifdef 5M1T//{
+	#define 5LM
+	#define THICK_TOP_METAL 
+#endif//}
+
+#ifdef 6M1T//{ 
+	#define 6LM
+	#define THICK_TOP_METAL 
+#endif//}  
+
+#ifdef 4M1T3 //{
+	#define MT3k
+	#define 4LM
+#endif //}
+
+#ifdef 5M1T3 //{	
+	#define MT3k
+	#define 5LM
+#endif //}
+
+#ifdef 6M1T3 //{	
+	#define MT3k
+	#define 6LM
+#endif //}
+
+#ifdef 4LM//{
+	#ifdef THICK_TOP_METAL//{
+		#define 4M1T
+	#endif //}
+#endif//}
+
+#ifdef 5LM//{
+	#ifdef THICK_TOP_METAL//{
+		#define 5M1T
+	#endif //}
+#endif//}
+
+#ifdef 6LM//{
+	#ifdef THICK_TOP_METAL//{
+		#define 6M1T
+	#endif //}
+#endif//}  
+
+
+#ifndef THICK_TOP_METAL//{
+	//Top Metal
+	//---------
+	layer MT 1014
+	layer map 50 datatype 0 1014
+	layer MTi_text 1015
+	layer map 50 texttype 7 1015
+	text layer MTi_text
+#else
+	//Thick Metal
+	//-------------
+	layer Thick_M 1030
+	layer map 59 datatype 0 1030
+	layer Thick_M_text 1031
+	layer map 59 texttype 7 1031
+	text layer Thick_M_text
+#endif//}
+
+layer NS 1017
+layer map 88 datatype 0 1017
+
+layer PAD 1018
+layer map 68 datatype 0 1018
+
+layer V2 1019
+layer map 41 datatype 0 1019
+
+layer V3i 1020
+layer map 43 datatype 0 1020
+
+#ifdef 4LM //{
+	V3 = V3i not (CE and SPC_stack)
+#else
+	V3 = copy V3i 
+#endif //}
+
+layer V4i 1021
+layer map 45 datatype 0 1021
+
+#ifdef 5LM //{
+	V4 = V4i not (CE and SPC_stack)
+#else
+	V4 = copy V4i
+#endif //}
+
+layer V5i 1022
+layer map 47 datatype 0 1022
+
+#ifdef 6LM //{
+	V5 = V5i not (CE and SPC_stack)
+#else
+	V5 = copy V5i
+#endif //}
+
+layer M4mim 4656
+layer map 46 datatype 56 4656
+
+layer SPC_stack 7856
+layer map 78 datatype 56 7856
+
+layer CE 990
+layer map 99 datatype 0 990
+
+layer VTi 1023
+layer map 49 datatype 0 1023
+
+VT = (VTi not CE) not M4mim
+VT_CE = VTi and CE
+
+#ifdef THICK_TOP_METAL //{
+	connect CE Thick_M by VT_CE
+#else
+	connect CE MT by VT_CE
+#endif //}
+
+layer WN 1024
+layer map 3 datatype 0 1024
+
+layer XN 1025
+layer map 32 datatype 0 1025
+
+layer XP 1026
+layer map 31 datatype 0 1026
+
+bulk=extent
+GATE=and GC AA
+SD = not AA GC
+GC_STI = GC not AA 
+CS_GC = CS and GC
+
+layer HV 1072
+layer map 72 datatype 0 1072
+HVGATE=GATE and HV
+
+#ifndef THICK_TOP_METAL //{
+variable MT_THICK 0.84
+#else //}{
+variable MT_THICK 2.0
+#endif //}
+
+//GC Checks
+//==========
+CONNECT GC_STI  GATE
+CONNECT GC_STI  HVGATE
+ATTACH GCi_text GC_STI
+
+AN.GC.1 { 
+	@AN.GC.1:Maximum ratio of GC on STI perimeter edge area to GC area on ACTIVE 200:1
+        @ (GC perimeter * thickness / gate area) > 200
+        NET AREA RATIO GC_STI GATE > 200    
+        [ perimeter(GC_STI)*0.2 / area(GATE) ] 
+        rdb antenna_results.ant GC_STI  GATE 
+}
+
+CONNECT CS GC_STI GATE HVGATE
+
+AN.CS.1 { 
+	@AN.CS.1:Maximum ratio of CS area to the GC area on ACTIVE connected directly to it 10:1
+    	@ (CS area / GATE area) > 10 
+        NET AREA RATIO CS GC_STI GATE > 10
+	[area(CS) / area(GATE)]
+        rdb antenna_results.ant CS GC_STI GATE
+}
+
+CONNECT M1 GC_STI GATE HVGATE SD BY CS 
+ATTACH M1i_text M1
+
+
+M1_dio =NET AREA RATIO SD M1 > 0
+M1_good_dio = NET AREA M1_DIO >= 0.202
+M1_no_dio = NET AREA RATIO M1 M1_good_dio == 0
+M1_yes_dio = NET AREA RATIO M1 M1_good_dio > 0
+
+
+
+AN.MTL.1.M1 {
+	 @ (M1 area / GATE area) > 400 (M1 not connected to diode)
+	    NET AREA RATIO M1_no_dio CS GC_STI GATE > 400
+        [perimeter(M1_no_dio)*0.54 / area(GATE)]
+        rdb antenna_results.ant M1_no_dio CS GC_STI GATE
+}
+
+AN.MTL.2.M1 {
+	 @ (M1 area / GATE area) > 400*diode area + 2200
+        NET AREA RATIO M1_yes_dio M1_good_dio CS GC_STI GATE > 2200 
+        [( perimeter(M1_yes_dio)*0.54 / area(GATE) ) - ( area(M1_good_dio)*400) ] 
+        rdb antenna_results.ant M1_yes_dio M1_good_dio CS GC_STI GATE 
+}
+
+V2_no_dio = and M1_no_dio V2
+V2_yes_dio = and M1_yes_dio V2
+
+
+AN.VIA.1.V2 {
+	@ (V2 area / GATE area) > 20 (V2 not connected to diode)
+	NET AREA RATIO V2_no_dio M1 CS GC_STI GATE > 20
+	[area(V2_no_dio) / area(GATE)]
+    rdb antenna_results.ant V2_no_dio M1 CS GC_STI GATE
+}
+
+AN.VIA.2.V2 {
+	@ (V2 area / GATE area) > 83.33*diode area + 75
+    NET AREA RATIO V2_yes_dio M1_good_dio M1 CS GC_STI GATE > 75 
+	[( area(V2_yes_dio) / area(GATE) ) - ( area(M1_good_dio)*83.33) ] 
+	rdb antenna_results.ant V2_yes_dio M1_good_dio M1 CS GC_STI GATE 
+}
+
+CONNECT M2 M1 BY V2
+ATTACH M2i_text M2
+
+M2_dio =NET AREA RATIO SD M2 > 0
+M2_good_dio = NET AREA M2_DIO >= 0.202
+M2_no_dio = NET AREA RATIO M2 M2_good_dio == 0
+M2_yes_dio = NET AREA RATIO M2 M2_good_dio > 0
+
+AN.MTL.1.M2 {
+	@ (M2 area / GATE area) > 400 (M2 not connected to diode)
+    NET AREA RATIO M2_no_dio M1 GC_STI GATE > 400
+	[perimeter(M2_no_dio)*0.54 / area(GATE)]
+    rdb antenna_results.ant M2_no_dio M1 GC_STI GATE
+}
+
+AN.MTL.2.M2 {
+	@ (M2 area / GATE area) > 400*diode area + 2200
+    NET AREA RATIO M2_yes_dio M2_good_dio M1 GC_STI GATE > 2200 
+	[( perimeter(M2_yes_dio)*0.54 / area(GATE) ) - ( area(M2_good_dio)*400) ] 
+    rdb antenna_results.ant M2_yes_dio M2_good_dio M1 GC_STI GATE 
+}
+
+V3_no_dio = and M2_no_dio V3
+V3_yes_dio = and M2_yes_dio V3
+
+AN.VIA.1.V3 {
+	 @ (V3 area / GATE area) > 20 (V3 not connected to diode)
+	 NET AREA RATIO V3_no_dio M2 M1 GC_STI GATE > 20
+	 [area(V3_no_dio) / area(GATE)]
+	 rdb antenna_results.ant V3_no_dio M2 M1 GC_STI GATE
+}
+
+AN.VIA.2.V3 {
+	 @ (V3 area / GATE area) > 83.33*diode area + 75
+	 NET AREA RATIO V3_yes_dio M2_good_dio M2 M1 GC_STI GATE > 75 
+	 [( area(V3_yes_dio) / area(GATE) ) - ( area(M2_good_dio)*83.33) ] 
+	 rdb antenna_results.ant V3_yes_dio M2_good_dio M2 M1 GC_STI GATE
+}
+
+CONNECT M3 M2 BY V3
+ATTACH M3i_text M3
+
+M3_dio =NET AREA RATIO SD M3 > 0
+M3_good_dio = NET AREA M3_DIO >= 0.202
+M3_no_dio = NET AREA RATIO M3 M3_good_dio == 0
+M3_yes_dio = NET AREA RATIO M3 M3_good_dio > 0
+
+AN.MTL.1.M3 {
+	@ (M3 area / GATE area) > 400 (M3 not connected to diode)
+	NET AREA RATIO M3_no_dio M2 M1 GC_STI GATE > 400
+	[perimeter(M3_no_dio)*0.54 / area(GATE)]
+	rdb antenna_results.ant M3_no_dio M2 M1 GC_STI GATE
+}
+
+AN.MTL.2.M3 {
+	@ (M3 area / GATE area) > 400*diode area + 2200
+	NET AREA RATIO M3_yes_dio M3_good_dio M2 M1 GC_STI GATE > 2200 
+	[( perimeter(M3_yes_dio)*0.54 / area(GATE) ) - ( area(M3_good_dio)*400) ] 
+	rdb antenna_results.ant M3_yes_dio M3_good_dio M2 M1 GC_STI GATE 
+}
+
+	#ifndef 4LM //{
+		V4_no_dio = and M3_no_dio V4
+		V4_yes_dio = and M3_yes_dio V4
+
+		AN.VIA.1.V4 {
+			@ (V4 area / GATE area) > 20 (V4 not connected to diode)
+		    NET AREA RATIO V4_no_dio M3 M2 M1 GC_STI  GATE > 20
+		    [area(V4_no_dio) / area(GATE)]
+			rdb antenna_results.ant V4_no_dio M3 M2 M1 GC_STI  GATE
+		}
+
+		AN.VIA.2.V4 {
+			@ (V4 area / GATE area) > 83.33*diode area + 75
+			NET AREA RATIO V4_yes_dio M3_good_dio M3 M2 M1 GC_STI GATE > 75 
+			[( area(V4_yes_dio) / area(GATE) ) - ( area(M3_good_dio)*83.33) ] 
+			rdb antenna_results.ant V4_yes_dio M3_good_dio M3 M2 M1 GC_STI  GATE
+		}
+
+		CONNECT M4 M3 BY V4
+		ATTACH M4i_text M4
+
+		M4_dio =NET AREA RATIO SD M4 > 0
+		M4_good_dio = NET AREA M4_DIO >= 0.202
+		M4_no_dio = NET AREA RATIO M4 M4_good_dio == 0
+		M4_yes_dio = NET AREA RATIO M4 M4_good_dio > 0
+
+		AN.MTL.1.M4 {
+			@ (M4 area / GATE area) > 400 (M4 not connected to diode)
+			NET AREA RATIO M4_no_dio M3 M2 M1 GC_STI GATE > 400
+			[perimeter(M4_no_dio)*0.54 / area(GATE)]
+			rdb antenna_results.ant M4_no_dio M3 M2 M1 GC_STI GATE
+		}
+
+		AN.MTL.2.M4 {
+			@ (M4 area / GATE area) > 400*diode area + 2200
+			NET AREA RATIO M4_yes_dio M4_good_dio M3 M2 M1 GC_STI GATE > 2200 
+			[( perimeter(M4_yes_dio)*0.54 / area(GATE) ) - ( area(M4_good_dio)*400) ] 
+			rdb antenna_results.ant M4_yes_dio M4_good_dio M3 M2 M1 GC_STI GATE 
+		}	
+
+		#ifndef 5LM //{
+			V5_no_dio = and M4_no_dio V5
+			V5_yes_dio = and M4_yes_dio V5
+
+			AN.VIA.1.V5 {
+				@ (V5 area / GATE area) > 20 (V5 not connected to diode)
+			    NET AREA RATIO V5_no_dio M4 M3 M2 M1 GC_STI GATE > 20
+			    [area(V5_no_dio) / area(GATE)]
+			    rdb antenna_results.ant V5_no_dio M4 M3 M2 M1 GC_STI GATE
+			}
+
+			AN.VIA.2.V5 {
+				@ (V5 area / GATE area) > 83.33*diode area + 75
+				NET AREA RATIO V5_yes_dio M4_good_dio  M4 M3 M2 M1 GC_STI GATE > 75 
+				[( area(V5_yes_dio) / area(GATE) ) - ( area(M4_good_dio)*83.33) ] 
+				rdb antenna_results.ant V5_yes_dio M4_good_dio M4 M3 M2 M1 GC_STI GATE
+			}
+				
+			CONNECT M5 M4 BY V5
+			ATTACH M5i_text M5
+
+			M5_dio =NET AREA RATIO SD M5 > 0
+			M5_good_dio = NET AREA M5_DIO >= 0.202
+			M5_no_dio = NET AREA RATIO M5 M5_good_dio == 0
+			M5_yes_dio = NET AREA RATIO M5 M5_good_dio > 0
+
+			AN.MTL.1.M5 {
+				@ (M5 area / GATE area) > 400 (M5 not connected to diode)
+			    NET AREA RATIO M5_no_dio M4 M3 M2 M1 GC_STI GATE > 400
+			    [perimeter(M5_no_dio)*0.54 / area(GATE)]
+			    rdb antenna_results.ant M5_no_dio M4 M3 M2 M1 GC_STI GATE
+			}
+
+			AN.MTL.2.M5 {
+				@ (M5 area / GATE area) > 400*diode area + 2200
+			    NET AREA RATIO M5_yes_dio M5_good_dio M4 M3 M2 M1 GC_STI GATE > 2200 
+			    [( perimeter(M5_yes_dio)*0.54 / area(GATE) ) - ( area(M5_good_dio)*400) ] 
+			    rdb antenna_results.ant M5_yes_dio M5_good_dio M4 M3 M2 M1 GC_STI GATE 
+			}
+	
+	
+	#endif //}
+#endif //}
+
+#ifdef 4LM  //{
+	VT_no_dio = and M3_no_dio VT
+	VT_yes_dio = and M3_yes_dio VT
+	MX_dio = copy M3_good_dio
+
+	AN.VIA.1.VT {
+		@ (VT area / GATE area) > 20 (VT not connected to diode)
+		NET AREA RATIO VT_no_dio M3 M2 M1 GC_STI GATE > 20
+		[area(VT_no_dio) / area(GATE)]
+		rdb antenna_results.ant VT_no_dio M3 M2 M1 GC_STI GATE
+	}
+
+	AN.VIA.2.VT {
+		@ (VT area / GATE area) > 83.33*diode area + 75
+		NET AREA RATIO VT_yes_dio MX_dio M3 M2 M1 GC_STI GATE > 75 
+		[( area(VT_yes_dio) / area(GATE) ) - ( area(MX_dio)*83.33) ] 
+		rdb antenna_results.ant VT_yes_dio MX_dio M3 M2 M1 GC_STI GATE
+	}
+	
+#endif   //}
+
+#ifdef 5LM  //{
+	VT_no_dio = and M4_no_dio VT
+	VT_yes_dio = and M4_yes_dio VT
+	MX_dio = copy M4_good_dio
+
+	AN.VIA.1.VT {
+		@ (VT area / GATE area) > 20 (VT not connected to diode)
+		NET AREA RATIO VT_no_dio M4 M3 M2 M1 GC_STI GATE > 20
+		[area(VT_no_dio) / area(GATE)]
+		rdb antenna_results.ant VT_no_dio M4 M3 M2 M1 GC_STI GATE
+	}
+
+	AN.VIA.2.VT {
+		@ (VT area / GATE area) > 83.33*diode area + 75
+		NET AREA RATIO VT_yes_dio MX_dio M4 M3 M2 M1 GC_STI GATE > 75 
+		[( area(VT_yes_dio) / area(GATE) ) - ( area(MX_dio)*83.33) ] 
+		rdb antenna_results.ant VT_yes_dio MX_dio  M4 M3 M2 M1 GC_STI GATE
+	}
+
+#endif   //}
+
+#ifdef 6LM //{
+	VT_no_dio = and M5_no_dio VT
+	VT_yes_dio = and M5_yes_dio VT
+	MX_dio = copy M5_good_dio
+
+	AN.VIA.1.VT {
+		@ (VT area / GATE area) > 20 (VT not connected to diode)
+		NET AREA RATIO VT_no_dio M5 M4 M3 M2 M1 GC_STI GATE > 20
+		[area(VT_no_dio) / area(GATE)]
+		rdb antenna_results.ant VT_no_dio M5 M4 M3 M2 M1 GC_STI GATE
+	}
+
+	AN.VIA.2.VT {
+		@ (VT area / GATE area) > 83.33*diode area + 75
+		NET AREA RATIO VT_yes_dio MX_dio M5 M4 M3 M2 M1 GC_STI GATE > 75 
+		[( area(VT_yes_dio) / area(GATE) ) - ( area(MX_dio)*83.33) ] 
+		rdb antenna_results.ant VT_yes_dio MX_dio  M5 M4 M3 M2 M1 GC_STI GATE
+	}
+
+#endif  //}
+			
+#ifdef 4LM //{
+	#ifndef THICK_TOP_METAL  //{
+		CONNECT MT M3 BY VT
+		ATTACH MTi_text MT
+
+		MT_dio =NET AREA RATIO SD MT > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO MT MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO MT MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (MTOP area / GATE area) > 400 (MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio  M3 M2 M1 GC_STI GATE
+		}
+
+	#else
+		CONNECT Thick_M M3 BY VT
+		ATTACH Thick_M_text Thick_M
+
+		MT_dio =NET AREA RATIO SD Thick_M > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO Thick_M MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO Thick_M MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (Thick MTOP area / GATE area) > 400 (MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio  M3 M2 M1 GC_STI GATE
+		}		
+	#endif	//}
+
+
+	AN.MTL.2.MT {
+		@ (MTOP area / GATE area) > 8000*diode area + 30000
+	    NET AREA RATIO MT_yes_dio MT_good_dio M3 M2 M1 GC_STI GATE > 30000 
+	    [( perimeter(MT_yes_dio)*MT_THICK / area(GATE) ) - ( area(MT_good_dio)*8000) ] 
+		rdb antenna_results.ant MT_yes_dio MT_good_dio M3 M2 M1 GC_STI GATE 
+	}
+
+#endif  //}
+
+#ifdef 5LM   //{
+	#ifndef THICK_TOP_METAL	//{
+		CONNECT MT M4 BY VT
+		ATTACH MTi_text MT
+
+		MT_dio =NET AREA RATIO SD MT > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO MT MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO MT MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (MTOP area / GATE area) > 400 (MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M4 M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio M4  M3 M2 M1 GC_STI GATE
+		}
+	
+	#else
+		CONNECT Thick_M M4 BY VT
+		ATTACH Thick_M_text Thick_M
+
+		MT_dio =NET AREA RATIO SD Thick_M > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO Thick_M MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO Thick_M MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (Thick MTOP area / GATE area) > 400 (thick MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M4 M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio M4  M3 M2 M1 GC_STI GATE
+		}
+	#endif  //}
+
+	AN.MTL.2.MT {
+		@ (MTOP area / GATE area) > 8000*diode area + 30000
+	    NET AREA RATIO MT_yes_dio MT_good_dio M4 M3 M2 M1 GC_STI GATE > 30000 
+	    [( perimeter(MT_yes_dio)*MT_THICK / area(GATE) ) - ( area(MT_good_dio)*8000) ] 
+		rdb antenna_results.ant MT_yes_dio MT_good_dio M4 M3 M2 M1 GC_STI GATE 
+	}
+
+#endif  //}
+
+#ifdef 6LM  //{
+	#ifndef THICK_TOP_METAL //{
+		CONNECT MT M5 BY VT
+		ATTACH MTi_text MT
+		
+		MT_dio =NET AREA RATIO SD MT > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO MT MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO MT MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (MTOP area / GATE area) > 400 (MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M5 M4 M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio M5 M4 M3 M2 M1 GC_STI GATE
+		}
+
+	#else
+		CONNECT Thick_M M5 BY VT
+		ATTACH Thick_M_text Thick_M
+		
+		MT_dio =NET AREA RATIO SD Thick_M > 0
+		MT_good_dio = NET AREA MT_DIO >= 0.202
+		MT_no_dio = NET AREA RATIO Thick_M MT_good_dio == 0
+		MT_yes_dio = NET AREA RATIO Thick_M MT_good_dio > 0
+
+		AN.MTL.1.MT {
+			@ (Thick MTOP area / GATE area) > 400 ( thick  MTOP not connected to diode)
+		    NET AREA RATIO MT_no_dio  M5 M4 M3 M2 M1 GC_STI GATE > 400
+		    [perimeter(MT_no_dio)*MT_THICK / area(GATE)]
+			rdb antenna_results.ant MT_no_dio M5 M4 M3 M2 M1 GC_STI GATE
+		}
+	#endif  //}
+
+	AN.MTL.2.MT {
+		@ (MTOP area / GATE area) > 8000*diode area + 30000
+	    NET AREA RATIO MT_yes_dio MT_good_dio M5 M4 M3 M2 M1 GC_STI GATE > 30000 
+	    [( perimeter(MT_yes_dio)*MT_THICK / area(GATE) ) - ( area(MT_good_dio)*8000) ] 
+		rdb antenna_results.ant MT_yes_dio MT_good_dio M5 M4 M3 M2 M1 GC_STI GATE 
+	}
+
+#endif //}
+			
+#ifdef MT3k //{
+	#ifdef 4LM //{	
+		CONNECT MT3 M3 BY VT
+		MT3_dio = NET AREA RATIO SD MT3 > 0
+		MT3_good_dio = NET AREA MT3_DIO >= 0.202
+		MT3_no_dio = NET AREA RATIO MT3 MT3_good_dio == 0
+		MT3_yes_dio = NET AREA RATIO MT3 MT3_good_dio > 0
+
+		AN.MTL.2.MT3 {
+			@ (MT3 area / GATE area) > 8000*diode area + 30000
+			NET AREA RATIO MT3_yes_dio MT3_good_dio M3 M2 M1 GC_STI GATE > 30000
+			[( perimeter(MT3_yes_dio)*2.8 / area(GATE) ) - ( area(MT3_good_dio)*8000) ] 
+			rdb antenna_results.ant MT3_yes_dio MT3_good_dio M3 M2 M1 GC_STI GATE 		
+		}	
+
+	#endif //} 
+		
+	#ifdef 5LM //{
+		CONNECT MT3 M4 BY VT
+		MT3_dio =NET AREA RATIO SD MT3 > 0
+		MT3_good_dio = NET AREA MT3_DIO >= 0.202
+		MT3_no_dio = NET AREA RATIO MT3 MT3_good_dio == 0
+		MT3_yes_dio = NET AREA RATIO MT3 MT3_good_dio > 0
+
+		AN.MTL.2.MT3 {
+			@ (MT3 area / GATE area) > 8000*diode area + 30000
+			NET AREA RATIO MT3_yes_dio MT3_good_dio M4 M3 M2 M1 GC_STI GATE > 30000
+			[( perimeter(MT3_yes_dio)*2.8 / area(GATE) ) - ( area(MT3_good_dio)*8000) ] 
+			rdb antenna_results.ant MT3_yes_dio MT3_good_dio M4 M3 M2 M1 GC_STI GATE 
+		}	
+
+	#endif //} 
+
+	#ifdef 6LM //{
+		CONNECT MT3 M5 BY VT
+		MT3_dio =NET AREA RATIO SD MT3 > 0
+		MT3_good_dio = NET AREA MT3_DIO >= 0.202
+		MT3_no_dio = NET AREA RATIO MT3 MT3_good_dio == 0
+		MT3_yes_dio = NET AREA RATIO MT3 MT3_good_dio > 0
+
+		AN.MTL.2.MT3 {
+			@ (MT3 area / GATE area) > 8000*diode area + 30000
+			NET AREA RATIO MT3_yes_dio MT3_good_dio M5 M4 M3 M2 M1 GC_STI GATE > 30000
+			[( perimeter(MT3_yes_dio)*2.8 / area(GATE) ) - ( area(MT3_good_dio)*8000) ] 
+			rdb antenna_results.ant MT3_yes_dio MT3_good_dio M5 M4 M3 M2 M1 GC_STI GATE 
+		}	
+
+	#endif //} 
+#endif //} 	MT3k		
+	
+

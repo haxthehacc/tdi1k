@@ -1,0 +1,1230 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Jazz Cadence AMS Design Kit Frequently Asked Questions</title>
+</head>
+<body>
+Jazz Cadence AMS Design Kit FAQ (Frequently Asked Questions)
+<br>
+<hr width="100%">
+<br>
+Topics include:
+<li>General questions</li>
+<li>Questions for specific kits</li>
+<br>
+<p><b>General questions</b>
+</p>
+<ul>
+  <li> <a href="#g.KitUpdate">What steps should I perform when I
+switch
+between design kit releases?</a></li>
+  <li> <a href="#g.AnalogLayer">Use of the "Analog" layer during layout</a></li>
+  <li> <a href="#g.StandardCells">Are standard cells available in the
+Jazz
+design kit?</a></li>
+  <li> <a href="#g.instref">How to change instances that refer to an
+unsupported device?</a></li>
+  <li> <a href="#g.artistcorners">Artist Corner Analysis</a></li>
+  <li><a href="#g.spectreverilog">SpectreVerilog
+Co-simulation Documentation</a></li>
+  <li> <a href="#g.contpurpose">What are the contact or via cell
+purposes in the Design Kit?</a></li>
+  <li> <a href="#g.rffetlayout">Does the nfet and pfet pcell style
+option setting
+equal to met2(RF) call the special RF fet model? What is the difference
+between using the nfet or pfet met2 style setting and the met2(RF)
+setting
+in the layout?</a></li>
+  <li> <a href="#g.gdslayermap">How to find the mapping between
+Cadence
+layer
+and GDS layer number?</a></li>
+  <li> <a href="#g.snapgrid">Setup
+for coarse snapsize and gridsize</a></li>
+  <li><a href="#g.vxlcopy">How
+to copy design and still use VXL (Virtuoso-XL)?</a></li>
+  <li><a href="#g.naming">Naming
+convention: cell, pin, net</a></li>
+  <li><a href="#g.CalLVS">Cadence Calibre LVS Options</a></li>
+  <li> <a href="#g.PEX">Parasitic extraction (PEX), Back-Annotation,
+and
+Simulation</a></li>
+  <li> <a href="#g.divaambiguous">How should we fix our design to
+avoid
+getting
+warnings during DivaLVS like "Ambiguity points were found and resolved
+arbitrarily"?</a></li>
+</ul>
+<p><br>
+<b>FAQ for CH25R, CH25A, CG18R, CG18A processes</b>
+</p>
+<ul>
+  <li> <a href="#c.abutfet">Can we abut (merge two devices over
+diffusion)
+analog
+and rf fets?</a></li>
+  <li> <a href="#c.stripres">Can we connect strip resistors in
+series/parallel?</a></li>
+  <li> <a href="#c.mimcap">What is the correct usaage of mimcaps?</a></li>
+</ul>
+<p><br>
+<b>FAQ for BC35 process</b>
+</p>
+<ul>
+  <li> <a href="#bc35.1">Can we overlap the collector contacts of two
+identical
+NPN transistors?</a></li>
+  <li> <a href="#bc35.2">Can we place capacitors over resistors or
+transistors?</a></li>
+  <li> <a href="#bc35.3">What is the minimum acceptable spacing
+between
+two adjacent
+resistors?</a></li>
+  <li> <a href="#bc35.4">What should we set tnom to in our simulations
+(BiCMOS)
+for most accurate results?</a></li>
+</ul>
+<b>FAQ for SBC35 process</b>
+<ul>
+  <li> <a href="#sbc35.contactpurpose">What are the contact or via
+cell
+purposes
+in the Design Kit?</a></li>
+  <li> <a href="#sbc35.contactsizes">What is the difference between
+gNTAP
+and
+NTAP, gPTAP and PTAP, gM1_D and M1_D, gcont and cont, g12 and v12, g23,
+v23, v23m and v23_mimcap, g34 and v34 and v34qtx?</a></li>
+  <li> <a href="#sbc35.dgpurpose">What is the difference between met3
+with
+purpose
+d3 versus met3 with purpose dg, and similarly between met4 dg, dt, and
+d4?</a></li>
+</ul>
+<p><br>
+</p>
+<hr width="100%"><br>
+<br>
+<p><a name="g.KitUpdate"></a><b><u>What steps should I perform when I
+switch
+between design kit releases?</u></b>
+</p>
+<p>You have received a new Jazz Design Kit and wish to migrate your
+existing
+designs. What steps should you perform?<br>
+</p>
+<p>Occasionally, the values of
+resistances,
+capacitances, or inductances may change between releases of a design
+kit.
+Or, the layout Pcells may change slightly between releases of the
+design
+kit. These instructions assume you have already completed the new kit
+installation
+and set your RDS_ROOT to point to the new kit. We will assume you want
+to update an entire design library in one step. You will need to repeat
+BOTH of these steps for every one of your design libraries.
+</p>
+<p><b>To update the layout pcells, do the following:</b>
+</p>
+<ol>
+  <li>All other users must close their cells. To do this, have all
+other
+users
+quit from the Cadence framework.</li>
+  <li>Start a Cadence framework session.</li>
+  <li>Open the Library Manager by choosing the Tools-&gt;Library
+Manager...
+menu
+item in the CIW.</li>
+  <li>In the library manager, go to the library named "softcells"</li>
+  <li>Delete all of the cells in this library.</li>
+  <li>As you open the layouts, new softcell cells will be automatically
+generated
+for you.</li>
+</ol>
+<b>To trigger the instance callbacks, do the following:</b>
+<br>
+The resistor/capacitor/inductor update can be performed in one of two
+modes. In the first mode, the resistor and capacitor value is preserved
+but the length may change. In the second mode, you can control which
+parameter
+(R versus length, or C versus length) will be updated. In all cases,
+the
+inductor physical parameters are always preserved.
+<p>Note that if you have flattened any Pcells, the updates will NOT
+have
+any effect. You will manually have to edit and re-size the layout
+shapes
+for all flattened devices.
+</p>
+<p>By default, the update will preserve the resistance and capacitance
+values. The length may change slightly in order to preserve the
+resistance
+and capacitance. To trigger all callbacks, preserving R, C, and L
+values,
+follow these steps:
+</p>
+<ol>
+  <li>All other users must close their cells. To do this, have all
+other
+users
+quit from the Cadence framework.</li>
+  <li>Start a Cadence framework session.</li>
+  <li>In the CIW choose the menu item JAZZ-&gt;Trigger Callbacks
+(Lib)s...</li>
+  <li>Select your design library and OK the form. All views named
+"schematic"
+in the design library will have the instance callbacks run. A
+check-and-save
+is also performed on the schematics.</li>
+  <li>Open any existing design layout and choose the menu item
+JAZZ-&gt;Trigger Callbacks-&gt;Library.</li>
+  <li>A form asks you to confirm that you wish to run the callbacks on
+all
+layouts.</li>
+  <li>The instance callbacks are run on all instances of all views
+named
+"layout"
+in the libary. Remember that this can cause device size changes.</li>
+</ol>
+<p><br>
+To update devices but preserve the L and W, you only need to update
+the schematics. Follow these steps instead:
+</p>
+<ol>
+  <li>All other users must close their cells. To do this, have all
+other
+users
+quit from the Cadence framework.</li>
+  <li>Start a Cadence framework session.</li>
+  <li>Open any existing design schematic and choose the menu item
+JAZZ-&gt;Utilities-&gt;Update
+R and C...</li>
+  <li>In the new form, set the Scope to Library. Select your design
+library
+from
+the Library cyclic menu.</li>
+  <li>Set the device type to either resistor or capacitor.</li>
+  <li>Select the parameter to be calculated. The other parameters will
+then
+be
+preserved. For example, setting Calculate to "R" means that L and W are
+preserved.</li>
+  <li>Apply the form.</li>
+  <li>Select a different device type and repeat the last two steps.</li>
+  <li>You have now updated all of the resistors and capacitors in your
+design.</li>
+</ol>
+You must now update the inductors. <br>
+<ol>
+  <li>Open any existing design schematic and choose the menu item
+JAZZ-&gt;Utilities-&gt;Update
+Inductors...
+  </li>
+  <li>In the new form, set the scope to Whole Library. Select your
+design
+library
+from the Library cyclic menu.</li>
+  <li>OK the form. Be sure to check the CIW for any warning or error
+messages.</li>
+</ol>
+<p><a name="g.AnalogLayer"></a><b><u>Use of the "Analog" layer during
+layout</u></b>
+</p>
+<p>During LVS the entire background of the layout is considered a
+single
+electrically conductive p-well.&nbsp; If a design uses more than 1
+substrate
+net, use of the Analog layer will be required to pass LVS. The Analog
+layer
+is used to chop the substrate and nwells into "islands" of wells on
+different
+nets during LVS extraction. Each of these wells has an isolated
+substrate.
+However, these islands can be shorted together through taps on the same
+net (taps connect a well to the related net).
+</p>
+<p>Notes:
+</p>
+<ul>
+  <li>Before extraction, the Analog polygons are merged, so butting or
+overlapping
+polygons extract as a single substrate net.</li>
+  <li>Devices can only be on one substrate node at a time, so any
+device that
+is only partially covered by "Analog" will likely fail extraction.</li>
+  <li>A common source of LVS failure is areas of Analog without any
+taps,
+creating
+a floating net.</li>
+</ul>
+<p><br>
+<a name="g.StandardCells"></a><b><u>Are standard cells available
+in the Jazz design kit?</u></b>
+<br>
+Characterized standard cells are available for most processes on
+request
+as a separate ASIC library. They are not offered as part of this
+Cadence
+AMS design kit. Several of the AMS kits contain examples of standard
+cells
+which are provided for ease of use in applications where digital
+characterization
+is not needed. For example components from this library can be used in
+an analog design where a single flip-flop
+is needed and no synthesis or APR (Automated Place &amp; Route) will be
+required.
+</p>
+<p>These examples of standard cells are not maintained as
+interchangable
+copies of the cells found in the ASIC library. They have views that may
+not be available in the ASIC library, such as schematic, and they do
+not support all the views found in the ASIC library. For these reasons,
+the
+cells
+in the AMS design kit cannot be used as a replacement for the cells in
+the ASIC library. To prevent accidental use in the wrong library in
+many cases we
+have
+prepended "ex_" to the cell names in the AMS design kits. This allows
+the
+AMS cells (with "ex_") to be easily distringuished from cells in the
+ASIC
+library (without "ex_").
+<br>
+</p>
+<p><br>
+<a name="g.instref"></a><b><u>How to change instances that refer
+to an unsupported device?</u></b>
+</p>
+<p>For example, you are using the sbc18d 1.5 fF MIM cap in your design.
+This cell (c3t_mim) is no longer shipped with the design kit. How do
+you
+change all your instances to use the new device?
+</p>
+<p>1. Open the top-most schematic of your design hierarchy.
+<br>
+2. Choose Edit-&gt;Search-&gt;Replace... in the Schematic window
+<br>
+3. In the form, change both the Search For and the Replace With cyclic
+menus to show "cellName".
+<br>
+4. Set up the rest of the form like so:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search For&nbsp;&nbsp;&nbsp;
+cellName&nbsp;&nbsp; ==&nbsp;&nbsp; c3t_mim
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Replace With&nbsp;
+cellName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c3t_mim2
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search Scope
+library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(put in your design library)
+<br>
+5. Click on Apply.
+<br>
+6. Click on "Replace All".
+<br>
+7. To keep the original capacitance and W/L ratio:
+<br>
+&nbsp;&nbsp; Go to the JAZZ menu on the schematic -&gt; Utilities -&gt;
+Update
+R and C.
+<br>
+&nbsp;&nbsp; Choose Device Type=capacitor and Calculate=WL. Select
+appropriate Scope.
+<br>
+&nbsp;&nbsp; Click on Apply. <br>
+<br>
+</p>
+<p><a name="g.artistcorners"></a><b><u>Corner Analysis</u></b>
+</p>
+<p>For more information on performing a corner analysis, see the online
+reference manual from Cadence for the Cadence Corners Tool application:
+<br>
+"Affirma Advanced Analysis Tools User Guide". The Jazz Design Kit
+provides models in the "Multiple Model Library" format, with one model
+library per device class (e.g., "fet.scs", "npn.scs", "res.scs", etc.)<br>
+</p>
+<p><a name="g.spectreverilog"></a><b><u>SpectreVerilog Co-simulation
+Documentation</u></b>
+</p>
+<p>This information summarizes the information provided by Cadence in
+the Cadence Mixed-Signal Circuit Design Environment User Guide. Please
+refer to this Cadence document for further information or details.</p>
+<p>1. Create a new cellView with viewName "functional" and tool set to
+verilog-Editor.&nbsp; An editor will come up where you can enter your
+verilog
+code. If a symbol already exists, the i/o for the module will be
+declared
+correctly from the i/o pin information on the symbol.
+</p>
+<p>2. When you close the editor, it will perform a syntax check. If
+there
+is no symbol, it'll prompt you whether you want to generate a
+symbol.&nbsp;
+You should enter "yes" and proceed.
+</p>
+<p>3. Create a cellView "config" (tool: Hierarchy Editor) for the
+schematic
+for the mixed-signal simulation.
+</p>
+<ul>
+  <li>When the "New Hierarchy" form appears, go to the bottom and click
+"Use
+Template". When the "Use Template" form comes up, choose "Name" to be
+"spectreVerilog"
+and click OK.</li>
+  <li>&nbsp;&nbsp; Change the "view" field from "myView" to "schematic".</li>
+  <li>&nbsp;&nbsp; In the field of "Stop List", add "functional" to the
+beginning
+of the list.</li>
+  <li>&nbsp;&nbsp; When you press OK,&nbsp; the Hierarchy Editor window
+should
+display all the cells in your schematic with the proper views.&nbsp; If
+you only have a symbol and functional view for the verilog block, you
+should
+see the "View Found" for</li>
+  <li>&nbsp;&nbsp; that block as "functional".</li>
+  <li>Save and&nbsp; exit the Hierarchy Editor.</li>
+</ul>
+4. From the library manager, open the config that you have just
+created.
+A form will come up with two options:
+<blockquote>Configuration &lt;cellName&gt;
+config&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+yes&nbsp;&nbsp;&nbsp; no <br>
+Top Cell View &lt;cellName&gt; schematic&nbsp;&nbsp;&nbsp;&nbsp;
+yes&nbsp;&nbsp;&nbsp;
+no</blockquote>
+&nbsp;&nbsp; Choose "no" for config and "yes" for schematic.
+<br>
+&nbsp;&nbsp; The schematic will come up.&nbsp; Notice the banner says
+"&lt;cellName&gt; config".
+<p>5. Start Analog Artist from the schematic "Tools" pulldown menu.
+When
+Artist comes up, look under Design, notice that the "View" is "config".
+</p>
+<p>6. From Artist,&nbsp; follow this menu path:&nbsp; Setup -&gt;
+Simulator/Directory/Host...
+In the pop form, in the cyclic field "Simulator", choose
+"spectreVerilog".
+</p>
+<p>7. Go back to the schematic/config window.&nbsp; Check the partition
+by choosing the menu item Mixed-Signal -&gt; Display Partition
+</p>
+<p>8. To perform mixed-signal simulations, you have to properly define
+the
+<br>
+&nbsp;&nbsp; Interface Element (IE) properties between the analog and
+digital world.
+</p>
+<p>&nbsp;&nbsp; TABLE 1.&nbsp; Interface Element Properties
+</p>
+<p>&nbsp;&nbsp; Property&nbsp;&nbsp;&nbsp;&nbsp; Description
+<br>
+&nbsp;&nbsp; --------&nbsp;&nbsp;&nbsp;&nbsp; -----------
+<br>
+&nbsp;&nbsp; a2d_v0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voltage below
+which to switch to digital state 0
+<br>
+&nbsp;&nbsp; a2d_v1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voltage above
+which to switch to digital state 1
+<br>
+&nbsp;&nbsp; a2d_tx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time duration
+to switch to x state when voltage is between
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+a2d_v0 and a2d_v1
+<br>
+&nbsp;&nbsp; d2a_vl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analog
+equivalent
+voltage of digital state 0
+<br>
+&nbsp;&nbsp; d2a_vh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analog
+equivalent
+voltage of digital state 1
+<br>
+&nbsp;&nbsp; d2a_tr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analog rise
+time when switching from low to high
+<br>
+&nbsp;&nbsp; d2a_tf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analog fall
+time when switching from high to low
+</p>
+<p>&nbsp;&nbsp; In the schematic window, define the IE for the library
+by choosing the menu item Mixed-Signal -&gt; Interface Elements -&gt;
+Library...
+<br>
+&nbsp;&nbsp; When the form comes up, fill in the proper values for
+the input
+<br>
+&nbsp;&nbsp; and output of "Model IO".
+</p>
+<p>9. The Interface Element (IE) properties are already built into the
+stdcell library components. Set the values of these properties in the
+Analog
+Artist simulation session using the menu item JAZZ -&gt; Set IE Vars
+for
+spectreVerilog.
+You can overwrite the default setting of these values.
+</p>
+<p>10. Setup the simulation as usual, a transient run to a certain
+time,
+signals to be saved, etc.
+</p>
+<p>11. Click on the Netlist and Run button to start the simulation.
+</p>
+<p>12. How to run spectreVerilog in batch mode:
+</p>
+<ul>
+  <li>Generate the spectre simulation script (runSimulation) from
+Analog
+Artist.</li>
+  <br>
+You need to run simulation once to create this file. <li>Go to the
+directory which contains this file:</li>
+  <br>
+cd
+your_project_work_area/simulation/cell_name/spectreVerilog/config/netlist
+  <li>Modify the file using your editor vi/text_editor etc.:</li>
+  <li>Remove the following items:</li>
+  <br>
+env artist_version, <br>
+slvhost host_name <li>Run simulation from this directory as:</li>
+  <br>
+(a) batch on your workstation: runSimulation <br>
+(b) batch on remote machines using LSF: bsub -q Queue_name
+"runSimulation"
+</ul>
+<p><a name="g.contpurpose"></a><b><u>What are the contact or via cell
+purposes
+in the Design Kit?</u></b>
+</p>
+<p>The NTAP cell allows metal1 contact to the nwell using N+ Implant
+and
+active (nwell layer not included).
+<br>
+The PTAP cell allows metal1 contact to the p-substrate using P+ implant
+and active.
+<br>
+The M1_D cell allows metal1 contact to active only without n+ or p+
+implant's.
+<br>
+The gcont and cont cells provide metal1 connection to poly1.
+<br>
+The g12 and v12 cells both provide connection between metal1 and metal2
+using the via1 layer.
+<br>
+The g23, v23, v23m, and v23_mimcap cells provide connection from metal2
+to metal3 through the via2 layer.
+<br>
+The g34 and v34 cells provide connection between metal3 and metal4
+using the via3 layer.
+<br>
+The v45 cell provides a connection from metal5 to metal4 using the
+via4 layer.
+</p>
+<p><a name="g.rffetlayout"></a><b><u>Does the nfet and pfet pcell style
+option setting equal to met2(RF) call the special RF fet model? What is
+the difference between using the nfet or pfet met2 style setting and
+the
+met2(RF) setting in the layout?</u></b>
+</p>
+<p>The only means of obtaining the special RF model is to instantiate
+the
+nfet_rf or pfet_rf pcell. The met2(RF) style selection affects the
+layout
+only for multiple slices.
+</p>
+<p>When multiple slices are desired, the met2(RF) style will generate a
+layout with separate gate connections for each slice whereas the met2
+style
+option generates a layout with only one gate connection.
+<br>
+&nbsp;
+</p>
+<p><a name="g.gdslayermap"></a><b><u>How to find the mapping between
+Cadence
+layer and GDS layer number?</u></b>
+</p>
+<p>CIW (icfb window) -&gt; Technology File -&gt; Dump -&gt; in the
+popup window,
+</p>
+<ol>
+  <li>Select the right technology library, e.g. bc35</li>
+  <li>Turn on "layerRules"</li>
+  <li>Fill in ASCII Technology File, e.g. bc35_layer.tf</li>
+  <li>OK the form</li>
+</ol>
+The generated ascii file shows you the Cadence layer and GDS number
+mapping.<br>
+<br>
+<p><a name="g.snapgrid"></a><b><u>Setup for coarse snapsize and gridsize</u></b>
+</p>
+<p>For users / projects who what to use coarse snapsize and gridsize,
+<br>
+the following variables can be set in .cdsinit or
+<br>
+/prj/&lt;projName&gt;/cds_master/proj.cdsinit:
+</p>
+<p>rdsLayUserDefinedSnapSize = 0.25
+<br>
+rdsLayUserDefinedGridSize = 0.5
+<br>
+rdsLayUserDefinedMajorGridSize = 5
+</p>
+<p>Layout window will use those as snapsize and gridsize if they are
+defined.
+</p>
+<p>The recommended numbers for different technology are:
+</p>
+<p>cg18/cg18a/cg18r:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedSnapSize
+= 0.15
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedGridSize
+= 0.3
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rdsLayUserDefinedMajorGridSize
+= 3
+</p>
+<p>ch2a/ch25r:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedSnapSize
+= 0.2
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedGridSize
+= 0.4
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rdsLayUserDefinedMajorGridSize
+= 4
+</p>
+<p>bc35/sbc35:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedSnapSize
+= 0.25
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdsLayUserDefinedGridSize
+= 0.5
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rdsLayUserDefinedMajorGridSize
+= 5
+</p>
+<p>If you see contacts g12, g23 .. in tech library, those are
+grid-based
+contacts
+<br>
+based on the above numbers.
+</p>
+<p><a name="g.vxlcopy"></a><b><u>How to copy design and still use VXL
+(Virtuoso-XL)?</u></b>
+</p>
+<p>Recently you have experienced some hanging in VXL.&nbsp; The reason
+is some of your designs are copied from existing designs.&nbsp;&nbsp;
+And
+the schematic has been changed, especially the net names, but in the
+layout,
+old connectivity information keeps there.&nbsp; So when you run VXL,
+VXL
+is confused by the differences between schematic and layout, and can't
+finish the layout examination.&nbsp; We have no control on the
+improvement
+of VXL, so we have to find some workaround: copy layout cell without
+connectivity
+information. Unfortunately, we can not remove net information by
+program.
+</p>
+<p>When you see untolerable slowness in CELL1 in VXL, do the
+followings:
+</p>
+<p>1. kill the process.&nbsp; (It's very important that you save your
+changes
+often,
+<br>
+&nbsp;&nbsp; otherwise when you kill the process, unsaved changes will
+be lost)
+</p>
+<p>2. start cadence again, in library manager, copy CELL1 schematic
+(ONLY
+<br>
+&nbsp;&nbsp; schematic) to CELL2 schematic, open CELL2 schematic, run
+VXL to generate
+<br>
+&nbsp;&nbsp; all the devices.
+</p>
+<p>3. Switch to Layout window (Tools -&gt; Layout), if you don't see
+JAZZ menu,
+<br>
+&nbsp;&nbsp; enter cltr+E.&nbsp; JAZZ -&gt; Misc -&gt; Copy Cell...
+<br>
+&nbsp;&nbsp; In the popup form, select CELL1 layout, and click ok.
+</p>
+<p>&nbsp;&nbsp; This will copy the routings from CELL1 layout, and move
+placements
+<br>
+&nbsp;&nbsp; as they are in CELL1.
+</p>
+<p>4. Save CELL2, and switch to layout XL (Tools -&gt; Layout XL).
+<br>
+&nbsp;&nbsp; You will need to move the new pins generated by VXL.
+</p>
+<p>5. In library manager, copy CELL2 layout back to CELL1 layout.
+<br>
+&nbsp;&nbsp; You should be able to edit CELL1 in VXL again.
+<br>
+<br>
+</p>
+<p><a name="g.naming"></a><b><u>Naming convention: cell, pin, net</u></b>
+</p>
+<p>We have many tools in our design kit. It is important that you name
+your
+cells, pins, nets that will conform to all tools.
+<br>
+</p>
+<ol>
+  <li>Always use alphanumeric and _ in names. Do not use non-alpha
+characters
+like "+", "-", ".", "#", ...</li>
+  <li>Do not use net names that are purely a number, like "1". Instead,
+use a
+name like "net1" or "in1".</li>
+  <li>If you are using standard cells, avoid using the global names
+'vdd' and
+'vss' as the pin names of an individual cell. Using the same pin names
+for the sub-block pins as those of the current block pin names is OK.</li>
+  <li>gnd, out, in, vss, vdd, vee, ..., are reserved words for some
+tools.
+Never
+use them in net/pin names.</li>
+  <li>Some tools are case insensitive and some aren't. Use all lower
+case
+(strongly
+recommeded) or all upper case for all names.</li>
+  <li>Limit the total number of characters for cell names to 32. </li>
+</ol>
+<p><a name="g.CalLVS"></a><b><u>Cadence Calibre LVS Options</u></b> </p>
+<p>A UNIX environment variable named "RDS_CDS_RUNCAL_LVS_OPTIONS"
+is
+added,
+it controls the default run_cal options in
+"JAZZ-&gt;Verification-&gt;Calibre
+LVS-&gt;Run LVS...". For example, type the following at a UNIX prompt: </p>
+<blockquote>setenv RDS_CDS_RUNCAL_LVS_OPTIONS "-nogates
+-no_lvs_reduce"</blockquote>
+<a name="g.PEX"></a><b><u>Parasitic extraction (PEX),
+Back-Annotation,
+and Simulation</u></b>
+<p>1. JAZZ &gt; verification &gt; Calibre PEX &gt; Cell Extraction </p>
+<p>2. In the extraction form, <br>
+&nbsp;&nbsp; a. choose the right process <br>
+&nbsp;&nbsp; b. in the field of Layout Path, enter the gds file name <br>
+&nbsp;&nbsp; c. in the field of Layout Primary, enter the cellname. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the layout comes from ROSE, this
+name should be in capital. <br>
+&nbsp;&nbsp; d. in the field of source (CBR) Path, enter the pathname
+of the CBR file if the file has been already been
+generated. <br>
+&nbsp;&nbsp; e. in the field of source primary, enter the cellname <br>
+&nbsp;&nbsp; e. in the field of PEX Output directory, enter the
+pathname
+where all the output files go, e.g.
+/prj/d20468_ver/pex/mycell. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this directory, you should place
+the files pwr_names and gnd_names. <br>
+&nbsp;&nbsp; f. choose Type of Extraction - say Coupled C <br>
+&nbsp;&nbsp; g. in the field of "run_cal Options", enter any other
+calibre options. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unless you have any particular option
+to use, leave it blank. <br>
+&nbsp;&nbsp; i. Virtual Connection <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you choose "filename", enter the
+pathname of file that defined the virtual connections. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you choose "signal names", enter
+the signal names in the blank, e.g. avdd avss asub <br>
+&nbsp;&nbsp; k. parasitic cap sub node, default is "gnd!". <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.g. you may enter "avss" if you want
+all the lumped caps tied to avss. <br>
+&nbsp;&nbsp; l. Machine: choose "local" or "LSF" <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you choose "LSF", you may choose
+to enter the optional queue name, or machine name. </p>
+<p>3. If the extraction goes through correctly, in the lvs report,
+you
+should see a smily face.&nbsp; If not, you should debug the
+problem. </p>
+<p>&nbsp;&nbsp; Also examine the CIW window to make sure that there
+is
+no error message from the generation of the extracted view. </p>
+<p>Now you are ready to simulate the extracted view as a blackbox. </p>
+<p>4. Create a config for your test bench: <br>
+&nbsp;&nbsp; i. in library manager, file &gt; new &gt; cellView. <br>
+&nbsp;&nbsp; ii. fill in the library and cellName of the testbench. <br>
+&nbsp;&nbsp; iii. choose the tool to be "Hierarchy Editor". <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the new cellView will be
+set to "config". <br>
+&nbsp;&nbsp; iv. in the "New Hierarchy" form, choose "built-in" to
+be "Spectre". <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and the top cellView should be
+"schematic". <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Then click OK. <br>
+&nbsp;&nbsp; V.&nbsp; The Hierarchy Editor Form will be filled with
+all the cells in the test bench design. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Go to the cell that you've just
+extracted.&nbsp; In the"view to use", type in "extracted". <br>
+&nbsp;&nbsp; vi. save and exit the hierarchy editor. </p>
+<p>5. In library manager, open the testbech config. <br>
+&nbsp;&nbsp; A form will come up asking you what to open, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; put in no for config, which
+is the big table; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; put in yes for the
+schematic. <br>
+&nbsp;&nbsp; Now the schematic will come up; and notice its banner
+says "config" of test bench. </p>
+<p>6. From "Tools &gt; Analog Artist", open analog artist. <br>
+&nbsp;&nbsp; Now simulate the test bench with the extracted view of
+the cell. &nbsp;<br>
+</p>
+<p>7. Other Notes <br>
+You must attach labels to nets in the layout for each pin in the top
+level cell.&nbsp; The layout label must be created using the same layer
+of
+the net to which it is attached (the text layer is not streamed out
+into
+GDSII). </p>
+<p><a name="g.divaambiguous"></a><b><u>When running DivaLVS, we always
+get
+the message "Warning: Ambiguity points were found and resolved
+arbitrarily."
+How should we fix our design to avoid getting these warnings?</u></b>
+<br>
+You can ignore the warnings. They are due to the use of the "count"
+parameter on instances. The Diva LVS tool cannot determine the exact
+corresponding
+layout instance to use because the "count" parameter means there are
+actually
+multiple layout instances that correspond to the single schematic
+instance.
+One of the "count" number of layout instances is chosen and used. You
+should
+not see any issue with this. If you wish to resolve the warning, use an
+iterated instance naming and set count to 1. For example, instead of
+naming
+the instance R1 with count of 10, name the instance R1&lt;1:10&gt; with
+count
+of 1.
+<br>
+&nbsp;
+</p>
+<hr width="100%"><br>
+CH25R, CH25A, CG18R, CG18A FAQ<br>
+<a name="12"></a><b><u>How to define rule value for hvfets in ch25a?</u></b>
+<br>
+To enable the display and editing of rule A, B, C, D of hvfets in
+ch25a, enter the following in CIW (or add it in .cdsinit):
+<p style="margin-left: 40px;">rdsCH25AsetGlob("rdsCH25ADefineHvFetRules"
+t)
+</p>
+<p>To disable:<br>
+</p>
+<p style="margin-left: 40px;">rdsCH25AsetGlob("rdsCH25ADefineHvFetRules"
+nil)
+</p>
+<p>By default, they are disabled.
+</p>
+<p><a name="c.abutfet"></a><b><u>Can we abut (merge two devices over
+diffusion)
+analog and rf fets?</u></b>
+<br>
+RF fets (nfet_rf and pfet_rf in ch25r &amp; cg18r), analog fets(nfet,
+pfet):
+<br>
+&nbsp;&nbsp; - abutments (merging two devices over diffusion) of RF
+fets possible
+<br>
+&nbsp;&nbsp; - abutments of analog fets possible
+<br>
+&nbsp;&nbsp; - abutments of RF fets with analog fets is not possible
+</p>
+<p><a name="c.stripres"></a><b><u>Can we connect strip resistors in
+series/parallel?</u></b>
+<br>
+Strip resistors (rw3t in ch25a, ch25r, cg18a, cg18r, rnp3t (ch25r,
+ch25a), rpp3t (cg18a, cg18r) with the strip marking layer
+(with option VERIFY=RWS) should not be connected in series
+or parallel. Device reduction in the layout verification
+LVS will
+not work correctly in this situation. If series/parallel connection of
+resistors is necessary, please use the
+standard resistors without the strip marking layer (with option
+VERIFY=R option for rnp3t and rph3t, and VERIFY=WL option
+for rw3t).
+</p>
+<p><a name="c.mimcap"></a><b><u>What is the correct usage of mimcaps?</u></b>
+<br>
+MIM capacitors (c3t_mim and c3t_mimw in ch25a, ch25r, cg18r, cg18a)
+<br>
+</p>
+<ul>
+  <li>Always use the correct device in the schematics.</li>
+  <ul>
+    <li>Place
+"c3t_mim" if you want to use the device over substrate.</li>
+    <li>Place "c3t_mimw"
+if you want to
+use the device over well. </li>
+  </ul>
+</ul>
+<ul>
+  <li>If you use "c3t_mimw" (either a single instantiation
+with count&gt;1, or
+multiple instances of the device), you must name the well
+pin/net in the schematic, and route the well net and connect it to the
+appropriate terminal in the layout. </li>
+</ul>
+<hr width="100%"><br>
+BC35 FAQ
+<p><a name="bc35.1"></a><b><u>Can we overlap the collector contacts of
+two identical NPN transistors?</u></b>
+<br>
+Yes, but, only the L type (low voltage) transistors with a single base
+finger. All others should have their collectors unmerged. Separately
+placed,
+that is.
+</p>
+<p><a name="bc35.2"></a><b><u>Can we place capacitors over resistors or
+transistors?</u></b>
+<br>
+No. Then the verification will fail.
+</p>
+<p><a name="bc35.3"></a><b><u>What is the minimum acceptable spacing
+between
+two adjacent resistors? Can we have a 0.025 spacing between the
+"resblk"
+rectangles of two adjacent resistors (it passes DRC and LVS)?</u></b>
+<br>
+Whatever passes DRC and LVS is fine.
+</p>
+<p><a name="bc35.4"></a><b><u>There is a parameter "tnom" in the MOS
+model
+file set to 25. There is a "tref" parameter in the NPN model file set
+to
+22.85. What should we set tnom to in our simulations (BiCMOS) for most
+accurate results?</u></b>
+<br>
+Set tnom=25. The reference temperature is called "tnom" in spectre
+and the exact equivalent parameter in hspice is called "tref". Both
+spectre
+and hspice will evaluate models correctly based on the circuit
+temperature
+(temp in spectre and tempdc in hspice) and the reference temperature
+(tnom
+in spectre and tref in hspice).
+</p>
+<hr width="100%"><br>
+SBC35 FAQ
+<p><a name="sbc35.contactpurpose"></a><b><u>What are the contact or via
+cell purposes in the Design Kit?</u></b>
+<br>
+The NTAP cell allows metal1 contact to the nwell using N+ Implant and
+active (nwell layer not included). The PTAP cell allows metal1 contact
+to the p-substrate using P+ implant and active. The M1_D cell allows
+metal1
+contact to active only without n+ or p+ implant's.&nbsp; The gcont and
+cont cells provide metal1 connection to poly1. The g12 and v12 cells
+both
+provide connection between metal1 and metal2 using the via1 layer. The
+g23, v23, v23m, and v23_mimcap cells provide connection from metal2 to
+metal3 through the via2 layer. The g34, v34, and v34qtx cells provide
+connection
+between metal3 and metal4 using the via3 layer. The v45 cell provides a
+connection from metal5 to metal4 using the via4 layer.
+<br>
+&nbsp;
+</p>
+<p><a name="sbc35.contactsizes"></a><b><u>What is the difference
+between
+gNTAP and NTAP, gPTAP and PTAP, gM1_D and M1_D, gcont and cont, g12 and
+v12, g23, v23, v23m and v23_mimcap, g34 and v34 and v34qtx?</u></b>
+</p>
+<p>The "g" denotes generous, meaning both the layer overlap of contacts
+(or vias) and contact-to-contact spacing is greater. The following
+table
+shows the current values used for each of these:
+<br>
+&nbsp;
+<br>
+&nbsp;
+<table border="1" width="95%">
+  <tbody>
+    <tr nosave="">
+      <td nosave=""><tt>Cell Name</tt></td>
+      <td>cnt layer</td>
+      <td>space</td>
+      <td>lower</td>
+      <td>upper</td>
+      <td>other</td>
+      <td>lower</td>
+      <td>upper</td>
+    </tr>
+    <tr>
+      <td>gNTAP</td>
+      <td>cont</td>
+      <td>0.6</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>cni</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>NTAP</td>
+      <td>cont</td>
+      <td>0.4</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>cni</td>
+      <td>0.25</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>gPTAP</td>
+      <td>cont</td>
+      <td>0.6</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>cpi</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>PTAP</td>
+      <td>cont</td>
+      <td>0.4</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>cpi</td>
+      <td>0.25</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>gM1_D</td>
+      <td>cont</td>
+      <td>06</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>N/A</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>1_D</td>
+      <td>cont</td>
+      <td>0.4</td>
+      <td>act</td>
+      <td>met1</td>
+      <td>N/A</td>
+      <td>0.25</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>gcont</td>
+      <td>cont</td>
+      <td>0.6</td>
+      <td>poly1</td>
+      <td>met1</td>
+      <td>N/A</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>cont</td>
+      <td>cont</td>
+      <td>0.4</td>
+      <td>poly1</td>
+      <td>met1</td>
+      <td>N/A</td>
+      <td>0.2</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>g12</td>
+      <td>via</td>
+      <td>0.55</td>
+      <td>met1</td>
+      <td>met2</td>
+      <td>N/A</td>
+      <td>0.275</td>
+      <td>0.275</td>
+    </tr>
+    <tr>
+      <td>v12</td>
+      <td>via</td>
+      <td>0.45</td>
+      <td>met1</td>
+      <td>met2</td>
+      <td>N/A</td>
+      <td>0.2</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>g23</td>
+      <td>va2</td>
+      <td>0.55</td>
+      <td>met2</td>
+      <td>met3</td>
+      <td>N/A</td>
+      <td>0.275</td>
+      <td>0.275</td>
+    </tr>
+    <tr>
+      <td>v23</td>
+      <td>va2</td>
+      <td>0.45</td>
+      <td>met2</td>
+      <td>met3</td>
+      <td>N/A</td>
+      <td>0.2</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>v23m</td>
+      <td>va2</td>
+      <td>0.45</td>
+      <td>met2</td>
+      <td>met3</td>
+      <td>N/A</td>
+      <td>0.4</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>v23_mimcap</td>
+      <td>va2</td>
+      <td>0.45</td>
+      <td>met2</td>
+      <td>met3</td>
+      <td>N/A</td>
+      <td>1.1</td>
+      <td>1.1</td>
+    </tr>
+    <tr>
+      <td>g34</td>
+      <td>v3a</td>
+      <td>0.55</td>
+      <td>met3</td>
+      <td>met4</td>
+      <td>N/A</td>
+      <td>0.275</td>
+      <td>0.275</td>
+    </tr>
+    <tr>
+      <td>v34</td>
+      <td>v3a</td>
+      <td>0.45</td>
+      <td>met3</td>
+      <td>met4</td>
+      <td>N/A</td>
+      <td>0.2</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>v34qtx</td>
+      <td>v3a</td>
+      <td>0.5</td>
+      <td>met3</td>
+      <td>met4</td>
+      <td>N/A</td>
+      <td>0.35</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>v45</td>
+      <td>via4</td>
+      <td>5.0</td>
+      <td>met4</td>
+      <td>met5</td>
+      <td>N/A</td>
+      <td>2</td>
+      <td>1.5</td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p>Notes:
+</p>
+<ul>
+  <li>v23m cell is intended for use in the sbc35mx process where met3
+ovlp of
+va2 is 0.4 microns (rule 28.C).</li>
+  <li>v23_mimcap provides greater met3 ovlp of via2 so that the minimum
+met3
+width can be satisfied for use in the sbc35mx process where minimum
+met3
+width is 2.6 microns (rule 28.A).</li>
+  <li>v34qtx cell is intended for use in the sbc35qtx process where
+met4 ovlp
+of via3 is 0.4 microns (rule 38.C) and the via3 size is 0.5 micron
+square
+versus 0.45 micron square for the sbc35qx process.</li>
+</ul>
+<a name="sbc35.dgpurpose"></a><b><u>What is the difference between met3
+with purpose d3 versus met3 with purpose dg, and similarly between met4
+dg, dt, and d4?</u></b>
+<p>The Jazz SBC35X design kit is written to allow users to design in
+one
+of four processes, sbc35mx, qx, qtx, and px. The metal3 and metal4
+layers
+in each of these processes have their own distinct design rule values.
+Metal3 and 4 widths and spaces, for instance, are different between the
+four processes. To facilitate layouts of these different metal layer
+width
+and space requirements within the same design kit, different layer
+purpose
+pairs are used as shown below.
+</p>
+<p><tt>Process&nbsp; metal layer purpose&nbsp; (abbr) metal layer&nbsp;
+purpose&nbsp; (abbr)</tt>
+<br>
+<tt>sbc35mx&nbsp; met3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing3
+d3&nbsp;&nbsp;&nbsp;&nbsp;
+N/A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+N/A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N/A</tt>
+<br>
+<tt>sbc35qx&nbsp; met3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing&nbsp;
+dg&nbsp;&nbsp;&nbsp;&nbsp;
+met4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing4 d4</tt>
+<br>
+<tt>sbc35qtx met3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing&nbsp;
+dg&nbsp;&nbsp;&nbsp;&nbsp;
+met4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawingt dt</tt>
+<br>
+<tt>sbc35px&nbsp; met3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing&nbsp;
+dg&nbsp;&nbsp;&nbsp;&nbsp;
+met4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+drawing&nbsp; dg</tt>
+</p>
+<p>Note that the user must pick the correct layer purpose pairs listed
+above to correctly layout and satisfy metal design rule width and space
+values using guided paths, for example, in their chosen process. During
+the stream out process, both the met3 dg and d3 layers will be streamed
+out to the same layer - layer 28. The same holds true for the d4, dt,
+and
+dg metal4 purpose pairs - they are all streamed out to the same metal4
+layer 38.
+<br>
+&nbsp;
+</p>
+</body>
+</html>

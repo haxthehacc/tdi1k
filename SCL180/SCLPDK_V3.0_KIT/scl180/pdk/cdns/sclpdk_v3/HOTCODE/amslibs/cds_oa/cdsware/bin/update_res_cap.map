@@ -1,0 +1,115 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Mapping file to reset parameters for intrinsic parameters:
+;; capacitors and resistors
+;;
+;; $Id: update_res_cap.map 1 2019/07/01 11:02:24 GMT ronenha Exp $
+;; $Log: Revision 1 2019/07/01 11:02:24 GMT ronenha $
+;;   Initial revision.
+;; 
+;;  Revision 1 2019/07/01 11:02:09 GMT ronenha
+;;   Initial revision.
+;; 
+;;  Revision: 1.1 Wed Aug 14 22:15:48 2013 milkovr
+;;  Initial release cap and res update script.
+;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Old and new PDK and cell lists are the same since we are
+;; updating instances and not swapping them
+
+
+oldNameList = nil
+newNameList = nil
+
+rdsSchDesignMigResetTriggers()
+rdsLayDesignMigResetTriggers()
+
+resetCellNameDpl = '(nil
+capacitor ((
+	"cmim" "cmim_2" 
+	"cmim2" "cmim2_2" 
+	"cmim2_2_m3" "cmim2_m3" 
+	"cmim3" "cmim3_2" 
+	"cmim3_m3" "cmim3_m3_2" 
+	"cmimw2" "cmimw2_4" "cmimw2_4_m3" 
+	"cmimw3_4" "cmimw3_m3_4" "cmimw_4" 
+	"csmim4" "csmimw4_4"
+	"csmim6" "csmimw6_4" 
+	) (
+	; Reset model
+	"macro"
+	; Intrinsic device properties
+	"dx" "cmima_nom" "cmimp_nom" "cmima_max" "cmimp_max"
+	"coxa_nom" "coxa_max" "coxp_nom" "coxp_max"
+	"rshbp_nom"  "rshbp_max" "rshtp_nom" "rshtp_max" "tc" "tbp" "ttp" "rvia" "wvia"
+	; Only applicable to stacked MIM
+	"rshbp2_nom" "rshbp2_max" "tbp2"  "rvia2" "wvia2"
+))
+resistor ((
+	"rnwell"
+	"rppoly_hi"
+	"rppoly_hi_3t"
+	"rppoly_lo"
+	"rppoly_lo_3t"
+	"rppoly_sal"
+	"rppoly_sal_3t"
+	"rtin"
+	"r_dummy"
+	) (
+	; Reset model
+	 "macro"
+	; Intrinsic device properties
+	 "Rs" "dw" "Rend" "maxCurDens"
+	"tc1" "tc2"
+))
+)
+
+procedure( rdsLayPostRepInstFn( cv inst instArg )
+	rdsSchPostRepInstFn( cv inst instArg )
+)
+procedure( rdsSchPostRepInstFn( cv inst instArg )
+	let( (devList paramList cdf param updated calcMode)
+
+		foreach( dev '(resistor capacitor)
+			devList = get(resetCellNameDpl dev)
+			when(member(inst->cellName car(devList))
+				paramList = cadr(devList)
+				updated = nil
+				cdf=cdfGetInstCDF(inst)
+				foreach(prop paramList
+					param = get(cdf prop)
+					when(param && (param->value != param->defValue)
+						unless(updated
+							printf("  Instance %s/%s\n" inst~>cellView~>cellName inst~>name)
+							updated = t
+						)
+						printf("    CDF parameter %L reset from %L to %L\n" param->name param->value param->defValue)
+						param->value = param->defValue
+					)
+				)
+				when(cdf->calcParam && cdf->calcParam->value!="C"
+					printf("    CDF Calculate Mode reset from %L to \"C\"\n" cdf->calcParam->value)
+					cdf->calcParam->value = "C"
+				)
+				when(cdf->calculatedParam && cdf->calculatedParam->value!="R"
+					printf("    CDF Calculate Mode reset from %L to \"Resistance\"\n" cdf->calcParam->value)
+					cdf->calculatedParam->value = "Resistance"
+				)
+				rdsSchTriggerInstCallbacks(inst)
+			)
+		)
+	)
+)
+
+procedure( rdsLayPostRepCellViewFn( cv cellArg )
+	t
+)
+procedure( rdsSchPostRepCellViewFn( cv cellArg )
+	when( cv->modifiedButNotSaved
+		schCheck( cv )
+		dbSave( cv )
+	)
+)
+

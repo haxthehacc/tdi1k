@@ -1,0 +1,4 @@
+The balun3 and balun3_coup devices are no longer supported.  They are still included in the
+kit for compatibility with existing designs, but Jazz Semiconductor feels 
+it can no longer guarantee the performance of this device.  Contact your
+Jazz Semiconductor Marketing contact to discuss alternate solutions.

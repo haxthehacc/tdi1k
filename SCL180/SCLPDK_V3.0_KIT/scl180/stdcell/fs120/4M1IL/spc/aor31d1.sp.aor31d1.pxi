@@ -1,0 +1,32 @@
+* File: aor31d1.sp.aor31d1.pxi
+* Created: Sun Feb 14 19:03:24 2010
+* 
+cc_1 A VSS 0.0570724f
+cc_2 A 4 0.22509f
+cc_3 A VDD 0.0102949f
+cc_4 A noxref_5 0.0101993f
+cc_5 A B1 0.0984467f
+cc_6 VSS 4 0.339963f
+cc_7 VSS B1 0.00936172f
+cc_8 VSS B2 0.00728601f
+cc_9 VSS B3 0.0124136f
+cc_10 VSS Z 0.014953f
+cc_11 4 VDD 0.0387934f
+cc_12 4 noxref_5 0.023105f
+cc_13 4 B1 0.163191f
+cc_14 4 B2 0.0970831f
+cc_15 4 B3 0.198109f
+cc_16 4 Z 0.192239f
+cc_17 4 noxref_10 0.0132597f
+cc_18 4 noxref_11 0.0135889f
+cc_19 VDD noxref_5 0.143195f
+cc_20 VDD B1 0.0154871f
+cc_21 VDD B2 0.00782809f
+cc_22 VDD B3 0.100699f
+cc_23 noxref_5 B1 0.0707337f
+cc_24 noxref_5 B2 0.0362908f
+cc_25 noxref_5 B3 0.112111f
+cc_26 B1 B2 0.158135f
+cc_27 B1 B3 0.0253968f
+cc_28 B2 B3 0.145812f
+cc_29 B3 Z 0.0516125f

@@ -1,0 +1,5 @@
+TDMCHECKPOINT="1.0"
+cds_generic/iopin type="cell"
+cds_generic/ipin type="cell"
+cds_generic/opin type="cell"
+cds_generic/sympin type="cell"

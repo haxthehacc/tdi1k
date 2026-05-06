@@ -1,0 +1,16 @@
+* File: PVDA_50_NA.sp.PVDA_50_NA.pxi
+* Created: Sun Feb 12 14:25:07 2023
+* 
+cc_1 VDDO VSSO 342.84f
+cc_2 VDDO VSS 815.133f
+cc_3 VDDO VDD 65.2591f
+cc_4 VDDO 6 37.4756f
+cc_5 VDDO 7 37.4472f
+cc_6 VDDO X26/noxref_5 0.656792f
+cc_7 VDDO X27/noxref_5 0.513328f
+cc_8 VSSO VSS 195.197f
+cc_9 VSSO 7 150.207f
+cc_10 VSSO X27/noxref_5 1.55602f
+cc_11 VSS VDD 16.1038f
+cc_12 VSS 6 150.205f
+cc_13 VSS X26/noxref_5 1.43728f

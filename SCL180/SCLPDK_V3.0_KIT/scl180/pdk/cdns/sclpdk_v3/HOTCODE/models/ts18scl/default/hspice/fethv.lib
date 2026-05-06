@@ -1,0 +1,28 @@
+* library fetlib
+
+.LIB NOM
+.LIB 'ts18sl_scl_2019.lib' tt_5v
+.LIB 'ts18sl_scl.lib' tt_hv
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl_2019.lib' ff_5v
+.LIB 'ts18sl_scl.lib' ff_hv
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl_2019.lib' ss_5v
+.LIB 'ts18sl_scl.lib' ss_hv
+.ENDL SLOW
+
+.LIB FASTSLOW
+.LIB 'ts18sl_scl_2019.lib' fs_5v
+.LIB 'ts18sl_scl.lib' fs_hv
+.ENDL FASTSLOW
+
+.LIB SLOWFAST
+.LIB 'ts18sl_scl_2019.lib' sf_5v
+.LIB 'ts18sl_scl.lib' sf_hv
+.ENDL SLOWFAST
+
+* end library fetlib

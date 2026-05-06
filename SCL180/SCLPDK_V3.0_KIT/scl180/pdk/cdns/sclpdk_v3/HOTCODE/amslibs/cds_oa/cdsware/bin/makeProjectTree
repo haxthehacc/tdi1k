@@ -1,0 +1,20 @@
+#!/bin/sh
+# 
+# makeProjectTree - a wrapper to run the Perl makeProjectTreeRDS.pl
+#
+# $Id: makeProjectTree 1 2019/07/01 11:02:24 GMT ronenha Exp $
+# $Log: Revision 1 2019/07/01 11:02:24 GMT ronenha $
+#   Initial revision.
+# 
+#  Revision 1 2019/07/01 11:02:09 GMT ronenha
+#   Initial revision.
+# 
+#  Revision: 1.1 Thu Sep  4 16:13:16 2008 bani
+#  ic6.1 cdsware
+# 
+#  Revision: 1.3 Tue Oct 21 14:14:46 2003 milkovr
+#  Updated script to use $RDS_CDSWARE instead of rfbin
+#
+
+"$PERL5" "$RDS_CDSWARE/bin/makeProjectTreeRDS.pl" "$@"
+

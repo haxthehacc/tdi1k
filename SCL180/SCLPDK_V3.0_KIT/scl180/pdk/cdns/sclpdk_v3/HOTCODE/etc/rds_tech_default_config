@@ -1,0 +1,13 @@
+#!/bin/csh -f
+setenv RDS_CALSCR_VER         default_scr
+setenv RDS_CALSTD_VER         default_std
+setenv RDS_TECH_APOLLO_VER    default
+setenv RDS_TECH_AQUARIUS_VER  default
+setenv RDS_TECH_ARCADIA_VER   default
+setenv RDS_TECH_CADENCE_VER   default
+setenv RDS_TECH_CALSCR_VER    default_scr
+setenv RDS_TECH_CALSTD_VER    default_std
+setenv RDS_TECH_CHECKMATE_VER default
+setenv RDS_TECH_ICGRAPH_VER   default
+setenv RDS_TECH_STAR_VER      default
+

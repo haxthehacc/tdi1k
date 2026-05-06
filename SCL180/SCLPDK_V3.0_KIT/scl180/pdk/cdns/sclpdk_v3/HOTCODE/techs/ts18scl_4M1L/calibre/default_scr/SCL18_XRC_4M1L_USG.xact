@@ -1,0 +1,10 @@
+#!tvf
+set env(PTF_CAL_DIR__4M1L_USG) [file dirname [info script]]
+tvf::VERBATIM {
+
+
+    PEX PTF "4M1L_USG" DIRECT "$PTF_CAL_DIR__4M1L_USG/SCL18_XRC_4M1L_USG.ptf"
+
+
+}
+

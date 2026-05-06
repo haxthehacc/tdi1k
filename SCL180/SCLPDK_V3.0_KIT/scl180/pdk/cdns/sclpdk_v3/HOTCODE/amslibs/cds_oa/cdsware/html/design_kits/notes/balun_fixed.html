@@ -1,0 +1,26 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 
+'balun' and 'balun_xfmr' implement a fixed-size rectangular spiral transformer. It consists of an interdigitated primary and secondary winding. The balun device has center taps that split the windings in two. The balun_xfmr does not have center taps.
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Inductance:</b> The approximate inductance of the structure. A list of supported sizes is provided.</li>
+</ul>
+
+<h1>NOTES:</h1> 
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>For LVS to recognize the balun, the marking layer must be intersected by at least the T1, B1, T2, B2, and CT2 wires in top-metal that connect to the 5 top-metal pins of the balun. The CT1 pin can remain unconnected. It is not allowed to connect the pins in any layer other than top-metal.</li>
+<li>For LVS to recognize the balun_xfmr, the marking layer must be intersected by all of the T1, B1, T2, and B2 wires in top-metal that connect to the 4 top-metal pins of the balun. It is not allowed to connect the pins in any layer other than top-metal.</li>
+
+<li>The following attributes are checked during LVS: </li>
+<br> Inductance: checked by comparing model name against text label in marking layer.
+<br> Balun vs Balun_xfmr: checked by comparing model name against text label in marking layer.
+</ul>
+
+</body>
+</html>
+

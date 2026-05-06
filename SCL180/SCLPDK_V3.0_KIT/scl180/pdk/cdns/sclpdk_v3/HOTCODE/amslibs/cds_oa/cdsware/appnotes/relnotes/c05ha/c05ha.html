@@ -1,0 +1,326 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date 2006/09/18
+Design Kit: c05ha
+Design Rules Document: NPB-PS-0181, Rev.8
+Electrical Specification: NPB-PS-0166, Rev.4
+
+Highlights for this release:
+* New layers added for metal fill/block
+* New Calibre DRC deck for density verification and metal fill pattern generation
+
+Software versions tested with this release
+* Cadence IC releases IC5.1.41 USR3, IC5.0.33 USR2
+* Mentor Calibre releases 9.3_1.4 (2003.01)
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH in order to use
+  this design kit. Supported process variants for this design kit include:
+  c05h_5v c05ha c05had c05hm c05hma c05hmak2 c05hmw1
+* Some process variants like c05ha are supported for DRC and LVS, but the
+  Cadence technology library does not provide the correct contact or via
+  size/shape. For these process variants, you must manually update the technology
+  file to support these variants.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* Artifact Generator: 
+  - Removed all generated layers (3,6,11,61,14), buried layer (4),
+  silox (9) from all processes
+* Trigger Callbacks:
+  - Added capability for "dry run" where callbacks
+    are run, but the schematic or layout is not actually updated and no changes
+    are saved.
+  - Added "Trigger Callbacks" menu item to the CIW JAZZ menu that can be run on
+    schematic or layout. Merged Trigger Callbacks for cellview, hierarchy, and
+    library into one form.  
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Add warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+  - Fix issue where non-writable cell would not generate error message.
+  - Fix issue where incorrect lib name could be used in schematic lib mode.
+  - Fix issue in library mode where the run would fail to complete if a large
+    number of cells (>250) were in the library.
+  - Fix issue with hierarchic or library mode where layout changes may not be
+    reverted in dry run mode.
+* MakeProjectTree: remove call to set umask to 002 on project directory creation.
+  Your current umask will be used instead.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+* Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+* Change schematic Jazz->Netlist->CBR netlist generator use the current window's
+  instead of forcing it to "schematic".
+* Updated ADE integration of Jazz save states cellviews to address issue where
+  state names that required escaped characters would not be saved as cellviews
+  properly.
+* Update ADE simulation window Jazz Model Library Selection form so it prompts
+  for checkout/checkin if Jazz states cellviews are managed.
+* Update ADE integration of Jazz saved states cellviews so it does not conflict
+  with new Cadence IC5.1 USR3 save states as cellview functions.
+* Adde hooks to load Xpedion GoldenGate context file when XPEDION environment
+  variable is set.
+* Fix issue in Jazz automated streamin procedures to prevent GDS import failures
+  when using a technology library as a reference.
+* Fix issue where pcell drawing would fail when the SKILL path did not include
+  the "." directory.
+* Correct Jazz Calibre verification (DRC, LVS, PEX) to properly use
+  a view other than "layout" and "schematic"
+* Rename Layout->Jazz menu Map Hard Cell to Layout Migration Tool.
+* MakeProjectTree - Fix Y2K issue with datestamp printed in logfile.
+  There is no data integrity issue, just a log file reporting issue.
+* Updated Calibre Integration loading with better error checking at load time.
+
+Removed devices:
+* Removed package models library from design kit. These were unsupported
+  package examples. If needed, this library can be copied from an older design kit.
+* Removed legacy cellvies hpmns, libra, and mharm
+
+Device Library:
+* Addressed an off-grid issue with guard-ring and area/line contact creation.
+  Affects many devices, but not all, that have integrated guard rings.
+  Affects Jazz area and line contact creation utilities.
+* Device callback changes require use of trigger callbacks function.
+  See Ebizz document "Jazz Cadence Design Kit Installation Instructions"
+  for instructions on how to migrate from one kit version to another.
+* Updated technology file to include new layers for metal fill/block
+* Added v3x via for c05hamk* process variants
+* Change CDF callback min grid size to be 2*mgf grid. Previously used 2*2*mfg
+  grid for device dimension snapping.
+* Update c05_esdlib/esd_diode_well_1x8_8 to remove extraneous warning marker
+* Update c05ha/pc to remove extraneous warning marker
+
+Models:
+v2.2a * 2006/04/17
+Corner model:
+- Add IS parameter to pnpa/pnpb to address Vbe and IS scaling
+Statistical model:
+- Include rw3t_s model subcircuits from corner model
+
+v2.2 * 2006/03/22
+Corner model:
+- Update PC model to parameterize process variation.
+Stat model: Updated nwell resistor stat model with
+  mismatch model based on the data in C05HMA  
+  analog characterization report, NPB PS0276, page 99. 
+
+v2.1 * 11/02/2005
+Statistical Model:
+- New resistor and capacitor STAT/MM model. No changes to NOM or CORNER models.
+
+v2.0 * 2005/09/08
+Corner and Stat model for FET
+Reason for new model:
+- Stat and mismatch for C05 generated with scalable model infrastructure.
+  Cannot use existing binned model for BPV stat and mismatch.
+Measured data source:
+- Jazz c05 databank
+- No cv data available - used sbc35qtp Coverlap and Tox measurements.
+  Coverlap test strucutre has L=0.35um,instead of L=0.6um
+Extraction Information:
+- Used Junc. cap. and diode IV parameters from c05ha binned models
+
+Verification:
+* Only Calibre is supported with this design kit
+* Parasitic extraction is not supported in this technology
+* Mentor Calibre Interactive is not supported. Please use the Layout menu item
+  Jazz->Verification->Calibre DRC/LVS to run verification.
+
+Calibre:
+* Updated decks to use common directory t004
+ANT:
+- Add metal fill/block layer support.
+DENSITY:
+- Initial release of density deck with support for fill pattern generation
+- Deck supports standard (17.5um) spacing and tight (10um) spacing. To enable
+  10um spacing, you must set the ENV variable dummy10 with a Unix setenv
+  or Calibre #DEFINE command. See the Calibre SVRF reference for more info
+  on how to set variables.
+DRC:
+- Changed most *.Bad checks for unsupported layers to use EXTENT instead of COPY
+- Enabled Field layer checking. Field is a generated layer in this technology,
+  but may still appear in older existing designs.
+- Add metal fill/block layer support. Updated existing metal width/space
+  rules to check the fill pattern
+- Add c05hmak2 via3 checks
+- Update 28.B to use REGION modifier for better coverage
+- Revise custom pad checks to apply to non-Jazz pads
+- Add *.FILL rules to check vias in dummy metal
+ESD_LUP:
+- Add metal fill/block layer support.
+- Fix false ESD.C.a error by limiting check to diffusion
+ERC:
+- Add metal fill/block layer support.
+- Remove dead code
+- Revise floating gate to better flag gate connected to metal but no path to
+  devices.
+- Remove Nwell without tap and Ntap path to ground checks
+LVS:
+- Add metal fill/block layer support.
+PEX: Not supported in this technology
+STRESS:
+- Add metal fill/block layer support.
+- Split ST.E/G into large chip and small chip checks
+
+___________________________________
+Date 7/25/2004
+Design Kit: c05ha
+Electrical Specification: NPB-PS-0166, Rev.4
+Design Rules Document: NPB-PS-0181, Rev.6
+
+Software versions tested with this release
+* Cadence IC releases IC446MSR7, IC50.33USR2
+* Mentor Calibre releases 9.1_1, 9.1_5, 2004.01
+  - XCalibre is not supported in v2003.04 or later releases
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+Devices
+* Verification decks are provided for c05h_5v, c05ha, c05had, c05hm, c05hma, and c05hmw1
+  All other decks have NOT been updated and are provided solely for legacy compatibility.
+  You should change the RDS_CDS_VERIFY_TECH variable as described above and
+  use the new verification decks that are provided for the new process variant
+  names.
+* 3-terminal pdiode devices (pdiode_3t) are now provided.
+  - Layout footprint is identical to 2-terminal pdiode (pdiode).
+    A small text label distinguishes the 2 and 3 terminal layouts.
+  - Symbol views have an added pin for the well connection.
+  - LVS will verify all three terminals.
+  - Existing designs should be updated to use these new devices. New designs should
+    always use these devices instead of the 2 terminal pdiodes.
+* nwdiode device is now provided. It is a component used in the 3-terminal pdiodes
+  and is not meant for use outside the 3-terminal diode. There is no layout view
+  for this cell.
+
+ESD Libraries:
+* Initial release of ESD library for c05ha library
+  - The C05HA rules were used so that the library is compatible with the c05ha
+    and c05ham Design Rules. The larger contact and metal related rules were used.
+
+Models:
+* Model version v1.6
+  - Changed CAPMOD from 0 to 3 on MOS models to correct the gate capacitance
+    calculations in Spectre
+  - First release of ADS model files. Models ONLY are provided for ADS.
+    ADS/Cadence integrations like RFDE or Dynamic Link are not currently
+    supported.
+
+Verification
+* Verification decks are provided for c05h_5v, c05ha, c05had, c05hm, c05hma, and c05hmw1
+  All other decks have NOT been updated and are provided solely for legacy compatibility.
+  You should change the RDS_CDS_VERIFY_TECH variable as described above and
+  use the new verification decks that are provided for the new process variant
+  names.
+
+*Calibre:
+  - Verification decks merged into "unified" verification rule files.
+  Antenna:
+  - Renamed errors from RAN* to AN*
+  - Updated AN.A, AN.B, AN.D values
+  - Merged AN.E into one rule (replace AN.E.*)
+  - Add AN.F, AN.G
+  DRC:
+  - Major rework to match latest document
+  - Added *.artifact rule for each min width rule
+  - Updated implant generation, added R6.X.2, R6*.drawn, R11*.drawn
+  - Fix typo on 40.C description; Update 40.F, 40.J; Remove 40.P
+  - Revised field. Field will be changed to a generated field in future releases.
+  - Revised PF.H, PF.W, PF.AE.3; RLUP.H
+  - Removed BD.6-13, BMP.*, octagonal pad; Split BD.H.* and BD.54
+  ERC:
+  - Merged multiple decks into one document with switches
+  - Updated implant generation
+  - Updated floating poly, remove floating_nwell
+  - Add power_pdiff_in_grounded_nwell
+  ESD/LUP:
+  - Merged multiple decks into one document with switches
+  - Updated implant generation
+  - Simplified ESD by removing many rules as shown in Design Rule Doc
+  - Revised LUP.E, LUP.F, LUP.G, LUP.H, LUP.I
+  - Added LUP.B.C.c1, LUP.D.d, LUP.Q
+  LVS:
+  - Merged multiple decks into one document with switches
+  - Updated implant generation
+  - Added 3-terminal pdiode
+  - Updated pc w/l calculation
+  PEX:
+  - Extraction with XCalibre is not supported.
+  STRESS:
+  - Add probe point support (area<100)
+  - Update slit derivation
+  - Revised ST.A*, ST.B*, ST.C2, ST.E, ST.G, ST.I*
+
+_______________________________________________________________________________
+  Date 7/25/2003
+  Design Kit: C05HA
+  Electrical Specification: NPB-PS-0166, Rev.3
+  Design Rules Document: NPB-PS-0181, Rev.3
+
+  Design Kit: CP05
+  Electrical Specification: NPB-PS-0400, Rev.1
+  Design Rules Document: NPB-PS-0399, Rev.1
+
+
+  * Models
+  - Changed CAPMOD from 0 to 3 on MOS models to correct the gate capacitance
+    calculations in Spectre
+  - First release of ADS model files. Only models are available for ADS.
+    ADS/Cadence integrations like RFDE or Dynamic Link are not currently
+    supported.
+
+  * Kit: This kit integrates many Jazz Kit improvements. This is a short summary:
+  - Renamed banner menu from RDS to JAZZ.
+  - Design kit now has expiration date. The Kit will expire 9 months after
+    release. You will receive notifications when expiration is less than 30 days.
+  - Updated CBR Calibre netlister. Better support of inherited connections
+  - New Analog Artist Set Active Library tool. Enhancements include detecting
+    when the Model Libraries form differs from the Set Active Library Form.
+  - Addition of lib/cell/view to Jazz Calibre DRC/LVS/PEX run forms.
+  - Support for Calibre "-cb" option. Specify this option in the "run_cal
+    options" field
+</PLAINTEXT></BODY></HTML>

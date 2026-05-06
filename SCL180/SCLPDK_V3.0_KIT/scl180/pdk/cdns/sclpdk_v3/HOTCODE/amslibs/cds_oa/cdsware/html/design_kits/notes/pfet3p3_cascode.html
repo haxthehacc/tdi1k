@@ -1,0 +1,53 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 'pfet3p3_cascode' implements the pMOS dual gate (stacked) transistor configuration, which consists of two thick oxide 3.3V cascoded pfets.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Multiplier:</b> Controls the number of device instances connected in parallel. Specifying a 'Multiplier' of n is equivalent to drawing n instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Length1:</b> Controls the length of the first fet.</li>
+
+<li><b>Length2:</b> Controls the length of the second fet.</li>
+
+<li><b>Total Width:</b> Controls the total width . </li>
+
+<li><b>Finger Width:</b> Controls the width of a gate finger. </li>
+
+<li><b>Fingers:</b></a> Controls the number of gate fingers connected in parallel in the same active area.</li> 
+
+<li><b>Threshold:</b>When applied, maximum value allowed for 'Finger Width' in 'Total Width' calculation</li>
+
+<li><b>Apply Threshold:</b> Based on threshold value, calculates the number of fingers and finger width needed to equal the defined 'Total Width'</li>
+
+<li><b>Gate Connection:</b> Select the desired gate connection: None, Top, Bottom, Both, or Alternate.</li>
+ None: No gate connection placed on any finger<br>
+ Top: Gate connection placed on the top of each finger<br>
+ Bottom: Gate connection placed on the bottom of each finger<br>
+ Both: Gate connection placed on the top and bottom of each finger<br>
+ Alternate: Gate connection alternates between top and bottom<br>
+
+<li><b>Style:</b> Specifies the layout style to be used for the device. The 'unconnected' layout style leaves the sources, drains, and gates of the transistors unconnected. The '1met' style uses metal1 to connect the source and drain areas. The '2met' and '2met(RF)' style use metal1 to connect the sources and metal2 to connect the drains.
+
+<li><b>Current:</b> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+<li><b>S/D Metal Width:</b> Controls the width of the source and drain. Used to calculate as, ad, ps, and pd.
+
+<li><b>Switch S/D:</b> Ability to switch source and drain in layout.
+
+<li><b>Bodytie Type:</b> Choose from: None, Integrated, or Detached.  Integrated allows the user to have Left and/or Right Taps.  Detached allows the user to have Left, Right, Top, Bottom Taps.</li>
+
+<li><b>Edit Area and Perim:</b> Makes the Source/Drain Area/Periphery fields editable.</li>
+
+<li><b>Source/Drain Diffusion Area/Periphery:</b> Area and periphery values for source and drain are always netlisted.  These values are either internally computed or entered by the user.</li> 
+
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: wf (finger width), lf1 (Length1), lf2 (Length2) and nf (number of fingers).</li>
+</ul>

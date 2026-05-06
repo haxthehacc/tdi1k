@@ -1,0 +1,7 @@
+cUiMoveCellToBin {UIO_PAD_4M1L} {IO}
+cUiSetViewStatus {UIO_PAD_4M1L} {layout} {1}
+cUiSetViewStatus {UIO_PAD_4M1L} {logical} {0}
+cUiSetViewStatus {UIO_PAD_4M1L} {abstract.pin} {0}
+cUiSetViewStatus {UIO_PAD_4M1L} {abstract.ext} {0}
+cUiSetViewStatus {UIO_PAD_4M1L} {abstract} {0}
+cUiSetViewStatus {UIO_PAD_4M1L} {abstract.ver} {0}

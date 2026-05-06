@@ -1,0 +1,27 @@
+* File: aoi211d1.sp.aoi211d1.pxi
+* Created: Sun Feb 14 18:54:23 2010
+* 
+cc_1 ZN A 0.200173f
+cc_2 ZN VSS 0.249504f
+cc_3 ZN B 0.0884174f
+cc_4 ZN C1 0.0527101f
+cc_5 ZN C2 0.0118066f
+cc_6 VDD A 0.0109162f
+cc_7 VDD B 0.0105275f
+cc_8 VDD noxref_6 0.14781f
+cc_9 VDD C1 0.0343729f
+cc_10 VDD C2 0.0365766f
+cc_11 A VSS 0.0135467f
+cc_12 A B 0.184614f
+cc_13 A noxref_6 0.00161352f
+cc_14 A C1 0.00105353f
+cc_15 VSS B 0.0121529f
+cc_16 VSS C1 0.00889092f
+cc_17 VSS C2 0.0690681f
+cc_18 B noxref_6 0.0682927f
+cc_19 B C1 0.16159f
+cc_20 B C2 0.0181752f
+cc_21 B noxref_9 0.0123463f
+cc_22 noxref_6 C1 0.12764f
+cc_23 noxref_6 C2 0.0467916f
+cc_24 C1 C2 0.185417f

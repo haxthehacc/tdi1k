@@ -1,0 +1,107 @@
+<HTML><HEAD>SBC13 (SBC13S4) Design Kit Release Notes</HEAD><BODY><PRE>
+___________________________________
+Date: 09/28/2015
+Version: 2.0
+Libraries: sbc13
+
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1213, Rev 1
+* Electrical Spec: NPB-PS-1214 Rev 1
+
+Highlights:
+* Development level design kit release for sbc13s4 process variant.
+  Though the PDK has been extensively QA'd, issues may arise which we 
+  will try to address in future releases of the PDK.  It is also possible, 
+  that future version may not be full backward compatible with this PDK.
+* The PDK is not backward compatible with the legacy sbc13 PDKs 
+  (v1.0 and prior kits), which are being phased out
+* Jazz Inductor Toolbox (JIT) 7.1 support
+
+Software versions tested with this release:
+* Virtuoso: ic6.1.6.080
+* Spectre:  14.1.0.255.isr2 32bit -- 21 Nov 2014
+* Calibre:  v2014.1_36
+
+Process Synopsis:
+* This design kit library supports only the sbc13s4 process variant.
+* The SBC13 processes are built on 50 ohm oriented P-Type silicon substrates, 
+  with a low-doped N-type epitaxial layer is grown on top of the P-type 
+  substrate at the start of the process.  All devices, CMOS and HBT alike, 
+  are built in this material. 
+* Devices are separated by shallow trench isolation (STI). 
+* The minimum gate length is 0.12um as drawn and also approximately 0.12um 
+  long physically at the end of the process. 
+* The minimum active width for a MOSFET is 0.15um. 
+* The following CMOS transistors are available in this process: 
+  1) Core 1.2V NFET and PFETs utilizing a gate oxide of approximately 21.5A physical 
+     thickness, 
+  2) Dual gate 3.3V NFET and PFETs utilizing a gate oxide of approximately 63A and 
+  3) 80nm RF NFETs
+  4) High Voltage N and PFETs
+  5) A  high performance SiGe heterojunction bipolar transistor (HBT) module 
+     with layout and verification support for 1.6V (low), 2V (standard), and 
+     3V (medium) BVceo NPNs. There are currently no models for the standard NPN 
+     option.  These will be added in a future release. In addition, the following 
+     devices are built off features from the SiGe module:
+     - Hyper-Abrupt P-N Junction Varactors,
+     - High performance lateral PNP transistors,
+     - Schottky Diodes, and
+     -  P-I-N Diodes.
+* In addition to the CMOS devices, mixed signal elements offered in this process include: 
+  6) a standard unsilicided P+ polysilicon resistor, 
+  7) low and high resistivity polysilicon resistor, 
+  8) an NWell resistor, 
+  9) Triple Well-isolated CMOS, 
+  10) 1.2V and 3.3V MOS varactors, 
+  11) 2 and 2.8 fF/um2 single MIM caps and a 4.8fF/um2 stacked capacitor
+  12) Inductors built on a thick (5.2um) top (metal-7) metal layer with 
+      an option to stack w/ a 3um metal-6
+  13) Rfline p-cell with options to synthesize single-ended transmission-lines 
+      at all metal levels
+
+Process Variant Support:
+* The environment variable RDS_CDS_VERIFY_TECH must be set to sbc13s4
+  in order to use this design kit.  If this variable is not set, the
+  kit will refuse to function.
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions
+  of Design Kits.  This document is available on the Jazz Ebizz website.
+
+* Flow Changes
+- This design kit supports the Cadence inherited connections flow.
+  For more information, refer to the Cadence Inherited Connection Flow
+  Guide in cdsdoc or on sourcelink.cadence.com.
+- The run_cal or Jazz verification flow is not supported in this kit;
+  the Calibre Interactive Flow should be used.  Documentation can be
+  found in CIW->Jazz->Verification->Calibre Interactive w/xRC.
+
+* General Limitations
+- The Artifact Generator may generate shapes that are not DRC correct.
+  If this happens, either increase the scale factor or hand-edit the
+  artifact to clean up the errors.  Off-grid errors may still occur;
+  use Snap-To-Grid to correct these before cleaning up other violations.
+- The schottky diode requires a fully enclosed p-tap to pass DRC. This needs
+  to be currently manually added. A future PDK release will add 
+  this as a p-cell feature
+- The rfline callbacks may re-set the signal and gnd lines to default 
+  values when running trigger Callbacks. This will be a fixed in a 
+  future release of the PDK
+- The efuse2 device is experimental and flags DRC errors. The layout and 
+  rules are likely to change in a future release of the PDK
+- Though most models are silicon based, these may change to better match 
+  the process (as it matures). In particular the models for high-voltage 
+  FETs (PDK elements: [n,p]fet3p3_ld) are based on the SBC18 3.3V
+  process, and are likely to shift once silicon based models from SBC13 
+  are extracted.
+- The 1.2V MOS Varactor exhibhits significant poly depletion in the strong 
+  accumulation regime. As such designers should be careful in using this 
+  varactor for locking circuits such as VCOs in this bias regime. The 3.3V 
+  MOS varactor is recommended in this regime. 
+- The Latch-up rules in this PDK are conservative. Improvements to these rules 
+  are currently being developed, and will be made available in a future 
+  release of the PDK
+
+</ PRE></BODY></HTML>

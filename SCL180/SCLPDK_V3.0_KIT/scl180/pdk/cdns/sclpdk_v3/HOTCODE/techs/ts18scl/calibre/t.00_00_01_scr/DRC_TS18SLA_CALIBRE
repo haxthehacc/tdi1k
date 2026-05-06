@@ -1,0 +1,445 @@
+//                                         ********************************************
+//                                         *          RESTRICTED CIRCULATION          *
+//                                         *                                          *
+//                                         *   THIS SPEC IS PART OF A CUSTOMER DCB    *
+//                                         *                                          *
+//                                         ********************************************
+//     ----------------------------------------------------------------------------------------------------------------
+//     TITLE:  MINISPEC FOR TS18SL CALIBRE DRC RUNSET for AVANT! ( Synopsys ) SRAM Bitcell
+//     ----------------------------------------------------------------------------------------------------------------
+//     SPEC NUMBER : DK2_DRC_TS18SLA_CALIBRE
+//     ----------------------------------------------------------------------------------------------------------------
+//     REFERENCE SPEC : DR20018SLA rev. 1.2
+//     ----------------------------------------------------------------------------------------------------------------
+//                   R E V I S I O N         H I S T O R Y
+//     ----------------------------------------------------------------------------------------------------------------
+//     REV |ECN #| ORIGINATOR |  DATE        |BY|PAGE/PARAGRAPH-CHANGED/DELETED
+//     ----------------------------------------------------------------------------------------------------------------
+//     1.0 |     |Alex Shahin | 13/08/02     |  | New Spec for FAB2. 
+//     2.0 |     |Alex Shahin | 03/02/03     |  | Typo Error fix in Runset Header,in DR Revision.
+//         |     |            |              |  | Update of runset according to DR20018SLA rev 1.2 .
+//         |     |            |              |  | Rule 6FAS deleted.
+//         |     |            |              |  | Rule 16AS Added.
+//         |     |            |              |  | GC DRC definition modified to eliminate false errors in Large Cuts.
+//         |     |            |              |  | 3TAS : Rulecheck Modified.
+//         |     |            |              |  | CU03AS/CU04AS : Rules Modified to check GC Only.
+//         |     |            |              |  | CU03AS/CU04AS : Value modified to CU04AS from 0.20 to 0.18.
+//         |     |            |              |  | CU05AS : Rule removed from DR/DRC.
+//     3.0 |     |Alex Shahin | 05/03/03     |  | CU04AS : Rulecheck Enhanced.
+//         |     |            |              |  | 3TAS : Bug fix in Rulecheck.
+//         |     |            |              |  |
+//     3.1 |     | Michael    | 18/01/05     |  | bug fix: _9C1AS
+//         |     |  Goldberger|              |  |
+//         |     |            |              |  | 
+//         |     |            |              |  |
+//     ------------------------------------------------------------------------------------------------------------
+// 
+//             ALL PAGES OF THIS SPECIFICATION ARE THE SAME REVISION AS PAGE 1
+// 
+//                              COMPANY PRIVATE
+// 
+//                    DO NOT REPRODUCE WITHOUT WRITTEN PERMISSION
+//                            TOWER  SEMICONDUCTOR  LIMITED
+//     ------------------------------------------------------------------------------------------------------------
+//
+//  
+// Author : Alexander Shahin - CAD Engineer.
+// Email : sandro@towersemi.com
+// 
+// 
+//  _____________________________________________________________ 
+//
+//  DISCLAIMER 
+//
+//  The information contained herein is provided by Tower on an "AS IS" basis without any warranty as to accuracy or
+//  completeness, and Tower has no obligation to support, update or otherwise maintain the information. Tower disclaims any
+//  representation that the information does not infringe any intellectual property rights or proprietary rights of any third parties.
+//  TOWER MAKES NO WARRANTIES OF THE INFORMATION HEREIN, WHETHER EXPRESS, IMPLIED, OR
+//  STATUTORY, INCLUDING WITHOUT LIMITATION, IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE AND ANY IMPLIED WARRANTY OF NONINFRINGEMENT.
+//
+//  STATEMENT OF USE 
+//
+//  This information contains confidential and proprietary information of Tower. No part of this information may be reproduced,
+//  transmitted, transcribed, stored in a retrieval system, or translated into any human or computer language, in any form or by any
+//  means, electronic, mechanical, magnetic, optical, chemical, manual, or otherwise, without the prior written permission of
+//  Tower. This information was prepared for informational purpose and is for use by Tower's customers only. Tower reserves the
+//  right to make changes in the information at any time and without notice.
+//
+//  _____________________________________________________________ 
+//
+//
+// TITLE:  MINISPEC FOR TS18SL CALIBRE DRC RUNSET for AVANT! ( Synopsys ) SRAM Bitcell
+// 
+// 1.0 PURPOSE AND SCOPE
+// 
+// 1.1 Purpose
+//        This document defines the CALIBRE DRC runset 
+//        on SRAM layout designs for TS18SL process. 
+// 
+// 1.2 Scope
+//        All products to be manufactured in TSL in process TS18SL ,
+//        according to Design Rules DR20018SL/DR20018SLA  must use this runset for DRC.
+// 
+// 
+// 2.0 TABLE OF CONTENTS
+// 
+//  Section Title                        Section Number
+//  -------------                        --------------
+//    2.1 Purpose and Scope                 1.0
+//    2.2 Table of Contents                 2.0
+//    2.3 Applicable Documents              3.0
+//    2.4 Definitions                       4.0
+//    2.5 Equipment                         5.0
+//    2.6 Safety                            6.0
+//    2.7 Supplies/Materials                7.0
+//    2.8 Updating this Spec                8.0
+//    2.8 Procedures                        9.0
+//    2.9 List of Unimplemented rules.     10.0
+// 
+// 3.0 APPLICABLE DOCUMENTS
+// 
+// 3.1 Design Rules for TS18SL Process as mentioned on the title of the document.
+//                                                                
+// 
+// 4.0 DEFINITIONS
+// 
+// N/A
+// 
+// 
+// 5.0 EQUIPMENT AND S/W
+// 
+// 5.1 Equipment
+//     UNIX Computer terminal linked to TSL lan.
+// 
+// 5.2 S/W
+//     CALIBRE(r) by MENTOR Graphics ver. 8.7  
+// 
+// 6.0 SUPPLIES AND MATERIAL
+// 
+// N/A
+// 
+// 7.0 SAFETY
+// 
+// 7.1 All personnel must read and comply with Tower Safety procedures, in spec
+//        (TSL)SOP-9-008.
+// 
+// 
+// 8.0 UPDATING THIS SPEC
+// 
+// 8.1 Changes to Document
+//        An ECN should be submitted detailing all the changes to be made to
+//        the spec
+// 
+// 8.2 Marking Modifications
+// 
+// 
+// 9.0 PROCEDURE
+// 
+// 9.1 CALIBRE DRC runset inputs:
+//        The user should run the runset on a stream format (binary) file representing
+//        the graphic database.
+// 
+// 9.2 CALIBRE DRC runset
+//     
+//	In order to Run DRC According to this runset, It should be Included to the Main SL Runset ( According to DR20018SL Spec. ). 
+//	For convenience of Usage , a Commented line was already added to the main Runset , Simply look for "INCLUDE" and Uncomment the relevant line.
+//
+// 10.0 List of Unimplemented rules :
+// 
+
+_01AS {
+    @01AS: AREA10;a_bitcell layer should be drawn in input layout for Correct DRC Check ( 01AS )
+    bulk not interact Sai
+}
+
+_09AS {
+    @09AS: AREA10 a_bitcell Shape Should be Rectangular ( 09AS )
+    X=rectangle (flatten Sai)
+    Sai not X	
+}
+
+_10AS {
+    @10AS: Enclosure of AREA10;a_bitcell over N+ Gate,Min 0.14. ( 10AS )
+      enclosure ((all_gate and Sai) and XN) Sai <0.14 region singular abut <90  proj >0 
+      }
+
+_11AS {
+    @11AS: Enclosure of AREA10;a_bitcell over N+ Active , Min 0.04. ( 11AS )
+    enclosure (AAa and XN) Sai <0.04 region proj >0 singular abut<90 
+}
+
+_12AS {
+    @12AS: Enclosure of AREA10;a_bitcell over P+ Active,Min 0.005. ( 12AS )
+    enclosure (AAa and XP) Sai <0.005 region proj >0   singular abut <90 
+}
+
+_13AS {
+    @13AS: AREA10 a_bitcell cannot cut Contact ( 13AS )
+    CS cut Sai
+}
+
+_14AS {
+    @14AS: AREA10 a_bitcell cannot cut Via2/Via3 ( 14AS )
+    V2 cut Sai
+#ifndef 3LM 
+    V3 cut Sai
+#endif
+}
+
+_15AS {
+    @15AS: Internal Bitcell GC ,crossing or touching AREA10;a_bitcell , cannot form a 45 degrees shape with marking layer edge ( 15AS )
+    enc GC Sai >0< 0.05 abut region intersecting only angled ==1
+}
+
+_16AS {
+    @16AS: Contacts in Continuous WL GC , inside Bitcell Area Are not Allowed ( 16AS )
+    X=CS and GCWLC
+    size X by 0.43
+}
+
+WNia = inside edge WN Sai
+WNoa = not inside edge WN Sai
+
+_1CAS {
+    @1CAS: Enclosure of WN on P+ Active in WN 0.38 ( 1CAS ).
+    enclosure pdiffa WNia <0.38 region abut<90 
+}
+
+_1DAS {
+    @1DAS: Distance from WN to N+ Active outside WN , min. 0.40 ( 1DAS ).
+    external  ndiffa WN <0.40 region abut<90 overlap
+}
+
+_1XAS {
+    @1XAS: Enclosure of WN outside bitcell area on P+ Active in WN 0.43 ( 1XAS ).
+    enclosure  pdiffa WNoa <0.43 region abut>0<90 proj>0
+}
+
+_3AAS {
+    @3AAS : Active Width of parallel edges , Min 0.22 ( 3AAS ) .
+    int AAa <0.22 region para only 
+}
+
+_3A2AS {
+    @3A2AS : N+ Active Width , Min 0.18 ( 3A2AS ).
+    int (angle (ndiff and Sao) == 45) <0.18 region perp only abut 
+}
+
+_3BAS {
+    @3BAS : Active Space of parallel edges , Min 0.28 ( 3BAS ).
+    ext AAa <0.28 region para only 
+}
+
+_3BPAS {
+    @3BPAS: Spacing of P+ AA, min. 0.14 ( 3BPAS ).
+    external pdiffa <0.14 region not para singular abut>0<90
+}
+
+_3BNAS {
+    @3BNAS: Spacing of N +AA, min. 0.14 ( 3BNAS ).
+    external ndiffa <0.14 region not para singular abut>0<90
+}
+
+_3TAS {
+    @3TAS: sized AA Coverage greater than 0.983 ( 3TAS ).
+    X=size Sai by 0.70 overunder
+    density AA_SDU0469 >0.983 inside of layer X window 200 step 200 print 3TA_cov.log
+}
+
+CSGCa = GCa and CS
+GCCS15a = size CSGCa by 0.15
+GCBC=area GCa < 0.38
+GCWL=area GCa >0.38
+GCWLC=GCWL area >0.73
+
+
+_6A1AS {
+    @6A1AS: GC Width,Non Parallel, min. 0.15 ( 6A1AS ).
+    internal GCa <0.15 region not para singular abut>0<90
+}
+
+_6B1AS {
+    @6B1AS: GC to GC spacing,Parallel, Min 0.22 um ( 6B1AS ).
+    external (GCa not GCCS15a)  <0.22 region para only proj >0  abut>0<90
+}
+
+_6B2AS {
+    @6B2AS: GC to GC spacing , between non orthogonal edges  ( 6B2AS ).
+    external GCa <0.185 region not para singular abut>0<90
+}
+
+_6B5AS {
+    @6B5AS: GC to GC spacing ,In Contact region,Min 0.25 um ( 6B5AS ).
+    external (GCa and GCCS15a)  <0.25 region para only proj >0  abut>0<90
+}
+
+_6B6AS {
+    @6B6AS: GC to GC spacing , for WL GC, Min 0.26 um ( 6B6AS ).
+    external  GCWL   <0.26 region para only proj >0  abut>0<90
+}
+
+_6C1AS {
+    @6C1AS: Extension of Gate onto field Ox., min. 0.12 ( 6C1AS ).
+    enclosure AAa GCBC <0.12 region singular abut<90
+}
+
+_6C2AS {
+    @6C2AS: Extension of Gate onto field Ox. ( Word line GC ), min. 0.02 ( 6C2AS ).
+    enclosure AAa GCWL <0.02 region singular abut<90
+}
+
+_6E1AS {
+    @6E1AS: Distance from GC on STI to Active, not parallel , min 0.05u ( 6E1AS ).
+    external AAa GCa <0.05 region singular abut<90 not para
+}
+
+_6EAS {
+    @6EAS: Distance from GC on STI to Active , min 0.1u ( 6EAS ).
+    external AAa GCa <0.1 region abut<90 para only
+}
+
+AA45a=angle AAa == 45
+CS45a=CSonAAa interact ( expand edge AA45a inside by 0.2 )
+CS00a=CSonAAa not CS45a
+
+_8CAS {
+    @8CAS: Enclosure of outer Active edge over Contact ,Min 0.0 ( 8CAS ).
+    and ERROR_8C Sao
+}
+
+_8C1AS {
+    @8C1AS: Enclosure of Active on Contact,Surrounded by 45 degrees active , min 0.04 ( 8C1AS ).
+    enclosure CS45a AA <0.04 singular abut<90 region proj >0  opposite
+}
+
+_8C2AS {  
+    @8C2AS: End of line Enclosure of Active on Contact ,Surrounded by 45 degrees active , min 0.06 ( 8C2AS ).
+    X = ENC [CS45a] AA < 0.06 opposite
+    Y = INT X < 0.22 ABUT == 90 region
+    enc Y AAa < 0.06 singular region abut>0<90 
+}
+
+_8C3AS {
+    @8C3AS: Enclosure of Inner Active Corner on Contact , min 0.01 ( 8C3AS ).
+    X1=ext AAa < 0.05 abut == 90 region
+    ext CS00a X1 < 0.01 abut<90 region
+}
+
+_8C4AS {
+    @8C4AS: Enclosure of N+ Active (Edge longer than 1.8 Micron) on Contact , min 0.06 (8C4AS ).
+    X=length AAa > 1.8 < 3
+    (enclosure CS45a X <0.06 abut<90 region opposite) and XN
+}
+
+_8C5AS {
+    @8C5AS: Enclosure of N+ Active on Contact  (Edge Shorter than 1.8 Micron) , min 0.08 (8C5AS ).
+     X=length AAa  < 1.8
+   (enclosure CS00a X <0.08 abut>0<90 region opposite) and XN
+}
+
+_8DAS {
+    @8DAS: GC Enclosure of Contact ,should be 0.1 for 3 sides, 0 for fourth side ( 8DAS ).
+    and ERROR_8D Sao
+    X=expand edge (CS and GCa) outside by 0.1
+    Y=X inside GCa
+    CS interact Y<3 
+    W=CS and GCa
+    enc W GCa < 0.1 abut>0<90 region singular	
+}
+
+_8D2AS {
+    @8D2AS: Width of GC Overlap CS on STI ,In Contact region,Min 0.32 ( 8D2AS ).
+    X1=GCa and CS
+    X2=(size X1 by 0.1) and GCa 
+    int X2 < 0.32 abut >0<90 singular region
+}
+
+_8E2AS {
+    @8E2AS: CS to GC gate spacing ,Min. 0.15 um ( 8E2AS ).
+    external CSonAAa gate_width <0.15 region measure all abut<90
+}
+
+_9AAS {
+    @9AAS: M1 width, Min 0.23 ( 9AAS ).
+    X1=M1a not (M1a interact CS ==1)
+    X2=internal X1 <0.23 region abut>0<90
+    X2 inside (Sai size by -0.005)
+    X3=X2 coincident outside edge M1n
+    length X3 < 0.23
+}
+
+_9BAS {
+    @9BAS: M1 to M1 spacing ,Min 0.23 ( 9BAS ) .
+    external M1a <0.230 region angled == 0 singular abut>0<90
+}
+
+_9B1AS {
+    @9B1AS: M1 to M1 spacing ( corner to Edge ) ,Min. 0.225 um ( 9B1AS ) .
+    external M1a <0.225 region singular abut>0<90 corner to edge
+}
+
+_9B2AS {
+    @9B2AS: M1 to M1 spacing ( Parallel 45 deg. angle ) , Min. 0.225 um ( 9B2AS ) .
+    external M1a <0.225 region angled == 2 singular abut>0<90
+}
+
+_9C1AS {
+    @9C1AS: Enclosure of Only One Edge of M1 on CS , Min 0.0 ( 9C1AS ).
+    and ERROR_9C1 Sao
+    X=expand edge( coin inside edge CS M1) by 0.005
+    ( CS interact X >1 ) and Sao
+}
+
+_9C3AS {  
+    @9C3AS: Enclosure of M1 on Contact ,At M1 Line End, min 0.06 ( 9C3AS )
+    X = ENC [CS] M1a < 0.06 proj >0  para only 
+    Y = CS interact ( int X < 0.22 abut == 90 region )
+    ENC Y M1 < 0.06 region singular abut>0<90 
+
+}
+
+_9C31AS {  
+    @9C31AS: Enclosure of M1 45 degree edge on Contact , min 0.055 ( 9C31AS )
+    ENC CS M1a < 0.055 angled ==1 region opposite
+}
+
+CU03AS {
+    @CU03AS: Internal Bitcell polygon GC cross or touches AREA10;a_bitcell , cannot form a 45 degrees shape with marking layer edge ( CU03AS )
+    ext GC Sai >0< 0.05 abut region intersecting only angled ==1
+}
+
+CU04AS {
+    @CU04AS: 45/90/135 degrees corners are not allowed for GC in distance of 0.18 from bitcell edge.
+   GCf=GC and ((size ( flatten Sai) by 0.5) not (size ( flatten Sai) by -0.5))
+   X45=(ext GCf <0.005 abut == 45 region) or (int GCf <0.005 abut == 45 region)
+   X90= ext GCf <0.005 abut == 90 region
+   X135=(ext GCf <0.005 abut == 135 region) or (int GCf <0.005 abut == 135 region)
+   YY= (size (flatten Sai) by 0.175) not (flatten Sai)
+   (X90 or ( X45 or X135)) interact YY
+   ext  (X90 or ( X45 or X135)) Sai < 0.175  abut region singular opposite proj>0
+   X=GC and ((size (flatten Sai) by 0.18) not (flatten Sai))
+   (expand edge (angle X != 90) by 0.005) not (expand edge (angle X == 0) by 0.005)
+}
+
+CU06AS {
+    @CU06AS: min distance between contact and AREA10;a_bitcell , is 0.2 micron ( CU06AS )
+   SA02=(size ( flatten Sai) by 0.2) not (flatten Sai) 
+   SA02 and CS
+}
+
+CU07AS {
+    @CU07AS: Distance from AA inside Bitcell to AA outside Bitcell,Min. 0.28 ( CU07AS ).
+    external AAa AAn <0.28 region singular  abut>0<90
+}
+
+CU08AS {
+    @CU08AS: Distance from GC inside Bitcell to GC outside Bitcell,Min. 0.25 ( CU08AS ).
+    external GCa GCn <0.25 region singular  abut>0<90
+}
+
+CU09AS {
+    @CU09AS: Distance from M1 inside Bitcell to M1 outside Bitcell,Min. 0.23 ( CU09AS ).
+    ext M1n M1a <0.23 region abut>0<90 singular
+}
+

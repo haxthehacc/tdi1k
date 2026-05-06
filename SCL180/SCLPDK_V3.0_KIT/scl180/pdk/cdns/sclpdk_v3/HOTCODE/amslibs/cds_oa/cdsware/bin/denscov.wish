@@ -1,0 +1,248 @@
+#!/usr/local/bin/wish
+
+proc drawOneRect {n} {
+    global gtab xl yl xr yr pct
+    set xll [setx $xl($n)]
+    set xur [setx $xr($n)]
+    set yll [sety $yl($n)]
+    set yur [sety $yr($n)]
+    set color [densColor $pct($n)]
+    .c create rectangle $xll\m $yll\m $xur\m $yur\m \
+       -outline black -fill $color
+
+    # label boxes
+    set xc [expr ($xll+$xur)/2.]
+    set yc [expr ($yll+$yur)/2.]
+    set tx [expr int($pct($n)/10)]
+    .c create text $xc\m $yc\m -text $tx
+}
+
+proc setx {x} {
+#turns x into x on canvas
+   global gtab
+   set x [expr $gtab(canvasXmid) + ($x - $gtab(xc)) * $gtab(xscale)]
+   return $x
+}
+proc sety {y} {
+#turns y into y on canvas
+   global gtab
+   set y [expr $gtab(canvasYmid) - ($y - $gtab(yc)) * $gtab(yscale)]
+   return $y
+}
+
+proc densColor {dens} {
+    global color
+    set i [expr int($dens / 10)]
+    return $color($i)
+}
+
+proc densLabel {} {
+    global filename gtab xl yl xr yr
+    set gtab(labelN) 8.;
+    set gtab(labelColor) black
+    set space [expr $gtab(wd) / $gtab(labelN)];
+    set n 0
+    set haxis [expr $gtab(canvasHt) - $gtab(yoffset) / 2.]
+    while {$n < $gtab(labelN)} {
+        set x [expr $gtab(xmin) + $n * $space]
+        set xcor [format %.0f $x]
+        set x [setx $x]
+        .c create text $x\m $haxis\m -text $xcor -fill $gtab(labelColor)
+        incr n
+    }
+    set xcor [format %.0f $gtab(xmax)]
+    set x [setx $gtab(xmax)]
+    .c create text $x\m $haxis\m -text $xcor -fill $gtab(labelColor) \
+    -anchor e
+                                                                                
+    set n 0
+    set space [expr $gtab(ht) / $gtab(labelN)];
+    set vaxis [expr $gtab(xoffset) / 2.]
+    while {$n < $gtab(labelN)} {
+        set y [expr $gtab(ymin) + $n * $space]
+        set ycor [format %.0f $y]
+        set y [sety $y]
+        .c create text $vaxis\m $y\m -text $ycor -fill $gtab(labelColor)
+        incr n
+    }
+    set ycor [format %.0f $gtab(ymax)]
+    set y [sety $gtab(ymax)]
+    .c create text $vaxis\m $y\m -text $ycor -fill $gtab(labelColor)  \
+    -anchor n
+
+    .c create text $gtab(canvasXmid)\m $gtab(canvasHt)\m \
+	 -text "File Name: $filename" -fill $gtab(labelColor) -anchor s
+}
+proc densLabel_old {} {
+    global gtab xl yl xr yr
+    set haxis [expr $gtab(canvasHt) - $gtab(yoffset) / 2.]
+    foreach i [array names xl] {
+        set xcor [format %.0f $xl($i)]
+        set xll [setx $xl($i)]
+        .c create text $xll\m $haxis\m -text $xcor
+    }
+    set xcor [format %.0f $gtab(xmax)]
+    set x [setx $gtab(xmax)]
+    .c create text $x\m $haxis\m -text $xcor -anchor e
+
+    set vaxis [expr $gtab(xoffset) / 2.]
+    foreach i [array names yl] {
+        set ycor [format %.0f $yl($i)]
+        set yll [sety $yl($i)]
+        .c create text $vaxis\m $yll\m -text $ycor
+    }
+    set ycor [format %.0f $gtab(ymax)]
+    set y [sety $gtab(ymax)]
+    .c create text $vaxis\m $y\m -text $ycor -anchor n
+
+    wm title . [format "Metal density coverage : %s" $gtab(infile)]
+}
+
+proc saveEPS {args} {
+	global filename
+	set outfile [lindex $args 0]
+	if { $outfile == "" } {
+		set filetypes { {EPS {.eps .ps}} {All {*}} }
+		set outfile [
+			tk_getSaveFile -defaultextension .eps \
+			 -filetypes $filetypes -initialfile "$filename.eps" \
+			 -title "Save as EPS" \
+		]
+	} else {
+		puts "Saving EPS File $outfile"
+	}
+	if {$outfile == ""} { return }
+	.c postscript -file $outfile
+}
+
+proc densInit {} {
+    global color gtab xtab ytab pct
+    set color(0) red
+    set color(1) firebrick
+    set color(2) salmon
+    set color(3) goldenrod
+    set color(4) darkkhaki
+    set color(5) darkseagreen
+    set color(6) lightblue
+    set color(7) steelblue
+    set color(8) slateblue
+    set color(9) darkviolet
+#    set color(0) lightblue
+#    set color(1) darkseagreen
+#    set color(2) darkkhaki
+#    set color(3) goldenrod
+#    set color(4) pink
+#    set color(5) salmon
+#    set color(6) orangered
+#    set color(7) red
+#    set color(8) firebrick
+#    set color(9) darkviolet
+
+    #canvas size and center
+    set defaultCanvasSz 200
+    set gtab(xoffset) 10
+    set gtab(yoffset) 10
+    set gtab(canvasWd) $defaultCanvasSz
+    set gtab(canvasHt) $defaultCanvasSz
+    set gtab(canvasXmid) [expr $defaultCanvasSz / 2.]
+    set gtab(canvasYmid) [expr $defaultCanvasSz / 2.]
+
+    set gtab(wd) [expr $gtab(xmax) - $gtab(xmin)]
+    set gtab(ht) [expr $gtab(ymax) - $gtab(ymin)]
+    set gtab(xc) [expr $gtab(xmin) + $gtab(wd) / 2.]
+    set gtab(yc) [expr $gtab(ymin) + $gtab(ht) / 2.]
+
+    set gtab(xscale) [expr $gtab(canvasWd)./$gtab(wd)]
+    set gtab(yscale) [expr $gtab(canvasHt)./$gtab(ht)]
+
+    #add space to label x and y coordiantes on left and bottom
+    set gtab(canvasWd) [expr $gtab(canvasWd) + $gtab(xoffset)]
+    set gtab(canvasHt) [expr $gtab(canvasHt) + $gtab(yoffset)]
+    set gtab(canvasXmid) [expr $gtab(canvasXmid) + $gtab(xoffset)]
+    ##set gtab(canvasYmid) [expr $gtab(canvasYmid) - $gtab(yoffset)]
+
+	frame .mbar -bd 1p -relief raised
+	pack .mbar -fill x
+		menubutton .mbar.file -text File -menu .mbar.file.menu
+		pack .mbar.file -side left
+		menu .mbar.file.menu
+			.mbar.file.menu add command -label "Save to EPS" -command saveEPS
+			.mbar.file.menu add command -label "Quit" -command exit
+
+	 bind . "<Control-s>" {saveEPS}
+	 bind . "<Control-q>" {exit}
+
+    frame .top
+    pack .top
+    canvas .c -width $gtab(canvasWd)\m -height $gtab(canvasHt)\m -bg aliceblue
+    pack .c -in .top
+}
+
+
+proc densGetData {inFile} {
+    global gtab xl yl xr yr pct
+    set inf [open $inFile r]
+    set n 0
+    set gtab(xmin)  9999999
+    set gtab(ymin)  9999999
+    set gtab(xmax) -9999999
+    set gtab(ymax) -9999999
+    while {[gets $inf line] > 0} {
+        if {[regexp {^\*} $line] > 0} { continue }
+        incr n
+        set xl($n) [lindex $line 0]
+        set yl($n) [lindex $line 1]
+        set xr($n) [lindex $line 2]
+        set yr($n) [lindex $line 3]
+        set pct($n) [expr [lindex $line 4] * 100]
+        if {$xl($n) < $gtab(xmin)} { set gtab(xmin) $xl($n) }
+        if {$yl($n) < $gtab(ymin)} { set gtab(ymin) $yl($n) }
+        if {$xr($n) > $gtab(xmax)} { set gtab(xmax) $xr($n) }
+        if {$yr($n) > $gtab(ymax)} { set gtab(ymax) $yr($n) }
+    }
+    close $inf
+    set gtab(n) $n
+	 set gtab(infile) [file tail $inFile]
+}
+
+#main
+
+# Init
+set arglen [llength $argv]
+set index 0
+set infile ""
+set dumpEPS 0
+
+# Arguments
+while {$index < $arglen} {
+	set arg [lindex $argv $index]
+	switch -exact -- $arg {
+	{--saveEPS} { set dumpEPS 1 }
+	default  { set infile [lindex $argv $index] }
+	}
+	incr index
+}
+if { $infile == "" } {
+    puts "Usage: denscov --saveEPS data-file"
+    exit
+}
+
+set filename [file tail $infile]
+
+# Generate plot
+wm title . $filename
+densGetData $infile
+densInit
+set n 0
+while {$n < $gtab(n)} {
+    incr n
+    drawOneRect $n
+}
+densLabel
+update
+update
+update
+if ($dumpEPS) {
+	saveEPS $filename.eps
+	exit
+}

@@ -1,0 +1,7 @@
+TDMCHECKPOINT="1.0"
+ts018_scl_prim/cmim_uhdstk type="cell"
+ts018_scl_prim/cmim_stk type="cell"
+ts018_scl_prim/cm32t type="cell"
+ts018_scl_prim/cm33t type="cell"
+ts018_scl_prim/usgcm32t type="cell"
+ts018_scl_prim/usgcm33t type="cell"

@@ -1,0 +1,219 @@
+; Abutment box mapped to Milkyway boundary layer
+; This map file is address to incorporate seperate defination for Text in each metal layer. 
+
+D 255 235
+
+
+
+T 40  40 7  ;
+T 42  42 7  ;
+T 44  44 7  ;
+T 50  50 7  ;
+
+; Blocking layer mapped on Synopsys's blocking layer
+D 218 40 84 ; mapped to default blocking metal 1
+D 219 42 84 ; mapped to default blocking metal 2
+D 220 44 84 ; mapped to default blocking metal 3
+D 216 46 84 ; mapped to default blocking metal 4
+D 239 48 84 ; mapped to default blocking metal 5
+D 240 52 84 ; mapped to default blocking metal 6
+D 208 54 84 ; mapped to default blocking metal 7
+D 210 50 84 ; mapped to default blocking metal last
+
+
+D 8:19 8 19  ; layer GC_pin
+D 40:19 40 19  ; layer M1_pin
+D 42:19 42 19  ; layer M2_pin
+D 44:19 44 19  ; layer M3_pin
+D 68:19 68 19  ; layer PAD_pin
+D 50:19 50 19  ; layer TOP_M_pin
+
+D 8:20 8 20  ; layer GC_net
+D 40:20 40 20  ; layer M1_net
+D 42:20 42 20  ; layer M2_net
+D 44:20 44 20  ; layer M3_net
+D 50:20 50 20  ; layer TOP_M_net
+
+D 116:26 116 26  ; layer ESD5OVT_keep_out
+
+D 80:27 80 27  ; layer AREA10_drc
+D 60:27 60 27  ; layer DRCERR_drc
+D 88:27 88 27  ; layer NS_drc
+D 68:27 68 27  ; layer PAD_drc
+D 3:27 3 27  ; layer WN_drc
+
+D 140:28 40 28  ; layer M1_lvs
+D 142:28 42 28  ; layer M2_lvs
+D 144:28 44 28  ; layer M3_lvs
+D 150:28 50 28  ; layer TOP_M_lvs
+D 149:28 49 28  ; layer TOP_V_lvs
+D 43:28 43 28  ; layer V3_lvs
+
+D 130:29 9 29  ; layer ACTIVE_mdp
+D 80:29 80 29  ; layer AREA10_mdp
+D 129:29 8 29  ; layer GC_mdp
+D 30:29 30 29  ; layer LN_mdp
+D 140:29 40 29  ; layer M1_mdp
+D 142:29 42 29  ; layer M2_mdp
+D 144:29 44 29  ; layer M3_mdp
+D 3:29 3 29  ; layer WN_mdp
+
+D 130:30 9 30  ; layer ACTIVE_opc
+D 80:30 80 30  ; layer AREA10_opc
+D 129:30 8 30  ; layer GC_opc
+D 140:30 40 30  ; layer M1_opc
+D 142:30 42 30  ; layer M2_opc
+D 144:30 44 30  ; layer M3_opc
+D 3:30 3 30  ; layer WN_opc
+
+D 130:35 9 35  ; layer ACTIVE_no_dummy
+D 129:35 8 35  ; layer GC_no_dummy
+D 140:35 40 35  ; layer M1_no_dummy
+D 142:35 42 35  ; layer M2_no_dummy
+D 144:35 44 35  ; layer M3_no_dummy
+D 150:35 50 35  ; layer TOP_M_no_dummy
+
+D 77:40 77 40  ; layer DEV_AREA_shv
+
+D 77:41 77 41  ; layer DEV_AREA_lv_op
+
+D 77:42 77 42  ; layer DEV_AREA_res
+
+D 77:43 77 43  ; layer DEV_AREA_cap
+
+D 77:44 77 44  ; layer DEV_AREA_dio
+D 78:44 78 44  ; layer SPC_AREA_dio
+D 3:44 3 44  ; layer WN_dio
+
+D 80:45 80 45  ; layer AREA10_seal
+D 77:45 77 45  ; layer DEV_AREA_seal
+
+D 77:46 77 46  ; layer DEV_AREA_pad
+
+D 77:47 77 47  ; layer DEV_AREA_bjt
+
+D 77:48 77 48  ; layer DEV_AREA_per
+
+D 77:49 77 49  ; layer DEV_AREA_hvp
+
+D 9:50 9 50  ; layer ACTIVE_esd
+D 77:50 77 50  ; layer DEV_AREA_esd
+D 116:50 116 50  ; layer ESD5OVT_esd
+
+D 40:51 40 51  ; layer M1_vss
+D 42:51 42 51  ; layer M2_vss
+D 44:51 44 51  ; layer M3_vss
+D 50:51 50 51  ; layer TOP_M_vss
+D 3:51 3 51  ; layer WN_vss
+
+D 80:55 80 55  ; layer AREA10_res1
+D 77:55 77 55  ; layer DEV_AREA_res1
+D 140:55 40 55  ; layer M1_res1
+D 142:55 42 55  ; layer M2_res1
+D 144:55 44 55  ; layer M3_res1
+D 150:55 50 55  ; layer TOP_M_res1
+
+D 80:56 80 56  ; layer AREA10_mim
+D 77:56 77 56  ; layer DEV_AREA_mim
+D 78:56 78 56  ; layer SPC_AREA_mim
+
+D 77:57 77 57  ; layer DEV_AREA_nmim
+
+D 77:58 77 58  ; layer DEV_AREA_cvs
+
+D 140:59 40 59  ; layer M1_mslits
+D 142:59 42 59  ; layer M2_mslits
+D 144:59 44 59  ; layer M3_mslits
+D 150:59 50 59  ; layer TOP_M_mslits
+
+D 80:60 80 60  ; layer AREA10_a_bitcell
+D 77:60 77 60  ; layer DEV_AREA_a_bitcell
+D 78:60 78 60  ; layer SPC_AREA_a_bitcell
+
+D 80:61 80 61  ; layer AREA10_v_bitcell
+D 77:61 77 61  ; layer DEV_AREA_v_bitcell
+D 78:61 78 61  ; layer SPC_AREA_v_bitcell
+
+D 80:62 80 62  ; layer AREA10_r_bitcell
+D 77:62 77 62  ; layer DEV_AREA_r_bitcell
+
+D 80:63 80 63  ; layer AREA10_ip
+D 63:63 63 63  ; layer CB_ip
+D 77:63 77 63  ; layer DEV_AREA_ip
+D 81:63 81 63  ; layer NODUMMY_ip
+
+D 80:65 80 65  ; layer AREA10_ext
+D 77:65 77 65  ; layer DEV_AREA_ext
+
+D 80:68 80 68  ; layer AREA10_fc
+D 68:68 68 68  ; layer PAD_fc
+
+D 77:70 77 70  ; layer DEV_AREA_prbdry
+
+D 80:71 80 71  ; layer AREA10_arm
+D 77:71 77 71  ; layer DEV_AREA_arm
+
+D 80:72 80 72  ; layer AREA10_cis_array
+D 66:72 66 72  ; layer CT_cis_array
+D 68:72 68 72  ; layer PAD_cis_array
+D 89:72 89 72  ; layer ULS_cis_array
+
+D 77:73 77 73  ; layer DEV_AREA_mfc
+
+D 77:76 77 76  ; layer DEV_AREA_mfuse
+
+D 80:79 80 79  ; layer AREA10_low_vt
+D 77:79 77 79  ; layer DEV_AREA_low_vt
+
+D 9:8 9 8  ; layer ACTIVE_dummy
+D 86:8 86 8  ; layer BLU_dummy
+D 77:8 77 8  ; layer DEV_AREA_dummy
+D 8:8 8 8  ; layer GC_dummy
+D 40:8 40 8  ; layer M1_dummy
+D 42:8 42 8  ; layer M2_dummy
+D 44:8 44 8  ; layer M3_dummy
+D 68:8 68 8  ; layer PAD_dummy
+D 50:8 50 8  ; layer TOP_M_dummy
+
+D 77:80 77 80  ; layer DEV_AREA_inductor
+
+D 80:82 80 82  ; layer AREA10_imagers
+D 86:82 86 82  ; layer BLU_imagers
+D 63:82 63 82  ; layer CB_imagers
+D 34:82 34 82  ; layer CS_imagers
+D 66:82 66 82  ; layer CT_imagers
+D 77:82 77 82  ; layer DEV_AREA_imagers
+D 129:82 8 82  ; layer GC_imagers
+D 85:82 85 82  ; layer GRN_imagers
+D 88:82 88 82  ; layer NS_imagers
+D 94:82 94 82  ; layer PD3_imagers
+D 92:82 92 82  ; layer PDN_imagers
+D 84:82 84 82  ; layer RED_imagers
+D 89:82 89 82  ; layer ULS_imagers
+D 17:82 17 82  ; layer VNN_imagers
+D 32:82 32 82  ; layer XN_imagers
+
+D 129:84 8 84  ; layer GC_pnrblock
+D 140:84 40 84  ; layer M1_pnrblock
+D 142:84 42 84  ; layer M2_pnrblock
+D 144:84 44 84  ; layer M3_pnrblock
+D 150:84 50 84  ; layer TOP_M_pnrblock
+D 149:84 49 84  ; layer TOP_V_pnrblock
+D 141:84 41 84  ; layer V2_pnrblock
+D 143:84 43 84  ; layer V3_pnrblock
+
+D 77:85 77 85  ; layer DEV_AREA_shrink
+
+D 77:86 77 86  ; layer DEV_AREA_t3
+
+D 80:87 80 87  ; layer AREA10_i_bitcell
+
+D 80:88 80 88  ; layer AREA10_novea
+D 72:88 72 88  ; layer AREA2_novea
+D 77:88 77 88  ; layer DEV_AREA_novea
+D 78:88 78 88  ; layer SPC_AREA_novea
+
+D 77:91 77 91  ; layer DEV_AREA_rf
+
+D 77:93 77 93  ; layer DEV_AREA_fix
+

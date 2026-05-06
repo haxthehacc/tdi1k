@@ -1,0 +1,6 @@
+TDMCHECKPOINT="1.0"
+cds_generic/fourier type="cell"
+cds_generic/fourier2ch type="cell"
+cds_generic/iprobe type="cell"
+cds_generic/nodeQuantity type="cell"
+cds_generic/noise type="cell"

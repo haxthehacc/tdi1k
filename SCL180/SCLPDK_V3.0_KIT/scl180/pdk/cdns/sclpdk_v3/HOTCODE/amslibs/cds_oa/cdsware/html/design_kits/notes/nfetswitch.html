@@ -1,0 +1,25 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'nfetswitch' implements the high-speed, low drain capacitance nfet switch. This device is implemented with fully enclosed rectangular poly gate completely enclosing the drain. The unit cell has fixed length l=0.35um and fixed width w=4um. The device pcell includes array of these unit cells defined by 'row' and 'col' resulting in row x col number of unit cells. There is a substrate ring completely enclosing the row x col cells. This device is modeled as 4-terminal mosfet subckt with attributes: l (length), w (width), row (number of rows), and col (number of columns)
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+
+<li><a href="../images/nfetswitch_row_col.html"><b>row:</b></a> Controls the rows of unit cells. </li>
+
+<li><a href="../images/nfetswitch_row_col.html"><b>col:</b></a> Controls the columns of unit cells.</li>
+
+<li><a href = "../images/nfetswitch_cur.html"><b>Current:</b></a> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+</ul>
+<h1>NOTES:</h1>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: width, length, number of unit cells (row*col). </li>
+</ul>
+</body>
+</html>
+

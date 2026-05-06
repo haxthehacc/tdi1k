@@ -1,0 +1,1513 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 07/15/2005
+Library: ca18 release (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.11
+Electrical Spec: NPB-PS-0173, rev.9
+
+Highlights:
+* Added capability for custom active and poly fill. Discuss with your Jazz
+  Support representative before adding these fills to your design.
+* Modified rf fet tap options.  All combinations of l/r/t/b taps are available, but
+  a warning is given indicating only LR and LBRT options are valid with models.
+* Improved single ended inductor to be better match inductor toolbox output.
+* As always, be sure to run "Trigger Callbacks" before working with this design kit.
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+* Cadence Assura releases 3.1.3USR1 (IC50.33USR2) (minimum)
+
+Helptickets Resolved:
+
+2435
+2788
+3170
+3426
+3720
+3945
+4223
+4265
+4280
+4308
+4350
+4550
+5100
+5435
+5559
+5630
+5730
+5930
+6020
+
+
+Environment and Kit Updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* Corrected issue with Jazz custom tool that saves Artist save states as
+  cellviews. Addressed issue where state names that required escaped
+    characters would not be saved as cellviews properly.
+* Removed non-functional system.cdsplotinit link from amslibs/cds445/etc
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Device Updates:
+* Updated trigger callbacks code to handle new substrate ring parameter and options
+  for rf fets
+
+Modified devices, Design Library:
+Capacitors
+* Stacked capacitors (csmim4, csmimw4, csmimw4_4):
+  - Modified the operating point list for all simulators and the terminal mapping
+    for hspice.
+Fets
+* All M/S and RF fets
+  - Changed pcell pins from polygons to paths
+  - No change to ESD and LD fets
+* RF fets (nfet_rf/nfet3p3_rf/pfet_rf/pfet3p3_rf):
+  - Added Tap Style parameter to control the creation of the substrate ring.
+    Possible values are: n, l, b, r, t, lb, lr, lt, rt, br, bt, lrt, lbr, lbt, brt, lbrt
+    When tapStyle = "lbrt", ring_sub = 1.  For any other value of tapStyle, ring_sub = 0.
+    Only the "lr" and "lbrt" tapStyle options are supported by the model.  All other 
+    options are considered custom structures. This will affect the footprint/routing of
+    the cell. 
+  - Updated breakdown of new simulation parameter support in rf fets:
+                              Parameters
+              ngcon               hf_noise             ring_sub
+nfet_rf       all simulators      Spectre only         all simulators
+pfet_rf       all simulators      not supported        all simulators 
+nfet3p3_rf    all simulators      not supported        all simulators 
+pfet3p3_rf    all simulators      not supported        all simulators 
+  - Added met2_grid option; In some cases, this causes drc errors for minimum spacing of
+    butting active edge to implant and butting implant overplot of contact.  This will be
+    addressed in the next release.
+  - Inserted tap extension option.
+Inductors
+* Modified the height of the "underpass" pin in the single ended inductor to more closely 
+  match the results of the inductor toolbox.  This will change the number of vias for the 
+  underpass and modify the footprint.
+
+Techfile Updates:
+* Added active "fill", active "block", and poly "fill" layers. 
+
+Model Updates: Model version v3.5
+Fets
+- Updated 1.8V RF nfet model with new Verilog-A based noise source.
+Caps
+- Fixed problem with rtp and rbp where small caps may not have via resistance added.
+Statistical model: Changes in addition to corner model changes
+- Fixed problem with cpoly/cpoly3p3 handling of multiplicity. This only affects
+the statistical model, not the corner model.
+
+Verification:
+Calibre
+* Minimum version required is 2004.4_11
+* Updated calibre interactive setup document.  Go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Incorporated loading of mgc_extview.ile, setting of 
+  MGC_CALIBRE_CUSTOMIZATION_FILE, and running of jazzCalViewSetup() into
+  calibre initialization code.
+- DRC customization gui updates
+  - added capability to enter power/ground nets for esd_lup and soft_erc
+  - default run option consists of DRC+LUPI 
+* Regenerat ca18_rcx library
+* Jazz Verification menu is disabled for technologies where
+  its no longer supported
+
+Calibre Limitations:
+* New rule BMP.7 is not implemented.
+
+Antenna: No change
+Density: No change
+DRC
+- Fix BMP.5 to check any side vs all sides
+- Fix 52.E to flag native mark crossing nwell
+- Update 8/18/28/38/48/58.B to better differentiate SRAM from no-SRAM violations
+- Fix 8/18/28/38/48/58.B to better flag SRAM metal artifact to non-artifact.
+- Enhance 94.E and 94.F.a to allow for custom inductor over dnwell
+- Disable non-45 degree check
+- Add new rules 2.fill and 5.fill for customer-provided active/poly fill
+- Add new rule DNW.10 for pwell to pwell spacing
+- Add rule VR.E, and split VR.G
+ERC
+- Change connectivity for met5 fuse to break fuse
+- Filter ldfet from ptap_pwr
+LVS
+- Add ability to place rppoly_sal over nwell
+Stress: No change
+xRC
+- Add ability to place rppoly_sal over nwell
+- Add Calibre Environment Variable pexdm6 to independently control M6 extraction
+  distance. Changing pexd will not change the m6 distance. Default value for both
+  pexdm6 and pexd is 3.
+
+Assura
+- Not included in this release. Revised Assura decks will be released
+  as a kit patch.
+
+___________________________________
+Date: 04/27/05
+Library: ca18 release (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.10
+Electrical Spec: NPB-PS-0173, rev.8
+
+Highlights:
+* Modified rf fet tap options.  Only "lr" and "lbrt" are available.
+* RF fet model changes
+* Routing changes for poly capacitors and rf fets
+* Updated calibre interactive flow
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+  - 3.0.7 is no longer supported
+
+Helptickets Resolved:
+1198
+2167
+3169
+3426
+3985
+3992
+4009
+4182
+4280
+4350
+4378
+4495
+
+Environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Updates:
+* Updated trigger callbacks code to handle new substrate ring parameter and options
+  for rf fets
+
+General updates, Design Library:
+* Initial support of auto abutment.  This is in the testing phase and
+  shouldn't be used in production.  Testing to be completed by Jun '05 
+
+New devices, Design Library:
+* Renamed passgate and passgate3p3 to tgate and tgate3p3
+  -passgate and passgate3p3 are no longer available in the design kit and
+   are replaced by tgate and tgate3p3 
+
+Modified devices, Design Library:
+Capacitors
+* Added "legacy" labels to cmimw2 and csmimw4 capacitors.  Customers should transition
+  to their 4 terminal counterparts: cmimw2_4 and csmimw4_4.
+* Added "Gate Connection Style" option to poly caps (cpoly/cpoly3p3).  Possible
+  values are "Both", "Top", "Bottom", or "None".  The "Both" option is compatible
+  with legacy layouts.
+
+Diodes
+* Added "legacy" labels to dp and dp3p3 diodes.  Customers should transition to
+  their 3 terminal counterparts: dp_3 and dp3p3_3.
+
+Fets
+* RF fet (nfet_rf/nfet3p3_rf/pfet_rf/pfet3p3_rf) changes:
+  - Added Tap Style parameter to control the creation of the substrate ring.
+    Possible values are: "lr" and "lbrt" .  When tapStyle = "lr", ring_sub = 0
+    and when tapStyle = "lbrt", ring_sub = 1.  This will affect the footprint/
+	 routing of the cell.
+  - Propagated ring_sub support to 3.3v rf fets.  This covers all supported 
+    simulators
+  - Updated breakdown of new simulation parameter support in rf fets:
+                              Parameters
+              ngcon               hf_noise             ring_sub
+nfet_rf       all simulators      Spectre only         all simulators
+pfet_rf       all simulators      not supported        all simulators 
+nfet3p3_rf    all simulators      not supported        all simulators 
+pfet3p3_rf    all simulators      not supported        all simulators 
+
+  - Routing for the SD metal width parameter was modified so that:
+    1) Source and drain contacts remain centered for multi finger fets
+    2) The metal2 bus used by the "met2" and met2rf" style values now scales
+       with the SD metal parameter.  This may affect the footprint/routing
+		 of the cell.
+
+Inductors
+* Modified differential inductor (ind_diff) via calculation to improve coverage.  
+  This may affect the footprint of the cell.
+
+Resistors
+* Changed min l of nwell resistor (rnwell) from 2.1u to 1.1u.
+
+Varactors
+* Mos varactor (var_mos) changes:
+  - Reworked metal2 routing.  A "bottom" gate connection was added to make the
+    bottom segment similar to the rest of the segments.  Also, the interconnect
+    was modified to produce constant spacing.  This will alter the 
+    footprint/routing of the cell. 
+  - Modified cmax/cmin calcumations to improve accuracy.
+  - Updated met2_con netlisted values.  Now only the "2MET_Connected" case will
+    netlist as 1.
+
+Techfile Updates:
+* No updates
+
+Model Updates: Model version v3.4
+Fets
+- Revise d_dnw (deep-nwell) device to update dnw-pwell diode sidewall
+  capacitance (cjsw) from 1.346e-12 to 1.346e-09
+- New HV (3.3v) RF models (n3p3fet_rf and p3p3fet_rf) based on double sided gate
+  contacts and ringed substrate. Includes modified internal topology
+  from previous kit releases.
+- New scalable substrate resistance model for 3.3v RF FETs.
+  Substrate T-network is now used for all 1.8 and 3.3v RF FETs
+- Operating point or current probing in old kit may not work on new model,
+  and new OP or current probing may not work when using older model.
+  Use Results Browser or Results Display to review OP data if it is
+  not visible in the schematic.
+- Improved gate resistance model for all RF FETs that includes salicide to
+  poly contact resistance, which is important in narrow width devices
+- Re-targetted corner and statistical models w/ tighter oxide thickness
+  variation as per new E-spec. (1.8v: +/- 1 ang. corners, +/- 1.5 ang.
+  statistical; 3.3v: +/-1.8 ang. corners, +/- 3 ang. statistical).
+  Overlap capacitance corners now track oxide thickness and DL variations.
+  No change in nominal models for MS 1.8v and 3.3v FETs
+- Improved SLOWFAST and FASTSLOW corners that track statistical correlations
+  between N and PFETs
+- Add silicide-to-poly contact resistance in mosvar model.
+
+Statistical model: Changes in addition to corner model changes
+- None
+
+Verification:
+Calibre
+* Updated calibre interactive setup document.  Go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Incorporated loading of mgc_extview.ile, setting of 
+  MGC_CALIBRE_CUSTOMIZATION_FILE, and running of jazzCalViewSetup() into
+  calibre initialization code.
+* DRC customization gui updates
+  - added capability to enter power/ground nets for esd_lup and soft_erc
+  - default run option consists of DRC+LUPI 
+* Regenerated ca18_rcx library
+* Jazz Verification menu is disabled for technologies where
+  its no longer supported
+DRC
+* Integrated version that supports multiple ca18 variants
+* Reorganized spacings between drawn and artifact features
+* Added warning to mask layer checks
+* Modified 1f/2f cap type checks
+* Revised sram checks to better handle polygon merged across ram cell boundary
+* Updated 51.B to include metal
+* Revised mim via artifact rules
+* Revised pwr/gnd name scheme for new customization gui 
+LVS
+* Used integrated version to unify ca18 variants
+* Revised ldfet active derivation to better handle potential soft connection issues
+xRC
+* Used integrated version to unify ca18 variants
+* Revised ldfet active derivation to better handle potential soft connection issues
+
+Assura
+* Not included in this release.  A patch will be issued which will contain the
+  full beta release. 
+
+___________________________________
+Date: 01/31/05 
+Library: ca18 release (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.9
+Electrical Spec: NPB-PS-0173, rev.6
+
+Highlights:
+* Added 4 terminal mimcaps (cmimw2_4, csmimw4_4)
+* Added option to mos varactor to account for interconnect effects
+  in simulation and extraction
+* ddnw cell behaves similarly to n and p diodes with area/perimeter 
+  extraction
+* DRC fixes for vias in mim/smim caps, ablb overplots in fets, etc... 
+  Some changes may affect the cell footprint.  See device changes for
+  more details.
+* Changed SRmarkR stream dataype from "80" to "60"
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.2 (minimum)
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+  - 3.0.7 is no longer supported
+
+Helptickets Resolved:
+2606
+2685
+2698
+2918
+3054
+3169
+3224
+3331
+3368
+3389
+3417
+3422
+3426
+3658
+3821
+3879
+3884
+3984
+
+
+Environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Updates:
+* Created new release notes function to show kit or variant specific release notes
+* Removed unused/legacy JAZZ menu item application notes
+* Changed behavior oF HTML based application notes to try to use existing
+  browser instead of opening a new one
+* Fixed issue with Artist State loading to resolve spurious "Artist states
+  directory contents are different" message
+
+General updates, Design Library:
+* Initial support of auto abutment.  This is in the testing phase and
+  shouldn't be used in production
+
+New devices, Design Library:
+* Added 4 terminal mimcaps (cmimw2_4 and csmimw4_4)
+  - The sub and well connections can now be set using inherited connections
+
+Modified devices, Design Library:
+* Modified ddnw property form to behave similar to n and p diodes and updated
+  simulation views to match symbol (connectivity unchanged)
+* Updated diodes to better handle scaling.  Previous calculations may have 
+  resulted in w,l, or area being scaled up by 0.005u.  If area=25p and w=5u,
+  l may have been calculated to be 5.005u instead of 5u.  If you are using the
+  default settings of w=5u, l=5u, and area=25p, the l value may appear as
+  5.005u.  Toggle w or area to fix this. 
+* Changed default value of r to 100 for r_dummy 
+* Revised terminal/op point mapping in rnwell
+* RF fet simulation changes:
+  - Added support for ring_sub parameter in nfet_rf and pfet_rf.
+    The implementation in the nfet_rf is supported in all simulators
+    and in the pfet_rf in Spectre 
+  - Breakdown of new simulation parameter support in rf fets:
+                              Parameters
+              ngcon               hf_noise             ring_sub
+nfet_rf       all simulators      Spectre only         all simulators
+pfet_rf       all simulators      not supported        Spectre only 
+nfet3p3_rf    all simulators      not supported        not supported
+pfet3p3_rf    all simulators      not supported        not supported
+
+  - Added "Simulation Parameters" button on rf fets.  This displays a
+    dialog box with a short description of ngcon, hf_noise, and ring_sub
+    parameters.  For a complete description of these parameters, please
+    consult the C18 Design Manual.
+  - Reworked gm and ft operating point calculations and added them to the 
+    opPointLabelSet list for schematic annotation.  gm is the 
+	 transconductance of the core FET in the rf fet subcircuit, while
+	 ft = gm/(2*pi*(cgs+cgd+cgb))
+  - rd and rs are not available as operating point parameters.  They were
+	 available in older versions of the pdk because they were modeled as
+	 bias independent resistors.  This calculation was a rough estimation
+	 of the drain and source resistance.  Currently, they are intrinsic
+	 to the core FET model, allowing them to be bias dependent.  Also
+	 the dc model of the rf fets is now consistent with the mixed-signal
+	 model.  rd and rs operating point values can still be accessed for 
+	 the 3.3v rf fets, but these are not useful values and will be removed in
+	 the next kit release.
+* Added "Connect S/D" and "Use ablb" options on poly caps (cpoly/cpoly3p3)
+* Updated via spacing for mim/smim caps.  Vias over topmm/topmm2 have been
+  changed to a minimum spaced, centered array to prevent spacing violations
+  for high aspect ratio caps.
+* Changed stacked capacitor (csmim4/csmimw4/csmimw4_4) spacing on top metal and
+  ablb overplots.  No change in footprint.
+* Updated S/D metal width in fets to accomodate landing the vias.  This will 
+  slightly alter the footprint/routing when ablb overplot and metal 2 routing
+  options are used.
+* Modified m1 routing over gate in mos varactor to track the gate.  This may
+  affect the footprint.  Also added met2_con parameter for lvs and simulation.
+  This parameter tracks the style used for interconnect routing.
+
+Style                     met2_con
+2MET_Connected                1
+2MET                          1
+1MET                          0
+
+* Pulled tap ring out to avoid DRC errors in cascode fets.  This will change the
+  footprint.
+
+Techfile Updates:
+* Added vias which support minimum metal area (via12_g, via23_g, etc...) 
+  - the default via56_g is a 3x3 array
+* Changed SRmarkR stream dataype from "80" to "60".  This keeps it consistent
+  with its cadence purpose number which is "60".
+* Added a utility to migrate the old dummy metal resistor purposes (1 or 2)
+  to the current purpose (5).  This is found in:
+  Layout Window->Jazz->Layout Migration Tool.  Enter the scope and target 
+  library/cellview values.  In this case, the source and mapped library 
+  values don't apply.
+
+Model Updates: Model version v3.3
+Fets
+* Remove support for specifying l/w with DNW diode device. Only area/perim
+  are supported. The Design Kit integration uses only area/perim.
+* Modify mos varactor to add met2_con parameter. met2_con=1 adds metal2
+  interconnect parasitics from Pcell into model behavior.
+* Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+* Revise nwell resistor in PC to use simplified resistor model.
+* Change model default for pfet_rf to use ngcon=2 to be consistent with stat
+  model. Only the model file default was changed, not the symbol default.
+
+Caps
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Change default cap dimensions to 10um. No change in Design Kit default,
+  only model file default.
+
+Pnp
+* Update vpnp TC model using [-40 25 75 125] measurements
+* Update vpnp bf to be aligned to Espec
+* Adjust vpnp min early voltage (va=100) to match Espec
+* Update lpnpfeta bf from 5.5 to 7.2 to be aligned to Espec and match corner model
+
+Statistical model: Changes in addition to corner model changes
+* Add nom-only hp vpnp and rph3t
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Fix 3.3v native fet stat model so that tox variation is now
+  consistent w/ 3.3v NFET and PFET tox variation
+* Update varactor_ni to leverage existing nwell-related process parameters
+
+Verification:
+Calibre
+* Updated rws netlisting in rppoly_lo and rnwell to handle inherited
+  connections
+* Modified JazzCdlSubcktCall to better handle auCdlPinCntrl
+* Regenerated ca18_rcx library
+  - Updated ddnw simulation views in ca18_rcx to match symbol(connectivity unchanged)
+* Jazz Verification menu is disabled for technologies where
+  its no longer supported
+DRC
+- Added custom bump pad, reverse active, PR.F checks, and acute angle check per
+  most layers instead of globally.
+- Revised 2.E,L,M, DNW.5, VR.E, 6/11.A.a.1, BD.H/M, MC9/9.a, SMC19/19.a, 
+  MC10, SMC20, and Jazz wirebond pad lead metal checks
+- Updated ablb dimension checks to include metal block layers
+- Improved efficiency of contact/via opposite side enclosure checks
+- Removed Jazz bump pad checks
+- Updated LUP checks copied into DRC deck.
+ERC
+- Fixed connectivity to filter nwell resistor from ntap_gnd
+ESD_LUP
+- Improved performance by using larger step in tap checks.
+LVS
+- Added 4 terminal mim over well and SRAM nfet/pfet
+- Altered d_dnw to support area/perimeter compare
+- Altered ind_diff turn measure algorithm.
+- Revised mos varactor verification to include fingers and slices
+- Revised nwell connectivity to allow nwell devices under pads
+- Revised nwell resistor to support legacy style well resistor in I/O library
+- Revised fet_rf to handle shared terminals and control seed promotion
+- Revised var_ni to prevent confusion with var_mos
+- Filtered poly res head, mim metal
+Stress
+- Fixed bugs in enabling stress rules for all levels
+- Corrected ST.E* and ST.G
+xRC
+- Added 4 terminal mim over well, via resistance between metal3 and bot_plate,
+  SRAM nfet/pfet, cpoly blocking, and varactor filtering
+- Altered d_dnw to support area/perimeter compare
+- Revised mos varactor verification to include fingers and slices
+- Revised nwell connectivity to allow nwell devices under pads
+- Revised nwell resistor to support legacy style well resistor in I/O library
+- Revised fet_rf to handle shared terminals and control seed promotion
+- Revised var_ni to prevent confusion with var_mos
+- Filtered poly res head, mim metal
+
+Assura
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* No deck updates
+
+___________________________________
+Date: 12/19/04 
+Library: ca18 patch (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.8
+Electrical Spec: NPB-PS-0173, rev.6
+
+Highlights:
+* ddnw cell behaves similarly to n and p diodes with area/perimeter extraction
+* DRC fixes for vias in mimcaps, ablb overplots in fets, etc... 
+* Changed SRmarkR stream dataype from "80" to "60"
+* Layout Migration Tool for dummy metal resistor purposes
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.2 (minimum)
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+  - 3.0.7 is no longer supported
+
+Environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Updates:
+* Added check for RDS_CDS_VERIFY_TECH variable
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* Updated artifact generator to NOT generate implant layer artifacts
+
+Modified devices, Design Library:
+* Modified ddnw property form to behave similar to n and p diodes
+* Added support for ring_sub parameter in nfet_rf and pfet_rf.
+  The implementation in the nfet_rf is supported in all simulators
+  and in the pfet_rf in all simulators expect ADSSim. 
+* Breakdown of new simulation parameter support in rf fets:
+                              Parameters
+              ngcon               hf_noise             ring_sub
+nfet_rf       all simulators      Spectre only         all simulators
+pfet_rf       all simulators      not supported        all except ADSSim
+nfet3p3_rf    all simulators      not supported        not supported
+pfet3p3_rf    all simulators      not supported        not supported
+
+* Added "Simulation Parameters" button on rf fets.  This displays a
+  dialog box with a short description of ngcon, hf_noise, and ring_sub
+  parameters.  For a complete description of these parameters, please
+  consult the C18 Design Manual.
+* Added "Connect S/D" and "Use ablb" options on poly caps (cpoly/cpoly3p3)
+* Correct RWS verification mode netlist failuer on resistors
+* Fixed mimcap via spacing to be minimum space, centered array
+* Changed stacked capacitor (csmim4/csmimw4) spacing on top metal and
+  ablb overplots
+* Updated metal 2 ablb routing in fets
+* Fixed integrated taps in 1.8V/3.3V fets
+
+Techfile Updates:
+* Changed SRmarkR stream dataype from "80" to "60".  This keeps it consistent
+  with its cadence purpose number which is "60".
+* Added a utility to migrate the old dummy metal resistor purposes (1 or 2)
+  to the current purpose (5).  This is found in:
+  Layout Window->Jazz->Layout Migration Tool.  Enter the scope and target 
+  library/cellview values.  In this case, the source and mapped library 
+  values don't apply.
+
+Model Updates:
+Model version v3.2b * 2004/12/17
+Fets
+- Revised d_dnw to use parameters area/perim instead of l/w
+Statistical:
+- Added nominal-only d_dnw to statistical model library.
+
+Model version v3.2a * 2004/12/07
+fet:
+- Revised 5V PC to include more accurate tox value
+- Added process variation for 5V PC in statistical model
+
+Model version v3.2 * 2004/12/02
+fet:
+- New LV (1.8v) RF models (nfet_rf and pfet_rf) based on double sided gate
+  contacts and ringed substrate. Includes modified internal topology
+  from previous kit releases.
+- Updated thermal noise model to noimod=1 (instead of the old noimod=2)
+  for all FETs (nfet, nfet_rf, pfet, pfet_rf, p3p3fet, p3p3fet_rf,
+  n3p3fet, n3p3fet_rf) to give reasonable prediction of thermal noise
+  at Vgs=0. A factor of 1-3x change in thermal noise can be expected
+  for Vgs > Vt. Noimod=1 uses the Spice thermal noise model as opposed
+  to Noimod=2 which uses the BSIM3 Qinv based thermal noise model.
+-  Added hdif parameter to allow an approximate calculation of
+   ad, as, pd, ps in the primitive FETs.
+-  New 5v NFET and PFET mixed-signal nominal, corner, statistical and
+   mismatch models based on recent silicon. 5V PC model is still
+   extrapolated from other technologies
+- Add acm=12, calcacm=1 for all FET models for Hspice compatibility
+cap:
+- Added M4/M5 MIM cap models c3t_mim2_m4, c3t_mimw2_m4 and c4t_mimw2_m4
+- Update rsh_bp from 6.6e-2 to 8.2e-2
+res:
+- Add 1Kohm resistor rph3t
+pnp:
+- update vpnp TC for -40, 25, 75 and 125C
+- update vpnp model (bf) to be aligned with the Espec value
+- adjust vpnp minimum Early Voltage (va = 100)
+- update lpnpfeta model (bf) to be aligned with the Espec value
+
+
+Verification:
+Calibre
+* Updated rws netlisting in rppoly_lo and rnwell to handle inherited
+  connections
+* Jazz Verification menu is disabled for technologies where
+  its no longer supported
+Antenna
+- No change
+DRC
+- Revised 6/11.A.a.1, BD.H/M, MC9/9.a, SMC19/19.a, MC10, SMC20
+- Add acute angle check per most layers instead of globally.
+- Revise Jazz wirebond pad lead metal checks
+- Updated LUP checks copied into DRC deck.
+ERC
+- Fixed connectivity to filter nwell resistor from ntap_gnd
+ESD_LUP
+- Improve performance by using larger step in tap checks.
+LVS
+- Alter d_dnw to support area/perimeter compare
+- Alter ind_diff turn measure algorithm.
+- revised nwell connectivity to allow nwell devices under pads
+- revised nwell resistor to support legacy style well resistor in I/O library
+- revised fet_rf to handle shared terminals and control seed promotion
+- revised var_ni to prevent confusion with var_mos
+- added SRAM nfet/pfet
+Stress
+- Correct ST.E*
+xRC
+- Alter d_dnw to support area/perimeter compare
+- revised nwell connectivity to allow nwell devices under pads
+- revised nwell resistor to support legacy style well resistor in I/O library
+- revised fet_rf to handle shared terminals and control seed promotion
+- revised var_ni to prevent confusion with var_mos
+- added SRAM nfet/pfet
+- added cpoly blocking, varactor filtering
+
+Assura
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* No deck updates
+
+___________________________________
+Date: 11/22/04 
+Library: ca18 (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.8
+Electrical Spec: NPB-PS-0173, rev.6
+
+Highlights:
+* deep nwell diode implementation. You must use the ddnw device when you have
+  triple well in your design.
+* LVS fix for ind_diff
+* DRC fixes including rppoly_lo and vpnp 
+* Layout Migration Tool for dummy metal resistor purposes
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.2
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+  - 3.0.7 is no longer supported
+
+Environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Updates:
+* Added check for RDS_CDS_VERIFY_TECH variable
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* Updated artifact generator to NOT generate implant layer artifacts
+
+New devices, Design Library:
+* Added deep nwell diode (ddnw)
+  - Previously LVS clean designs that use triple well will fail LVS.
+    The design must be modified to include the ddnw device
+    in the schematic.
+  - Use information can be found in the ca18 technology info web pages
+
+Modified devices, Design Library:
+* Added lvs support for rws case in resistors 
+* Fixed wide metal1 spacing in vpnp 
+* Fixed ablb overplots for rppoly_lo guard ring
+* Brought cascode fet gate connection down to design rule minimum when 
+  metal2 routing is used
+
+Techfile Updates:
+* Changed dummy metal resistor purpose from "1" to "5".
+* Added a utility to migrate the old dummy metal resistor purposes (1 or 2)
+  to the current purpose (5).  This is found in:
+  Layout Window->Jazz->Layout Migration Tool.  Enter the scope and target 
+  library/cellview values.  In this case, the source and mapped library 
+  values don't apply.
+
+Model Updates: Model version v3.1
+* Updated FET models:
+- New 1.V RF LDMOS model nfet_rfld. This model is for use in ca18pa
+  only and is only available for Spectre.
+- Added new model to handle DNW ring.
+
+Verification:
+Calibre
+* Calibre menu is automatically added to the layout window
+* Jazz Verification menu is disabled for technologies where
+  its no longer supported
+DRC
+- Removed 45 degree and acute angle check
+- Updated layer names
+- revised *.pin, fill layer datatype
+- added LUPI
+- switch file support
+- ldfet rules
+ERC
+- Fixed connectivity
+ESD_LUP
+- Fixed connectivity
+LVS
+- Added d_dnw for isolated well lvs and extraction
+- revised nwell resistor to support legacy style well resistor in I/O library
+- added extra parameters to facilitate xrc support
+- revised differential inductor to better handle even number of turns
+- revised nfet/pfet W/L bend effect calculation
+xRC
+- Added d_dnw for isolated well lvs and extraction
+- revised nwell resistor to support legacy style well resistor in I/O library
+- added extra parameters to facilitate xrc support
+- revised differential inductor to better handle even number of turns
+- revised nfet/pfet W/L bend effect calculation
+
+Assura
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* No deck updates
+___________________________________
+Date: 10/22/04 
+Library: ca18 (ca18hr)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.8
+Electrical Spec: NPB-PS-0173, rev.6
+Design Application Note For CA18 -LD Fets: NPB-PS-0578, rev.1 
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 2004.2
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+
+Highlights
+* IC50.33USR2 is minimum recommended IC tools version
+* Assura 3.1.2 or higher required. 3.0.7 no longer supported.
+* Calibre 2004.2 required
+* Layout Migration Tool for dummy metal resistor purposes
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Added check for RDS_CDS_VERIFY_TECH variable
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* Changed dummy metal resistor purpose from "1" to "5".  See next item for 
+  details on migrate utility.
+* Added a utility to migrate the old dummy metal resistor purposes (1 or 2)
+  to the current purpose (5).  This is found in:
+  Layout Window->Jazz->Layout Migration Tool.  Enter the scope and target 
+  library/cellview values.  In this case, the source and mapped library 
+  values don't apply.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found in
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* Updated artifact generator to NOT generate implant layer artifacts
+
+Modified devices, Design Library:
+* Differential inductor (ind_diff) will not pass lvs if an even number of
+  turns is used
+* Removed tap exit option from differential inductor (ind_diff).  This is now
+  based on the number of turns.  For an even number of turns, the center tap
+  will exit to the left and for an odd number of turns the center tap
+  will exit to the right.
+* Corrected gate connection option in cascode fets
+* Implemented ablb overplots and fixed metal2 appearance in unconnected/1Met
+  styles for rf fets
+* Fixed diode pin names for vxl
+* Fixed mimcap tap overplots
+
+Techfile Updates:
+* Changed dummy metal resistor purpose from "1" to "5".  See 'Kit and Environment
+  Changes' section for details on migrate utility.
+
+Model Updates: Model version v3.1 * 2004/10/22
+FET: 
+- New 1.V RF LDMOS model nfet_rfld. This model is for use in ca18pa
+  only and is only available for Spectre.  Not yet supported by design kit.
+- Added new model to handle DNW ring. Not yet supported by design kit.
+
+Verification:
+Calibre
+DRC
+- Updated layer names;
+- Revised *.pin, fill layer datatype, fuse, dummy metal resistor,
+   14.A/B changed from 0.60 to 0.44
+- Added LUPI, switch file support, ldfet rules, 
+ESD_LUP
+- Use switch file; revised LUP.G.a
+LVS
+- Added butting diffusion connectivity, legacy well resistor support,
+  presistor/pinductor/pcapacitor handling; Use switch file; revised fet_cascode 
+  to better handle seed promotion
+xRC
+- Added butting diffusion connectivity, legacy well resistor support,
+  presistor/pinductor/pcapacitor handling; Use switch file; revised fet_cascode
+  to better handle seed promotion
+
+Assura
+ - Beta support for ca18hr and ca18pa
+DRC, LVS, RCX have many changes to improve beta level support
+___________________________________
+Date: 09/23/2004
+Library: ca18 (ca18hr, ca18qiw, ca18qix, ca18pa)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.8
+Electrical Spec: NPB-PS-0173, rev.6
+Design Application Note For CA18QIW,QIX: NPB-PS-0614, rev.1
+Design Application Note For CA18PA: NPB-PS-0630, rev.2
+Design Application Note For CA18 -LD Fets: NPB-PS-0578, rev.1 
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 2004.2
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* Some of the cadence layer/purpose definitions have been changed to keep the
+  kit consistent with our development nethodology.  You will need to redraw the following
+  layer/purpose pairs as they will not appear in the cadence layout tools and are dropped 
+  in PIPO:
+  - metal1-6 "rr" (dummy metal resistor layers)
+  - poly "bk" (dummy poly block layer)
+  - metal1-6 "bk" (dummy metal block layers)
+  - metal1-6 "fl" (dummy metal fill layers)
+  - mrklyr "t3" (3T pixel marking layer)
+  - mrklyr "t4" (4T pixel marking layer)
+  - mrklyr "pk" (pixel centering marking layer)
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* Added CDF option "storeDefault" to necessary parameters in all devices.  Any 
+  change to the default value of a device parameter up till now (including 
+  this release) would have overwritten the previous default value. This option
+  will keep the previous default value and update it only when trigger callbacks 
+  is run.  This will keep the user informed of any changes.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found in
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+New devices, Design Library:
+* Removed 1.8V native fet and added 3.3V native fet (nfet3p3_vt0)
+
+Modified devices, Design Library:
+* Changed the min width to 0.42u for the low and medium threshold fet 
+  (nfet3p3_vtl, nfet3p3_vtm in ca18qi*)
+* Revised default threshold value to be 2* the default width for 1.8V/3.3V fets
+* Added hf_noise option to 1.8V rf fet (nfet_rf).  Possible values are 0 or 1 
+  to disable/enable model.  Currently this only works for the spectre simulator.
+* Added ablb overplot and s/d contact spacing options to 1.8V/3.3V fets.  Fixed
+  7.G violations.  Revised tap callbacks for cascode and rf fets
+* Modified simInfo in resistors to netlist total length instead of strip length
+* Removed non-essential netlisted parameters from the simInfo in all devices
+* Set the fuse value to 0.4
+* Updated the default simulation parameters for the inductors (ind, ind_diff) 
+* Complete rework of inductor (ind, ind_diff) layouts.  This requires re-layout
+  of any legacy designs
+* Fixed junction varactor (var_ni) DRC violations (VAR.C, 11.a.b) 
+* Modified mimcaps to use OP.E rule and tap callbacks
+
+Techfile Updates:
+* Added support for dummy metal fill and poly/metal blocking
+* Included pin and net purposes for poly and metal layers
+* Slotted via support for ca18pa and pixel support for ca18qi*
+
+Model Updates:
+Model version v3.0 * 2004/09/20
+Updated FET models:
+- New high-frequency noise model for the 1.8v RF NFET is provided for
+  Spectre ONLY. Set cdf parameter hf_noise =1 to enable this model.
+- Diode models have been updated for the 1.8 and 3.3v nfets and diodes
+  to be aligned w/ recent measurements.
+- New n3p3fet_vt0 model for native (low threshold voltage) fet.
+  Includes nominal, 1/f, BPV corner and statistical.
+  Mismatch model is currently based on the 3.3v nfets.
+- Nwell resistor updated temp coefficients with measured data
+  at T=-40,0,25,40,80 and 125C.
+- Added thermal noise to Spectre nwell resistor Verilog-A model
+- Correct Hspice translation to provide correct jsw on diode model
+- Updated/added support for ngcon (gate connection) for RF fets in ADS
+
+PNP:
+- Correct Hspice translation to provide correct tcv model parameter on
+  lpnp.
+
+Updated resistor models:
+- Update tc model based on measurement data with temp range of
+  [-40, 0, 25, 40, 80, 125]C
+- update rhosub from 3e-2 to 1e-3, and modify rsub equation to add
+  ns factor
+- Correct fuse resistance and tc to match espec (from 102 to 0.4)
+  Kit Component value uses 0.4, so no simulation difference will be seen
+- Correct Hspice translation for tmid/tend resistor models. Previously,
+  model would evaluate to zero.
+
+Model version v2.9a * 2004/06/30
+
+Updated FET models:
+- Corrected sidewall junction capacitance temp coefficients for
+  pfet, pfet_rf, n3p3fet, p3p3fet, n3p3fet_rf, and p3p3fet_rf
+- Corrected junction capacitance coefficients for pfet and pfet_rf
+- Added experimental vtl/vtm models nfet3p3_vtl nfet3p3_vtm
+
+Statistical models:
+- Align stat fet model to corner model
+- Corrected missing as/ad/ps/pd parameters on fet subcircuits
+- Updated stat pc resistor width to match corner model (add 0.24u)
+- Added ms (simulation "m") parameter support to stat pc subcircuit
+- Added experimental vtl/vtm models nfet3p3_vtl nfet3p3_vtm
+
+Verification:
+Calibre
+DRC
+ - Added CI drc interface code, iw switch, SRAM rules, generated layer checks,
+	dummy metal resistor checks, custom fill layer checks; revised 2.G, 5.D.b.1, 
+	6/11.F, 8.C, big metal checks; removed LUP.I.d
+LVS
+ - Removed nfet_vt0; reformatted to GTE 3.0; revised cascode fet wf calculation;
+	revised fet nf tolerance
+ - cascode fets with fingers > 1 aren't drawn properly and don't pass lvs
+ - reworked ind_diff doesn't pass lvs 
+xRC
+ - Removed nfet_vt0; reformatted to GTE 3.0; revised cascode fet wf calculation;
+   revised fet nf tolerance; added pex cap checking distance selection; recalibrated 
+	with xCalibrate v2004.2
+Antenna
+ - Merged ca18hr/ca18pv/ca18qiw antenna; added metal layer mapping, smim antenna
+   checks
+Density
+ - Implemented new dummy metal fill routine; added dummy active and poly fill $routines
+	, 5.L, *.F, explanation to show_dummy display; revised metal and blocking layers
+ERC
+ - Merged ca18hr/ca18pv/ca18qiw erc; Revised substrate derivation; filtered out
+	inductor metal; added dummy fill layers and filters to floating metal checks, 
+	switch for CI
+ESD
+ - Merged ca18hr/ca18pv/ca18qiw esd/lup; revised LUP.B.C.c, LUP.D, LUP.D.c, LUP.E; 
+	added device periphery display; removed LUP.B.C.c.1, LUP.D.a,b, LUP.E.a,b; 
+	added switch for CI, dummy metal resistors; filtered out inductor metal from 
+	regular
+Stress
+ - Merged ca18hr/ca18pv/ca18qiw stress; revised ST.E, ST.G, ST.A to accomodate ldiff 
+	with wide metal body, ST.A,B,C,I to check in all levels; added mim stress checks
+
+Assura
+ - Beta support for ca18hr and ca18pa
+DRC, LVS, RCX
+
+___________________________________
+Date: 06/03/2004
+Library: ca18
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.7
+Electrical Spec: NPB-PS-0173, rev.5
+
+Software versions tested with this release)
+* Cadence IC releases IC446MSR7, IC50MSR3, IC50.32, IC50.33USR1
+* Mentor Calibre releases 2003.06
+* Cadence Assura releases 3.07 (IC446MSR7) and 3.1.2 (IC446MSR7, IC50.33)
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* Implemented beta version of "Trigger Callbacks" to work with gte design kits.
+  Be aware of this as you may need to run this utility to get the latest cell
+  changes.  Contains updates which allow a "dry run" where callbacks are run,
+  but the schematic or layout is not saved. Added "Trigger Callbacks" to the
+  CIW that can be run on schematic or layout. Merged Trigger Callbacks for
+  cellview, hierarchy, and library into one form.
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Updated Schematic Jazz->Utility->Update Inductor... to address an occasional
+  failure to run.
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+New devices, Design Library:
+* Added ld fets and 3 terminal pdiodes (nfet3p3_ld, pfet3p3_ld, dp_3, dp3p3_3)
+* Implemented dummy resistor (r_dummy).  See technology component webpage for
+  usage information
+* Metal dummy fill blocking (layer 117) is not supported in this release.
+  See Design Rule document for more information. Support will be added in the next
+  kit release.
+
+Modified devices, Design Library:
+* Added "Style" option to rf fets
+* Changed junction varactor (var_ni) parameter limits to:
+wd 0.9u-5.5u
+ld 10u-50u
+na 1-30
+* Fixed resistor sizing to allow for w > l
+* Added range limits for m, count, capcols, caprows, and strips
+
+Model Updates: Model version v2.9 * 2004/05/28
+Fets
+- Completely revised FET model using BPV scalable model instead of bins
+- Updated to match latest measured narrow fet and body effect parameters
+- Improved noise modeling
+- Revised statistical model to match corner model changes
+- Updated new mosvar_1p8 model for mos varactor.
+- Added FET_LD model (nom only) for n3p3fet_ld and p3p3fet_ld
+- Updated min p3p3fet from 0.36um to 0.30um
+- Updated min/max RF Fet width/length to better match model validity region:
+              wmin      wmax       lmin       lmax
+   model    old  new   old  new   old  new   old  new
+   n 1.8V   2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+   p 1.8V   2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+   n 3.3V   2.5u 2u    20u  10u  0.36u 0.36u 1u   0.7u
+   p 3.3V   2.5u 2u    20u  10u  0.36u 0.30u 0.7u 0.7u
+
+Pnp
+- Updated rfvar_ni to align with Espec and measured data to 20GHz
+- Fixed translation of tpb->pta for Spectre to
+  provide periphery capacitance temp coefficient in varactor_bl
+
+Statistical models
+- FET models updated using BPV based statistical and mismatch model
+  and aligned to corner model
+- Added statistical process model support for nwell resistor
+- Updated new mosvar_1p8 model for mos varactor.
+- Added FET_LD model (nom only) for n3p3fet_ld and p3p3fet_ld
+- Updated default subckt geometry for rps to match corner model
+- Updated model for lpnp, vpnp, rfvar_ni to match corner model
+
+Verification:
+Calibre
+DRC
+*  Revised 52.H and added ld fet support
+
+LVS
+* Added ld fet support
+* cascode fets with fingers > 1 aren't drawn properly and don't pass lvs
+
+xRC
+* Added ld fet support
+
+Density
+* Fixed filling blocking layer datatype, metal 2 filling blocking
+
+Assura
+DRC, LVS, RCX
+* Initial beta support
+
+___________________________________
+Date: 04/09/2004
+Library: ca18
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.6
+Electrical Spec: NPB-PS-0173, rev.5
+
+Software versions tested:
+* Cadence IC releases IC446MSR7, IC50MSR3, IC50.32
+* Mentor Calibre releases 2003.06
+
+Kit and Environment Changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* Trigger callbacks will not work correctly in this kit.  This will be fixed
+  in a future release.
+* Updated Technology Library web pages to reflect current gte kit.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+
+New devices, Esd Library:
+* First release of gte compatible esd library
+
+Modified devices, Design Library:
+* Added max current calculation to rppoly_lo and rppoly_sal
+* Modified "End Resistance" prompt in resistors to reflect the fact that
+  this value does not take into account contacts
+* Fixed fet parameter passing in Virtuoso XL
+* Renamed mosvar to var_mos to reflect current naming conventions
+
+Verification:
+Calibre
+DRC
+* Revised MVAR.1,2; cleaned up unused layers
+
+LVS
+* Renamed mos varactor from mosvar1_8 to var_mos; removed various layers;
+  added PORT LAYER TEXT
+* cascode fets with fingers > 1 aren't drawn properly and don't pass lvs
+
+xRC
+* Renamed mos varactor from mosvar1_8 to var_mos; removed various layers;
+  added PORT LAYER TEXT
+
+Esd_lup
+* Removed unused bipolar layers; separated smim via3; revised LUP.G.a
+
+Density
+* Added filling blocking layers, lay117 datatype 1-6
+_______________________________________________________________________________
+Date: 03/05/2004
+Library: ca18
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.6
+Electrical Spec: NPB-PS-0173, rev.5
+
+General Kit Changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you open pre-gte ca18 designs in the new ca18 kit, layers may be mapped
+  incorrectly.  This will be fixed in a future release.
+* Trigger callbacks will not work correctly in this kit.  This will be fixed
+  in a future release.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or
+  5.0.0.500.29. Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.  Off-grid errors may still
+  occur. Use Snap-To-Grid to correct these violations.
+* Replaced menu item "Jazz->What's New" with "Jazz->Release Notes"
+
+Modified devices:
+* Removed lpnpfeta.  Device will not be supported in ca18
+* Increased viewability of cdsTerm labels for symbols
+
+Techfile:
+* Removed symbolics with purpose "symbolic".  All symbolics should be of
+  purpose "drawing".
+
+Verification:
+Calibre
+DRC
+* added mos varactor rules
+
+LVS
+* added support for mos varactor
+* added support for resistors with strips > 1
+* cascode fets with fingers > 1 aren't drawn properly and don't pass lvs
+
+xRC
+* added support for mos varactor
+* Rebuilt ca18 rcxlib with mosvar
+_______________________________________________________________________________
+Date: 02/16/2004
+Library: ca18
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.6
+Electrical Spec: NPB-PS-0173, rev.5
+
+Added devices:
+* Added mos varactor (mosvar) pcell.
+
+Modified devices:
+* Removed all options except "None" from gate connection parameter in
+  cascode fets.  The layout wasn't drawn properly.
+
+Techfile:
+* Added dnwell and updated definitions for artifact, topmm2, and outline
+
+Verification:
+Calibre
+LVS
+* added support for var_ni
+* cascode fets with fingers > 1 aren't drawn properly and don't pass lvs
+* mosvar not supported
+* resistors with strips > 1 aren't supported
+
+xRC
+* added support for var_ni
+_______________________________________________________________________________
+Date: 01/27/2004
+Library: ca18
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.6
+Electrical Spec: NPB-PS-0173, rev.5
+
+Added devices:
+* Added p+/nwell junction varactor (var_ni) pcell.
+
+Modified devices:
+* Modified w/l min and max values for the 1.8V and 3.3V rf fets
+	1.8V wmin=2.0u wmax=10u
+		  lmin=0.18u lmax=0.7u
+	3.3V wmin=2.0u wmax=10u
+		  lmin_n=0.36u lmax_n=0.7u
+		  lmin_p=0.30u lmax_p=0.7u
+* fuse_m6rf was renamed to fuse_m5rf to reflect the proper naming
+  convention for fuse body metal
+
+Model updates:
+v2.8
+* Fet
+	-Incorporate MS fet into RF fet to provide better DC match.
+	-This change is ONLY done for Spectre in this release.
+	-ADS and Hspice still use old RF fet model.
+	-Statistical model reflects above changes
+v2.7
+* Fet
+	-Updated fet parameters to improve narrow fet and body effect
+	-Add support for multiple gate straps on rf fets
+	-Wrap Spectre nwell resistor with subcircuit to allow parametric or
+	statistical analaysis
+* PNP
+	-Improved statistical model params to better match NOM corner for vpnp's
+* Res
+	-Reset subckt size defaults to match corner model
+
+Verification:
+Calibre
+DRC
+* Fixed fuse rules, fuse and artifact layer gds numbers
+
+LVS
+* Changed fuse to lay114, fuse metal to metal 5; added mos varactor; added simA to
+  vpnp for Calibre view generation; fixed W/L for cpoly
+* cascode fets aren't properly drawn so they don't pass lvs
+* var_ni hasn't been qualified for lvs
+* resistors with strips > 1 don't pass lvs
+
+xRC
+* Added initial support for calibre interactive xRC flow.  Please see Calibre
+  Interactive setup document for more details.
+* Built ca18_rcx library for calibre view creation
+
+_______________________________________________________________________________
+Date 5/28/2003
+Library ca18:
+Initial release of ca18 design kit for general use. This kit currently
+supports ONLY the CA18HR process variant. Kit contains the following:
+* 1.8 and 3.3 volt CMOS devices with optional DNW
+* 6-metal RF process with 2FF MiM, inductor, and varactor
+* A few device names are slightly different. The inductors have been
+  changed from l3t and ldiff to ind_single_m6rf (Metal 6 RF style thick-top
+  single-ended) and ind_diff_m6rf (Metal 6 RF style thick-top differential
+  inductor) for future design kit consolidation.
+* Dummy metal resistor. Here are the restrictions and use notes:
+  - It uses Cadence layers metal1 - metal6, purpose rr
+  - The marking layer must exactly cover the metal shape (coincide with
+	 two or more edges) to cause the desired break in connectivity.
+  - Current implementation requires user to place an ideal resistor (not
+	 presistor) in schematic and manually calculate resistance desired for
+	 the schematic resistor.
+  - There is no layout cell - the marking layer must be added manually.
+  - Because of the restriction that this shape exactly match regular metal,
+	 it is likely to be error-prone to force a complex path to be covered
+	 with this marking layer unless a copy/paste is done.
+  - Because of the implementation of the dummy resistor marking layer,
+	 it must EXACTLY match the size of the regular metal drawing shapes.
+	 The marking layer will be treated as regular metal drawing layer
+	 during mask prep.
+  - The layout size of the resistor should be as small as possible since
+	 it affects the accuracy of the extraction tool. The dummy resistor
+	 area will be excluded from other parasitic calculations like lumped
+	 or distributed C.
+  - The R value is not compared during LVS.
+</PLAINTEXT></BODY></HTML>

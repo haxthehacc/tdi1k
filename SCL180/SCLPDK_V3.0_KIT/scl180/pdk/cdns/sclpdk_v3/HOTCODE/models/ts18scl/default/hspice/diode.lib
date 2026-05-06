@@ -1,0 +1,18 @@
+* library diodelib
+
+.LIB NOM
+.LIB 'ts18sl_scl.lib' diodes
+.LIB 'ts18sl_scl_2019.lib' diodesnew
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl.lib' diodes
+.LIB 'ts18sl_scl_2019.lib' diodesnew
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl.lib' diodes
+.LIB 'ts18sl_scl_2019.lib' diodesnew
+.ENDL SLOW
+
+* end library diodelib

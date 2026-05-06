@@ -1,0 +1,487 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+_______________________________________________________________________________
+Date: 2006/05/24
+Library: ch25a and ch25r
+Relevant Specification Documents:
+Design Rules: NPB-PS-0146, rev.7
+Electrical Spec: NPB-PS-0170, rev.5
+
+Highlights:
+* IC5.1.41 USR3 is minimum recommended IC tools version
+* Updated inductor to support shield and added differential inductor (cr25qw34 only)
+* Assura deck first release for cr25qw34 process variant
+* Device callback changes require use of trigger callbacks function.
+  See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another.
+
+Software versions tested with this release
+* Cadence IC releases IC5.1.41USR3, IC50.33USR3
+* Cadence MMSIM6.0 USR2
+* Synopsys Hspice X-2005.09
+* Mentor Calibre releases 9.1_5, 2003.04, and 2006.1
+  - XCalibre is not supported in v2003.04 or later releases
+* Cadence Assura 3.1.5 USR1
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  cr25qw34 ch25mw ch25mw1 ch25qw ca25qw3 ca25qld
+* The previous verification decks are no longer shipped in the design kit.
+  This includes the following decks: ch25a ch25d ch25r ch25m ch25q 
+  Modify the RDS_CDS_VERIFY_TECH variable as described below to use a
+  supported process variant and deck.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and Environment:
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* The following features are NOT implemented in the design kit but are shown
+  in the Design Rule Document:
+  - Dummy (LVS) resistors, dummy metal fill and block layers
+* Update JAZZ->FAQ pages with revised wording for kit migration. Corrected
+  several menu name references.
+* Fix issue with running Inductor Toolkit on HPUX platform
+* Fix issue in Jazz automated streamin procedures to prevent GDS import failures
+  when using a technology library as a reference.
+* Update pex2skill script to print version number correctly.
+* Update run_cal script to remove legacy documentation.
+* Remove many legacy or unsupported menu items in JAZZ menu
+* Fix issue where pcell drawing would fail when the SKILL path did not include
+  the "." directory.
+* Change schematic Jazz->Netlist->CBR netlist generator use the current window's
+  instead of forcing it to "schematic".
+* Corrected interaction between Jazz custom tool that saves Artist save states
+  as cellviews and similar Cadence IC5.1.41USR3 functionality.
+* Corrected auto-checkout/checkin issue with Jazz custom tool that saves Artist
+  save states as cellviews.
+
+Device Library limitations:
+* Fuse: The fuse cell currently provided is the legacy poly fuse. The
+  new metal fuse will be provided in the next kit release.
+
+Device Library:
+* See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another. Several kit changes require re-calculation
+  of device parameters for proper functionality.
+* Remove Discrete_Components library. This library contained discrete passives
+  that were not supported by Jazz. The library is no longer provided in the
+  design kit release. If you still need this library, you can copy it from
+  a previous Jazz kit release. You can add it to your cds.lib file by adding
+  this line to your local or project cds.lib file:
+  DEFINE Discrete_Components $RDS_CDSLIBS/Discrete_Components/devices
+* Fix diode callbacks to better determine if area or perim are not realizable
+  in A/P mode.
+* Fix off-grid issue with bulk ring creation when chop option is used.
+* Removed device views and CDF for unused simulators like cdsSpice, libra, mharm.
+* Removed unused "softcells" library provided in kit directory. This legacy
+  library is not used and will have no effect on the on softcells library that is
+  used in project directories.
+* Added new ch25_rcxlib library for use with Assura RCX.
+* Added new CH25/CR25 ESD library ch25_esdlib. This library provides ESD structures
+  for all variants, but pads only for metal 4 process variants.
+* Added c4t_mimw mim over well with explicit nwell/sub. This device should be
+  used instead of the c3t_mimw.
+* Added var_mos MOS varactor. This new device includes more accurate modeling
+  of parasitics important to varactor high-frequency performance.
+* Add techfile layers for metal fill/block/resistor, PWE, jazzPad
+* Inductor: Inductors supported by cr25qw34 variant only
+  - Added new square differential inductor ldiffqw34
+  - Updated single-ended inductor to use new model and include active shield.
+  - Inductor models have been updated to use the new Jazz
+    Inductor Toolbox v3.0. You must update your design libraries
+    using both the Trigger Callbacks comand and also the Update Inductor
+    command to take advantage of the new inductor.
+  + Benefits of the update inductors include:
+    - Single-ended inductors now support shields drawn in active
+    - Support for Polyimide topcoat in inductor simulation model. Not
+      all Jazz process variants support Polyimide. Check with your Jazz
+      support representative before designing with this option.
+    - Better model accuracy in roll-off above peak frequency
+    - Updated Inductor Search tool results to match new model and include
+      additional data points. Search tables have been normalized across
+      the physical design space (x, y, n s, w). The tables contain more
+      data points, but may not contain some data points that were previously
+      present.
+  + Important notes:
+    - You can update all inductors in your design using the Update Inductor
+      command, or you can individually update inductors by editing the instance
+      and clicking on the button titled "Update to latest inductor model".
+    - This update is one-way only. Once you trigger callbacks to update
+      the design library, you will no longer be able to use the design with
+      an older design kit release due to the parameter changes needed to
+      use the inductor model.
+    - See the document "Jazz Cadence Design Kit Installation Instructions"
+      available on Ebizz for details on how to install new design kit
+      versions as well as general procedures to follow when switching kit
+      versions.
+    - The change affects the component model and parameters. The
+      inductor layout will change if you selected an "exit" path other
+      than "straight" or "perpindicular", or if you enable the shield
+      (single-ended inductor only).
+* Correct problem with pnpa/pnpb not showing LVS device size mismatch
+  by removing LVS MERGE PARALLEL BIPOLAR from Calibre deck
+
+Model updates:
+* v3.1a * 2006/04/18
+FET:
+- Initial release of poly cap (pc) model. Based on sbc18 model with adjustment
+  to CH25 Espec.
+- Mos Varactor: update model for parameter 'tox' to be consistent with fet model;
+  cv-related model parameters adjusted based on measured data.
+RES:
+- Remove VC in resistor models due to Spectre issue that would significantly
+  inflate 1/f noise when m>1.
+IND:
+- Update to latest JIT3.0 inductor models. These models are not directly
+  usable in the kit unless inductor instances are updated to use the
+  new model.
+STAT:
+- Add mismatch model for pnpa/pnpb. Due to inline subckt limitations,
+  the region= parameter is not supported and may produce warnings
+  that can be ignored.
+
+* v3.1 * 2005/08/26
+FET:
+- Update 1/f noise for HV fets to match latest measurements
+PNP:
+- Add pdiode_3ts subcircuit for p+/nwell/psub interaction
+CAP:
+- Add simplified model c3t_mim_s 
+RES:
+- Add voltage-dependence to resistor models
+- Add simplified model rnp3t_s
+- Add rw3t_s and rw models copied from rw3t for legacy compatibility.
+STAT
+- Add rw3t_s and rw models copied from rw3t for legacy compatibility.
+
+
+Verification
+
+Calibre:
+Verification
+* Updated decks to common deck t004
+ANT: No change
+Density: No change
+DRC:
+- Fix BD.D.a.1
+- Fix DBLB check to correct typo on lpnp
+- Update 18.E from 0.32um^2 -> 0.36um^2
+- Added rules BD.M.b,BD.6,BD.6.a, BD.J.a.1,2,3; check region of 12um of pad
+- Added 9.* pad rules
+- Added support for MOS Varactor, diff inductor, active shields
+- Revised 5.H to fix poly width =0.8um violation
+- Revised BD.5.a to flag off-by-gridpoint violation
+- Revised rule message of 17.A,17.C,18.C.a,27.A, 28.B.a,37.B.a,37.C
+- Revised 22.E.artifact to use tm shapes in artifact 
+- Revised GRD.Note1 to check entire poly of poly resistor; GRD.A/B to check only body
+- Removed 22.G.a,b; GRD.C
+- Added BMP rule checks
+- Combined LP.G,H to one check        
+ERC:
+- Revised floating gate check to reduce false violations; modified pact,nact connectivity.
+LVS:
+- Add support for MOS Varactor, diff inductor, active shields
+LUP: No change
+PEX:
+- Add support for MOS Varactor, diff inductor, active shields
+STRESS: No change
+
+Assura:
+Initial release of Assura deck for cr25qw34 process variant only.
+* Tested with Assura 3.1.5 USR1
+- Change from Jazz bpt script to Cadence transferProperties function for copying
+  non-physical information from schematic to extracted view.
+  - This functionality is built into the Assura tool and is compatible with other
+    Assura functionality like HRCX.
+  - This functionality will fail if the "expandOnError" "parameter" switch is set
+    to "t" instead of "nil".
+  - This functionality will not run unless the LVS is 100% clean. You will
+    see this message at the end of the log file when the transferProperties
+    has completed successfully:
+    *****  avcallproc -trp terminated normally  *****
+
+
+_______________________________________________________________________________
+Date: 2005/05/19
+Library: ch25a and ch25r
+Relevant Specification Documents:
+Design Rules: NPB-PS-0146, rev.6
+Electrical Spec: NPB-PS-0170, rev.4
+
+Highlights:
+* IC50.33USR2 is minimum recommended IC tools version
+* Updated FET models from latest extracted data
+* Spectre statistical models provided in this release
+* Device callback changes require use of trigger callbacks function.
+  See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another.
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR3, IC5.1.41USR1
+* Mentor Calibre releases 9.1_5, 2003.04, and 2003.06
+  - XCalibre is not supported in v2003.04 or later releases
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  cr25qw34 ch25mw ch25mw1 ch25qw ca25qw3 ca25qld
+* The previous verification decks are provided for backward compatibility.
+  They have not been updated and should not be used. Instead, modify the
+  RDS_CDS_VERIFY_TECH variable as described below to set it to a supported
+  process variant and deck.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and Environment:
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* The following features are NOT implemented in the design kit but are shown
+  in the Design Rule Document:
+  - Dummy (LVS) resistors, dummy metal fill and block layers
+
+Device Library:
+* See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another. Several kit changes require re-calculation
+  of device parameters for proper functionality.
+* Modified netlisting information and OP point data for devices to match
+  latest model updates:
+  - c3t_mim, c3t_mimw, l3t, rnp3t, nfet_rf, pfet_rf
+* passgate: Updated implant generation to fix DRC error that could occur in
+  horizontal mode. Also altered length/width to use 2X grid spacing.
+  Your cell may grow or shrink by 1 grid point because of this change.
+* pfet: Corrected problem in last kit release where cni-cpi spacing was
+  unintentionally changed from 0.06um to 0.4um to address passgate issue.
+  Spacing is now reverted back to 0.06um
+* Update inductor l3t to use parallel_rl model instead of resistor ladder.
+  To update your design, open the schematic and choose the Jazz->Utilities->
+  Recalculate Inductor menu item. 
+* Correct problem with pnpa/pnpb not showing LVS device size mismatch
+* New model library supports selecting model corners by device class:
+  fet, pnp, cap, ind, res
+
+Model Library: v3.0 * 2005/05/19
+- Same model library v3.0 is used for both ch25a and ch25r design kits.
+- Operating point or current probing in old kit may not work on new model,
+  and new OP or current probing may not work when using older model.
+  Use Results Browser or Results Display to review OP data if it is
+  not visible in the schematic.
+Fet:
+- New scalable models for 3.3v N and PFETs
+- New BPV corner and statistical models for 3.3v N and PFETs
+- New RF sub-circuit models with improved gate and substrate resistance models
+- Improved HV FET DC and Capacitance models
+- New BPV corner and statistical models for HV FETs
+- Initial release of MOS varactor for ch25
+- Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+- Add tc1=3.863e-3, tc2=1.152e-5 based on the latest measured R ~ T data
+PNP:
+ - vpnp model has been updated to be aligned with Espec: BF=[3,4,5].
+Cap:
+- Remove "simplified" c3t_mim_s and c3t_mimw_s models. These models
+  were redundant copies of the standard model.
+- Remove voltage-dependent coefficient for c3t_mim since it is negligible
+- Add parasitic top plate resistance and top via resistance
+- Add parasitic inductance for both top and bottom plates
+Ind:
+- Added parallel_rl based model l3t_l. This model is now the default used
+  by the design kit.
+Res:
+- Remove "simplified" rnp3t_s model. This model was a
+  redundant copy of the standard model.
+- Add tc1=2.760e-4, tc2=4.323e-7 for rnp based on the latest measured
+  R ~ T data
+- Add 1/f noise model to spectre corner and statistical model
+  (not available for hspice model)
+
+Verification
+* Updated ca25qld and cr25qw34 to common deck t002
+DRC:
+- Add value to description of 40.*
+LUP:
+- Turn off ESD checks. You will need to add the following command to your
+  Calibre rule file to enable the ESD rule checks:
+      #define esd_checks
+- Improve performance of 35um periphery region determination
+- Update LUP.B.C.c.* to show type of tap
+- Remove LUP.D.a,b,d and LUP.E.a,b,d
+Stress:
+- Exclude MIM cap from metal slot stress check
+
+_______________________________________________________________________________
+Date: 11/22/04 
+Library: ch25a and ch25r
+Relevant Specification Documents:
+Design Rules: NPB-PS-0146, rev.6
+Electrical Spec: NPB-PS-0170, rev.3
+
+
+Highlights:
+* IC50.33USR2 is minimum recommended IC tools version
+* Environment changes affect loading of $RDS_CUSTOM files and location of
+  some executables that will affect legacy customers.
+* Removed setting of VersionSync variables
+* Corrected Spectre OP to work with IC50.33
+* Corrected Rsh and Rend for poly and nwell resistor
+
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR3, IC446MSR10
+* Mentor Calibre releases 9.1_5, 2003.04, and 2003.06
+  - XCalibre is not supported in v2003.04 or later releases
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  cr25qw34 ch25mw ch25mw1 ch25qw ca25qw3 ca25qld
+* The previous verification decks are provided for backward compatibility.
+  They have not been updated and should not be used. Instead, modify the
+  RDS_CDS_VERIFY_TECH variable as described below to set it to a supported
+  process variant and deck.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment changes:
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Removed Jazz Area DRC menu item. You should use the Cell DRC instead.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* Updated artifact generator to NOT generate implant layer artifacts
+
+Modified devices, Design Library:
+* Corrected Spectre OP to work with IC50.33
+* Corrected Rsh and Rend for poly and nwell resistor:
+  Poly: rs from 93 to 92; rend from 57 to 60; dw from -97n to -90n
+  Nwell: rend from 1160 to 1490; dw from -412n to -410n
+* passgate: Updated implant generation to fix DRC error that could occur in
+  horizontal mode. Also altered length/width to use 2X grid spacing.
+  Your cell may grow or shrink by 1 grid point because of this change.
+* The following features are NOT implemented in the design kit but are shown
+  in the Design Rule Document: Dummy (LVS) resistors, dummy metal fill and block layers
+
+Verification:
+A unified Calibre deck has been created merging all of the proces variants.
+
+Antenna: Unified deck; Added support for dummy fill/block layers
+Density: Unified deck; Added new, more dense metal fill algorithm and dummy
+  fill/block layers.
+DRC: 
+- Unified deck
+- Renamed many rules to remove "R" prefix.
+- Improved artifact-to-data checking; Included *.artifact rule for most rules.
+- Added *.grid for non-routing layers
+- Changed implant generation to use merged data only
+- Updated bondpad rule implementtaion for Jazz pads
+- Revised LUP.H/LUP.I to match LUP deck changes
+- Revise R22.G.b with better algorithm
+- Remove PF.T
+- Added support for dummy fill/block layers
+ERC: Unified deck; Added support for dummy fill/block layers
+- Rename SOFT.NTAP->SOFT.N
+- Revised rule wording for clearer explanation
+LUP: Unified deck; Added support for dummy fill/block layers
+- Revised periphery generation; LUP.D.*; LUP.E; LUP.G.*; LUP.H.*, LUP.I.*
+- Removed LUP.A.a,b; 
+- Disabled ESD checks. To enable checks, you must add "#define esd_checks"
+  to your deck.
+LVS: Unified decks; Added support for dummy fill/block layers; Added support
+  for dummy (LVS) resistors
+- Corrected poly and nwell resistor rs, rend, dw
+Stress: Unified decks; Added support for dummy fill/block layers
+- Revised checks for ST.A*, ST.I* to remove false violations
+- Split ST.E/ST.G into small/large chip
+PEX: No Change. Decks are copied as-is from previous versions and do not support
+  dummy metal fill/block or dummy (LVS) resistor.
+
+_______________________________________________________________________________
+Date: 09/10/2003
+Library: ch25a/ch25r design kit
+Relevant Specification Documents:
+Design Rules: NPB-PS-0146, rev.5
+Electrical Spec: NPB-PS-0170, rev.3
+
+General kit changes:
+* This design kit release now supports Cadence software release IC50 and
+  also supports the Linux platform in addition to Sun and HP when
+  using IC50. Please contact Cadence for more information on system or
+  platform requirements to use IC50. We strongly recommend IC50 MSR3 or later
+  when using IC50, or IC446 MSR7 or IC446 MSR10 when using IC446.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 
+  5.0.0.500.29.  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are 
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+Verification:
+* Many ESD and Latchup rules have moved from mandatory to recommended but
+  unchecked. Please see the design rule manual for details.
+
+* Calibre:
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - Ruledeck changes:
+    * Many ESD and Latchup related rule changes. See Design Rule document for
+      more details.
+    * RAM and ROM rule changes. See Design Rule document for more details.
+
+</PLAINTEXT></BODY></HTML>
+

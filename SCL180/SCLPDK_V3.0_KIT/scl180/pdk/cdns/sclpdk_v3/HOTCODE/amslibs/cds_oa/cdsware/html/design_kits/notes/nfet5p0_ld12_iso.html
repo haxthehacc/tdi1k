@@ -1,0 +1,36 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'nfet5p0_ld12_iso' implements the 12V VDS isolated nMOS transistor. The gate width can be modified and wide transistors can be generated as an array of parallel fets using the 'Number of Fingers' attributes. Multiple fets connected in parallel on the same active area are called 'fingers'.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+
+<li><b>Fingers:</b> Controls the number of gate fingers connected in parallel in the same active area.</li>
+
+<li><b>Finger Width:</b> Controls the width of a gate finger. </li>
+
+<li><b>Length:</b> Controls the effective channel active length.</li>
+
+<li><b>Drift Length:</b> Controls the effective channel active to drain active length (drift region).</li>
+
+<li><b>RDS On Estimate:</b> Calculates RDS On based off the width, ldrift, and number of fingers.
+
+<li><b>Thermal Resistance Option:</b> A value of '1' activates the thermal resistance option in the simulation model.</li>
+
+<li><b>Post Layout Parasitics?:</b> Enable or disable parasitics in the simulation model.  By default, this will be disabled in the parasitic extraction cellview.
+
+</ul>
+<h1>NOTES:</h1>
+<ul>
+<li>The total width of a transistor is given by: width = NF * WF</li>
+
+<li>The total number of gates of a transistor is given by: gates = NF</li>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: width, length, number of fingers. </li>
+</ul>
+</body>
+</html>

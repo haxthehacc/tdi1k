@@ -1,0 +1,39 @@
+How to stream GDS file into Cadence
+
+1.  Stream GDS into an existing library
+
+    CIW -> File -> Import -> Stream ...
+
+    Input file: the gds file name
+    Library Name: the existing library name
+    Click Options on the top right, turn on "Skip Undefined Layer-Purpose Pair".
+    OK on all forms.
+
+    Stream in take some time. After it is done, a message will pop up.
+
+2.  Stream GDS into a new library
+   
+    (1) Get an ASCII technology file.  You may use one of the following methods:
+
+        -- link or copy /rds/prod/HOTCODE/techs/<tech>/cadence/default/<tech>.tf
+        -- CIW->Technology->Dump, select a technology library (e.g. ch25a, bc35)
+           Select All, enter a file name in ASCII technology file field.
+
+    (2) CIW -> File -> Import -> Stream ...
+
+        Input File: the gds file name
+        Library Name: a library name you want to create
+        ASCII Technology File Name: the file name created in (1)
+
+3.  Stream GDS in with a special map file
+
+    In the stream in form, click User-Defined Data, enter the map file as
+    Layer Map Table.
+
+    Layer map file template:
+
+    #DFII Layer     DFII Layer      GDS Layer       GDS Layer
+    #Name           Purpose         Number          Data Type
+    nwell           drawing         1               0
+    active          drawing         2               0
+

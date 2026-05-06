@@ -1,0 +1,62 @@
+<html>
+
+<h1>DESCRIPTION:</h1> 
+
+'csmimw6_4' implements the four terminal 6fF (5.6fF) stacked MIM capacitor over well. 
+<h1>ATTRIBUTES:</h1>
+<ul>
+
+<li><b>ToUse:</b> Controls the way multiple parallel capacitors are specified. When 'ToUse' is set to 'Multiplier', the Multiplier attribute will be editable and the 'Rows' and 'Columns' attributes will disappear. When 'ToUse' is set to 'Row/Col' the opposite will happen. See below for the meaning of these attributes.</li>
+<br>
+Multiplier: Indicates the number of capacitors connected in parallel. Specifying a 'Multiplier' of n is equivalent to drawing n capacitor instances and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute is available when 'ToUse' is set to 'Multiplier' can only be used in the schematic.<br>
+
+<br>
+Rows: When 'ToUse' is set to 'Row/Col' the capacitor will be implemented as an array of unit capacitors.  'Rows' specifies the number of rows of unit capacitors in the array.<br> 
+
+<br>
+Columns: When 'ToUse' is set to 'Row/Col' the capacitor will be implemented as an array of unit capacitors. 'Columns' specifies the number of columns of unit capacitors in the array.<br>
+
+<li><b>Calculate:</b> Indicates the data entry mode of the capacitor calculation. A Capacitor is described by the attributes 'Capacitance', 'Width', 'Length' and 'Aspect Ratio'. Depending on the value of the 'Calculate' attribute, two of these attributes will be editable and the other two will be calculated : 'C' calculates 'Capacitance' and 'Aspect Ratio' based on 'Width' and 'Length'. 'L' calculates 'Length' and 'Aspect Ratio' based on 'Capacitance' and 'Width'. 'W' calculates 'Width' and 'Aspect Ratio' based on 'Capacitance' and 'Length'. 'WL' calculates 'Width' and 'Length' based on 'Capacitance' and 'Aspect Ratio'.</li> 
+
+<li><b>Capacitance:</b> Controls the total capacitance value of the capacitor array.</li>
+
+<li>Width (X):</b></a> Controls the width of a unit capacitor in the capacitor array.</li>
+
+<li>Length (Y):</b></a> Controls the length of a unit capacitor in the capacitor array.</li>
+
+<li><b>Aspect Ratio = w/l:</b> Controls the aspect ratio of a unit capacitor in the capacitor array.</li>
+
+<li><b>Show Contact Properties:</b> Controls the visibility of the Contact choices for Left, Right, Top, and Bottom.
+
+<li><b>Left Contact:</b> Builds contacts on the left side of the capacitor</li>
+
+<li><b>Right Contact:</b> Builds contacts on the right side of the capacitor</li>
+
+<li><b>Top Contact:</b> Builds contacts on the top of the capacitor</li>
+
+<li><b>Bottom Contact:</b> Builds contacts on the bottom of the capacitor</li>
+
+<li><b>Show Tap Properties:</b> Controls the visibility of the Tap choices for Left, Right, Top, and Bottom
+
+<li><b>Left Tap:</b> Builds tap on the left side of the capacitor</li>
+
+<li><b>Right Tap:</b> Builds tap on the right side of the capacitor</li>
+
+<li><b>Top Tap:</b> Builds tap on the top of the capacitor</li>
+
+<li><b>Bottom Tap:</b> Builds tap on the bottom of the capacitor</li>
+
+<li><b>Tap Extension:</b> The tap(s) are placed the specified distance away fromits default location</li>
+
+
+<h1>NOTES:</h1> 
+<ul>
+</ul>
+ 
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: Capacitance</li>
+</ul>
+
+</body>
+</html>

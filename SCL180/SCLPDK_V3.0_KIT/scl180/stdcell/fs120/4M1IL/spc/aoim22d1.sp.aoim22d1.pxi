@@ -1,0 +1,33 @@
+* File: aoim22d1.sp.aoim22d1.pxi
+* Created: Sun Feb 14 18:58:52 2010
+* 
+cc_1 B1 VSS 0.0520507f
+cc_2 B1 2 0.0464363f
+cc_3 B1 VDD 0.00759804f
+cc_4 B1 B2 0.27635f
+cc_5 VSS 2 0.14551f
+cc_6 VSS B2 0.00785345f
+cc_7 VSS Z 0.0246622f
+cc_8 VSS A1 0.0544005f
+cc_9 VSS A2 0.0464868f
+cc_10 VSS noxref_11 0.00828123f
+cc_11 2 VDD 0.173053f
+cc_12 2 B2 0.471338f
+cc_13 2 noxref_6 0.0307798f
+cc_14 2 Z 0.23249f
+cc_15 2 A1 0.131885f
+cc_16 2 11 0.0108997f
+cc_17 VDD B2 0.0132003f
+cc_18 VDD noxref_6 0.109834f
+cc_19 VDD Z 0.00823161f
+cc_20 VDD A1 0.0215806f
+cc_21 VDD A2 0.0222396f
+cc_22 B2 noxref_6 6.22611e-19
+cc_23 B2 11 0.0144143f
+cc_24 noxref_6 Z 0.116812f
+cc_25 noxref_6 A1 0.0214001f
+cc_26 noxref_6 A2 0.0768505f
+cc_27 Z A1 0.221724f
+cc_28 Z A2 0.043483f
+cc_29 A1 A2 0.2871f
+cc_30 A1 noxref_11 0.0189165f

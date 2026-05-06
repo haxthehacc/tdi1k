@@ -1,0 +1,30 @@
+
+;; This is a display file for RVE
+
+drDefineColor(
+;( DisplayName   ColorsName   Red      Green    Blue     )
+ ( display       yellowBlink  255      255      0      t )
+ ( display       redBlink     255      0        0      t )
+ ( display       greenBlink   0        204      102    t )
+ ( display       magentaBlink 255      0        255    t )
+ ( display       cyanBlink    0        255      255    t )
+ ( display       purpleBlink  153      0        230    t )
+ ( display       orangeBlink  255      128      0      t )
+ ( display       goldBlink    217      204      0      t )
+ ( display       blueBlink    0        0        255    t )
+ ( display       silverBlink  217      230      255    t )
+)
+
+drDefinePacket(
+;( DisplayName PacketName stipple LineStyle Fill Outline [FillStyle]) 
+ ( display y0 blank thickLine yellow  yellowBlink  outlineStipple)
+ ( display y1 blank thickLine red     redBlink     outlineStipple)
+ ( display y2 blank thickLine green   greenBlink   outlineStipple)
+ ( display y3 blank thickLine magenta magentaBlink outlineStipple)
+ ( display y4 blank thickLine cyan    cyanBlink    outlineStipple)
+ ( display y5 blank thickLine purple  purpleBlink  outlineStipple)
+ ( display y6 blank thickLine orange  orangeBlink  outlineStipple)
+ ( display y7 blank thickLine gold    goldBlink    outlineStipple)
+ ( display y8 blank thickLine blue    blueBlink    outlineStipple)
+ ( display y9 blank thickLine silver  silverBlink  outlineStipple)
+)

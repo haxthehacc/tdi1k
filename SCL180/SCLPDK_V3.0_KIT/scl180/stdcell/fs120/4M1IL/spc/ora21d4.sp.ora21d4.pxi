@@ -1,0 +1,29 @@
+* File: ora21d4.sp.ora21d4.pxi
+* Created: Sun Feb 14 19:32:01 2010
+* 
+cc_1 2 VSS 0.151078f
+cc_2 2 VDD 0.433045f
+cc_3 2 A 0.279262f
+cc_4 2 noxref_5 0.0176375f
+cc_5 2 B1 0.128135f
+cc_6 2 B2 0.0952579f
+cc_7 2 Z 0.315195f
+cc_8 2 noxref_9 0.00973202f
+cc_9 VSS A 0.0131009f
+cc_10 VSS noxref_5 0.112058f
+cc_11 VSS B1 0.0277164f
+cc_12 VSS B2 0.111093f
+cc_13 VSS Z 0.0318747f
+cc_14 VDD A 0.0287435f
+cc_15 VDD B1 0.0334187f
+cc_16 VDD B2 0.0368828f
+cc_17 VDD Z 0.0630449f
+cc_18 VDD noxref_9 0.00652883f
+cc_19 A noxref_5 0.0162382f
+cc_20 A B1 0.135908f
+cc_21 A B2 0.00285549f
+cc_22 noxref_5 B1 0.0313161f
+cc_23 noxref_5 B2 0.125401f
+cc_24 B1 B2 0.224177f
+cc_25 B1 noxref_9 0.00315194f
+cc_26 B2 Z 0.0157166f

@@ -1,0 +1,79 @@
+
+Jazz Semiconductor  userware  - Information on Verilog netlister
+_______________________________________________________________
+
+_______________________________________
+verilog.ini file for configuration
+_______________________________________
+
+If ./verilog.ini file exists, use ./verilog.ini file. 
+If no ./verilog.ini, but the file specified by environment variable RSS_CDS_VERILOG_INI exists, use the file.
+Otherwise, no file is used for verilog netlist configuration.
+
+In the verilog.ini file, you may specify: 
+
+1. [header] : The text under [header] will be inserted at the beginning of the verilog netlist file to be generated. "\n" is used for a newline.
+2. [verilogstopcells] : A list of cellnames you want to stop going down globally can be specified under [verilogstopcells].
+3. [powerpins] : A list of power pins to be removed for the cells specified
+under [powerpinremovalcells].
+4. [powerpinremovalcells] : A list of cellnames whose power pins are to be removed.
+5. [supply0] : A list of signal names defined as supply0.
+6. [supply1] : A list of signal names defined as supply1.
+7. [globalsuffix] : If you want to append "_cds_global" to the global signals, put "y" under [globalsuffix]. By default, no suffix is appended to global signals.
+8. [includesubcircuits] : If you want to put all subcircuits in one file, put "y" under [includesubcircuits]. By default, one file is for one module.
+
+Note: "#" at the beginning of lines is used as comment sign.
+
+
+Example verilog.ini file:
+=======================
+[header]
+\n
+`timescale  1ns / 10ps
+[verilogstopcells]
+p_nfet p_pfet
+inverter
+[powerpins]
+p n n1 sub
+[powerpinremovalcells]
+inverter inv0d4
+[supply1]
+vdd
+[supply0]
+vss
+[globalsuffix]
+n
+[includesubcircuits]
+n
+=======================
+
+_______________________________________
+verilogstop property at instance level
+_______________________________________
+name         value
+-------------------
+verilogstop       1             #when you want to stop going down for this instance
+
+_______________________________________
+The Cadence batch mode netlisters:
+_______________________________________
+
+usage: nlsv cellname libname         #for Verilog
+
+Note: The nelisters need to be invoked from the directory in which you invoke Cadence system.
+      libname can be ignored if your libname is ${PROJ_ID}_${LOGNAME}
+      eg: ch25akit_test5 when login as test5 for ch25akit project.
+      No Composer license is needed for using batch mode netlisters.
+
+_______________________________________
+output directory
+_______________________________________
+If environment variable VERILOG_DIR is set, the netlist is generated in the directory specified by VERILOG_DIR. Otherwise, the netlist is generated in the current directory.
+ 
+_______________________________________
+Warnings!!!
+_______________________________________
+The verilog netlister converts all pin/net names in module statements, pin declarations, and instance statements to uppercase for Apollo P&R tool.
+Because Apollo P&R tool is case-INsensitive. 
+
+Do not use lowercase pin/net names which might cause naming conflicts.

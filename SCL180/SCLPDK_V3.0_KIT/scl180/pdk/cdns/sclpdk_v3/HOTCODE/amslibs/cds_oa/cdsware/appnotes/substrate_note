@@ -1,0 +1,64 @@
+Special note on Substrate node
+______________________________
+Most the components from the technology library have an hidden node
+that represents the substrate below the device. This is a "connect
+by name" type of connection where a parameter on the device defines
+the connectivity for the substrate.
+
+* For n-type devices, this is commonly the local p-type substrate
+    (pbulk/pwell or isolated pwell).
+
+* For p-type devices, this is commonly the local n-type substrate
+    (nwell or deep nwell).
+
+* For passive devices, the node will be named "sub" but it refers to
+the local substrate, which will be the nwell or pwell.
+
+---------------
+Implementation
+---------------
+In newer kits, the connection uses Cadence's Inherited Connections
+flow where the value of the parameter can be set at any point in the
+hierarchy. See below for details on how to set this parameter.
+
+In older kits, the connection uses a CDF parameter. The value
+of the CDF parameter is copied to the Inherited Connection parameter.
+
+For the schematic and layout to match, all of the nodes in the same substrate
+must be connected together.
+
+------------------------------------------------------
+Instructions for using Cadence's Inherited Connections:
+------------------------------------------------------
+Cadence provides functionality to allow the user to determine available
+inherited expressions and their values. Detailed documentation on the
+Inherited Connections Flow is available in the Cadence Virtuoso documentation.
+
+ To access available inherited connection information please follow these steps:
+
+* Open a schematic in the Virtuoso Schematic Editor
+
+* Set up the session to identify the inherited properties:
+  Select the Options->Editor menu item. Set the schematic editor options
+  view lists to include a view like "spectre" that includes inherited
+  terminals.  For example, set the view list to:
+spectre schematic symbol
+
+* View or set the inherited properties of an instance or a hierarchy:
+To see the available properties on an instance or hierarchy:
+- Select the menu item Edit->Net Expressions->Available Properties
+- Click on the desired device from the schematic window. The form will
+  show all netSet property names available, as well as the current value
+  of those properties.
+- If you click on a primitive, you will see the properties available and
+  their currently evaluated value.
+- If you click on a non-leaf cell, but all lower cells have netSets,
+  you will not see any available properties.
+- You can choose to override the property using the other buttons on the form.
+
+To see the properties down the hierarchy:
+- Select the menu item Edit->Net Expressions->Evaluated Names
+- Click on the instance with hierarchy
+- The form will display all the names/values down the hierarchy and
+  also show the point in the hierarchy tree where these values are set. 
+

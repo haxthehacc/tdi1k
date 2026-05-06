@@ -1,0 +1,32 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date 04/22/2005
+Design Kit: ci25
+Electrical Specification: PS-0265, Rev 4
+Design Rules Document: PS-0266, Rev 6
+
+Software versions tested with this release:
+* Cadence IC release IC5.0.33USR2
+* Mentor Calibre releases 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+
+Highlights
+* ci25mw is a 0.25um, 3 metal,  3.3V CMOS process with 0.52um metal thickness.
+  It is specifically designed for use in CMOS imagers. It also
+  contains a special low-Vt fet for use inside the pixel.
+
+Device Library
+* The ci25 Cadence Library technology file only supports ci25mw. It currently does not support
+  ci25mx. This may be added in a later release. Verification decks are provided for
+  ci25mx.
+* No pixel cell is provided in the design kit.
+
+Verification
+* Mentor Calibre is supported for DRC and LVS
+* Mentor XCalibre is supported for PEX.
+* Mentor XRC is not supported
+* Cadence Assura is not supported
+
+Decks are provided for both ci25mw and ci25mx, even though the Design Library 
+  technology file does not support ci25mx.
+</PLAINTEXT></BODY></HTML>

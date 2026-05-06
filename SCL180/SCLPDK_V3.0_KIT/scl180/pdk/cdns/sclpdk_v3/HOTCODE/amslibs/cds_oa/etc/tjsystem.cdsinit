@@ -1,0 +1,49 @@
+procedure(towerJazzProcVarCB()
+	let( (variant layerList enabledLayers disabledLayers
+			variable envVarList message myProjRoot myProj
+		)
+		; Set the variant for this session
+		variant = rdsBaseGetGB('VerifyTech)
+		; Get layers allowed for this variant
+		layerList = append(
+			append(
+				sort(copy(_jazzDVTab[strcat("layers_" variant)]->allowAlways) 'alphalessp)
+				sort(copy(_jazzDVTab[strcat("layers_" variant)]->allow) 'alphalessp)
+			)
+			sort(copy(_jazzDVTab[strcat("layers_" variant)]->deny) 'alphalessp)
+		)
+		foreach(layer layerList
+			; Get the field value for this layer variable
+			; Add the layer (not the variable) to the layerList
+			if(member(layer (_jazzDVTab[strcat("layers_" variant)]->allow))
+				then enabledLayers = cons(layer enabledLayers)
+				else disabledLayers = cons(layer disabledLayers)
+			)
+		)
+		; enable / disable the layers from the form
+		; Do disable last so it turns off cells that are dependent on more
+		; than one layer.
+		foreach(layer enabledLayers
+			envVarList = cons(
+				jazzDevParamWriteEnvironmentLayer(layer t)
+				envVarList
+			)
+		)
+		foreach(layer disabledLayers
+			envVarList = cons(
+				jazzDevParamWriteEnvironmentLayer(layer nil)
+				envVarList
+			)
+		)
+		; Re-populate the process variant cell enable list
+		jazzDevParamPopulateKitCells()
+		; EAD preparations
+		myProjRoot = getShellEnvVar( "PROJ_ROOT")
+		myProj = getShellEnvVar( "PROJ")
+		if( myProjRoot && myProj then
+			envSetVal("layoutEAD" "auxSearchPaths" 'string strcat( myProjRoot "/" myProj "/work_libs/"  getShellEnvVar( "USER") "/cds")
+				)
+		)
+	)
+)
+

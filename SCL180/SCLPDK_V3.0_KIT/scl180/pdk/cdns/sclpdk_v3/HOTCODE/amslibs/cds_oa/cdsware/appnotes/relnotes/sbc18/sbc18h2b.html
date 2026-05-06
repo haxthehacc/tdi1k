@@ -1,0 +1,93 @@
+<HTML><HEAD>SBC18H2B Open Access Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+________________________
+Date: 04/27/2012
+
+Device Library Updates:
+Capacitors
+* Changed min W and L from 3um to 1.5um.
+MOSFETs
+* Added a Draw Contact Metal option.  It is now possible to remove metal around contacts in the source, drain, and
+  integrated tap. This was added as an option alongside the Draw S/D Contact instead of part of it, to avoid breaking
+  anyone's designs.
+Bipolars
+* Added support for W=0.5um NPNs. Modeling support is limited and is checked via Assert statements. Please see
+  violations display in ADE.
+* Added support for emitter length (L) up to 20.um NPNs. Modeling support is limited and checked via Assert statements.
+  Please see violations display in ADE.
+* PDK supports layout for a wide variety of NPN finger configurations (Emitter/Base/Collector). Models are not
+  available for all configurations. In such cases, the simulation will error-out.
+Resistors
+* Fixed a bug in the rtin device.
+
+Verification Updates:
+DRC
+* MC10 flags when only 1 via exists on a capacitor.  This is intended as the functionality to let capacitors go down to
+  1.5um W and L is risky and should only be used at your own risk.
+ESD_LUP
+* Fixed a few false errors in the LUP deck.
+
+Model Updates:
+NPN:
+- Added Hicum silicon based model for 2/3/2 EW=0.5um NPNs (Le=2.8um -> 20um) lm232_hicum
+  ### Note: No hicum0 model support for lm232_hicum; Hicum model used for Hicum0 option for lm232_hicum
+- Added geometry checks on NPNs to warn users when they exceed the model validity regime. 
+  Note: The p-cell limits are wider than the model extraction range to provide flexibility in the design w/ the use
+  of extrapolated models
+MOSVAR: 
+- Minor changes of temperature coefficients based on latest silicon
+- Minor changes to nwell resistance to better model small L (~0.18um) varactors
+- Chaned worst-case corner offset for well-resistance to align model with e-spec, to offset impact of above changes
+  (SLOW corner Q simulation should be the ~ same as v6.9a)
+CAP: 
+- Fixed bug in MiM cap subckt model related to parasitic capacitance to bulk. This was introduced in v6.9 models 
+- Added 'dx' geometry offset parameter for small stacked mim capacitors (csmim4, csmim6, csmimw4, csmimw6)
+  (PDK p-cell now allows WxL = 1.5 x 1.5 um)
+RES:
+- Poly resistors: Added small resistance to inductive element to improve simulation convergence and speed
+PNP:
+- Added predictive mismatch model for high-performance PNP, based on silicon 
+  measurements of similar device in previous generation of technology. 
+  (Note: This device is not currently offered in any SBC18H2 PDK - capability has been added for potential support in the
+future)
+FET:
+- Added capability to 5V rf pfets to accept source/drain area and perimeter dimensions (For post-layout simulations)
+  (Note: This device is not currently offered in any SBC18H2 PDK - capability has been added for potential support in the
+future)
+IND:
+- Added "rdm" and "kdm" to include resistively loaded transformer loops
+- Changed TCR from 4200 to 3800 ppm/deg C to correct an extraction error
+- removed "csbsig" corner modeling parameter since insignificant
+- Removed in ind unused parameter "lval=-1 rp=-1 rsub=-1 rs=-1 csub=-1 wf=-1"
+- Removed in inddiff unused parameter "cp12=-1 rp1=-1 rp2=-1 rs1=-1 rs2=-1"
+
+
+Date: 02/11/2012
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 13
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18H2B: NPB-PS-0542, Rev. 7
+
+Process Synopsis:
+* The SBC18H2B process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed and standard NPNs with deep trench,
+  - poly resistors (silicided and low value unsilicided),
+  - N-well resistor,
+  - 2.0fF/um2 MIM capacitor between metal4/metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - MOS varactor,
+  - deep trench isolation.
+
+Software versions tested with this release:
+* Cadence IC release 6.1.3.500.10
+* Cadence Spectre release 7.2.0.202.isr5
+* Synopsys Hspice release Z-2007.03-SP1
+* Mentor Calibre release v2008.1_32.21
+* Cadence Assura release 3.2_USR2_HF11
+
+This is the initial release of the Open Access SBC18H2B kit.  The SBC18H2B
+process is a reduced-mask-count version of SBC18H2 without support for the
+high value unsilicided poly resistor, TiN resistor, and deep N-well.
+
+</PLAINTEXT></BODY></HTML>

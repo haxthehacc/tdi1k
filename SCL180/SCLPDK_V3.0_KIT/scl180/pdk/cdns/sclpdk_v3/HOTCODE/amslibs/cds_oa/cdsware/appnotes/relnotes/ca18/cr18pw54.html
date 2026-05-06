@@ -1,0 +1,126 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 05/18/2005
+Library: ca18 for cr18pw54 process variant
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0176, rev.10
+* Electrical Spec: NPB-PS-0173, rev.8
+
+Highlights:
+* Full release of cr18pw54 design kit based on GTE/PAS system
+* This ca18 design kit supports ONLY the cr18pw54 process variant
+* This design kit currently supports Assura only
+* This ca18 design kit is not backward-compatible with the cg18r design kit.
+  Cellnames have been changed and device layouts have been enhanced 
+  If you currently use the cg18r design kit, schematic and layout rework
+  will be required to use this kit.
+* Additional documentation found on technology component web pages
+  CIW->Jazz->Technology Component Info (VCSD Web)
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Cadence Assura release 3.1.3 (minimum)
+
+Environment Changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+General Updates:
+* Changed behavior of HTML based application notes to try to use existing
+  browser instead of opening a new one
+* Fixed issue with Artist State loading to resolve spurious "Artist states
+  directory contents are different" message
+
+Design Library:
+* Modifed inductor tap creation to use min metal width
+* Added storeDefault to all inductor simulation parameters to improve
+  appearance of extracted view property list
+* Regenerated rcxlib to include updates to device parameters
+
+Techfile Updates:
+* Created cr18pw54 techfile
+
+Model Updates: Model version v3.4 
+Fets
+- Revise d_dnw (deep-nwell) device to update dnw-pwell diode sidewall
+  capacitance (cjsw) from 1.346e-12 to 1.346e-09
+- New HV (3.3v) RF models (n3p3fet_rf and p3p3fet_rf) based on double sided gate
+  contacts and ringed substrate. Includes modified internal topology
+  from previous kit releases.
+- New scalable substrate resistance model for 3.3v RF FETs.
+  Substrate T-network is now used for all 1.8 and 3.3v RF FETs
+- Operating point or current probing in old kit may not work on new model,
+  and new OP or current probing may not work when using older model.
+  Use Results Browser or Results Display to review OP data if it is
+  not visible in the schematic.
+- Improved gate resistance model for all RF FETs that includes salicide to
+  poly contact resistance, which is important in narrow width devices
+- Re-targetted corner and statistical models w/ tighter oxide thickness
+  variation as per new E-spec. (1.8v: +/- 1 ang. corners, +/- 1.5 ang.
+  statistical; 3.3v: +/-1.8 ang. corners, +/- 3 ang. statistical).
+  Overlap capacitance corners now track oxide thickness and DL variations.
+  No change in nominal models for MS 1.8v and 3.3v FETs
+- Improved SLOWFAST and FASTSLOW corners that track statistical correlations
+  between N and PFETs
+- Add silicide-to-poly contact resistance in mosvar model.
+    
+Statistical model: Changes in addition to corner model changes
+- None
+
+Model Updates: Model version v3.3
+Fets
+* Remove support for specifying l/w with DNW diode device. Only area/perim
+  are supported. The Design Kit integration uses only area/perim.
+* Modify mos varactor to add met2_con parameter. met2_con=1 adds metal2
+  interconnect parasitics from Pcell into model behavior.
+* Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+* Revise nwell resistor in PC to use simplified resistor model.
+* Change model default for pfet_rf to use ngcon=2 to be consistent with stat
+  model. Only the model file default was changed, not the symbol default.
+
+Caps
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Change default cap dimensions to 10um. No change in Design Kit default,
+  only model file default.
+
+Pnp
+* Update vpnp TC model using [-40 25 75 125] measurements
+* Update vpnp bf to be aligned to Espec
+* Adjust vpnp min early voltage (va=100) to match Espec
+* Update lpnpfeta bf from 5.5 to 7.2 to be aligned to Espec and match corner model
+
+Statistical model: Changes in addition to corner model changes
+* Add nom-only hp vpnp and rph3t
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Fix 3.3v native fet stat model so that tox variation is now
+  consistent w/ 3.3v NFET and PFET tox variation
+* Update varactor_ni to leverage existing nwell-related process parameters
+
+
+Verification
+
+Only Assura is supported in this release.
+Assura 3.1.3 or later is required.
+
+Changes since t.01_01_01:
+DRC:
+- Some of the BD or BMP rules dependent on the top metal layer used
+  metal6.  These rules are corrected to reference metalt.
+
+</PLAINTEXT></BODY>

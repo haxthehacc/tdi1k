@@ -1,0 +1,240 @@
+<HTML><HEAD>SBC18M3/M3A/M3B Design Kit Release Notes</HEAD><BODY><PRE>
+________________
+
+Date: 10/12/2015
+Version: 3.0.2
+
+Prerequsites:
+* SBC18M3 Design Kit - v3.0 
+* SBC18M3 Design Kit Patch - v3.0.1 
+
+Upgrading:
+* Run "Virtuoso -> TowerJazz -> Trigger Callbacks"
+  The callback code keeps the various data fields on a device in sync.  
+  "Trigger Callbacks" is therefore recommended with any kit update and before 
+  final simulation and verification. A "Preview" mode is offered to allow you 
+  to determine if updates must be made to your design.
+
+Known Issues:
+* The poly resistors will show DRC errors unless the "Use legacy finger spacing" 
+  box is checked.  Allowing non-legacy spacing will be addressed in a future release.
+  
+Overview:
+* New models
+* Verification decks updated
+
+General:
+* Added Cadence EAD (Electrically Aware Design) support.
+
+Verification Updates:
+DRC:
+* Added HV (high voltage) rules and POL (pad over logic) rules.
+LVS:
+* improve extraction of square inductors
+* enable deep trench to cut N-well
+* enforce shorting of NPN collectors
+* improve check for top-bottom plate connection in stacked MIM caps
+
+Models:
+* This patch includes v7.8 as the default models. Since the last SBC18M3 kit release, 
+  v7.5, v7.6, v7.7 and v7.8 models have been released in other kits.  Model 
+  version are cumulative, so v7.5 through v7.8 changes are reflected in this 
+  model release.  Following are the full release notes for these model versions.
+  (SBC18M3 points to the SBC18H3 models, hence the v*.*_shc18h3 labeling.)
+
+**************************** v7.8_sbc18h3 contents *****************
+2015/04/25
+General:
+- Added monte-carlo support for Eldo & Hspice
+- Fixed saturation current (c10) values in Eldo & Hspice DSV variants to align w/ Spectre (ln* devices only)
+Schottky:
+- 1. Changed scaling equations to better fit larger geometry set data:
+  2. Added modeling for transit time (tt) parameters to better model forward bias diffusion capacitance
+     and reverse recovery behavior
+  3 . Add parasitic metal resistance parameters
+Varctor (Buried Layer):
+- Reduced tuning range in BL (buried layer) varactor to match POR and p-cell. Previous model was based on
+  buried layer used in the high-speed device. The p-cell uses buried layer of the medium voltage NPN.
+  This increases the cathode doping and reduces tuning range
+FET:
+- Modified assert statements to allow for D/S swapping (limits are now symmetrical)
+NPN:
+- Added assert statements to for high-speed NPN collector voltage exceeding forward-beta degradation
+  defined SOA. This can be enabled by selecting section "YES" in the warnings row of the model selection
+  box.
+
+**************************** v7.7_sbc18h3 contents ******************
+2015/02/27
+MOSVAR:
+- Added 3.3v MOSVAR (mosvar_3p3) model
+NPN:
+- Modified "optical" emitter width (EW =0.2um) and short emitter length (EL < 1.1u)
+  high-speed NPN models (lo[121][122][232]_hicum) to align with fab-statistics.
+  Key change is reduced collector current by 30% and beta from ~700 to 550.
+  There is no change to the narrow (W=0.13um) high-speed or to the medium-voltage NPN models.
+
+**************************** v7.6_sbc18h3 contents *******************
+2014/12/02
+RFLINE:
+- Modified NPORT instance so it does not error out w/ the BDA tool. There is no
+  impact on Spectre simulations
+RES:
+- Deleted m=m statement from rw3t spectre model to fix PDK extraction issue w/ nfet3p3_esd device
+NPN:
+- Changed maximum emitter lengths in assert statements from 10.16um to 20um to align w/ model validity regime
+- Fixed round-off error in rci equation to prevent Ib discontinuity for L ~ 1um device. This should have
+  insignificant impact on the simulated results
+- Aligned x-sigma changes in fast/slow corners that were modified in v7.5_sbc18h3
+- Minor change to mismatch model equations to prevent base current parameter from becoming negative
+
+**************************** v7.5_sbc18h3 contents ********************
+2014/08/25
+T-lines:
+- Added new transmission line models (Spectre only)
+NPN:
+- Centered NOM beta for high-speed NPNs to ~1050 from previous ~850 to align w/ long-term trend of PCM data
+- Lowered FAST corner beta for high-speed NPNs to ~2000 from previous ~2200 to align w/ long-term trend of PCM data
+- Re-extracted mismatch model from new test-chip and POR silcion. For most biases Ic mismatch is lower
+  (vs. v7.4_sbc18h3 models) for emitter lengths < 2.5um. For emitter lengths > 2.5um the 1-sigma Ic mismatch
+  is higher at some bias-points. Note that the higher mismatch (vs. previous models) at some bias points/geometries
+  is partially is due to the model now representing worst-case spacing and mismatch.
+- Clampled mininum value of model parameter "fbcpar" in some Hicum models to prevent Spectre from
+  generating errors. This is consistent w/ model extraction and validation methodology.
+Diode:
+- nwdiode; Removed duplicate specification of tnom parameter
+Varactor:
+- Increased interconnect associated anode and cathode inductance by 20% to improve convergence
+  for transient simulations with high-performance BL junction varactor (rfvar_bl_h2). This has negligible
+  impact on modeling accuracy.
+LPNP:
+- Changed SLOW corner of lateral PNP beta from 15 to 10 to align w/ new electrical spec.
+
+________________
+Date: 6/03/2014
+Version: 3.0.1
+
+Verification Updates:
+* LVS
+  - improve extraction of spacing parameter for square inductors
+
+________________
+Date: 5/22/2014
+Version: 3.0
+Library: sbc18 for SBC18M3/M3A/M3B
+
+General:
+* Add support for SBC18M3B variant (SBC18M3 + standard NPN + Schottky
+  diode + PiN diode + lateral PNP)
+* Update Trigger Callbacks function to properly reset intrinsic device
+  parameters when needed
+
+Device Library Updates:
+* Bipolars
+  - add 0.2u width option for high-speed NPNs
+* Varactors
+  - fix M1 spacing violations for small devices (L<0.5u)
+* ESD
+  - add diode elements over deep N-well to ESD library
+* General
+  - update capacitor, resistor, varactor callbacks to properly reset
+    intrinsic device parameters when needed
+
+Model Updates:
+* Release v7.2, v7.3, v7.4 models (see RELEASE_NOTES in model directory
+  for details)
+  - update parasitic resistance/inductance in MIM caps
+  - add models for high-speed NPNs with 0.2u-wide emitters
+  - improve modelling of NPN base/collector hetero-barrier effect
+  - add support for the latest Inductor Toolbox version, JIT6.0
+
+Verification Updates:
+* Density
+  - add poly density check around high-speed NPNs
+  - move deep trench density check from DRC to density deck
+* DRC
+  - fix false violations on deep N-well ring
+* Latch-up
+  - fix false LUP.I.a and LUP.I.b violations in SRAMs
+  - account for deep N-well and deep trench in internal latch-up checks
+* LVS
+  - fix W/L extraction for Schottky diodes
+
+Limitations:
+* Multi-strip poly resistors violate the minimum poly spacing rule.
+  Enable the "legacy finger spacing" option as a work-around for now.
+
+
+________________
+Date: 8/4/2013
+Version: 2.0
+Library: sbc18 for SBC18M3/M3A
+
+Device Library Updates:
+* Change default value of inductor rdm parameter from 0 to 1000
+* Add deep N-well diodes (ddnw and diso) for SBC18M3A
+
+Model Updates:
+* Release v7.1 models (see RELEASE_NOTES in model directory for details)
+  - change min. resistance for buried layer varactor
+  - fix Monte-Carlo mismatch parameter for lateral PNP
+  - make statistical variables for TiN resistor independent of inductor
+  - fix modeling of width variation for small stacked MIM caps
+* Release v7.0 models (see RELEASE_NOTES in model directory for details)
+  - enable Monte-Carlo mis-match simulations at X-sigma corners
+  - correct emitter width in Monte-Carlo & corner models for 2V NPNs
+  - add model accuracy geometry limit checking via assert statements
+  - fix PiN diode temperature coefficient
+  - swap MIM cap row/column model parameters to match p-cell
+
+Verification Updates:
+* DRC
+  - make emitter slot contact spacing check (B21) min./max. instead of min.
+  - update 11.BIP.1 check to flag P+ active in Nwell2 instead of PWE
+  - add NPN deep trench to outside active spacing check (B18.a)
+  - update 22.BIP.1, 30.BIP.1 checks to allow 2-term. MIM caps over NPNs
+  - relax minimum spacer clear spacing check (21.B) from 5u to 1.01u
+  - relax minimum base poly spacing check (23.B) from 5u to 1.21u
+  - add minimum Nwell2 to Nwell/N+ active spacing checks (68.C/68.D)
+  - delete extraneous Nwell overplot of emitter check (B5)
+  - update emitter spacing check (31.B) from 1.12u/1.32u to 1.19u
+  - allow deep trench outside of NPN/Schottky/PiN
+  - change deep trench width check from min. to min./max.
+  - add new deep trench rule checks
+  - relax 51.B rule for metal1 to avoid inductor shield violations
+  - fix bug that could prevent rule 2.H (min. N-well overplot of N+ diff.)
+    from being checked
+  - fix bug that could mis-identify regular N-wells as N-well resistors,
+    thus requiring larger spacing
+* Latch-up
+  - update LUP.I.a/b checks so the entire diffusion must meet the rule
+* LVS
+  - revise inductor extraction code to avoid false mis-matches
+
+
+________________
+Date: 10/15/2012
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 14
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18M3: NPB-PS-1017, Rev. 3
+
+Process Synopsis:
+* The SBC18M3 process has 3 layers of aluminum metal and supports:
+  - 3.3V MOSFETs only,
+  - 240GHz low voltage (1.6V) NPN,
+  - poly resistors (silicided and low or high value unsilicided),
+  - N-well resistor,
+  - 2.8fF/um2 MIM capacitor between metal2/metal3, and
+  - square and octagonal inductors using 2.8um thick top metal3.
+
+Software versions tested with this release:
+* Cadence Spectre release 7.2.0.202.isr5
+* Synopsys HSPICE release E-2010.12-ENG2
+* Mentor Calibre release v2010.2_38.23
+* Cadence Assura release 4.1_USR1_HF8
+
+This is the initial release of the SBC18M3 kit.  The SBC18M3
+process is a mask-count-reduced version of the SBC18H3 process.
+
+</PRE></BODY></HTML>

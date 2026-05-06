@@ -1,0 +1,33 @@
+// ****************************************************************
+// SCL LTD
+// 
+// Extraction Header for Mentors graphic calibre XRC
+// Process: TS18SCL Sdandard logic
+// Number of metal layer are specified bellow.
+// This file is the template of RCX header file.
+//*****************************************************************
+
+//*********************************
+//LVS run settings
+//******************
+
+//please specify full path to LVS runsets
+
+#define RCX_run
+
+INCLUDE "$RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/headers/LVS.header"
+
+
+//extraction File.
+// please specify full path to PEX runset
+//******************
+
+#ifdef PEX_TYPE FSG  //{
+	INCLUDE "$RDS_TECH/$RDS_CDS_VERIFY_TECH/calibre/default_scr/SCL18_XRC_5M1L_FSG.C"
+	INCLUDE "$RDS_TECH/$RDS_CDS_VERIFY_TECH/calibre/default_scr/SCL18_XRC_5M1L_FSG.R"
+#endif //}
+
+#ifdef PEX_TYPE USG //{
+	INCLUDE "$RDS_TECH/$RDS_CDS_VERIFY_TECH/calibre/default_scr/SCL18_XRC_5M1L_USG.C"
+	INCLUDE "$RDS_TECH/$RDS_CDS_VERIFY_TECH/calibre/default_scr/SCL18_XRC_5M1L_USG.R"
+#endif //}

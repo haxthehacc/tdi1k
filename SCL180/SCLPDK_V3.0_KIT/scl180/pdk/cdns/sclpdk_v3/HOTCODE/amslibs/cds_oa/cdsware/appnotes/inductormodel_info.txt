@@ -1,0 +1,30 @@
+Skin Effect Model Information
+
+The scalable broad-band physically based inductor models are generally 
+accurate when computing the inductance and capacitance of the structure. 
+The resistive losses though tend to be less accurate.  Two models
+are provided for the resistive losses.
+
+The Parallel RL model uses a resistor in parallel with the inductor
+to represent the skin effect.  Historical validation, experience,
+and legacy has shown that the model is adequately accurate for RFIC 
+design; however, it is accurate up to frequecies where the skin depth 
+is greater than half the metal thickness as stated in Equation 1.
+
+        2 * skin depth > metal thickness  (eq 1)
+
+The Resistor Ladder is a set of parallel RL series components as its
+namesake implies.  The internal inductance of the coil is computed and 
+used with the DC resistance to create a ladder that approximates the 
+impact of the skin effect.
+
+At low frequencies where Equation 1 is satisfied (e.g.  f < 2.5GHz
+for 3um of Al), the Parallel RL model can be accurate to a bit 
+pessimistic (up to -20%) and the Resistor Ladder can be accurate to a 
+bit optimistic (up to +20%).
+
+At higher frequencies where Equation 1 is not satisfied (e.g. f > 2.5GHz
+for 3um of Al), the Parallel RL model is very pessimistic (as much as 
+-50% to -100%) and the Resistor Ladder can be either pessimistic or 
+optimistic (+/- 20%).
+

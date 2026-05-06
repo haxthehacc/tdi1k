@@ -1,0 +1,27 @@
+* File: oai31d1.sp.oai31d1.pxi
+* Created: Sun Feb 14 19:25:42 2010
+* 
+cc_1 A ZN 0.238489f
+cc_2 A VDD 0.0286681f
+cc_3 A VSS 0.00796509f
+cc_4 A noxref_5 0.00885703f
+cc_5 A B1 0.0812464f
+cc_6 ZN VSS 0.0318496f
+cc_7 ZN noxref_5 0.0189372f
+cc_8 ZN B1 0.188221f
+cc_9 ZN B2 0.0306874f
+cc_10 ZN B3 7.41478e-19
+cc_11 ZN noxref_9 0.0202162f
+cc_12 VDD B1 0.0238744f
+cc_13 VDD B2 0.0684187f
+cc_14 VDD B3 0.0467589f
+cc_15 VSS noxref_5 0.189019f
+cc_16 VSS B1 0.00818943f
+cc_17 VSS B2 0.0132634f
+cc_18 VSS B3 0.0628861f
+cc_19 noxref_5 B1 0.0653646f
+cc_20 noxref_5 B2 0.0690226f
+cc_21 noxref_5 B3 0.0369589f
+cc_22 B1 B2 0.256664f
+cc_23 B1 B3 0.00175406f
+cc_24 B2 B3 0.269956f

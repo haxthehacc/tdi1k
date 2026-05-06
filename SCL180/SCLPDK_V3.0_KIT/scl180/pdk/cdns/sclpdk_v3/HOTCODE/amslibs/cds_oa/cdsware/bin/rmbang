@@ -1,0 +1,5 @@
+#!/bin/csh -f
+
+$PERL5 $RDS_CDSWARE/bin/rmbang.pl $*
+
+

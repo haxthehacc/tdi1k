@@ -1,0 +1,30 @@
+//Title "SCL DRC ver.00_00_01"
+/********1*********2*********3*********4*********5*********6*********7***
+ * Calibre DRC rulefile 					*
+ *									*
+ * Version 00_00_01 09/01/2020				*
+ ********1*********2*********3*********4*********5*********6*********7***
+ *		     Global Options Definition Section			*
+ ********1*********2*********3*********4*********5*********6*********7***/
+
+// Top Level SVRF Rules File for DRC
+
+#ifdef DRC_OPT DRC
+	#define selected_drc_opt
+	Title "SCL DRC  Check ver.00_00_01"
+	include $RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/headers/DRC.header
+#endif
+#ifdef DRC_OPT ANTENNA
+	#define selected_drc_opt
+	Title "SCL Antenna Check ver.00_00_01"
+	include $RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/headers/ANTENNA.header
+#endif
+#ifdef DRC_OPT DUMMY_FILL
+	#define selected_drc_opt
+	Title "SCL Dummy Fill ver.00_00_01"
+	include $RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/headers/DUMMY.header
+#endif
+#ifndef selected_drc_opt
+	Title "SCL DRC Check ver.00_00_01"
+	include $RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/headers/DRC.header
+#endif

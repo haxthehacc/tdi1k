@@ -1,0 +1,59 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1>
+
+'ldiffqtd' is a rectangular differential inductor fabricated in thick metal4. The Design Kit for inductors is closely integrated with a Matlab executable that is used to calculate performance and model parameters for any inductor given a set of geometric properties of the inductor. <h1>ATTRIBUTES :</h1>
+<ul>
+<li><b>Skin Effect Model:</b> Available skin effect models for the inductor subckt. Possible values are: <b>Parallel RL</b> and <b>Resistor Ladder</b> (sbc35x library only).
+</li>
+
+<li><b>Substrate Node:</b> The node to which the substrate of the inductor is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li><b>Change input parameters:</b> This button brings up the inductor calculation window whose parameters are outlined below.  User should enter all input parameters via this form.  Once OK or Apply is selected, a Matlab executable is called to calculate the inductor's electrical characteristics based on the user's geometric inputs.  These calculated inputs are then returned back to Cadence environment, and are used by the simulation model of the inductor to accurately simul
+ate characteristics of the inductor.</li>
+
+<li><b>Toggle Circuit Params Display:</b> Toggling this button displays or hides all parameters associated with the model for this inductor as computed by the Matlab executable.</li>
+
+<li><b>Other:</b> There are a whole set of other parameters that are displayed but not editable. These are for information purposes only. Consult the above referenced link for details on these parameters.</li>
+
+<h1>"Edit Inductor Parameters" Form Parameters:</h1>
+<ul>
+
+<li><b>Inductor Type:</b> Indicates the name of the Matlab model that this inductor is using - for the vast majority of inductors, this parameter cannot be changed.</li>
+
+<li><a href="../images/ldiff_nt.html"><b>Num of Turns:</b></a> Controls the total number of turns in the inductor. A quarter turn is .25, a full turn is 1. For instance, to create an inductor with four and a half turns, specify Num of Turns = 4.5.</li>
+
+<li><a href="../images/ldiff_s.html"><b>Spacing:</b></a> Controls the space between inductor segments.</li>
+
+<li><a href="../images/ldiff_w.html"><b>Width:</b></a> Controls the width of the inductor segments.</li>
+
+<li><a href="../images/ldiff_xy.html"><b>Xsize:</b></a> The total width of the inductor in the X direction.</li>
+
+<li><a href="../images/ldiff_xy.html"><b>Ysize:</b></a> The total height of the inductor in the Y direction.</li>
+
+<li><b>Operating Freq:</b> This specifies the application frequency at which the inductor is targeted for.  This parameter is used by the Matlab executable from which to calculate some of the inductor performance parameters, such as Peak Q.</li>
+
+<li><b>Start Freq:</b> The Matlab executable computes a set of Y parameters from which to derive all calculations including inductor performance parameters. This parameter specifies the low end of the frequency range for which to compute Y parameters for by the Matlab executable.</li>
+
+<li><b>End Freq:</b> This parameter specifies the high end of the frequency range for which to compute Y parameters for by the Matlab executable.</li>
+
+<li><b>Freq Step:</b> This parameter specifies the resolution of the frequency range for which to compute Y parameters for by the Matlab executable.  The smaller this number, the higher the resolution, and the better the accuracy of the Matlab computations.  Increased resolution will come at the expense of computation times.</li>
+
+</ul></ul></ul>
+
+<h1>NOTES:</h1> 
+<ul>
+<li>The inductor pcell generates a marking layer around the layout. This marking layer is used to identify the inductor during LVS.</li> 
+
+<li>It is not allowed to run any layer over or under the inductor.</li>
+
+<h1>LVS:</h1>
+<li>For LVS to recognize the differential inductor, the marking layer must be intersected by two metal4 wires that connect to the P1 and P2 pins and one metal1 wire that connects to the TAP pin. It is not allowed to connect the pins in any other layer.</li> 
+
+<li>The following attributes are checked during LVS: </li>
+<br> Width, Spacing, Number of Turns, XSize and YSize </br>
+for sbc35mx, sbc35qx, sbc35px, sbc35qtx, bc35, bc35qx, bc35px technology runsets</br>
+</ul>
+
+</body>
+</html>

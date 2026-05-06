@@ -1,0 +1,1879 @@
+<HTML><HEAD></HEAD><BODY><PRE>
+-----------------------------------
+Date: 11/03/2015
+Library: cs18al (cs18 aluminum variants)
+Version: v6.0.3 (patch)
+
+Prerequsites:
+* cs18al v6.0
+* cs18al v6.0.1 (patch)
+* cs18al v6.0.2 (patch)
+
+General:
+* Added nfet2p5_t_esd to the extraction library (cs18_rcx).
+* Release of EAD support. 
+
+Device Library:
+* Fixed rppoly_hi_serp to correct HR.G DRC issue
+* Modified seal ring to correct thick metal via spacing
+
+Verification:
+PEX:  
+* In rare instances dummy metal could short metal lines.  The results 
+  was that the R that should have been extracted was missing (C was OK).  i
+  This issue is fixed in this patch.
+
+Models:
+**************************** v3.6 contents ************************
+2015/09/16
+FET:
+- Changed to SPICE thermal noise model for 2.5V FB RF NFETs (n2p5fet[e1,e2]_rf). Previous charge-based
+  noise model was under-predicting high-frequency noise vs. POR silicon
+
+**************************** v3.5 contents ************************
+2015/08/03
+CAP:
+- Added resistance to model better predict quality factor at high-frequencies for Fringe capacitors (cmom_*)
+RES:
+- Improved modeling of coupling through substrate for 3-terminal high value poly resistors (rph[e2]3t).
+- Increased sheet resistance in the silicided poly "e2" resistor models (rpse2[2,3]t from 7.95 -> 9 ohm/sq. to align w/ new e-spec.
+FET:
+- Added predictive models for 1.2V "e2" FETs
+  Note 1: The [n,p]1p2fete2[_t]_rf models are copies of [n,p]1p2fet[_t]_rf models
+- Changed gate resistance parameters in all 2.5V "e2" RF FETs ([n,p]2p5fete2[_t]_rf[_psp]) to align w/ measurements off common-source FETs
+
+**************************** v3.4 contents ************************
+2015/06/15
+FET:
+- Updated [n,p]2p5fete2* models based on rev. 2 silicon
+- Reduced RF noise in 1.2V FB RF FETs (n1p2fet_rf) to better capture frequency dependence
+  based of measurements up to 20GHz. Modified DC model to improve fit of NFmin vs. Id
+
+**************************** v3.3 contents ************************
+2015/05/05
+RES:
+- Added serpentinte resistor models (rph[e2][2,3]t[_serp]
+
+
+-----------------------------------
+Date: 03/31/2015
+Library: cs18al (cs18 aluminum variants)
+Version: v6.0.2 (patch)
+
+Highlights:
+* Added four ggnmos cells (CS18Q5)
+* Added nfet2p5e1_t_esd and nfet2p5e1_t_esd_5 to support new ggnmos ESD cells
+* Enhanced Assura to check number of FET fingers  and the finger width
+  in addition to total width
+
+ESD:
+* Added ggnmos devices with HBM ratings of 1kV and 2kV that can be used at DC 2.5V 
+  and 3.3V for CS18Q5 esdlib. (OA support only)
+
+Device Libraries:
+* Fixed v5.5 nfet - when "Style" is switched to "2met_min(SW)", "S/D Metal Width" 
+  was not resetting to minimum.  Fixed to now change to minimum of 280n.
+* Fixed ind_oct2 - under certain parameters, ind_oct2 was getting an "Invalid
+  Segment" error.  This has been fixed.  Note that the pcell was drawing correctly
+  before being fixed, but could not be exported.  This fixes the export issue with
+  no change in the layout.
+
+Verification:
+DRC:
+* Updated Handle Wafer Contact "HWC" (Layer 87) rules as follows: 
+  1) Change: Minimum spacing hwc to active from 1 to 2
+  2) Change: Minimum spacing hwc to poly from 1 to 2
+  (per the CS18 technology design rules NPB PS-1013, section 4.12) 
+* The CS18Q3 DRC deck was updated to add missing 5.B (min. poly width = 0.18um) 
+  and 12.X (dgate must cover entire design) checks, and remove the 5.A.a.3 
+  (min. thin gate length = 0.12um) check.
+
+LVS:
+* Enhanced Assura to check number of FET fingers and the finger width in 
+  addition to total width (this was already available in Calibre)
+
+LVS/PEX:
+* The LVS/PEX connectivity was updated to avoid having to use large resistors to prevent 
+  shorting by dummy metals used for device/pin recognition.
+
+ERC:
+* The ERC decks were updated for all variants to include enhancements to avoid false 
+  floating metal violations.
+
+DENSITY:
+* Fixed the metal3 density spacing error in cs13q2 and cs18q3
+
+Models:
+FET:                                                               
+* Added rev. 0 model for n2p5fet[e1,e2]_esd_t to enable prediction of stand-by leakage. The model 
+  may not be applicable for large-signal (TLP) simulations                                        
+* Increased RF noise in 1.2V FB RF FETs (n1p2fet_rf) to better capture bias dependence
+  and align to latest silicon. NFmin is higher by ~0.05 dB at 2.4GHz and ~0.11 dB at 5GHz
+* Added corner models for RF noise
+
+Other:
+* Added experimental variant CS18Q8A
+
+-----------------------------------
+Date: 02/13/2015
+Library: cs18al (cs18 aluminum variants)
+Version: v6.0.1 (patch)
+
+Highlights:
+* Added Assura support for CA18M5.
+* Added new nfet metalization option.
+* Updated techfile.
+* Released 3.1 models.
+* Updated inductor parameter mapping.
+* Added utility to TowerJazz menu.
+
+General:
+* Added utility for removing large resistors from extracted cellview.  Extracted 
+  resistors that are essentially opens can be removed from the extracted
+  cellview to speed up the simulation.
+
+Device Library:
+* Added Low-Coff metalization option to nfet2p5_t* devices.
+* Updated parameters used in inductor calculations.  This is a spelling correction
+  only.  No impact on layout or simulation.
+
+Verification:
+* Added Assura support for cs18m5.
+
+Models:
+* Released 3.1 models.
+* General:
+- Optional switch (warnings corner in the model selection box) to turn on Spectre "assert" checks
+  for maximum operating voltage for reliable operation or worst-case breakdown for 1.2V, 2.5V, & 5V FETs
+  and MiM capacitors
+  Notes:
+  1. Resistor devices are not checked, as the max. operating voltage depends on impedance and biasing conditions
+  2. These are provided as a GUIDE ONLY. The user must verify all operating voltages defined
+     in the Electrical Specification documents for the technology
+  3. The MiM capacitors limits are based off worst-case size, temperature, and pass critera. In some cases
+     hihger voltages may be acceptable. Please contact your TowerJazz Design Support Engineer for additional
+     information
+* FET:
+- Widened corners for 2.5V t-gate baseline and "e1" FETS to align w/ fab statistics for Vt & Ron (on-resistance)
+  (n2p2fet[e1][_t][_rf][_psp]
+
+-----------------------------------
+Date: 12/19/2014
+Library: cs18al (cs18 aluminum variants)
+Version: v6.0 (full)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1013, Rev.8
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.5
+* Design Application Note: NPB-PS-1111, Rev. 6 (CS18M2,Q51)
+* Design Application Note: NPB-PS-1155, Rev. 3 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 3b (CS18Q8)
+
+Software versions tested with this release:
+* Cadence IC releases 5.10.41_USR6.127.29, 6.1.5.517
+* Mentor Calibre release v2013.1_14
+* Cadence Assura release 4.12.005_615
+* Spectre Version 14.1.0.255.isr2 32bit -- 21 Nov 2014 
+* HSPICE -- H-2013.03-SP1 32-BIT (May 29 2013) RHEL32  
+
+Highlights:
+* cs18 kit split into two kits - cs18al (aluminum) and cs18cu (copper).
+* Added new variant cs18q51 (cs18q5 with hvmim added).
+* Released v7.0 models.
+* New Antenna deck released.
+
+General:
+* Due to the number of cs18 variants, starting with this release the kit 
+  has been split into an aluminum only kit (cs18al) and a kit with 
+  varinants that include copper (cs18cu).
+* New variant cs18q51. CS18QT51 is identical to CS18QT5C in all 
+  respects except that an additional 0.5fF/µm2 MIM capacitor is 
+  available between metal-3 and 3µm thick top metal-4.
+
+Verification:
+* a new Antenna check has been released.  This improved algorthim
+  reduces the number of false errors reported.
+
+Models:
+FET:
+* Added enhancement-2 (e2) 2.5v t-gate and floating body N & PFET 
+  models ([n,p]2p5fete1[_t][_rf][_psp] representing lower Ron*Coff 
+  vs. the enhacement-1 (e1) 2.5v NFETs.
+DIODE:
+* Added missing monte-carlo mismatch paramters to the ESD model option
+* Added tunneling leakage model to the ESD model option for 
+  silicide block define diodes (dsbn[_3t]) 
+* Created "e2" versions of the gate-defined models. Currently these 
+  are a copy of the baseline diodes, but these will be updated to 
+  align w/ the e2 process in a future release
+MOSVAR:
+* Moved some offset corners for mosvar devices to the "p2p5" master class
+  to better align w/ expected fab correlations
+* Created "e2" versions of the model. Currently these are a copy 
+  of the baseline varactors, but these will be updated to align 
+  w/ the e2 process in a future release
+CAP:
+* Reduced voltage coefficients (vc1 and vc2) of 2fF MiM cap to 
+  better match large-signal data
+* Created "e2" versions of the poly-cap model. Currently these 
+  are a copy of the baseline poly-caps, but these will be updated 
+  to align w/ the e2 process in a future release
+* Added MiM cap models for Cu M3/M4 processes (c[3,2]t_cmim2_cu)
+RES:
+* Created "e2" versions of the poly-resistor models
+
+
+-----------------------------------
+Date: 10/31/2014
+Version 5.5.3
+
+Highlights:
+* Modified dummy fill export to GDS for PVS (q7 only)  
+  - Removed poly/active fill markers 
+  - Added dummy metal (markers added in v5.5.2)
+* Modified density fill spacing to inductors and mimcaps from 25u to 5u (q6/q61/q7/q71)
+* Enabled metal1 slits under PAD (q6/q61/q7/q71)
+* Fix ERC bug floating metal in inductor (q6/q61/q7/q71)
+* Added Assura LVS support for LDMOS (cs18q5 only)
+
+-----------------------------------
+Date: 09/29/2014
+Version 5.5.2
+
+Highlights:
+* Added export of density fill markers to GDS for PVS
+* Fixed desd_gated_16x LVS error (CS18Q5)
+* Included sub-cells of bigfet, omitted in v5.5 (CS18Q5/Q6)
+* The diode_gd/gd_3t devices have been replaced by the diodee1_gd/gd_3t devices in variants cs18m5/q5/q6/q61/q7/q71.
+  Although replaced, the cells remain in the devices libraries.  They will be removed in the next full hotcode release.
+
+-----------------------------------
+Date: 09/16/2014
+Version 5.5.1
+
+Highlights:
+* Updated Assura Antenna deck for all variants.  Regenerated decks only - no additional functionality.
+
+-----------------------------------
+Date: 09/15/2014
+Version 5.5
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18q61, cs18q7, cs18q71, cs18m1, cs18m2, cs18m5, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.5
+* Design Application Note: NPB-PS-1111, Rev. 5 (CS18M2)
+* Design Application Note: NPB-PS-1155, Rev. 3 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 2 (CS18Q6,CS18Q7)
+* Design Application Note: NPB-PS-1142, Rev. 3 (ESD Design Manual)
+
+Highlights:
+* Add PVS DRC & LVS support for CS18Q7
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 12.1.1.048 32bit -- 4 Jun 2013
+* Mentor Calibre 2014.1_36
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this use the Trigger Callbacks utility. Use Preview mode to see the changes that will be made, and then turn 
+  off Preview mode to commit the updates to your design.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on. (Updated trigger callbacks in release v5.4 should fix most of these issues.)
+- (All CS18 except Q6/Q7) sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6*/Q7* variants.
+- rrpoly_hi_serp does not currently check spacing, your resistance will also not be off enough to go past the tolerance.  This resistor will be changed to an X device in the next release.
+
+***********************
+Device Library
+***********************
+CAP
+- cmom, cmom_2t minimum fingers has changed from 20 to 6.
+DIO
+- diodee1_gd, diodee1_gd_3t were added to variants with enhance1 layer. These diodes replace diode_gd and diode_gd_3t in CS18Q5, Q6, Q61, Q7, & Q71. The user will need to globally replace these devices in their design. There is no change in the layout or schematic
+footprint of the diodes.
+IND
+- Fixed ind_diff (CS18M1 only) from drawing overlapping via1 in center tap
+RES
+- Changed rrpoly_hi_serp resistor to be more compact and have correct spacing when below 0.42u width.
+
+ESDLIB
+- The channle length of the NFET driver in the bigfet clamp was increased from 0.28um to 0.30um to improve off-state leakage related parametric yield.
+
+
+***********************
+Models
+***********************
+v2.9 Release
+FET:
+- Reduced temperature dependence of Vt for 2.5V t-gate PSP NFETs (n2p5fet_t_[rf]_psp) to better align w/ measured data and the BSIM model model
+- Reverted back to v2.3 (and before) model for body sheet resistance in t-gate 2.5V RF PSP FETs (n2p5fet_t_rf_psp) due to impact on 2nd harmonics. There is no change to the 2.5V "e1" RF PSP FETs
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+General
+- Added PVS support for CS18Q7 variant (6-terminal FET is not fully supported yet)
+DRC
+- Rule 37.20.A: Allow slot via3 which interact L_cell marking (from <=20um to <=30um).
+- Rule DMC.D.5: Metal fill proximity rules for cs18q6, q61, q7, q71 (data extent to be checked only in the presence of SILOX).
+- Rule 118.151.BAD: N-fets without enhancement marking layer (118dt151)
+ERC
+- Fixed false floating metals and gates
+ANTENNA
+- CHanged output file names and report file names to match check names.
+LVS
+- Fixed device recognition bug in 1- and 2-turn differential octagonal inductors.
+PEX
+- Fixed inccorect simL paraemter for serp resistors in Calibre extracted view
+
+
+
+-----------------------------------
+Date: 08/15/2014
+Version 5.4.3
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+LVS
+- Fix FET widths in Calibre extracted view (v5.4.2 used total width
+  instead of finger width with multi-finger option enabled).
+
+
+-----------------------------------
+Date: 07/28/2014
+Version 5.4.2
+
+***********************
+Models
+***********************
+v2.8 Release
+FET:
+- Reduced Coverlap in 2.5v "e1" t-gate BSIM nfets (n2p5fete1_t[_rf])
+  to better align w/ PSP model option
+- Improved linearity in the 2.5v "e1" t-gate PSP nfets (n2p5fete1_t[_rf]_psp)
+  to match linearity data on POR silicon
+- Subtracted contact resistance in the 2.5v t-gate BSIM & PSP nfets
+  (n2p5fet[e1,h1]_t[_rf][_psp]) from model to prevent double-counting
+  in full R+C+CC PeX simulations. There is no change to multi-finger
+  PeX & Schematic level models
+Diode:
+- Replaced estimated mismatch models for diodes (dgdn[_3t], dsbn[_3t]
+  w/ silicon based model
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+LVS
+(CS13Q1)
+- Enable comparison of number of fingers for 1.2V floating body FETs in Calibre.
+(CS13Q2)
+- Add missing 1.2V NFET property comparisons in Calibre.
+(CS13Q2, CS18Q3/Q6/Q61)
+- Recognize metal3 port connections on stacked inductors.
+(ALL)
+- Change "TOTW" parameter to "W" in Calibre report of FET layout instances.
+
+PEX
+- Extract source/drain contact resistance for T-gate FETs.
+
+
+-----------------------------------
+Date: 06/23/2014
+Version 5.4.1
+
+***********************
+Device Library
+***********************
+FET
+(CS18Q6/61, CS18Q7/71)
+- Fixed ABLB overplot option on body contact portions of tgates.
+
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC
+(CS18Q3, CS13Q2)
+- Fixed bug related to slot via3 checking (Assura & Calibre).  In
+  most cases this should fix false errors.  Pcell generated stacked
+  inductors should continue to be DRC clean.
+
+LVS
+(CS18Q5)
+- Added Assura support
+
+QRC (Assura)
+(ALL)
+- Fixed model name for 6 terminal fet
+
+
+
+-----------------------------------
+Date: 05/31/2014
+Version 5.4
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18q61, cs18q7, cs18q71, cs18m1, cs18m2, cs18m5, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 5 (CS18M2)
+* Design Application Note: NPB-PS-1155, Rev. 2 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 2 (CS18Q6,CS18Q7)
+* Design Application Note: NPB-PS-1142, Rev. 3 (ESD Design Manual)
+
+Highlights:
+* Added high-VT v2.5 NFET devices to cs18q61 and cs18q71
+* Updated Trigger Callbacks function to properly reset intrinsic device parameters when needed (resistors and capacitors)
+* Added stacked inductors for technologies w/ double-thick top metals (CS13Q2, CS18Q3, CS18Q6, CS18Q61)
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 12.1.1.048 32bit -- 4 Jun 2013
+* Mentor Calibre 2014.1_36
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this use the Trigger Callbacks utility. Use Preview mode to see the changes that will be made, and then turn 
+  off Preview mode to commit the updates to your design.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on. (Updated trigger callbacks in release v5.4 should fix most of these issues.)
+- (All CS18 except Q6/Q7) sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- (CS18Q6/Q7) Do not run trigger callbacks, it will always force sdMtlWdith to be at minimum value.  Using the sdMtlWidth parameter as normal will work fine. Will be fixed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6*/Q7* variants.
+- rrpoly_hi_serp does not currently check spacing, your resistance will also not be off enough to go past the tolerance.  This resistor will be changed to an X device in the next release.
+
+
+***********************
+Device Library
+***********************
+IND
+(CS13Q2, CS18Q3, CS18Q6, CS18Q61)
+- Added ind_oct2, this is intended to replace ind_oct
+- ind_diff_oct supports stacking now
+(ALL)
+- Updated to JIT6Q214
+
+RES & CAP
+- Updated capacitor, resistor callbacks to properly reset intrinsic device parameters when needed
+
+DIODE
+(diode_gd, diode_gd_3t)
+- Added a metal 2 connection option
+(all diodes)
+- Added a ABLB option
+
+FET
+(CS18Q61, CS18Q71)
+- Added nfet2p5h1_t, nfet2p5h1_t_5, and nfet2p5h1_t_6 The devices will flag the 118.83.BAD2 rule w/ the p-cell layout. The user must manually
+  enclose the device with the SWB marking layer to convey intent of use only in the switch branch. This device should not be used in any other
+  circuit. Please consult document NPB PS-1155 for further details.
+
+
+***********************
+Models
+***********************
+v2.7 Release
+FET:
+- Added new models for high-power handling 2.5V t-gate NFETs (n2p5feth1_t[_rf][_psp])
+- Added corner models for box-thickness, which is propagted into junction capactiance
+  and overlap-capacitance corners (Coff)
+- Extended 2.5V t-gate "e1" NFET models (n2p5fete1_t[_rf][_psp] to channel lengths down to 0.22um
+  Previous models were valid up down to 0.24um. This required modifying the model across all geometries
+  to keep model continuous. Therefore differences in simulation can be expected for all geometries.
+  Key change is increase in Vt and a ~5% increase in Ron for short-channel devices
+- Added "width-correction" to the series drain resistance to 2.5v "e1" PSP nfets n2p5fete1_t[_rf]_psp
+  to account for the series metal resistance for wider widths for the multi-finger PeX option 
+  (nf > 1 & postlayout = 1). There is no change to schematic simulations or PeX simulations w/ nf=1. 
+Diode:
+- Updated silicide-block defined models (dsbn[3t]):
+  1. Recenter forward current (IS) to match latest measurements
+  2. Added tunneling leakage to match measured reverse bias current
+- Added new silicon based models gate-defined diodes using the "e1" process (dgdne1[3t])
+  Previously these models were copies from the base-line process. Measurements from
+  POR silicon indicate ~2x increase in forward current and ~3x increase in reverse leakage
+
+
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC
+- SB.A.o.met4 - fixed, was flagging incorrectly.  Document illustration shoudl showcase rules better now as well.
+
+
+-----------------------------------
+Date: 04/21/2014
+Version 5.3.1
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18q7, cs18m1, cs18m2, cs18m5, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 5 (CS18M2)
+* Design Application Note: NPB-PS-1155, Rev. 1 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 2 (CS18Q6,CS18Q7)
+* Design Application Note: NPB-PS-1142, Rev. 3 (ESD Design Manual)
+
+Highlights:
+* Added rppoly_hi_serp device
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 12.1.1.048 32bit -- 4 Jun 2013
+* Mentor Calibre 2010.2_38, 2012.1_37, and 2014.1_36
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- (All CS18 except Q6/Q7) sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- (CS18Q6/Q7) Do not run trigger callbacks, it will always force sdMtlWdith to be at minimum value.  Using the sdMtlWidth parameter as normal will work fine. Will be fixed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6/Q7 variants.
+- rrpoly_hi_serp does not currently check spacing, your resistance will also not be off enough to go past the tolerance.  This resistor will be changed to an X device in the next release.
+
+
+***********************
+Device Library
+***********************
+IND
+- Fixed errors in all inductors.
+- Updated to JIT6
+
+RES
+- Added rppoly_hi_serp and rppoly_hi_serp_3t
+
+***********************
+Models
+***********************
+v2.6 Release
+RES:
+- Added models for serpintine "all-poly" resistors  
+FET:
+- Added series drain resistance to 2.5v "e1" RF PSP nfets n2p5fete1_t_rf_psp model for 
+  multi-finger PeX option (nf > 1 & postlayout = 1). There is no change to schematic simulations
+  or PeX simulations w/ nf=1. This enables a more accurate Ron post-layout simulation 
+  w/ the "multi-finger" option
+IND:
+- Aligned to Toolbox Version: jazz6.0 
+  Added 3.3um Cu inductor components ind_3p3u, inddiff_3p3u for NPB/MH process 
+  and a new solenoid component indsol_5u, indsol_3u, indsol_3p3u, indsol_1u.
+
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC
+(All)
+- Fixed false SIA.1 and 40.X.2 violations
+- Updated 51.A rule check to exclude IND port metal
+(CS18M5,Q5,Q6,Q7)
+- The L >= 0.22um is allowed  under mrkLyr (swb). Extrapolated model is used for L < 0.24um. Please use w/ caution. Model will be updated at a future date.
+- MSA.N.1.M* (revised): Wide metal, both width and height > 35um, without slits is not allowed (except MIM cap or bonding pad).
+
+DENSITY 
+(CS18Q6)
+- CuM1 dummy fill: block M1 dummy fill under MIM cap,poly resistors and ablb (analog marking).
+
+LVS
+(ALL)
+- Fixed bug in Calibre "Compare number of parallel FETs" option
+- Prevent Assura label-short warnings in resistor/capacitor pcells
+
+
+
+-----------------------------------
+Date: 02/24/2014
+Version 5.3
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18q7, cs18m1, cs18m2, cs18m5, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 5 (CS18M2)
+* Design Application Note: NPB-PS-1155, Rev. 1 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 2 (CS18Q6,CS18Q7)
+* Design Application Note: NPB-PS-1142, Rev. 3 (ESD Design Manual)
+
+Highlights:
+* Experimental release of cs18m5, please contact your TowerJazz Design Support Engineer if you wish to use it.
+* Added cs18q7
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 12.1.1.048 32bit -- 4 Jun 2013
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- (All CS18 except Q6/Q7) sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- (CS18Q6/Q7) Do not run trigger callbacks, it will always force sdMtlWdith to be at minimum value.  Using the sdMtlWidth parameter as normal will work fine. Will be fixed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6/Q7 variants.
+
+
+***********************
+Device Library
+***********************
+MOSFETS
+(CS18Q6/Q7 only)
+- Enabled stretch handles on nfet tgates.
+- S/D Metal Width is now an editable parameter, but use at your own risk.
+- Body Metal Width is now an editable parameter.
+- "Use Min Metal Poly Cont" parameter added to make the metal1 enclosure around all poly contacts on tgates draw at minimum. If you use this you need to keep in mind end enclsure rules.
+
+ESDLIB
+- Adjusted esdlib for cs18q6.
+
+
+***********************
+Models
+***********************
+v2.5 Release
+Diode:
+- Added reverse tunnelling to the gate-defined diode models (dgdn[3t]). This signficantly
+  increases the leakage at high reverse-bias (> 2V) vs. the previous models
+FET:
+- Added switch to turn-off impact-ionization body current in 2.5v t-gate RF PSP FETs
+  (n2p5fet[e1]_t_rf_psp) to improve convergence at high power-levels across a switch.
+  Body-current in PSP RF FETs can be turned-off via the "HELP" switch next to "conv" corners
+
+-----------------------------------
+Date: 01/31/2014
+Version 5.2
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18m1, cs18m2, cs18m5, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 5 (CS18M2)
+* Design Application Note: NPB-PS-1155, Rev. 1 (CS18M5,Q5)
+* Design Application Note: NPB-PS-1158, Rev. 2 (CS18Q6)
+* Design Application Note: NPB-PS-1142, Rev. 3 (ESD Design Manual)
+
+Highlights:
+* Experimental release of cs18m5, please contact your TowerJazz Design Support Engineer if you wish to use it.
+* Added blowfuse, nfet2p5_ld_t device to cs18q5 and cs18q6.
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 12.1.1.048 32bit -- 4 Jun 2013
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6/Q7 variants.
+
+
+***********************
+Device Library
+***********************
+MOSFETS
+(CS18Q6 only)
+- Enabled stretch handles on nfet tgates.
+- S/D Metal Width is now an editable parameter, but use at your own risk.
+
+ALL
+- Added line in libInitCustomExit.il file to automatically set bsimsoi_va equal to yes, for simulation purposes.
+
+
+***********************
+Models
+***********************
+v2.4 Release
+FET:
+- Updated corner models for the e1 2.5v fets (n2p5fete1[_t][_rf]. For most
+  geometries this has resulted in tighter Vt and Ioff (based off new e-specs.)
+- Added new experimental model for 2.5v t-gate LDMOS (n2p5fetld_t).
+  The model is targetted as the "blow" transistor for the eFuse and
+  has adequate accuracy for that purpose. It should not be used in 
+  applications where a high-degree of accuracy in the capacitance model is needed
+Diode:
+- Fine-tuned ESD version of diode models to better patch TLP data
+FET:
+- Added capmod=0 option of the parasitic fet in the 2.5V t-gate nfet models (n2p5fet_t[_rf])
+Diode:
+- Added estimated mismatch models for diodes (dgdn[_3t], dsbn[_3t]
+FET:
+- Reduced body sheet resistance in t-gate 2.5V RF PSP FETs (n2p5fet[e1]_t_rf_psp)
+  to better model gate and body voltage coupling
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC
+(CS18Q5/CS18Q6)
+- Revised 118.151.BAD (enhance marking on nfet)
+- Fixed MC_9
+- Fixed 87.E
+- Filter hvnmrk (ldfet) from standard rules check.
+(CS18Q6)
+- Revised Metal1 dummy fill (added smaller fill pattern )
+
+LVS
+(All Variants)
+- Added support for 6 terminal fets in Assura. 
+
+ERC
+(All Variants)
+- The ERC decks were updated to fix false floating metal violations when connected to MOM caps, and to fix false floating poly violations when connected to gates or poly resistors.
+
+Simulation
+- The SKILL files were updated to fix the back-annotated Cdd & Css values for FETs simulated using PSP models.
+
+
+-----------------------------------
+Date: 12/11/2013
+Version 5.1.1
+
+Verification Updates:
+LVS/QRC/ADE Assura (CS13Q1/Q2)
+* Fixed av_extracted netlist.
+PEX Calibre (CS16Q6)
+* Fixed incorrect contact, via and BOX parameters in PEX deck.
+DRC (CS18Q5, CS18Q6)
+* Fixed bug in 118.151.BAD rule.
+* cpoly2p5 was not recognized when blanket dgate implant is sharing with gates.
+
+
+-----------------------------------
+Date: 11/25/2013
+Version 5.1
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18q5, cs18q6, cs18m1, cs18m2, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.7
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 4
+
+Highlights:
+* Release of cs18q5 and cs18q6 design kit.
+* Release of cs18q5 and cs18q6 esd libraries.
+* Release of IC5.1 and IC6.1 format design kits.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 11.1.0.722.isr24 32bit -- 28 Mar 2013
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- nfet2p5_t_6 is not currently supported for Assura, it does still work with Calibre.  However, for Assura, the user
+  can use an nfet2p5_t and sub_v for the same functionality.
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in a future release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications.
+- var_mos device is currently not supported in CS18Q6 variant.
+
+
+***********************
+Device Library
+***********************
+RES
+(All CS18 variants)
+- Made some improvements to the efuse2 in our fixed cell generation process. The device's pin labels have moved by about a grid point, this causes no errors.
+  Because of this change, we regenerated the efuse2 for all variants that support efuse2.
+- Added virtuoso pins to efuse2 allowing for Layout GXL use.
+
+MOSFET
+(All variants)
+- Fixed an offgrid error on the tgate fets when using the 2met_SW(min) metal connection option. (Because of where the error was, there should be no routing issues.)
+- Fixed a callback error with the tgate fets.  It was warning that 150um was the max for the width parameter, this is not true as 250um is the max. It was only warning this
+  not changing it to 150um.  This is just a callback error reporting fix.
+
+DIO
+(All variants)
+- Added callbacks for the M and NF parameters. They now have min and max values and cannot be typed in as anything but an integer.
+
+SEAL_RING
+(CS13Q2, CS18Q3)
+- Fixed the number of top via rows to fit 2 rows in.
+
+
+***********************
+Models
+***********************
+v2.3 Release
+Diode:
+- Updated series resistance for gate-defined diode model (dgdn[3t]) for ESD simulations
+  to better align w/  new TLP data. Net change is a 5-10% increase in series
+  resistance for W < 10um. Almost no change W > 10um
+FET:
+- Reduced body sheet resistance in floating body 2.5V RF FETs 
+  (n2p5fet[e1][_rf][_psp] to improve convergence for BSIMSOI models.
+  This parameter was based on the physical sheet resistance in previous versions of the model,
+  but reducing this does not degrade model accuracy in common source or common gate configurations
+  (Note: There is no measurable change in model accuracy w/ these changes)
+- Fixed warning message in 2.5V psp floating body rf pfets (p2p5fet_rf_psp) related to duplicate
+  specification of rjun[s,d]o parameter
+- Changed PGAT model parameter values in 2.5V PSP floating body fets (p2p5fet[_rf]_psp) to improve convergence
+- Changed RBULKO in all RF psp models from 1e-3 ohms to 1e-2 ohms. This parameter is not used in the model
+  and need to be ~0.
+FET:
+- Re-extracted monte-carlo model for 2.5V PSP NFETs to remove unreaonable outliers in overlap-capacitance
+- Changed "open-circuit" body resistance for 2.5v floating PSP nfet (n2p5fet_psp) from 1e6 to 1e9 ohms to fix
+  anomalous insertion loss from drain to source. No change to the the RF models (n2p5fet_rf_psp)
+
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC
+(CS13Q2, CS18Q3)
+- SB.A.i.met4 
+- SB.C.via3 
+- SB.C.via3_3 (removed)
+(CS18M1, CS18M2)
+- Added 37.BAD & 38.BAD to prevent inadvertent use of layers above M3
+
+LVS
+- Updated Calibre and Assura LVS decks to fix false violations when using RWS option in poly resistors
+
+PEX
+- Updated Calibre PEX decks to fix potentially incorrect parasitic resistance extraction on M3 and M4
+
+
+
+-----------------------------------
+Date: 11/05/2013
+Version 5.0.2
+
+Verification Updates:
+Antenna
+* Update max. ratio in SA.1 check from 35 to 300
+* Improve connectivity extraction in MIM cap antenna checks
+
+
+-----------------------------------
+Date: 10/17/2013
+Version 5.0.1
+
+Verification Updates (Calibre only):
+General
+* Fix file pointers in LVS and XRC wrappers (no effective change
+  since LVS and XRC decks are unchanged from previous release)
+Antenna
+* Update max. area in AN.B and AN.C.a/b/c checks from 165K/180K to 235K
+* Update max. ratio in AN.E.a/b/c/d checks from 11K to 16K
+* Remove AN.E.g check
+* Update max. ratio in AN.J.a/b/c checks from 250 to 325
+* Update max. ratio in SA.m3/m4.* checks from 85 to 300
+* Update max. ratio in SA.tot.* checks from 85 to 350
+DRC
+* Change GDS datatype of q5Mrk marking layer from 150 to 151
+
+
+-----------------------------------
+Date: 10/15/2013
+Version 5.0
+Library: cs18 (cs18q1, cs18q2, cs18q3, cs18m1, cs18m2, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.6
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.4
+* Design Application Note: NPB-PS-1111, Rev. 4
+
+Highlights:
+* Release of cs18q3 design kit.
+* Release of IC5.1 and IC6.1 format design kits
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Spectre Version 11.1.0.722.isr24 32bit -- 28 Mar 2013
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- nfet2p5_t_6 is not currently supported for Assura, it does still work with Calibre.  However, for Assura, the user
+  can use an nfet2p5_t and sub_v for the same functionality.
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in the next release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications. 
+ 
+
+***********************
+Device Library
+***********************
+ALL
+- Fixed some errors in the devVariantsList.
+
+RES
+- Fixed Max Current Density calculation in the resistors.  This is just a display parameter, the model does not use the CDF value.
+
+FET
+- Added nfet5p0 (5V NFET) to CS18Q2. Symbol views only. (This device is only for evaluation purposes and is not a legal device in CS18Q2 and will be supported in a different variant in the future.)
+
+FUSE
+- Added callbacks for efuse2
+
+VIAS
+- Fixed the techfile vias in CS13Q2
+
+
+***********************
+Models
+***********************
+v2.2 Release
+FET:
+- Added enhancement-1 (e1) 2.5v t-gate and floating body NFET models (n2p5fete1[_t][_rf][_psp]
+  (BSIM & PSP) representing lower Ron vs. baseline 2.5v NFETs.
+  Note: Model for the floating body 2.5 
+- Added model for 5v t-gate nfet (n5p0fet_t). This is an early model and will likely
+  change as the process matures 
+RES:
+- Added box-thickness to the poly resistor parasitic capacitance model to handle-wafer
+Diode:
+- 1. Re-extracted gate-defined diode models from POR silicon. Saturation current is nearly 2x that of v2.1 models
+  2. Changed temperature dependence of saturation current to align w/ POR silicon
+  3. Added breakdown voltage to diode models (dgdn[3t], dsbn[3t])
+CAP;
+- Added box-thickness to the MiM capacitance parasitic capacitance model to handle-wafer
+
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+Calibre:
+DRC: CS18/CS13 variants 
+- Added 118.150.BAD
+
+ANTENNA: (Calibre only)
+- Major revision related to antenna exclusion definition, revised all checks.
+
+
+-----------------------------------
+Date: 08/20/2013
+Version 4.0
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs18m2, cs13q1, cs13q2)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.6
+* Electrical Spec: NPB-PS-1058, Rev.4
+* Modeling Manual: NPB-PS-1076, Rev.3
+* Design Application Note: NPB-PS-1111, Rev. 4
+
+Highlights:
+* Release of cs13q2 design kit.
+* New cap and res update script, detailed below.
+* Release of IC5.1 and IC6.1 format design kits
+* New seal-ring p-cell
+* New lateral (fringe) capacitor element in the device library
+* Instance level PSP switch replaces global PSP option
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+* Cadence Assura v4.12.017_615, v4.12.017, v4.12.014, v4.12.011
+
+Known Issues and Limitations
+
+- Migrating a design from PDK v3.1.1 or before will result in LVS errors related to rppoly_hi. This is due to incorrect displayed values in the older PDK
+  (simulations were always correct). To fix this follow the following 2 steps (these will not change the physical layout): 
+  1. Schematic view: Click on TowerJazz->Utilities->Generic Design Conversion:
+  2. Layout view: Click on TowerJazz->Layout Migration Tool and then choose "update_res_cap.lay" next to the Mapping option and click on OK.
+
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- nfet2p5_t_6 is not currently supported for Assura, it does still work with Calibre.  However, for Assura, the user
+  can use an nfet2p5_t and sub_v for the same functionality.
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in the next release.
+- Designs that were previously DRC clean may flag the SIA (small isolated active) DRC errors due to change in algorithm. These rules can be waived if using the CS18 variants containing
+ "T" (e.g. CS18QT1). Contact your TowerJazz design support engineer for further clarifications. 
+ 
+
+***********************
+Device Library
+***********************
+CAP
+- Added cmom and cmom_2t (fringe capacitors)
+
+RESISTOR
+- Added support for RWS in rppoly_hi_3t and rppoly_lo_3t.
+- Added new poly efuse2 element
+
+FET
+- Added a PSP/BSIM cdf parameter to all FETs, however only nfet2p5 is currently supported by the model.
+- Added connectivity to the diffusion for the body when body contact is set to 0
+
+SEALRING
+- Added to all variants
+
+***********************
+Models
+***********************
+v2.1 Release
+
+IND:
+- Changed name of x_sigma variable from "ind" to "global"
+FET:
+- Removed global PSP option. Instance level PSP models are available for 2.5V t-gate NFET, and 2.5V
+  floating-body N and PFETs.
+  NOTE: Choosing the PSP cdf option for remaining FETs will result in a simulation error
+- Added parasitic t-gate MOS model to the 2.5V t-gate pfet model (p2p5fet_t[_rf]) to improve model
+  accuracy for narrow and long devices
+- Reduced Cgd in 2.5V t-gate NFET for post-layout simulations to match POR Ron-Coff data. No change
+  to schematic level simulations
+- Widened Idsat 2.5V t-gate and floating body PFETs to align w/ latest e-spec.
+- Added mismatch models for 2.5V FETs
+- Added bulk PSP model for 2.5V floating body nfet (n2p5fet[_rf]). Accuracy in the saturation regime
+  may be limited due to lack of modeling for floating-body effects
+- Added bulk PSP model for 2.5V floating body pfet (p2p5fet[_rf]). Accuracy in the saturation regime
+  may be limited due to lack of modeling for floating-body effects
+CAP:
+- Added models for lateral (fringe) capacitors cmom_[1,2,3]lmsp[28,4][_2t]
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC: CS18/CS13 variants 
+- Added cs13q2 variant.
+- Added MOM cap, efuse2, sealring rules.
+- Revised small active isolation check.
+- Merge poly (2.L,2.O) N+/P+ implant, bond pads.
+- Minor changes due to design rules clarification.
+
+STRESS: 
+- Fixed ST.A, ST.B
+
+ANTENNA:
+- Major revision to conform with new design rules.
+
+LVS:
+- Fix issue with multi-fingered FET option in flat Calibre LVS
+- Enable source/drain swapping for all FETs in Calibre LVS
+- Enable filtering of sub_l element in Assura LVS
+- Added MOM CAP, efuse2
+- Added support for RWS
+
+PEX
+- Fix extraction of T-gate FETs with shorted drain and source
+- Add PEX support for thicker top dielectric and 0.4u BOX thickness
+- Reduced intrinsic model component for gate-drain capacitance in 2.5V NFETs. This reduces Coff by 5-8% w/ Calibre PeX and Assura QRC
+
+
+-----------------------------------
+Date: 04/26/2013
+Version 3.1.1
+***********************
+Device Library
+***********************
+SUB
+- Added auLvs.views for both sub_v and sub_l (This only affects Assura LVS)
+
+
+-----------------------------------
+Date: 04/19/2013
+Version 3.1
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs18m2, cs13q1)
+Relevant Specification Documents  (The latest revision of these documents may not be on our portal.
+Please contact your TowerJazz design support engineer if you need the latest document):
+* Design Rules: NPB-PS-1013, Rev.6
+* Electrical Spec: NPB-PS-1058, Rev.3
+* Modeling Manual: NPB-PS-1076, Rev.3
+* Design Application Note: NPB-PS-1111, Rev. 4
+
+Highlights:
+* Assura QRC support added to all cs18 variants.
+* Be sure to run "Trigger Callbacks" before working with this design kit
+  if you are updating from an older kit release.
+* Release of IC5.1 and IC6.1 format design kits
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+
+Known Issues and Limitations
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- nfet2p5_t_6 is not currently supported for Assura, it does still work with Calibre.  However, for Assura, the user
+  can use an nfet2p5_t and sub_v for the same functionality.
+- FETs area and perimeter does not update correctly in the CDF when changed from default, but will be correct in the model as the model
+  calculates as, ad, ps, pd independantly of the pcell.
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- When placing devices, do not change the name of the device to another, instead please place a new device of the one wanted.  If you do change the name
+  then please press the defaults button on the properties window in order to get the correct values (schematic view ONLY).  A solution to this problem is currently being
+  worked on.
+- sdMtlWidth will not update correctly for a default placement of tgate fet.  Trigger callbacks needs to be run, or change to a different metal connection style and
+  switch back to unconnected.  This will be addressed in the next release.
+
+***********************
+Device Library
+***********************
+CAP
+- Changed caps to display correct model simulation info, though the model calculates most of it independently.
+
+RESISTOR
+- Added a symbol_x view to rppoly_hi_3t.  It is an explicit 3 terminal view, no inherited sub connection on the sub pin.
+
+FET
+- Fixed Total Width CDF parameter when using trigger callbacks.
+
+***********************
+Models
+***********************
+v2.0 Release
+FET:
+- Set unused statistical parameter values to 0, so Spectre statistical models can be used w/ ADS
+CAP:
+- Updated 3 & 2-terminal capacitor models (c2t_mim2, c2t_mimhv_25) to fix bug related to interface w/ PDK. This 
+  will now align simulated value with displayed value in cdf
+- Updated 2-terminal capacitor models (c2t_mim2, c2t_mimhv_25) to include series resistance of the metal platers.
+  Note: 3-t elements should still be used for full RF modeling
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+DRC: CS18/CS13 variants 
+- Fixed false errors SR.D and  wide metal spacing in Calibre.
+- Fixed GDD.1* false errors in Assura
+- Fixed 11.G,6.G false errors 
+- Removed MC2_11 check
+- Changed L_cell marking spacing checks from 20-> 19.90, added dummy connectivity for different potential spacing checks
+- Subtract metals slit from drawn metals
+- Removed dgate artifact to dgate spacing
+- Revised merged poly checks (2.L->2.O)
+- Added *.BAD checks
+
+- CS18M2: Added High Voltage MIM checks
+
+DENSITY:
+- Subtract metals slit from drawn metals
+- Added exclusion area around pbody (dummy active and dummy poly)
+
+ERC:
+- CS18M1/M2 : Added missing floating metals check.
+- Note: CS18/CS13  Gate_pwr_gnd and Power_pdiff_in_grounded_pfet_body are not yet implementd
+
+STRESS:
+- Subtract metals slit from drawn metals
+
+PEX
+- Add Assura QRC support
+- Enable merging of parallel 1.2V PFETs in Assura LVS
+- Filter out sub_v elements (treat as opens) in Assura LVS
+- Fix multi-finger extraction of MOSFETs in Assura
+- Isolate local substrates with 0.001u-wide instead of 0.05u-wide rings
+- Enable Calibre extraction of floating net parasitics by default
+- Prevent extraneous parasitic caps from being extracted for salicided poly resistor
+
+
+-----------------------------------
+Date: 03/15/2013
+Version 3.0
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs18m2, cs13q1)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1013, Rev.6
+* Electrical Spec: NPB-PS-1058, Rev.3
+* Modeling Manual: NPB-PS-1076, Rev.3
+* Design Application Note: NPB-PS-1111, Rev. 2
+
+Highlights:
+* Mos Varactor added to all cs18 variants.
+* Assura support added to all cs18 variants.
+* Be sure to run "Trigger Callbacks" before working with this design kit
+  if you are updating from an older kit release.
+* Release of IC5.1 and IC6.1 format design kits
+* Start of our new versioning system.  As this is about the 3rd major revision it 
+  will be listed as v3.0
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) and IC6.1.5.511 or later (OA format)
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38 and 2012.1_37.24
+
+Known Issues and Limitations
+- Inductors with shield option on will flag Lcell rule 51.B (20um spacing from lcell to metal1) due to metal 1
+  having a grid error which puts the spacing at 19.98um.  User can waive this rule or flatten pcell to fix.
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- Assura QRC support is not currently available.
+- nfet2p5_t_6 is not currently supported for Assura, it does still work with Calibre.  However, for Assura, the user
+  can use an nfet2p5_t and sub_v for the same functionality.
+- FETs area and perimeter does not update correctly in the CDF when changed from default, but will be correct in the model as the model
+  calculates as, ad, ps, pd independantly of the pcell.
+- For Assura only, rule GDD.1.b may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+- Rule POL5.10 may give false DRC errors in some cases. Please contact your TowerJazz design support engineer for review before tape-in.
+
+***********************
+Device Library
+***********************
+ALL
+- devVariantsList fixed and updated.  This required a procedure change to all pcells.
+- Removed ads.view from all pcells.
+
+FET
+- Added a Total Width CDF parameter to tgate FETs.  Same as floating body FETs Total Width CDF parameter.
+- Added a minimum metal overplot option for tgate metal connections.
+- Added a contact stagger option to the tgate FETs.
+- Fixed default area and perimeter (ad, as, pd, ps) to show up correctly.
+
+DIODE
+- Added pins to all diodes.
+
+VARACTOR
+- Added var_mos and var_mos_2t.
+
+***********************
+Models
+***********************
+v1.9 Release
+FET:
+- PeX (post-layout) Only: Added missing vertical component (silicide to poly contact resistance) of gate resistance
+  during post-layout (PeX) simulations for RF FETs. There is no change to schematic level simulations
+- Set some unused statistical parameter values to 0, so Spectre statistical models can be used w/ ADS
+- Updated isolation oxide (BOX) thickness in models to align w/ POR
+- Updated 1.2V FET (CS13) corner models to align with latest e-specs. 
+  Note 1: There is no change to the nominal models (other than flicker noise - see below)
+  Note 2: Key change is +/- 0.02V for SLOW/FAST wider Vt in the short-channel NFET
+  and +/- 0.2mA for FAST/SLOW Idsat in the W=10um and short-channel (L ~ 0.12um) PFETs
+- Updated 1.2V FET flicker noise models to align w/ POR silicon
+- Re-calibrated series drain resistance for 2.5V t-gate NFETs (n2p5fet_t[_rf]) for post-layout simulations (PeX)
+  so reasonable estimation is available w/ C + CC option, which provides a much faster PeX options vs. the full R + C + CC 
+  Note: There is some "double-counting" in series resistance related to M1/contact now w/ the R + C + CC PeX option 
+SUB:
+- Corrected calculation of sub_v (vertical substrate resistance) dimensions for schematic level simulations
+  of the 6-terminal 2.5V NFET (n2p5fet_t_6[_rf]).
+  Note: For Post-layout simulations the size of the analog-layer determines the size of sub_v 
+- Added option for user to globally over-ride instance level definition of spreading in sub_v component 
+  using the USER_DEFINED option in the sub row of the TowerJazz model selection dialog box
+MOSVAR:
+- Updated MOSVAR model to align w/ PDK element. Previously there was no PDK support for this device.
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+- New Calibre GTE generated verification decks. Previous decks were hand-coded, so there may some minor changes
+  in rule checking algorithms. There is no fundamental change to either the technology design rules or rule checking.
+
+-----------------------------------
+Date: 11/15/2012
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs18m2, cs13q1)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1013, Rev.5
+* Electrical Spec: NPB-PS-1058, Rev.3
+* Modeling Manual: NPB-PS-1076, Rev.3
+* Design Application Note: NPB-PS-1111, Rev. 1
+
+Highlights:
+* Design Kit supports process variants cs18q1, cs18q2, cs18m1, cs18m2 and cs13q1
+* Be sure to run "Trigger Callbacks" before working with this design kit
+  if you are updating from an older kit release.
+* Addition of new cs18m2 variant (cs18m1 with addition of High Voltage MIMCAP)
+	* cs18m2 is not currently available in the general release. Contact your design support engineer, if you need this variant.
+* Release of IC5.1 and IC6.1 format design kits
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) or IC6.1.5.511 or later (OA format)
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38
+
+Known Issues and Limitations
+- Inductors with shield option on will flag Lcell rule 51.B (20um spacing from lcell to metal1) due to metal 1
+  having a grid error which puts the spacing at 19.98um.  User can waive this rule or flatten pcell to fix.
+- Oct inductors shift by one grid point due to changes with JIT 5.1
+- Under certain conditions the calibre PEX incorrectly extracts metal fringe capacitance from contacts to global ground. User can
+  reset global ground under PEX options to a floating node to ignore this capacitance.  A service request has been filed with Mentor
+  to fix this issue.
+
+***********************
+Device Library
+***********************
+FET
+- Added option in all FETs to turn off both metal and contacts on S/D (Default on)
+- Added a postlayout (Include metal parasitics) option to all FETs (Default on)
+- Added pins to the gates for all tgate FETs. This is for when the gate taps are disabled, this will allow for VXL to continue to function.
+	-Note: There is a sliver of extra poly within the right gate to allow for multiple pins on the same poly shape.
+- Fixed nfet2p5_t_6 extracted view.
+
+CAP
+- Fixed CNI overplot (Rule 6.A.b.2 and Rule 6.E) on cpoly2p5 and cpoly2p5_3t (This does NOT increase footprint.)
+- Changed all mimcap taps to have denser vias, by using min design rule via spacing.
+- Pcell limits mimcaps W and L to 2.72u, but custom caps can be built down to 1.5u W and L.
+
+INDUCTORS
+- Added the poly shield for the octagonal inductors.
+- Added JIT 5.1
+
+TECHFILE
+- Added metal slit layers (metal1 slt, metal2 slt, etc.)
+- Added switch branch layer (mrklyr swb)
+- Changed cap2fF to capMark, this is in preparation for future mimcaps.  Existing designs, even flattened ones, will not be affected by this
+  change. (The design rule document will be updated in the future.)
+
+***********************
+Models
+***********************
+v1.8 Release
+FET
+- Added post-layout flag to FET models to turn-off fringe component of Cgd and gate-resistance during
+  PeX (post-layout or extracted view) simulations. Schematic includes Cgd parasitics up to M1 and silicided
+  poly resistance over active
+- Updated 5V PFET models (p5p0fet_t[_rf]) based on latest silicon. This is a major re-work of the model.
+  Primary change is increase in Vt and reduction in Idsat
+
+CAP
+- Added silicon based RF model for 25V MiM cap (c[2,3]t_mimhv_25)
+
+SUB
+- Added capability for user to define wafer thickness using USER_DEFINE option in the sub row of the TowerJazz model selection dialog box
+
+
+v1.7 Previous Release
+FET
+- Increase thermal noise in 2.5V floating-body RF NFETs to better align with new NFmin measurements
+- Minor change to Vt and DIBL related parameters in short-channel 2.5V BSIM NFETs (n2p5fet[_t][_rf])
+  to improve alignment to statistical Ioff data
+- Minor change to DIBL related parameters in short and narrow channel 2.5V t-gate PSP NFETs (n2p5fet_t[_rf])
+  to improve alignment to statistical Ioff data
+- Minor change to Delta L of 2.5V PSP t-gate RF NFET (n2p5fet_t_rf) at FAST corner
+  (Prev. rev. was using the corner offset from the BSIM model option).
+CAP
+- Fixed undefined parameter bug related to x-sigma models for mim capacitors
+Poly-cap (pc)
+- Tightened tuning range to align w/ e-spec for statistical model. No change to corner simulations
+
+***********************
+Verification (See latest design rule document for details.)
+***********************
+LVS
+- Added HV MIM cap
+
+DRC
+- Added 5.A.a.4 (switch branch marking for 2.5V tgate nfet)
+- Metal Slit rules
+- HV MIM rules
+- 41.BAD, 10.BAD, BM.BAD
+- Removed 12.B_2.artifact
+- Revised merge poly checks (2.L-2.O)
+- Added active isolation check
+
+ERC
+- New floating poly and metal checks
+
+STRESS
+- Added option to turn on/off MIM cap spacing to die edge check
+
+ANTENNA
+- Several values change
+
+PEX
+- Added customization options for parasitic capacitance to substrate and vertical substrate (sub_v) parasitic to wafer backside
+- Fixed bug related to substrate capacitance extraction in CS18Q1 and CS18Q2
+
+
+___________________________________
+Date: 08/30/2012
+
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs13q1)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1013, Rev.4
+* Electrical Spec: NPB-PS-1058, rev.3
+* Modeling Manual: NPB-PS-1076, Rev.2
+
+Highlights:
+* Design Kit supports process variants cs18q1, cs18q2, cs18m1, and cs13q1
+* Be sure to run "Trigger Callbacks" before working with this design kit
+  if you are updating from an older kit release.
+* Addition of new cs18m1 and cs13q1 variants
+* Inclusion of ESD Library
+* Release of IC5.1 and IC6.1 format design kits
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6 (CDB format) or IC6.1.5.502 or later (OA format)
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38
+
+Known Issues and Limitations
+- The gate resistance in active regions of RF FETs is currently double-counted
+  (extracted and in the model).  This issue will be fixed in a subsequent
+  release of the PDK.
+- LVS Multiplicity parameter (simM) in tgate fets may not have been calculated
+  correctly in previous kit releases.
+  Use "Trigger Callbacks" to update designs to work with new design kit.
+
+Device Library
+* Techfile
+  - Update techfile to show MIM cap layers.
+* CAP:
+  - Fix issue with cs18m1 cmim2_2t LVS
+  - Fix issue with LVS when Compare MIM L/W is enabled
+* DIODE:
+  - Add "dgate" layer over diodes in cs18m1/cs18q1 variants. The dgate layer is required to be
+    present at top-level (DR Rule 12.X) in these variants.
+    The addition to the cells helps with lower block LVS runs.
+* MOSFET:
+  - Fix issue with T-gate Center mode with 100%
+  - Fix issue with pcell falure for wf < 0.48u
+  - Fis issue iwth T-gate Split mode at high percentage
+
+Environment:
+- Improve Calibre integration loading to check for CALIBRE_HOME environment variable
+  in preference to MGC_HOME
+- Improve Design Kit Setup Report output
+- Correct makeProjectTree library attachment when using IC6.1 
+
+Models:
+v1.6 (see previous release)
+- Convergence issues can be resolved by setting a cmin=1aF (1e-18F) simulator option in the simulation.
+
+Antenna:
+Density:
+DRC:
+  - Correct 5.G.b.1 to fix thick-gate recognition issues
+  - cs18m1 - Correct 27.A.Artifact
+  - PR.B - Improve recognition of resistor length
+  - Update MC.2 derivations, correct value from 1.5 to 0.8
+  - Update comment for 12.X.1, 
+  - Update SR.* derivation to allow for poly routing
+
+LVS:
+  - Fix issue with LVS of MIM cap when Compare MIM L/W is enabled
+  - Improve MIM cap via definitions
+  - Remove inductor metal to add inductor support
+PEX:
+  - Fix issue with CalibreView creation for cs13q1 n1p2fet
+  - Fix issue with CalibreView creation for cs18m1 MIM
+Stress:
+  - Add option for $CHECK_DIE_SKIP to disable die-corner checks
+
+___________________________________
+Date: 07/20/2012
+
+Library: cs18 (cs18q1, cs18q2, cs18m1, cs13q1)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-1013, Rev.4
+* Electrical Spec: NPB-PS-1058, rev.3
+* Modeling Manual: NPB-PS-1076, Rev.2
+
+Highlights:
+* Design Kit supports process variants cs18q1, cs18q2, cs18m1, and cs13q1
+* Be sure to run "Trigger Callbacks" before working with this design kit
+  if you are updating from an older kit release.
+* Addition of new cs18m1 and cs13q1 variants
+* Inclusion of ESD Library
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR6
+* Cadence Spectre release MMSIM 10.11.092
+* Mentor Calibre 2010.2_38
+
+Known Issues and Limitations
+- The gate resistance in active regions of RF FETs is currently double-counted (extracted and in the model).
+  This issue will be fixed in a subsequent release of the PDK.
+- LVS Multiplicity parameter (simM) in tgate fets may not have been calculated correctly in previous
+  kit releases. Use "Trigger Callbacks" to update designs to work with new design kit.
+
+Device Library
+* Fixed default layout grid setting by correcting cs18 library properties
+* Add MIM caps cmim2 / cmim2_2t using TM layer for cs18m1 process variant
+* Add 1.2V fet devices for cs13q1 process variant
+* Diodes:
+  - Added display of nf parameter to symbol
+  - Added option to make metal extension allow for wide metal connections
+* MOSFET:
+  - Updated simM (LVS parameter) behavior. 
+    Use Trigger Callbacks to update devices for use with new kit release.
+  - Added option to adjust gate to contact spacing
+  - Added option to adjust gate to body contact spacing
+  - Fixed tgate body contact option in Split mode:
+    At low percentages no contact was showing up.
+    Max percentage calculated to leave minimum M1 space at split
+  - Changed body percentage option functionality, a value of 0 will draw no contact.
+    To create a single contact (usually on a large fet) use a value
+    of 0.005 (the smallest non-zero value).
+  - Corrected multiple MOSFET callback issues caused when design variables were used.
+    Use Trigger Callbacks to update devices for use with new kit release.
+* CAP: 
+  - Fixed ablb overplot on caps
+
+Model Updates
+Model version v1.6
+General:
+- Added x-sigma and statistical models
+FET:
+- Added new silicon based mdoels for 1.2V NFET and PFETs
+- Improved junction capacitance model for 2.5V NFET and PFET
+- Added Flicker noise model for 2.5V NFET and PFET
+- Increase thermal noise in 2.5V t-gate RF NFETs to better align with new NFmin measurements
+- Increased salicide gate resistance in all 2.5 and 5V RF FETs to match e-spec. (5.1 to 5.85 ohms/sq.)
+- Updated junction capacitance model for 5V PFET (previous model was from 2.5V FETs)
+- Added Flicker noise model for 5V PFET
+- Updated GIDL parameters for the 2.5V t-gate NFET PSP models to better match measured data
+Diode:
+- Added models for large-signal (extreme forward-bias)
+PC:
+- Updated 2.5V poly-cap model based on latest silicon. There is a ~5% reduction in accumulation capacitance for a large sized device
+MOSVAR:
+- Added new silicon based RF-model
+
+
+Verification Updates
+* Fixed false error in antenna deck, rule AN.E.d
+* Minor bug fixes in rule decks
+Antenna:
+- Update value for AN.F, AN.G.a, AN.G.c, AN.G.d
+- Correct gate conectivity for AN.C.a
+Density:
+- Remove rules for show_dummymet* with_sealring
+DRC:
+- Revise 2.X.2 to account for other devices
+- Revise derivations and coverage for rules 2.L, 2.M*, 2.N and 2.O
+LVS:
+- Adjustments to layers to account for new devices
+PEX:
+- The gate resistance in active regions of RF FETs is currently double-counted (extracted and in the model).
+  This will be fixed in a subsequent release of the PDK
+- Fixed PEX typos in XRC file from earlier release
+  (PEX did not change between version 2 and 3, so this did not cause any behavior changes)
+Stress:
+- Add runtime switches to disable corner stress checks
+
+Notes
+* nfet2p5_t_6 will use the default spreading of 0.7, if you want more control over these values, please use sub_v with the devices instead.
+
+
+___________________________________
+Date: 03/30/2012
+
+Notes
+* nfet2p5_t_6 will use the default spreading of 0.7, if you want more control over these values, please use sub_v with the devices instead.
+* DT spacing error on DT mesh, it has experimental spacing of 0.6um
+-----------------------------------
+Date: 03/30/2012
+Library: cs18 release for cs18q2
+Relevant Specification Documents:
+Design Rules: NPB PS-1013
+Modeling Design Manual: NPB PS-1076
+Electrical Spec: NPB PS-1058
+Design Application Note: N/A
+
+Highlights:
+* Initial development-level kit release for cs18q2 variant,
+* a thin-film partially depleted SOI process with
+  - ~1500A top Si and 1um base oxide
+  - floating body and body contacted 2.5V CMOS 
+  - body contacted 5V PFET
+  - 2fF/um2 MIM capacitor
+  - low value, high value, and salicided poly resistors
+  - 2.8um thick top metal
+
+Verification:
+* Calibre
+  - Initial release of DRC, LVS and PEX deck
+  - Experimental deep-trench dummy-fill mesh utility
+* Assura
+  - To be implented in a future update
+
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41USR6 & IC6.1.5.502
+* Cadence Spectre release MMSIM10.11.092
+* Synopsys Hspice: N/A
+* ADS: N/A 
+* Mentor Calibre release 2008.1_32 & 2010.2_38
+* Assura: N/A
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  not function.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in customizing layers and devices.  This utility
+  is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+
+Kit Installation and Environment:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits.  This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+Flow Changes:
+* This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com.
+
+___________________________________
+Date: 03/30/2012
+
+Library: cs18 release for cs18q1
+Patch - 03/30/2012
+Pcell Updates
+* Added limits to the sub_v and sub_l values
+* Added a spreading value to sub_v
+* PWE was removed from cs18
+* PWE no longer surrounds inductor pcells
+* Minor bug fixes in pcells
+
+Model Updates
+Substrate:
+* Added support for "spreading" instance variable in sub_v element to account for 
+  a varying degrees for reduction in spreading resistance from the bottom of BOX
+  to backside (spreading = 0 -> no current spreading; spreading = 1 -> current spreading to infinite backside)
+FET:
+* Added new model for 5V PFET (p5p0fet_t)
+* Replaced non-linear BOX capacitor in the 2.5V NFET PSP model option with a linear capacitor, consistent with POR substrate engineering in the CS18 process
+Diodes:
+* Added support for number of fingers (nf). Previous version was ignoring "nf" parameter passed from the PDK
+
+Verification Updates
+* Added POL layer, mrklyr POL
+* Added POL rules
+* Added experimental DT mesh utility
+* PWE is now checked with a .BAD rule
+* Fixed false error in antenna deck, rule AN.E.d
+* Minor bug fixes in rule decks
+
+Notes
+* nfet2p5_t_6 will use the default spreading of 0.7, if you want more control over these values, please use sub_v with the devices instead.
+* DT spacing error on DT mesh, it has experimental spacing of 0.6um
+
+Patch - 02/02/2012
+* Added inductors
+* Changed floating body fets min width to 0.3um
+* Fixed pfet pcells to correctly warn about rules 2.A.b and 2.A.c
+* Fixed body contact percentage to be allowed to go down to 0
+Model Updates:
+Inductors:
+- Added models for square and octagonal single-ended and differential inductors
+
+Patch - 12/07/2011
+* Added r_dummy
+* Added an LVS check on the multiplier for all diodes
+
+Patch - 12/02/2011
+* Fixed rppoly_hi, rppoly_lo, and rppoly_sal to have the "2t" labels on every strip 
+* DRC rule fixes
+
+Patch - 11/23/2011
+* Fix false diode DRC violations 
+* Fix diode and resistor callback errors 
+* Make R+C+CC the default Calibre PEX extraction mode 
+* Add Library Manager entry for cs18_rcx library 
+
+Patch - 11/21/2011
+* Added sub_v 
+* Added sub_l 
+* Added nfet2p5_t_6 a combination of nfet2p5_t and sub_v 
+* Added an RF model option in all fets 
+* Added a new subckt for nfet2p5_t_6 
+* Changed floating body fets fingers to be allowed up to 1000 
+* Changed all fets to a have a default length of 0.28um, but a minimum of 0.18um 
+* Fets with a length below default of 0.28um are experimental 
+* Changed Pfets to not allow L > 1um when W < 1um 
+* Fixed ad, as, pd, ps parameters in t-gate fets 
+* Fixed sub pins in fets 
+* DRC and LVS updates 
+* Added PEX Support 
+
+
+Model Updates: 
+Note: Need Spectre mmsim10.11.092 or later 
+Revision History 
+**************************** v1.3 contents ****************************** 
+2011/11/21 
+FET: 
+- Updated FET models based on latest silicon (key change is tox reduction by 6 ang.) 
+- Added RF FET models for floating body and t-gate FETs 
+- Added optional switch for PSP bulk model for 2.5V t-gate nfet (n2p5fet_t) with 
+simplified mos-varactor model for BOX modeling 
+SUB: 
+- Added components for lateral and vertical components of handle-wafer substrate (sub_l & sub_v) 
+
+Patch - 09/29/2011
+* Added in callbacks for the tgate FETs
+* Added new metalization options for the tgate FETs
+* Swapped pins in the tgate FETs spectre view
+* Fixed off grid issues with tgate FETs pins in the spectre view
+* Fixed pbody overlap in cpoly2p5 and cpoly2p5_3t
+* Fixed rule 6.E in the DRC deck, changed from 0.40 to 0.32
+
+Patch - 08/24/2011
+* Fixed grid problems with sub and body pins on the symbol views for the fets 
+* Swapped the body and sub pin on the nfet2p5_t_5 symbol view 
+* Changed checks in DRC deck for min W and L on the tgate fets
+
+Patch - 07/26/2011
+* Added diode LVS 
+* Gated Diodes now have the cathode and gate shorted, instead of anode and gate 
+* Reduced cni/cpi overplot on tgate fets 
+* Both the gated and non gated diodes have had their lengths set to a fixed value 
+* Diodes width and length have been swapped to be more in line with the mosfets 
+* DRC updates for diode changes 
+* Fixed an issue with poly extension on the t-gate fets when the left or right gate tap was turned off and the device was at a small width
+Model Updates: 
+Note: Need Spectre mmsim10.11.092 or later access v4.4 of the bsimsoi models 
+- 1st release of silicon based models for 2.5V FETs ([n,p]2p5fet[_t]) 
+- Added diode models
+
+Patch - 04/12/2011
+* Add deep trench DRC checks 
+* Add LVS support for most devices 
+* Add diode pcells (no LVS support yet) 
+* Fix some bugs in body-contacted MOSFET pcells 
+* Lower minimum allowed channel length/width for floating-body MOSFETs
+___________________________________
+Date: 3/25/2011
+Library: cs18 release for cs18q1
+Relevant Specification Documents:
+Design Rules: NPB PS-1013
+Modeling Design Manual: NPB PS-1076
+Electrical Spec: NPB PS-1058
+Design Application Note: N/A
+
+Highlights:
+* Initial development-level kit release for cs18q1 variant,
+* a thin-film partially depleted SOI process with
+  - ~1500A top Si and 1um base oxide
+  - floating body and body contacted CMOS
+  - 2fF/um2 MIM capacitor
+  - low value, high value, and salicided poly resistors
+  - 2.8um thick top metal
+
+Verification:
+* Calibre
+  - Initial release of DRC deck
+  - LVS/PEX support to be implemented in a future update
+* Assura
+  - To be implented in a future update
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41USR6 & IC6.1.5.502
+* Cadence Spectre release MMSIM10.11.092
+* Synopsys Hspice: N/A
+* ADS: N/A 
+* Mentor Calibre release 2008.1_32 & 2010.2_38
+* Assura: N/A
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in customizing layers and devices.  This utility
+  is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+
+Kit Installation and Environment:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits.  This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+Flow Changes:
+* This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com.
+
+</PRE></BODY></HTML>

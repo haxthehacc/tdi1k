@@ -1,0 +1,30 @@
+* File: nd04da.sp.nd04da.pxi
+* Created: Sun Feb 14 19:48:48 2010
+* 
+cc_1 VSS A4 0.028269f
+cc_2 VSS U7_drain 0.0552726f
+cc_3 VSS A1 0.00833595f
+cc_4 VSS A3 0.00833595f
+cc_5 VSS A2 0.0104393f
+cc_6 VSS U33_out 0.362744f
+cc_7 VSS ZN 0.537616f
+cc_8 VDD A4 0.00958179f
+cc_9 VDD U7_drain 0.132616f
+cc_10 VDD A1 0.00688007f
+cc_11 VDD A3 0.00718913f
+cc_12 VDD A2 0.00792141f
+cc_13 VDD U33_out 0.382067f
+cc_14 VDD ZN 0.518016f
+cc_15 A4 U7_drain 0.0101817f
+cc_16 A4 A1 0.199659f
+cc_17 A4 A3 0.00182118f
+cc_18 U7_drain A1 0.125547f
+cc_19 U7_drain A3 0.131141f
+cc_20 U7_drain A2 0.418136f
+cc_21 U7_drain U33_out 0.623876f
+cc_22 U7_drain ZN 0.00613931f
+cc_23 A1 A3 0.182094f
+cc_24 A3 A2 0.196336f
+cc_25 A3 U4_source 0.0166079f
+cc_26 A2 U33_out 0.00920662f
+cc_27 U33_out ZN 1.66933f

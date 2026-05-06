@@ -1,0 +1,2187 @@
+#! /tools/perl/bin/perl
+
+# setup_pd - Creates a directory structure for running all physical design
+#            processes with the following tool suite:
+#
+#            Floorplanner          - Cadence Design Planner
+#            Top Level P&R         - Cadence IC Craftsman
+#            Block Level P&R       - Cadence Silicon Ensemble
+#            GDS Chip Assembly     - Cadence Virtuoso Layout Editor
+#            Physical Verification - Mentor Calibre
+#            Layout Extraction     - Simplex Fire & Ice QX
+#            IR Drop Analysis      - Simplex Thunder & Lightning/Voltage Storm
+#            Post-Layout Timing    - Synopsys PrimeTime
+#
+#            A single project configuration file is input.
+#
+# Authors: Steve Majors and Ed Mahr
+
+#
+# Initialize path for perllib packages
+#
+BEGIN {
+    $rds_cdsware = $ENV{RDS_CDSWARE};
+    push(@INC, "$rds_cdsware/bin/perlLib");
+}
+
+use config;
+use const;
+
+sub Usage {die "\nUsage: $0 configFile\n\n";}
+if ($#ARGV == -1) {Usage;}
+
+$configFile = shift;
+
+#
+# Read in project configuration variables
+#
+$projectShell      = "csh"; # config::parseScalar($configFile, "project_shell");
+$processName       = config::parseScalar($configFile, "process_name");
+$techDpuxFile      = config::parseScalar($configFile, "tech_dpux_file");
+$techLefFile       = config::parseScalar($configFile, "tech_lef_file");
+$antTechLefFile    = config::parseScalar($configFile, "ant_tech_lef_file");
+$virtuosoTechFile  = config::parseScalar($configFile, "virtuoso_tech_file");
+@topcellLefFiles   = config::parseList($configFile, "topcell_lef_files");
+@moduleLefFiles    = config::parseList($configFile, "module_lef_files");
+@moduleAntLefFiles = config::parseList($configFile, "module_ant_lef_files");
+@ffTlfFiles        = config::parseList($configFile, "ff_tlf_files");
+@ssTlfFiles        = config::parseList($configFile, "ss_tlf_files");
+@verilogFiles      = config::parseList($configFile, "verilog_files");
+@stdVirtuosoRefLibs     = config::parseList($configFile, "std_virtuoso_libraries");
+@customVirtuosoRefLibs  = config::parseList($configFile, "custom_virtuoso_libraries");
+@stdcdl            = config::parseList($configFile, "stdcdl");
+@stdverilog        = config::parseList($configFile, "stdverilog");
+@customcdl         = config::parseList($configFile, "customcdl");
+@customverilog     = config::parseList($configFile, "customverilog");
+$ver2lvs_cntl      = config::parseScalar($configFile, "ver2lvs_cntl");
+$seInitFile        = config::parseScalar($configFile, "se_init_file");
+$seLayerMapFile    = config::parseScalar($configFile, "se_layermap_file");
+$vgh_dir           = config::parseScalar($configFile, "vgh_dir");
+$const_dir         = config::parseScalar($configFile, "const_dir");
+$pdDir             = config::parseScalar($configFile, "pd_dir");
+#$reuseDir          = config::parseScalar($configFile, "reuse_dir");
+$topCell           = config::parseScalar($configFile, "top_cell");
+@moduleList        = config::parseList($configFile, "module_list");
+$defaultModuleSize = config::parseScalar($configFile, "default_module_size");
+$topFreeTracks     = config::parseScalar($configFile, "top_free_tracks");
+$leftFreeTracks    = config::parseScalar($configFile, "left_free_tracks");
+$bottomFreeTracks  = config::parseScalar($configFile, "bottom_free_tracks");
+$rightFreeTracks   = config::parseScalar($configFile, "right_free_tracks");
+$ioPlaceFile       = config::parseScalar($configFile, "ioplace_file");
+$ioCornerDist      = config::parseScalar($configFile, "io_corner_dist");
+@padFillerCells    = config::parseList($configFile, "pad_filler_cells");
+@fillerCells       = config::parseList($configFile, "filler_cells");
+@clkBufCells       = config::parseList($configFile, "clkbuf_cells");
+@clkInvCells       = config::parseList($configFile, "clkinv_cells");
+@optBufCells       = config::parseList($configFile, "optbuf_cells");
+@optInvCells       = config::parseList($configFile, "optinv_cells");
+@blockedLayers     = config::parseList($configFile, "blocked_layers");
+$blockSpace        = config::parseScalar($configFile, "default_block_space");
+$powerNet          = config::parseScalar($configFile, "default_pwr");
+$groundNet         = config::parseScalar($configFile, "default_gnd");
+$pwrHorizLayer     = config::parseScalar($configFile, "default_pwr_horizontal_layer");
+$pwrVertLayer      = config::parseScalar($configFile, "default_pwr_vertical_layer");
+$pwrRingWidth      = config::parseScalar($configFile, "default_pwr_ring_width");
+$pwrStripeWidth    = config::parseScalar($configFile, "default_pwr_stripe_width");
+$pwrPinWidth       = config::parseScalar($configFile, "default_pwr_pin_width");
+$clkMinDelay       = config::parseScalar($configFile, "default_clk_min_delay");
+$clkMaxDelay       = config::parseScalar($configFile, "default_clk_max_delay");
+$clkMaxTrans       = config::parseScalar($configFile, "default_clk_max_transition");
+$clkBudget         = config::parseScalar($configFile, "default_clk_budget");
+$clkBufferSite     = config::parseScalar($configFile, "default_clk_buffer_site");
+@topClkNets        = config::parseList($configFile, "topclk_nets");
+$topClkWidth       = config::parseScalar($configFile, "topclk_width");
+$topClkShieldWidth = config::parseScalar($configFile, "topclk_shield_width");
+
+#
+# Define the top level directories that will hold golden
+# input and output data created during the physical design
+# process. These directories should not change over time
+# so scripts can be written to access the data by other
+# tools in the design flow.
+#
+$verilogInDir  = "vin";
+$verilogOutDir = "vout";
+$constDir      = "const";
+$baDir         = "backannotate";
+$gdsDir        = "gds";
+$buildDir      = "build";
+
+#
+# Define standard DP directories/files
+#
+$dpDir               = "dp";
+$dpRunDir            = "run";
+$dpLispDir           = "lisp";
+$dpLogDir            = "log";
+$dpLocalDpux         = "local.dpux";
+$dpTechFile          = "tech.dpux";
+$dpFloorplanDir      = "fp";
+$dpDesignDir         = "design";
+$dpLibDir            = "library";
+$dpReportDir         = "rpt";
+$ccarDir             = "ccar";
+
+#
+# Define standard SE directories/files
+#
+$seDir         = "se";
+$seDbDir       = "db";
+$hyperExtractRules = "hyperExtract.rule";
+$seCapDataFile = "cap.data";
+
+#
+# Define standard CTGEN directories/files
+#
+$ctgenDir       = "ctgen";
+$ctgenConstFile = "clktree.const";
+$ctgenCmdFile   = "clktree.cmd";
+$ctgenOcmdFile  = "clktreeopt.cmd";
+$ctgenRcmdFile  = "routed.cmd";
+$ctgenIcmdFile  = "ipo.cmd";
+
+#
+# Define standard Pearl directories/files
+#
+$pearlDir        = "pearl";
+$pearlBACmdFile  = "backannotate.cmd";
+$pearlBALogFile  = "backannotate.log";
+
+#
+# Define cadence and verification directory for each block
+#
+$cdsDir        = "cds";
+$cdsLib        = "cds.lib";
+$cdsinit       = ".cdsinit";
+$verifyDir     = "verification";
+$cbrDir        = $verifyDir . "/cbr_dir";
+$ver2lvsDir    = "ver2lvs";
+$antDir        = "ant";
+$drcDir        = "drc";
+$ercDir        = "softerc";
+$esdDir        = "esd_lup";
+$lvsDir        = "lvs";
+$pexDir        = "pex";
+$stressDir     = "stress";
+$densityDir    = "density";
+$irdropDir     = "irdrop";
+$runAll        = "run_all";
+$runGDSMerge   = "run_gdsmerge";
+$runDRC        = "run_drc";
+$runVer2lvs    = "run_ver2lvs";
+$runLVS        = "run_lvs";
+$runANT        = "run_ant";
+$runERC        = "run_softerc";
+$runESD        = "run_esd";
+$runStress     = "run_stress";
+$runDensity    = "run_density";
+$runPEX        = "run_pex";
+$runIRDROP     = "run_irdrop";
+
+#
+# Define common directories/files
+#
+$defDir             = "def";
+$dataDir            = "data";
+$fastGCF            = "fast.gcf";
+$slowGCF            = "slow.gcf";
+$timingGCF          = "timing.gcf";
+$netlistDEF         = "netlist.def";
+$pinsDEF            = "pins.def";
+$floorplanDEF       = "floorplan.def";
+$placedDEF          = "placed.def";
+$placedVerilog      = "placed.vgh";
+$filledDEF          = "filled.def";
+$routedDEF          = "routed.def";
+$repairedDEF        = "repaired.def";
+$repairedVerilog    = "repaired.vgh";
+$clktreeDEF         = "clktree.def";
+$ipoDEF             = "ipo.def";
+$initialOptDEF      = "initopt.def";
+$initialOptVerilog  = "initopt.vgh";
+$finalSetupDEF      = "setupopt.def";
+$finalSetupVerilog  = "setupopt.vgh";
+$incrementalDEF     = "incremental.def";
+$groutedRSPF        = "grouted.rspf";
+$froutedRSPF        = "frouted.rspf";
+$froutedSetload     = "frouted.setload";
+
+#
+# parse reference Virtuoso libraries
+#
+my %stdRefLibs;
+while( $stdVirtuosoRefLibs[0] ) {
+    $stdRefLibs{$stdVirtuosoRefLibs[0]} = $stdVirtuosoRefLibs[1];
+    shift(@stdVirtuosoRefLibs); shift(@stdVirtuosoRefLibs);
+}
+
+my %customRefLibs;
+while( $customVirtuosoRefLibs[0] ) {
+    $customRefLibs{$customVirtuosoRefLibs[0]} = $customVirtuosoRefLibs[1];
+    shift(@customVirtuosoRefLibs); shift(@customVirtuosoRefLibs);
+}
+
+#--------------------------------- Start of Main ------------------------------
+
+#
+# Change to the physical design directory and create the 
+# top level directory structure.
+#
+unless (-d $pdDir) {system("mkdir -p $pdDir");}
+chdir $pdDir;
+foreach $dir ($verilogInDir, $verilogOutDir, $constDir, $baDir, $buildDir, 
+              $verifyDir, $cbrDir, "$verifyDir/$antDir", "$verifyDir/$drcDir", 
+              "$verifyDir/$ercDir", "$verifyDir/$esdDir", "$verifyDir/$lvsDir",
+              "$verifyDir/$stressDir", "$verifyDir/$densityDir", 
+              "$verifyDir/$pexDir", "$verifyDir/$irdropDir") {
+    mkNewDir($dir);
+}
+
+  #
+  #  Copy over the input verilog and constraints.
+  #
+  my($cmd_str);
+  if (!defined($vgh_dir) || !defined($const_dir)) {
+    die("*Error* vgh_dir and const_dir MUST be defined");
+  } else{
+    if (! -d $vgh_dir) {
+      die("*Error* Failed to find directory $vgh_dir.");
+    }#if
+    if (! -d $const_dir) {
+      die("*Error* Failed to find directory $const_dir.");
+    }#if
+  }#if
+  if (defined($topCell)) {
+    if (-f $vgh_dir."/".$topCell.".vgh") {
+      $cmd_str = "cp ".$vgh_dir."/".$topCell.".vgh ".$verilogInDir."/.";
+      system($cmd_str);
+    } else {
+      print("*Error* Failed to find file $vgh_dir/$topCell.vgh...\n");
+    }#if
+    if (-f $vgh_dir."/".$topCell."_without_modules.vgh") {
+      $cmd_str = "cp ".$vgh_dir."/".$topCell."_without_modules.vgh ".$verilogInDir."/.";
+      system($cmd_str);
+    } else {
+      printf("*Error* Failed to find file $vgh_dir/%s_without_modules.vgh...\n", $topCell);
+    }#if
+    if (-f $const_dir."/".$topCell.".cscr") {
+      #$cmd_str = "cp ".$const_dir."/".$topCell.".cscr ".$constDir."/.";
+      $cmd_str = "sed -e /set_fix_multiple_port_nets/d -e /set_wire_load/d ".$const_dir."/".$topCell.".cscr >".$constDir."/".$topCell.".cscr";
+      system($cmd_str);
+    } else {
+      $cmd_str = "touch $constDir"."/".$topCell.".cscr";
+      system($cmd_str);
+    }#if
+  }#if
+  foreach $module (@moduleList) {
+    if (-f $vgh_dir."/".$module.".vgh") {
+      $cmd_str = "cp ".$vgh_dir."/".$module.".vgh ".$verilogInDir."/.";
+      system($cmd_str);
+    } else {
+      print("*Error* Failed to find file $vgh_dir/$module.vgh...\n");
+    }#if
+    if (-f $const_dir."/".$module.".cscr") {
+      #$cmd_str = "cp ".$const_dir."/".$module.".cscr ".$constDir."/.";
+      $cmd_str = "sed -e /set_fix_multiple_port_nets/d -e /wire_load/d ".$const_dir."/".$module.".cscr >".$constDir."/".$module.".cscr";
+      system($cmd_str);
+    } else {
+      print("*Warning* Failed to find file $const_dir/$module.cscr...\n");
+      $cmd_str = "touch $constDir"."/".$module.".cscr";
+      system($cmd_str);
+    }#if
+  }#foreach 
+
+#
+# Setup the standard directory structure for the top cell.
+#
+chdir $buildDir;
+print "Setting up the directory structure for:\n";
+if (defined($topCell)) {
+    print "    $topCell\n";
+    mkNewDir($topCell);
+    chdir $topCell;
+    foreach $dir ($dpDir, $seDir, $ccarDir, $cdsDir, $dataDir, $verifyDir) {
+	mkNewDir($dir);
+    }
+    setupDP();
+    setupCCAR();
+    setupSE($topCell);
+    setupCDS($topCell, 1);
+    setupCALIBRE($topCell, 1);
+
+    # build relative soft link for cds
+    chdir($pdDir);
+    softLink("$buildDir/$topCell/$cdsDir", "$cdsDir");
+    chdir("$pdDir/$buildDir");
+}
+
+#
+# Setup the standard directory structure for each module.
+#
+foreach $module (@moduleList) {
+    print "    $module\n";
+    mkNewDir($module);
+    chdir $module;
+    foreach $dir ($seDir, $ctgenDir, $pearlDir, $cdsDir, $dataDir, $verifyDir) {
+	mkNewDir($dir);
+    }
+    setupSE($module);
+    setupCTGEN();
+    setupPearl();
+    setupGCF();
+    setupCDS($module, 0);
+    setupCALIBRE($module, 0);
+    chdir "..";
+}
+
+#---------------------------------- End of Main -------------------------------
+
+sub mkNewDir {
+    my $dir = shift;
+    unless (-d $dir) {
+        system("/bin/mkdir $dir");
+    }
+}
+
+sub softLink {
+    my $srcDir = shift;
+    my $dstDir = shift;
+    unless (!-e $srcDir || -e $dstDir) {
+        system("/bin/ln -s $srcDir $dstDir");
+    }
+}
+
+sub setupDP {
+    #
+    # Make the standard directories for DP
+    #
+    chdir $dpDir;
+    my $dir;
+    foreach $dir ($dpRunDir, "$dpRunDir/$dpLogDir", $dpDesignDir, $dpLibDir, $dpLispDir, $dpReportDir) {
+	mkNewDir($dir);
+    }
+
+    #
+    # Make a link to the DP technology file
+    #
+    system("ln -s $techDpuxFile $dpRunDir/tech.dpux");
+
+    #
+    # Create a local dpux file to point to the DP libraries.
+    #
+    my $localDpux = "$dpRunDir/$dpLocalDpux";
+    open(LOC, ">$localDpux") || die "$0: Can't open file $localDpux\n";
+    print LOC "(DEFLIBPATH\n";
+    my $lef;
+    my $lib;
+    foreach $lef (@topcellLefFiles) {
+        $lib = getLefLibName($lef);
+	print LOC "    (LIBPATH $lib ../library/$lib )\n";
+    }
+    print LOC "    (LIBPATH $dpDesignDir ../$dpDesignDir )\n";
+    print LOC "ENDDEFLIBPATH)\n";
+    close(LOC);
+
+    #
+    # Build a script to check and read the Verilog netlist into DP.
+    # Primary modules are not flattened to preserve port/net names
+    # in the DEF so that the back-annotated Verilog from CTGEN 
+    # matches the original Verilog.
+    #
+    my $scrFile = "$dpRunDir/readv";
+    my $pinLayer = getTopMetalLayer("$techLefFile");
+    open(SCR, ">$scrFile") || die "$0: Can't open file $scrFile\n";
+    print SCR "#! /bin/$projectShell -f\n\n";
+    print SCR "(vcheck ../../../../$verilogInDir/$topCell.vgh > ";
+    print SCR "/dev/null) >& /dev/null\n\n";
+    print SCR "set err_cnt = \$status\n";
+    print SCR "if (\$err_cnt != 0) then\n";
+    print SCR "    echo \"\$err_cnt fatal errors found. Look in vcheck.log.\"\n";
+    print SCR "    exit 1\n";
+    print SCR "endif\n\n";
+    print SCR "(ver2hld ../../../../$verilogInDir/$topCell.vgh ";
+    print SCR "-cell $topCell -tech . -" . "$pinLayer" . "M ";
+    print SCR "-globalPower $powerNet -globalGround ";
+    print SCR "$groundNet -ties '$powerNet $groundNet' ";
+    print SCR "-lib $dpDesignDir -macros '@moduleList' -blockView ";
+    print SCR "autoLayout > /dev/null) >& /dev/null\n\n";
+    print SCR "echo \"ver2hld exited with status of \$status\"\n";
+    close(SCR);
+    system("chmod +x $scrFile");
+
+    #
+    # Build a script to read LEF files into DP and create DP libraries.
+    #
+    my $scrFile = "$dpRunDir/readlef";
+    open(SCR, ">$scrFile") || die "$0: Can't open file $scrFile\n";
+    print SCR "#! /bin/$projectShell -f\n\n";
+    foreach $lef (@topcellLefFiles) {
+        $lib = getLefLibName($lef);
+        print SCR "lef2hld $lef -lib $lib\n";
+        print SCR "mv lef2hld.log $dpLogDir/lef2hld_$lib.log\n\n";
+    }
+    close(SCR);
+    system("chmod +x $scrFile");
+
+    #
+    # Build a script to write out a DEF netlist for each module.
+    #
+    $scrFile = "$dpRunDir/writedef";
+    open(SCR, ">$scrFile") || die "$0: Can't open file $scrFile\n";
+    print SCR "#! /bin/$projectShell -f\n\n";
+    my $units = getDbUnits("$techLefFile");
+    my $m1pitch = getLayerPitch($techLefFile, 1);
+    my $m2pitch = getLayerPitch($techLefFile, 2);
+    foreach $module (@moduleList) {
+	print SCR "hld2def ../../../$module/$dataDir/$pinsDEF ";
+	print SCR "$dpDesignDir $module autoAbstract -5.2 -sectTech ";
+	print SCR "-sectFloorplan -sectPins -compNone -netsRouting ";
+#yuj	print SCR "-netSelAll -cell3 -scale $units -includePowerPin ";
+#yuj	print SCR "-doNotSnapDieArea -consNone\n";
+	print SCR "-netSelAll -cell3 -scale $units ";
+	print SCR "-doNotSnapDieArea -consGroups\n";
+	print SCR "createSERows ../../../$module/$dataDir/$pinsDEF ";
+	print SCR "$topFreeTracks $leftFreeTracks $bottomFreeTracks ";
+	print SCR "$rightFreeTracks $units $m1pitch $m2pitch ";
+	print SCR ">../../../$module/$seDir/add_rows.mac\n\n";
+
+        #
+        # extract VDD location for irdrop
+        #
+        print SCR "extractDefIO -t block -def ../../../$module/$dataDir/$pinsDEF ";
+        print SCR "-o ../../../$module/$dataDir/$module.io_pwr\n\n";
+    }
+    #
+    # write placement def for the top level
+    #
+    print SCR "hld2def ../../data/$placedDEF $dpDesignDir $topCell autoLayout -5.2 ";
+    print SCR "-compPlacement -netsNone -netSelAll -cell3 -scale 1000 -consGroups\n\n";
+    #
+    # extract IO locations for bonding and VDD location for irdrop
+    #
+    $ioLefFileName = getLefCellFileName($padFillerCells[0], @topcellLefFiles);
+    if( $ioLefFileName ) { 
+        print SCR "extractDefIO -t chip -def ../../data/$placedDEF ";
+        print SCR "-lef $ioLefFileName -o ../../data/$topCell.io\n\n";
+    } else {
+        print "\tERROR: IO LEF file has not been defined.\n";
+    }
+    close(SCR);
+    system("chmod +x $scrFile");
+
+    #
+    # Build a script to write out a lef for each module.
+    #
+    $scrFile = "$dpRunDir/writelef";
+    open(SCR, ">$scrFile") || die "$0: Can't open file $scrFile\n";
+    print SCR "#! /bin/$projectShell -f\n\n";
+    my $units = getDbUnits("$techLefFile");
+    my $m1pitch = getLayerPitch($techLefFile, 1);
+    my $m2pitch = getLayerPitch($techLefFile, 2);
+    foreach $module (@moduleList) {
+	print SCR "hld2lef ../../../$module/$dataDir/$module.lef ";
+        print SCR "$dpDesignDir -c $module autoAbstract -cells -cell3\n\n";
+    }
+    close(SCR);
+    system("chmod +x $scrFile");
+
+    #
+    # Create a special nets file for each module so we know what
+    # nets to set special when we output DEF from DP.
+    #
+#    my @cellList;
+#    if (defined($topCell)) {@cellList = ($topCell, @moduleList);}
+#    else                   {@cellList = @moduleList;}
+#    my $cell;
+#    foreach $cell (@cellList) {
+#	my $spnetFile = "$dpFloorplanDir/$cell.spnet";
+#	open(SPNET, ">$spnetFile") || die "$0: Can't open file $spnetFile\n";
+#	my $constFile = "$pdDir/$constDir/$cell.cscr";
+#	my $const = new const;
+#	$const->readSynopsysConstraints("$constFile");
+#	my $clock;
+#	foreach $clock ($const->getClocks()) {
+#	    my $clockName = $clock->getRootIOPin() || $clock->getName();
+#	    print SPNET "NET $clockName TYPE clock\n";
+#	}
+#	close(SPNET);
+#    }
+
+    #
+    # Create a local file to load custom LISP routines
+    #
+    my $lispFile = "$dpRunDir/hldLocal.cl";
+    open(LISP, ">$lispFile") || die "$0: Can't open file $lispFile\n";
+    print LISP "(in-package :hlducm)\n";
+    print LISP "(cl:load \"../lisp/setDefaults.cl\")\n";
+    print LISP "(cl:load \"../lisp/autoAbstract.cl\")\n";
+    print LISP "(cl:load \"$rds_cdsware/dp/bin/lisp/RDS.cl\")\n";
+    close(LISP);
+
+    #
+    # Create a LISP routine to initialize autoAbstract views.
+    #
+    my $pinLayer = getTopMetalLayer("$techLefFile");
+    $lispFile = "$dpLispDir/autoAbstract.cl";
+    open(LISP, ">$lispFile") || die "$0: Can't open file $lispFile\n";
+    print LISP "(procedure (start_design)\n";
+    print LISP "(prog ()\n";
+    print LISP "(hldUiSetEnvVar \"hldDpSpecialConnNetNameP\" t \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnNetName\" \"$powerNet\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpSpecialConn( \?action \\\"matchNet\\\")\" )\n";
+    print LISP "(hldUiSetEnvVar \"hldDpSpecialConnDefNetNameP\" t \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnDefNetName\" \"$powerNet\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnDefConnProp\" \"( \* $powerNet )\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpSpecialConn( \?action \\\"setDefProp\\\")\" )\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnNetName\" \"$groundNet\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpSpecialConn( \?action \\\"matchNet\\\")\" )\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnDefNetName\" \"$groundNet\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSpecialConnDefConnProp\" \"( \* $groundNet )\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpSpecialConn( \?action \\\"setDefProp\\\")\" )\n";
+    print LISP "(hld:guiPushStart)\n";
+    print LISP "(hld:guiPushFile \"autoAbstract.dat\" \"..\" \"../$dpLispDir/autoAbstract.dat\" \"../$dpLispDir/autoAbstract.dat\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpCell2AbstractPinLayer\" \"$pinLayer\" \"t\")\n";
+#   print LISP "(hld:hldUiSetEnvVar \"hldDpCell2AbstractGlobalTerms\" \"$powerNet,POWER,1,$pinLayer  $groundNet,GROUND,1,$pinLayer\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpCell2AbstractFileName\" \"../$dpLispDir/autoAbstract.dat\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpCell2AbstractFile()\" )\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpReplaceInstPairs\" \"autoLayout,autoAbstract\" \"t\")\n";
+    print LISP "(hld:formEvalString \"hldDpReplaceInst()\" )\n";
+    print LISP ")\n";
+    print LISP ")\n";
+    close(LISP);
+
+    my $aaFile = "$dpLispDir/autoAbstract.dat";
+    open(AA, ">$aaFile") || die "$0: Can't open file $aaFile\n";
+    print AA "(DEFCELL2ABSTRACT\n";
+    foreach $module (@moduleList) {
+	print AA "(CELL_BNDRY\n";
+	print AA "(CELL $dpDesignDir $module autoLayout )\n";
+	print AA "(DST autoAbstract )\n";
+	print AA "(UPDATE updateShape )\n";
+	print AA "(RECT ( 0.000 0.000 ) , ( $defaultModuleSize $defaultModuleSize) )\n";
+	print AA ")\n";
+    }
+    print AA "ENDDEFCELL2ABSTRACT)\n";
+    close(AA);
+
+    #
+    # Create a LISP routine to set form defaults
+    #
+    $lispFile = "$dpLispDir/setDefaults.cl";
+    open(LISP, ">$lispFile") || die "$0: Can't open file $lispFile\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesMode\" \"core\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesNetNamesStr\" '(\"$powerNet\" \"$groundNet\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesDir\" \"vertical\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesLayerName\" \"metal2\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesWidthStr\" \"$pwrStripeWidth $pwrStripeWidth\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesSpacing\" 1.0f0 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesStartPos\" 10.0 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesStartPosMode\" \"relative\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesEndMode\" \"numberOfStripes\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesNumStripes\" 1 \"x\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpRouteStripesSnapMode\" t \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpBoundaryPinPowerName\" \"$powerNet\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpBoundaryPinGroundName\" \"$groundNet\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinMinSep\" \"5.0\" \"t\")\n"; # change from 2 to 5 because of shielding
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinMinCornerSep\" 5.0 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinMinPin2PinGrid\" \"grid\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinCenterLineDir\" \"horizontal\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinDefaultSpread\" \"pingrid\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinPinOnEdge\" 'nil \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinOptimMode\" \"selected iTerms\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinBottomLayer\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinBottomLayer1\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinTopLayer\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinTopLayer1\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinLeftLayer\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinLeftLayer1\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinRightLayer\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinRightLayer1\" '(\"$pinLayer\" \"pin\") \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpSoftPinOptimSnapP\" t \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFillBlockNames\" \"";
+    my $filler;
+    foreach $filler (@padFillerCells) {
+	print LISP "$filler ";
+    }
+    print LISP "\" \"t\")\n";
+    my $fillLibName = getLefCellLibName($padFillerCells[0], @topcellLefFiles);
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFillLibName\" \"$fillLibName\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFillCheckSiteNameP\" \'nil \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFillMode\" \"selectedSet\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFplanAspectRatim\" 1.0 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFplanLogicCellRoutingRatio\" 0.2 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpFplanStandardRegionP\" t \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIoInitFileName\" \"$ioPlaceFile\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIoInitFrameCornerGap\" \"$ioCornerDist $ioCornerDist\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIoInitIo2IoMinDist\" 0.0f0 \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIoInitMode\" \"load file\&auto place\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIcCraftRunDir\" \"../../$ccarDir\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIcCraftOutICCVersion\" \"4.x\" \"t\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIcCraftDoFileP\" \'nil \"b\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"hldDpIcCraftOutObstLayers\" \"drawing & boundary\" \"t\")\n";
+
+    # add default for RDS forms
+
+    my @metalLayers = getMetalLayers("$techLefFile");
+    my @horizontalMetalLayers = getHorizontalMetalLayers("$techLefFile");
+    my @verticalMetalLayers = getVerticalMetalLayers("$techLefFile");
+    my $horizontalRoutingGrid = getLayerPitch("$techLefFile", substr($horizontalMetalLayers[0], 5, 1));
+    my $verticalRoutingGrid = getLayerPitch("$techLefFile", substr($verticalMetalLayers[0], 5, 1));
+
+    print LISP "(hld:hldUiSetEnvVar \"rdsHldTechMetalLayers\" \'(";
+    foreach $metalLayer (@metalLayers) {
+      print LISP "\"$metalLayer\" ";
+    }
+    print LISP ") \"b\")\n";
+
+    print LISP "(hld:hldUiSetEnvVar \"rdsHldTechHorizontalMetalLayers\" \'(";
+    foreach $metalLayer (@horizontalMetalLayers) {
+      print LISP "\"$metalLayer\" ";
+    }
+    print LISP ") \"b\")\n";
+
+    print LISP "(hld:hldUiSetEnvVar \"rdsHldTechVerticalMetalLayers\" \'(";
+    foreach $metalLayer (@verticalMetalLayers) {
+      print LISP "\"$metalLayer\" ";
+    }
+    print LISP ") \"b\")\n";
+
+    print LISP "(hld:hldUiSetEnvVar \"rdsHldTechHorizontalRoutingGrid\" $horizontalRoutingGrid \"f\")\n";
+    print LISP "(hld:hldUiSetEnvVar \"rdsHldTechVerticalRoutingGrid\" $verticalRoutingGrid \"f\")\n";
+
+    close(LISP);
+
+    chdir "..";
+}
+
+sub setupCCAR {
+    chdir $ccarDir;
+
+    #
+    # Create a do file to define a class for clocks
+    #
+    my $doFile = "define_clocks.do";
+    open(DOFILE, ">$doFile") || die "$0: Can't open file $doFile\n";
+    print DOFILE "forget class clocks\n";
+    print DOFILE "define (class clocks (add_net\n";
+    my $clock;
+    foreach $clock (@topClkNets) {
+	print DOFILE "  $clock\n";
+    }
+    print DOFILE "))\n";
+    close(DOFILE);
+
+    #
+    # Create a do file for routing clocks exclusively on top metal
+    #
+    my $topMetal = getTopMetalLayer("$techLefFile");
+    my @metalLayers = getMetalLayers("$techLefFile");
+    my $doFile = "route_clocks.do";
+    open(DOFILE, ">$doFile") || die "$0: Can't open file $doFile\n";
+    print DOFILE "set dofile_auto_repaint off\n";
+    print DOFILE "sort length up\n\n";
+    print DOFILE "unselect all objects\n";
+    print DOFILE "select class clocks\n\n";
+    print DOFILE "define (class clocks (layer_rule $topMetal (rule (clearance $topClkShieldWidth))))\n";
+    print DOFILE "pin_escape 1 (max_len -1) (pin_type signal) (depth up -1) (from_layer";
+    my $metalLayer;
+    foreach $metalLayer (@metalLayers) {
+	if ($metalLayer ne $topMetal) {
+	    print DOFILE " $metalLayer";
+	}
+    }
+    print DOFILE ") (to_layer $topMetal)\n";
+    print DOFILE "rule class clocks (width $topClkWidth)\n";
+    print DOFILE "circuit class clocks (use_layer $topMetal)\n";
+    print DOFILE "rule IC (stack_via any_overlap)\n\n";
+    print DOFILE "route 25\n";
+    print DOFILE "clean 2\n";
+    print DOFILE "route 50 16\n";
+    print DOFILE "clean 4\n";
+    print DOFILE "unselect all objects\n";
+    print DOFILE "repaint\n";
+    close(DOFILE);
+
+    #
+    # Create a do file for routing clocks with cross-overs
+    #
+    my @revMetalLayers = reverse(@metalLayers);
+    my $doFile = "route_clocks_cross.do";
+    open(DOFILE, ">$doFile") || die "$0: Can't open file $doFile\n";
+    print DOFILE "set dofile_auto_repaint off\n";
+    print DOFILE "sort length up\n\n";
+    print DOFILE "unselect all objects\n";
+    print DOFILE "select class clocks\n\n";
+    print DOFILE "define (class clocks (layer_rule $topMetal (rule (clearance $topClkShieldWidth))))\n";
+    print DOFILE "define (class clocks (layer_rule $revMetalLayers[1] (rule (max_segment 100))))\n";
+    print DOFILE "cost layer $revMetalLayers[1] high (type length)\n";
+    print DOFILE "cost layer $revMetalLayers[1] high (type way)\n";
+    print DOFILE "cost layer $topMetal high (type way)\n";
+    print DOFILE "local_direction conduit (parallel_layer $topMetal) (perpendicular_layer $revMetalLayers[1])\n";
+    print DOFILE "tax via 8\n";
+    print DOFILE "tax cross 8\n\n";
+    print DOFILE "pin_escape 1 (max_len -1) (pin_type signal) (depth up -1) (from_layer";
+    foreach $metalLayer (@metalLayers) {
+	if ($metalLayer ne $topMetal) {
+	    print DOFILE " $metalLayer";
+	}
+    }
+    print DOFILE ") (to_layer $topMetal)\n";
+    print DOFILE "rule class clocks (width $topClkWidth)\n";
+    print DOFILE "circuit class clocks (use_layer $revMetalLayers[1] $topMetal)\n";
+    print DOFILE "rule IC (stack_via any_overlap)\n\n";
+    print DOFILE "route 25\n";
+    print DOFILE "clean 2\n";
+    print DOFILE "route 50 16\n";
+    print DOFILE "clean 4\n";
+    print DOFILE "unselect all objects\n";
+    print DOFILE "repaint\n";
+    close(DOFILE);
+
+    #
+    # Create a do file for shielding clocks
+    #
+    my $overhang = ($topClkShieldWidth - $topClkWidth) / 2.0;
+    my $doFile = "shield_clocks.do";
+    open(DOFILE, ">$doFile") || die "$0: Can't open file $doFile\n";
+    print DOFILE "set dofile_auto_repaint off\n\n";
+    print DOFILE "rule class clocks (tandem_shield_overhang $overhang)\n";
+    print DOFILE "circuit class clocks (shield on (type tandem) (use_net $groundNet))\n";
+    print DOFILE "change min_shield 100\n\n";
+    print DOFILE "shield\n\n";
+    print DOFILE "unselect all objects\n";
+    print DOFILE "select net $groundNet\n";
+    print DOFILE "assign_supply $groundNet (selected_wires)\n";
+    print DOFILE "proute via_on_mesh (power_source_layer $metalLayers[0]) (component *) (nets $groundNet)\n";
+    print DOFILE "unselect all objects\n";
+    close(DOFILE);
+     
+    chdir "..";
+}
+
+sub setupPKS {
+    my $module = shift;
+    
+    chdir "pks";
+    # Create the pre_clk pks macro.
+    open(PKS, ">pre_clk.mac") || die "$0: Can't open file pre_clk.mac\n";
+    print PKS "source $processDir/tech/pks.setup\n";
+    print PKS "source \$TCL_LIBDIR/load_proc.tcl\n"; 
+    print PKS "read_layers_usages \$TCL_LIBDIR/layerUtil.tcl\n";
+    print PKS "\n"; 
+    print PKS "read_verilog ../../../vin/$module.vgh\n"; 
+    print PKS "do_build_generic\n"; 
+    print PKS "\n"; 
+    print PKS "read_def ../data/pins.def\n"; 
+    #print PKS "read_def $reuseDir/module_fp/$module.fpdef\n"; 
+    #print PKS "read_def $reuseDir/module_fp/$module.clkdef\n"; 
+    print PKS "\n"; 
+    print PKS "source ../../../const/$module.assertions\n"; 
+    print PKS "\n"; 
+    print PKS "source /tool/cds/ADC/tcl/cg18_vars.tcl\n";
+    print PKS "\n"; 
+    print PKS "markTiming pre-place TIMING_SUMMARY w\n"; 
+    print PKS "# do_optimize -pks\n"; 
+    print PKS "# do_xform_tcorr_eco\n"; 
+    print PKS "# Try this for tri-state busses.\n"; 
+    print PKS "# do_place -timing_driven true -net_weight \"asx0_data* 60\"\n"; 
+    print PKS "do_place -timing_driven true\n"; 
+    print PKS "do_xform_optimize_slack -pks\n"; 
+    print PKS "do_xform_tcorr_eco\n"; 
+    print PKS "markTiming place TIMING_SUMMARY a\n"; 
+#    print PKS "genTimeReport place.timing1.rpt\n"; 
+    print PKS "\n"; 
+    print PKS "write_adb -hier design.adb\n"; 
+    print PKS "write_verilog -hier ../data/qpopt.vgh\n"; 
+    print PKS "write_gcf ../data/timing.gcf\n"; 
+    print PKS "write_def ../data/placed.def\n"; 
+    print PKS "exit\n"; 
+    print PKS "\n"; 
+    close PKS;
+
+    # Create the post_clk pks macro.
+    open(PKS, ">post_clk.mac") || die "$0: Can't open file post_clk.mac\n";
+    print PKS "source $processDir/tech/pks.setup\n";
+    print PKS "source \$TCL_LIBDIR/load_proc.tcl\n"; 
+    print PKS "read_layers_usages \$TCL_LIBDIR/layerUtil.tcl\n";
+    print PKS "\n"; 
+    print PKS "read_verilog ../../../vout/$module.cvgh\n"; 
+    print PKS "do_build_generic\n"; 
+    print PKS "\n"; 
+    print PKS "read_def ../data/clktree.def\n"; 
+    print PKS "source ../../../const/$module.assertions\n"; 
+    print PKS "\n"; 
+    print PKS "foreach clock [get_clock] { set_clock_uncertainty -clock_from \$clock -clock_to \$clock 0 }\n"; 
+    print PKS "\n"; 
+    print PKS "source /tool/cds/ADC/tcl/cg18_vars.tcl\n";
+    print PKS "set_clock_propagation propagated\n"; 
+    #print PKS "genTimeReport clktree.timing2.rpt\n"; 
+    print PKS "markTiming clktree TIMING_SUMMARY a\n"; 
+    print PKS "\n"; 
+    print PKS "do_xform_optimize_slack -incremental\n"; 
+    print PKS "do_xform_tcorr_eco\n"; 
+    print PKS "markTiming opt_clktree0 TIMING_SUMMARY a\n"; 
+    #print PKS "genTimeReport optclk.timing3.rpt\n"; 
+    print PKS "do_route -timing_driven true -route_select_net \"\@CLOCK\" -route_select_net_first true\n"; 
+    print PKS "markTiming groute0 TIMING_SUMMARY a\n"; 
+    print PKS "# fix_hold_time\n"; 
+    print PKS "# do_route -timing_driven true -route_select_net \"\@CLOCK\" -route_select_net_first true\n"; 
+    print PKS "# markTiming fix_hold TIMING_SUMMARY a\n"; 
+    print PKS "if {[get_module_worst_slack] < -0.10 } {\n"; 
+    print PKS "  do_xform_timing_correction -incremental -dont_reclaim_area -resize -buffer\n"; 
+    print PKS "  do_xform_tcorr_eco\n"; 
+    print PKS "  markTiming opt_clktree1 TIMING_SUMMARY a\n"; 
+    print PKS "  do_route -timing_driven true -route_select_net \"\@CLOCK\" -route_select_net_first true\n"; 
+    print PKS "  markTiming groute1 TIMING_SUMMARY a\n"; 
+    print PKS "  if {[get_module_worst_slack] < -0.10 } {\n"; 
+    print PKS "    do_xform_timing_correction -incremental -dont_reclaim_area\n"; 
+    print PKS "    do_xform_tcorr_eco\n"; 
+    print PKS "    markTiming opt_clktree2 TIMING_SUMMARY a\n"; 
+    print PKS "    do_route -timing_driven true -route_select_net \"\@CLOCK\" -route_select_net_first true\n"; 
+    print PKS "    markTiming groute2 TIMING_SUMMARY a\n"; 
+    print PKS "  }\n"; 
+    print PKS "}\n"; 
+    print PKS "genTimeReport FINAL.TIMING\n"; 
+    print PKS "\n"; 
+    print PKS "write_adb -hier design.adb\n"; 
+    print PKS "write_verilog -hier ../../../vout/$module.ocvgh\n"; 
+    print PKS "write_gcf ../data/timing.gcf\n"; 
+    print PKS "write_def ../data/opt_clktree.def\n"; 
+    print PKS "exit\n"; 
+    print PKS "\n"; 
+    close PKS;
+
+    # Create the ipo pks macro.
+    open(PKS, ">ipo.mac") || die "$0: Can't open file post_clk.mac\n";
+    print PKS "source $processDir/tech/pks.setup\n";
+    print PKS "source \$TCL_LIBDIR/load_proc.tcl\n"; 
+    print PKS "read_layers_usages \$TCL_LIBDIR/layerUtil.tcl\n";
+    print PKS "\n"; 
+    print PKS "read_adb design.adb\n"; 
+    print PKS "read_sdf ../../../$baDir/$module.slow.sdf\n"; 
+    print PKS "read_setload_file ../../../$baDir/$module.slow.setload\n"; 
+    print PKS "markTiming routed TIMING_SUMMARY a\n"; 
+    print PKS "\n"; 
+    print PKS "source /tool/cds/ADC/tcl/cg18_vars.tcl\n"; 
+    print PKS "set_clock_propagation propagated\n"; 
+    print PKS "\n"; 
+    print PKS "if {[get_module_worst_slack] < -0.05 } {\n"; 
+    print PKS "  do_xform_timing_correction -incremental -dont_reclaim_area -resize\n"; 
+    print PKS "  do_xform_tcorr_eco\n"; 
+    print PKS "  markTiming ipo TIMING_SUMMARY a\n"; 
+    print PKS "  do_route -timing_driven true -route_select_net \"\@CLOCK\" -route_select_net_first true\n"; 
+    print PKS "  markTiming groute3 TIMING_SUMMARY a\n"; 
+    print PKS "  write_adb -hier design.adb\n"; 
+    print PKS "  write_verilog -hier ../../../vout/$module.ivgh\n"; 
+    print PKS "  write_gcf ../data/timing.gcf\n"; 
+    print PKS "  write_def ../data/ipo.def\n"; 
+    print PKS "}\n"; 
+    print PKS "exit\n"; 
+    print PKS "\n"; 
+    close PKS;
+
+    chdir "..";
+}
+
+sub setupGCF {
+    #
+    # Build a set of GCF files to load TLF for the fast and slow
+    # process corners
+    #
+    my $const = new const;
+    $const->setDesign($module);
+    my $tlf;
+    foreach $tlf (@ssTlfFiles) {
+	$const->addTLFFile("$tlf");
+    }
+    $const->writeGCF("$dataDir/$slowGCF");
+    $const->deleteTLFFiles();
+    foreach $tlf (@ffTlfFiles) {
+	$const->addTLFFile("$tlf");
+    }
+    $const->writeGCF("$dataDir/$fastGCF");
+
+    #
+    # Build a GCF file for timing constraints
+    #
+    #$const->deleteTLFFiles();
+    #$const->readSynopsysConstraints("$pdDir/$constDir/$module.cscr");
+    #$const->writeGCF("$dataDir/$timingGCF");
+    #
+    chdir $pearlDir;
+    system("pearl -cc -tcl syn2gcf.cmd >/dev/null");
+    chdir "..";
+}
+
+sub setupSE {
+    chdir $seDir;
+    my $module = shift;
+
+    my $units = getDbUnits("$techLefFile");
+
+    #
+    # Make a database directory
+    #
+    mkNewDir($seDbDir);
+
+    #
+    # Make a link to the SE initialization file
+    #
+    system("ln -s $seInitFile");
+
+    #
+    # Make a link to the hyper extract rules. 
+    #
+    #symlink("$processTechDir/$hyperExtractRules", "$hyperExtractRules");
+
+    #
+    # Make a link to the TD cap mode extraction data
+    #
+    #symlink("$processTechDir/$seCapDataFile", "$seCapDataFile");
+
+    #
+    # Build a macro to input the design from VERILOG 
+    #
+    my $macFile = "read_verilog.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "SET VAR INPUT.VERILOG.POWER.NET \"VDD\";\n";
+    print MAC "SET VAR INPUT.VERILOG.GROUND.NET \"VSS\";\n";
+    print MAC "SET VAR INPUT.VERILOG.LOGIC.1.NET \"VDD\";\n";
+    print MAC "SET VAR INPUT.VERILOG.LOGIC.0.NET \"VSS\";\n";
+    print MAC "SET VAR INPUT.VERILOG.SPECIAL.NETS \"VDD VSS\";\n";
+    print MAC "INPUT VERILOG FILE \"";
+    print MAC "../../../$verilogInDir/$module.vgh ";
+    my $verilog;
+    foreach $verilog (@verilogFiles) {
+	print MAC "$verilog ";
+    }
+    print MAC "\" ";
+    print MAC "LIB \"cds_vbin\" REFLIB \"cds_vbin\" DESIGN \"cds_vbin.$module:hdl\" ;\n";
+    print MAC "save netlist ;\n";
+    print MAC "output def file ../data/netlist.def ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to input the library data
+    #
+    $macFile = "read_lib.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "finput lef file $techLefFile ;\n";
+    my $lef;
+    foreach $lef (@moduleLefFiles) {
+	print MAC "input lef file $lef ;\n";
+    }
+    print MAC "save lib ;\n\n";
+    print MAC "input ctlf initfile ../$dataDir/$slowGCF ;\n";
+    print MAC "save lib ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to input the design data
+    #
+    $macFile = "init_floorplan.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "#input def file ../$dataDir/netlist.def ;\n";
+    print MAC "input def file ../$dataDir/pins.def ;\n";
+    #print MAC "#input def file $reuseDir/module_fp/$module.fpdef ;\n";
+    #print MAC "#input def file $reuseDir/module_fp/$module.clkdef ;\n";
+    print MAC "save floorplan ;\n\n";
+    print MAC "input gcf file ../$dataDir/$timingGCF ;\n";
+    print MAC "save floorplan ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to add core cell rows
+    #
+    my $bspace = $blockSpace * $units;
+    $macFile = "cut_rows.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "cut row blockhalo $bspace ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to place blocks
+    #
+    $macFile = "place_blk.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var qplace.block.keepout.x $blockSpace ;\n";
+    print MAC "set var qplace.block.keepout.y $blockSpace ;\n";
+    print MAC "set var qplace.extra.config \"\" ;\n";
+    print MAC "qplace noconfig block ;\n";
+    print MAC "change cell * unplacecorecell ;\n";
+    print MAC "save blkplaced ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to route the power ring
+    #
+    $macFile = "route_pwr.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    my $rwidth = $pwrRingWidth * $units;
+    my $swidth = $pwrStripeWidth * $units;
+    print MAC "set var draw.swire.at on ;\n";
+    print MAC "set var draw.channel.at on ;\n";
+    print MAC "cut row blockhalo $bspace ;\n";
+    print MAC "build channel ;\n";
+    print MAC "construct ring net \"$powerNet\" net \"$groundNet\"\n";
+    print MAC "  layer $pwrHorizLayer coreringwidth $rwidth spacing center ";
+    print MAC "blockringwidth $swidth\n";
+    print MAC "  layer $pwrVertLayer coreringwidth $rwidth spacing center ";
+    print MAC "blockringwidth $swidth ;\n";
+    print MAC "dispose channel ;\n";
+    print MAC "set var draw.channel.at off ;\n";
+    print MAC "save pwr ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to place the core cells non-timing-driven
+    #
+    $macFile = "place.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var qplace.timing.mode false ;\n";
+    print MAC "set var timing.reporttiming.logfilename \"\" ;\n";
+    print MAC "set var qplace.opt.timing.type \"\" ;\n";
+    print MAC "set var qplace.opt.signal.integrity.type \"\" ;\n";
+    print MAC "set var qplace.opt.improve.net \"\" ;\n";
+    print MAC "set var qplace.clock.buffer.site $clkBufferSite ;\n";
+    print MAC "set var qplace.extra.config \"\" ;\n";
+    print MAC "\nqplace noconfig ;\n";
+    print MAC "save placed ;\n";
+    print MAC "\noutput def file ../$dataDir/$placedDEF ;\n\n";
+    close(MAC);
+
+    #
+    # Build a qplace config file to specify buffers to use during placement
+    # optimization
+    #
+    $macFile = "bufferInsert.cfg";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "optBufferList \"$optBufCells[0]";
+    my $buf;
+    foreach $buf (@optBufCells) {
+	if ($buf ne $optBufCells[0]) {
+	    print MAC ",$buf";
+	}
+    }
+    print MAC "\"\n";
+    print MAC "optInverterList \"$optInvCells[0]";
+    my $inv;
+    foreach $inv (@optInvCells) {
+	if ($inv ne $optInvCells[0]) {
+	    print MAC ",$inv";
+	}
+    }
+    print MAC "\"\n";
+    close(MAC);
+
+    #
+    # Build a macro to place the core cells w/qp-opt
+    #
+    $macFile = "place_td.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var qplace.timing.mode true ;\n";
+    print MAC "set var timing.reporttiming.logfilename \"place_td.timing.log\" ;\n";
+    print MAC "set var qplace.opt.report.name \"place_td.timing.rpt\" ;\n";
+    print MAC "set var qplace.opt.timing.type \"maxTran+setup\" ;\n";
+    print MAC "set var qplace.opt.signal.integrity.type \"\" ;\n";
+    print MAC "set var qplace.opt.allowed.operation \"upsize+downsize\" ;\n";
+    print MAC "set var qplace.opt.improve.net \"\" ;\n";
+    print MAC "set var qplace.clock.buffer.site $clkBufferSite ;\n";
+    print MAC "set var qplace.extra.config \"bufferInsert.cfg\" ;\n";
+    print MAC "\nqplace noconfig ;\n";
+    print MAC "save placed ;\n";
+    print MAC "\noutput def file ../$dataDir/$placedDEF ;\n";
+    print MAC "\nset var output.verilog.pwr.and.gnd.ports false ;\n";
+    print MAC "output verilog file ../$dataDir/$placedVerilog ;\n";
+    close(MAC);
+
+    #
+    # Build a macro optimize core cell placement for cross-talk
+    #
+    $macFile = "xtalk_opt.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var qplace.timing.mode true ;\n";
+    print MAC "set var timing.reporttiming.logfilename \"xtalk_opt.timing.log\" ;\n";
+    print MAC "set var qplace.opt.report.name \"xtalk_opt.timing.rpt\" ;\n";
+    print MAC "set var qplace.opt.timing.type \"\" ;\n";
+    print MAC "set var qplace.opt.signal.integrity.type \"xtalk\" ;\n";
+    print MAC "set var qplace.opt.allowed.operation \"upsize+bufferInsert\" ;\n";
+    print MAC "set var qplace.opt.improve.net \"\" ;\n";
+    print MAC "set var qpwr.rspf \"\" ;\n";
+    print MAC "set var qplace.clock.buffer.site $clkBufferSite ;\n";
+    print MAC "set var qplace.extra.config \"bufferInsert.cfg\" ;\n";
+    print MAC "\nqplace noconfig ;\n";
+    print MAC "save xtalkopt ;\n";
+    print MAC "\noutput def file ../$dataDir/$placedDEF ;\n";
+    print MAC "\nset var output.verilog.pwr.and.gnd.ports false ;\n";
+    print MAC "output verilog file ../$dataDir/$placedVerilog ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to create the clock tree(s)
+    #
+    $macFile = "read_clktree.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "fload lib ;\n";
+    print MAC "input def file ../$dataDir/$clktreeDEF ;\n";
+    print MAC "save clktree ;\n\n";
+    print MAC "input gcf file ../$dataDir/$timingGCF ;\n";
+    print MAC "save clktree ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to route power to the ring
+    #
+    $macFile = "connect_pwr.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    my $pwidth = $pwrPinWidth * $units;
+    print MAC "connect ring net \"$powerNet\" net \"$groundNet\" ";
+    print MAC "block allport followpin width $pwidth ;\n";
+    print MAC "save allpwr ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to place filler cells
+    #
+    $macFile = "add_fill.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    my $cell;
+    foreach $cell (@fillerCells) {
+	print MAC "sroute addcell model $cell prefix $cell ";
+	print MAC "spin $powerNet net $powerNet spin $groundNet net $groundNet ";
+	print MAC "area ( 0 0 ) ( 100000000 100000000 ) ;\n";
+    }
+    print MAC "save filled ;\n\n";
+    print MAC "\noutput def file ../$dataDir/$filledDEF ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to route the design in non-timing-driven mode
+    #
+    $macFile = "route.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var wroute.addition.lefname \"\" ;\n";
+    print MAC "set var wroute.antenna.report.name \"\" ;\n";
+    print MAC "set var wroute.timing.driven false ;\n";
+    print MAC "set var wroute.selectnets \"\@CLOCK\" ;\n";
+    print MAC "set var wroute.selectnet.first true ;\n";
+    print MAC "set var wroute.modify.preroutepass 3 ;\n";
+    print MAC "wroute noconfig ;\n";
+    print MAC "save routed ;\n";
+    print MAC "\noutput def file ../$dataDir/$routedDEF ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to route the design in non-timing-driven mode
+    # with antenna repair
+    #
+    $macFile = "route_ant.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var wroute.addition.lefname \"$antTechLefFile";
+    foreach $lef (@moduleAntLefFiles) {
+	print MAC " $lef";
+    }
+    print MAC "\" ;\n";
+    print MAC "set var wroute.antenna.report.name \"antenna.rpt\" ;\n";
+    print MAC "set var wroute.timing.driven false ;\n";
+    print MAC "set var wroute.selectnets \"\@CLOCK\" ;\n";
+    print MAC "set var wroute.selectnet.first true ;\n";
+    print MAC "set var wroute.modify.preroutepass 3 ;\n";
+    print MAC "wroute noconfig ;\n";
+    print MAC "save routed ;\n";
+    print MAC "\noutput def file ../$dataDir/$routedDEF ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to route the design in timing-driven mode
+    #
+    $macFile = "route_td.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var wroute.addition.lefname \"\" ;\n";
+    print MAC "set var wroute.antenna.report.name \"\" ;\n";
+    print MAC "set var wroute.timing.driven true ;\n";
+    print MAC "wroute noconfig ;\n";
+    print MAC "save routed ;\n";
+    print MAC "\noutput def file ../$dataDir/$routedDEF ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to route the design in timing-driven mode
+    # with antenna repair
+    #
+    $macFile = "route_td_ant.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var wroute.addition.lefname \"$antTechLefFile";
+    foreach $lef (@moduleAntLefFiles) {
+	print MAC " $lef";
+    }
+    print MAC "\" ;\n";
+    print MAC "set var wroute.antenna.report.name \"antenna.rpt\" ;\n";
+    print MAC "set var wroute.timing.driven true ;\n";
+    print MAC "wroute noconfig ;\n";
+    print MAC "save routed ;\n";
+    print MAC "\noutput def file ../$dataDir/$routedDEF ;\n";
+    close(MAC);
+
+    #
+    # Build a macro to read the database from a stand-alone wroute
+    #
+    $macFile = "read_route.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "fload filled ;\n";
+    print MAC "input wroute dbname wroute.wdb ;\n";
+    print MAC "save routed ;\n";
+    print MAC "output def filename ../$dataDir/$routedDEF ;\n";
+    print MAC "fquit ;\n\n";
+    close(MAC);
+
+    #
+    # Build a wroute config file 
+    #
+    $macFile = "wroute.cfg";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "inputLefName \"$techLefFile $antTechLefFile";
+    foreach $lef (@moduleLefFiles) {
+	print MAC " $lef";
+    }
+    foreach $lef (@moduleAntLefFiles) {
+	print MAC " $lef";
+    }
+    print MAC "\"\n";
+    print MAC "inputDefName \"../$dataDir/$filledDEF\"\n";
+    print MAC "frouteOptimization true\n";
+    print MAC "routeSelectNet \"\@CLOCK\"\n";
+    print MAC "routeModifyPreroutePass 3\n";
+    print MAC "routeSelectNetFirst true\n";
+    print MAC "routeGlobal true\n";
+    print MAC "routeFinal true\n";
+    print MAC "outputDbName wroute.wdb\n";
+    print MAC "frouteManufacturingGrid 5x5\n";
+    print MAC "frouteAntennaReportName antenna.rpt\n";
+    print MAC "frouteAntennaSumGateArea true\n";
+    print MAC "frouteFixAntennaPass -1\n";
+    close(MAC);
+
+    #
+    # Build a macro to repair routed nets
+    #
+    $macFile = "post_route_repair.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var qplace.timing.mode false ;\n";
+    print MAC "set var timing.reporttiming.logfilename \"\" ;\n";
+    print MAC "set var qplace.opt.report.name \"\" ;\n";
+    print MAC "set var qplace.opt.timing.type \"\" ;\n";
+    print MAC "set var qplace.opt.signal.integrity.type \"\" ;\n";
+    print MAC "set var qplace.opt.allowed.operation \"bufferInsert\" ;\n";
+    print MAC "set var qplace.opt.improve.net \"post_route.repair\" ;\n";
+    print MAC "set var qpwr.rspf \"\" ;\n";
+    print MAC "\nqplace fix noconfig ;\n";
+    print MAC "save repaired ;\n";
+    print MAC "\noutput def file ../$dataDir/$repairedDEF ;\n";
+    print MAC "\nset var output.verilog.pwr.and.gnd.ports false ;\n";
+    print MAC "output verilog file ../$dataDir/$repairedVerilog ;\n";
+    close(MAC);
+
+    #
+    # Build a command file for repairing nets after routing
+    #
+    $macFile = "post_route.repair";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "splitNet net_name -value ";
+    print MAC "integer_number_of_segments_to_split_net_into ";
+    print MAC "[-macro optional_buffer_cell_name]\n\n";
+    print MAC "reduceNetC net_name -value ";
+    print MAC "decimal_percentage_to_reduce_from_total_net_cap ";
+    print MAC "[-macro optional_buffer_cell_name]\n\n";
+    print MAC "receiverReduceNetC receiver_flat_inst_name input_pin_name ";
+    print MAC "-value decimal_percentage_to_reduce_from_total_net_cap ";
+    print MAC "[-macro optional_buffer_cell_name]\n";
+    close(MAC);
+
+    #
+    # Build a macro to extract rspf
+    #
+    $macFile = "extract.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var timing.capacitance.model HYPEREXTRACT ;\n";
+    print MAC "set var hyperextract.rules.file $hyperExtractRules ;\n";
+    print MAC "set var hyperextract.pins.capacitance input ;\n";
+    print MAC "set var hyperextract.toppins.capacitance input ;\n";
+    print MAC "set var hyperextract.wireload.file ../data/frouted.wireload ;\n";
+    print MAC "report rc file ../$dataDir/$froutedRSPF ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to report set_loads
+    #
+    $macFile = "setload.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    print MAC "set var timing.capacitance.model HYPEREXTRACT ;\n";
+    print MAC "set var hyperextract.rules.file $hyperExtractRules ;\n";
+    print MAC "set var hyperextract.pins.capacitance input ;\n";
+    print MAC "set var hyperextract.toppins.capacitance input ;\n";
+    print MAC "set var hyperextract.wireload.file ../data/frouted.wireload ;\n";
+    print MAC "report setload file ../$dataDir/$froutedSetload ;\n\n";
+    close(MAC);
+
+    #
+    # Build a macro to output gds
+    #
+    $macFile = "output_gds.mac";
+    open(MAC, ">$macFile") || die "$0: Can't open file $macFile\n";
+    $units = getGDSUnits("$techLefFile");
+    print MAC "output gdsii mapfile $seLayerMapFile structurename $module ";
+    print MAC "file ../$dataDir/$module.gds units $units ;\n\n";
+    close(MAC);
+
+    chdir "..";
+}
+
+#########################################################
+# getLefCellFileName(lefCellName lefFileNames)
+# Func: find the lef file name which has the lefCellName
+#       definition, return the lef file name, return 0
+#       if not find.
+#########################################################
+sub getLefCellFileName {
+    my $cell = shift;
+    my @lefFiles = shift;
+
+    my $lef;
+    my $lib;
+    foreach $lef (@lefFiles) {
+	open(LEF, "<$lef") || do {"$0: Can't open file $lef\n"; next;};
+	while (<LEF>) {
+	    if (/MACRO\s+$cell\s*$/) {
+		close(LEF);
+		return $lef;
+	    }
+	}
+	close(LEF);
+    }
+
+    return(0) ;
+}
+
+sub getLefCellLibName {
+    my $cell = shift;
+    my @lefFiles = shift;
+
+    my $lef;
+    my $lib;
+    foreach $lef (@lefFiles) {
+	open(LEF, "<$lef") || do {"$0: Can't open file $lef\n"; next;};
+	while (<LEF>) {
+	    if (/MACRO\s+$cell\s*$/) {
+		$lib = getLefLibName($lef);
+		close(LEF);
+		return $lib;
+	    }
+	}
+	close(LEF);
+    }
+
+    return $lib;
+}
+
+sub getLefLibName {
+    my $lef = shift;
+    my @path;
+    my $lib;
+
+    @path = split('/', $lef);
+    $lib = $path[$path-1];
+    $lib =~ s/\..*$//;
+
+    return $lib;
+}
+
+sub getLayerPitch {
+    my $techLEF = shift;
+    my $metalLevel = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $layer;
+    while (<LEF>) {
+	if (/^\s*LAYER\s+metal$metalLevel/ .. /^\s*END /) {
+	    if (/^\s*PITCH\s+(\S+)\s*;/) {
+		$pitch = $1;
+	    }
+	}
+    }
+
+    close(LEF);
+
+    return $pitch;
+
+    die "$0: Can't find metal $metalLevel pitch in $techLEF\n";
+}
+
+sub getTopMetalLayer {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $layer;
+    my $topLayer;
+    while (<LEF>) {
+	if (/^\s*LAYER\s+(\S+)/ .. /^\s*END /) {
+	    $layer = $1;
+	    if (/^\s*TYPE\s+ROUTING/) {
+		$topLayer = $layer;
+	    }
+	}
+    }
+
+    close(LEF);
+
+    return $topLayer;
+}
+
+sub getMetalLayers {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $layer;
+    my @layers = ();
+    while (<LEF>) {
+	if (/^\s*LAYER\s+(\S+)/ .. /^\s*END /) {
+	    $layer = $1;
+	    if (/^\s*TYPE\s+ROUTING/) {
+		push(@layers, $layer);
+	    }
+	}
+    }
+
+    close(LEF);
+
+    return @layers;
+}
+
+sub getHorizontalMetalLayers {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $layer;
+    my @layers = ();
+    while (<LEF>) {
+	if (/^LAYER\s+(\S+)/ .. /^END /) {
+	    $layer = $1;
+	    if (/^\s*DIRECTION\s+HORIZONTAL/) {
+		push(@layers, $layer);
+	    }
+	}
+    }
+
+    close(LEF);
+
+    return @layers;
+}
+
+sub getVerticalMetalLayers {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $layer;
+    my @layers = ();
+    while (<LEF>) {
+	if (/^LAYER\s+(\S+)/ .. /^END /) {
+	    $layer = $1;
+	    if (/^\s*DIRECTION\s+VERTICAL/) {
+		push(@layers, $layer);
+	    }
+	}
+    }
+
+    close(LEF);
+
+    return @layers;
+}
+
+sub getDbUnits {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    while (<LEF>) {
+	if (/^\s*UNITS/ .. /^\s*END UNITS/) {
+	    if (/^\s*DATABASE\s+MICRONS\s+(\d+)\s*;/) {
+		return $1;
+	    }
+	}
+    }
+
+    close(LEF);
+
+    die "$0: Can't find DATABASE UNITS in $techLEF\n";
+}
+
+sub getGDSUnits {
+    my $techLEF = shift;
+
+    open(LEF, "<$techLEF") || die "$0: Can't open file $techLEF\n";
+
+    my $units = getDbUnits($techLEF);
+    if ($units == 100) {
+	return "hundreds";
+    }
+    elsif ($units == 1000) {
+	return "thousands";
+    }
+
+    die "$0: Can't find DATABASE UNITS in $techLEF\n";
+}
+
+sub setupCTGEN {
+    chdir $ctgenDir;
+
+    #
+    # Build a command file for clock tree generation
+    #
+    open(CMD, ">$ctgenCmdFile") || die "$0: Can't open file $ctgenCmdFile\n";
+    print CMD "set_rundir '../$ctgenDir'\n";
+    print CMD "set_format se\n";
+    print CMD "read_technology\n";
+    print CMD "    lef_files\n";
+    print CMD "        '$techLefFile'\n";
+    my $lef;
+    foreach $lef (@moduleLefFiles) {
+	print CMD "        '$lef'\n";
+    }
+    print CMD "    gcf_env_file '../$dataDir/$slowGCF'\n";
+    print CMD "read_design\n";
+    print CMD "    def_file '../$dataDir/$placedDEF'\n";
+    print CMD "    verilog_files '$module' '../../../$verilogInDir/$module.vgh'\n";
+    print CMD "read_constraints\n";
+    print CMD "    constraints_file '../$ctgenDir/$ctgenConstFile'\n";
+    print CMD "    blocked_layers";
+    my $layer;
+    foreach $layer (@blockedLayers) {
+	print CMD " '$layer'";
+    }
+    print CMD "\n";
+    print CMD "    gcf_bc_file '../$dataDir/$timingGCF'\n";
+    print CMD "build_clocktrees\n";
+    print CMD "remove_overlaps\n";
+    print CMD "write_design\n";
+    print CMD "    def_file '../$dataDir/$clktreeDEF'\n";
+    print CMD "    verilog_file '../../../$verilogOutDir/$module.cvgh'\n";
+    close(CMD);
+
+    #
+    # Build a command file for clock tree generation after
+    # placement optimization
+    #
+    open(CMD, ">$ctgenOcmdFile") || die "$0: Can't open file $ctgenOcmdFile\n";
+    print CMD "set_rundir '../$ctgenDir'\n";
+    print CMD "set_format se\n";
+    print CMD "read_technology\n";
+    print CMD "    lef_files\n";
+    print CMD "        '$techLefFile'\n";
+    my $lef;
+    foreach $lef (@moduleLefFiles) {
+	print CMD "        '$lef'\n";
+    }
+    print CMD "    gcf_env_file '../$dataDir/$slowGCF'\n";
+    print CMD "read_design\n";
+    print CMD "    def_file '../$dataDir/$placedDEF'\n";
+    print CMD "    verilog_files '$module' '../$dataDir/$placedVerilog'\n";
+    print CMD "read_constraints\n";
+    print CMD "    constraints_file '../$ctgenDir/$ctgenConstFile'\n";
+    print CMD "    blocked_layers";
+    my $layer;
+    foreach $layer (@blockedLayers) {
+	print CMD " '$layer'";
+    }
+    print CMD "\n";
+    print CMD "    gcf_bc_file '../$dataDir/$timingGCF'\n";
+    print CMD "build_clocktrees\n";
+    print CMD "remove_overlaps\n";
+    print CMD "write_design\n";
+    print CMD "    def_file '../$dataDir/$clktreeDEF'\n";
+    print CMD "    verilog_file '../../../$verilogOutDir/$module.cvgh'\n";
+    close(CMD);
+
+    #
+    # Build a command file for IPO clock tree generation
+    #
+    open(CMD, ">$ctgenIcmdFile") || die "$0: Can't open file $ctgenIcmdFile\n";
+    print CMD "set_rundir '../$ctgenDir'\n";
+    print CMD "set_format se\n";
+    print CMD "read_technology\n";
+    print CMD "    lef_files\n";
+    print CMD "        '$techLefFile'\n";
+    my $lef;
+    foreach $lef (@moduleLefFiles) {
+	print CMD "        '$lef'\n";
+    }
+    print CMD "    gcf_env_file '../$dataDir/$slowGCF'\n";
+    print CMD "read_design\n";
+    print CMD "    def_file '../$dataDir/$ipoDEF'\n";
+    print CMD "    verilog_files '$module' '../../../$verilogInDir/$module.ivgh'\n";
+    print CMD "read_constraints\n";
+    print CMD "    constraints_file '../$ctgenDir/$ctgenConstFile'\n";
+    print CMD "    blocked_layers";
+    my $layer;
+    foreach $layer (@blockedLayers) {
+	print CMD " '$layer'";
+    }
+    print CMD "\n";
+    print CMD "    gcf_bc_file '../$dataDir/$timingGCF'\n";
+    print CMD "build_clocktrees\n";
+    print CMD "remove_overlaps\n";
+    print CMD "write_design\n";
+    print CMD "    def_file '../$dataDir/$clktreeDEF'\n";
+    print CMD "    verilog_file '../../../$verilogOutDir/$module.ovgh'\n";
+    close(CMD);
+
+    #
+    # Build a command file for clock skew analysis of a routed module
+    #
+    open(CMD, ">$ctgenRcmdFile") || die "$0: Can't open file $ctgenRcmdFile\n";
+    print CMD "set_rundir '../$ctgenDir'\n";
+    print CMD "set_format se\n";
+    print CMD "read_technology\n";
+    print CMD "    lef_files\n";
+    print CMD "        '$techLefFile'\n";
+    foreach $lef (@moduleLefFiles) {
+	print CMD "        '$lef'\n";
+    }
+    print CMD "    gcf_env_file '../$dataDir/$slowGCF'\n";
+    print CMD "read_design\n";
+    print CMD "    def_file '../$dataDir/$clktreeDEF'\n";
+    print CMD "read_constraints\n";
+    print CMD "    constraints_file '../$ctgenDir/$ctgenConstFile'\n";
+    print CMD "    rspf_file '../$dataDir/$froutedRSPF'\n";
+    print CMD "    gcf_bc_file '../$dataDir/$timingGCF'\n";
+    close(CMD);
+
+    #
+    # Build a constraint file for clock tree generation.
+    #
+    my $const = new const;
+    $const->readSynopsysConstraints("$pdDir/$constDir/$module.cscr");
+    my $clock;
+    foreach $clock ($const->getClocks()) {
+	my $cell;
+	foreach $cell (@clkBufCells) {
+	    $clock->addBufferCell($cell);
+	}
+	foreach $cell (@clkInvCells) {
+	    $clock->addInverterCell($cell);
+	}
+	$clock->setMinInsertionDelay($clkMinDelay);
+	$clock->setMaxInsertionDelay($clkMaxDelay);
+	$clock->setMaxTransition($clkMaxTrans);
+	$clock->setMaxSkew($clock->getMaxSkew() * $clkBudget);
+    }
+    $const->writeCTGENConstraints($ctgenConstFile);
+
+    chdir "..";
+}
+
+sub setupPearl {
+    chdir $pearlDir;
+
+    #
+    # Build a command file to translate Synopsys constraints to GCF
+    #
+    my $cmdFile = "syn2gcf.cmd";
+    open(CMD, ">$cmdFile") || die "$0: Can't open file $cmdFile\n";
+    print CMD "LogFile syn2gcf.log\n";
+    print CMD "SetPowerNode $powerNet\n";
+    print CMD "SetGroundNode $groundNet\n";
+#   print CMD "IdealClocks yes\n";
+#   print CMD "DisableReentrantPaths yes\n";
+    print CMD "ReadGCFTimingLibraries ../$dataDir/$slowGCF\n";
+    print CMD "readverilog ../../../$verilogInDir/$module.vgh\n";
+    print CMD "toplevelcell $module\n";
+    print CMD "set allow_through_constraints 1\n";
+    print CMD "read_dc_script -effort_level high -transform_policy overconstrain ../../../$constDir/$module.cscr\n";
+    print CMD "write_gcf ../$dataDir/$timingGCF\n";
+    print CMD "quit\n";
+    close(CMD);
+
+    #
+    # Build a command file to backannotate SDF and set_loads
+    #
+    open(CMD, ">$pearlBACmdFile") || die "$0: Can't open file $pearlBACmdFile\n";
+    print CMD "Logfile $pearlBALogFile\n\n";
+    print CMD "ReadGCFTimingLibraries ../$dataDir/$slowGCF\n";
+    print CMD "ReadDefNetlist ../$dataDir/$routedDEF\n";
+    print CMD "ReadGCFConstraints  ../$dataDir/$timingGCF\n";
+    print CMD "ReadSPF ../$dataDir/$froutedRSPF\n\n";
+    print CMD "WriteSDFDelays -port_interconnect -precision 6 -version 2.1 -ns ";
+    print CMD "full.sdf\n";
+    print CMD "system \"intonlysdf full.sdf > ../../../$baDir/$module.sdf\"\n";
+    print CMD "system \"rm full.sdf\"\n\n";
+    print CMD "system \"inpeqns ../$dataDir/$froutedSetload > eqn.cmd\"\n";
+    print CMD "include eqn.cmd > eqn.rpt\n";
+    print CMD "system \"eqn2setload eqn.rpt > ../../../$baDir/$module.setload\"\n";
+    print CMD "system \"rm eqn.cmd eqn.rpt\"\n\n";
+    print CMD "quit\n";
+    close(CMD);
+
+    chdir "..";
+}
+
+sub setupPd_verify {
+    chdir $cdsDir;
+
+    #
+    # Build a config file for pd verification.
+    #
+    open(CMD, ">pdcheck.cfg") || die "$0: Can't open file pdcheck.cfg\n";
+    print CMD "#-- PD Verify Config File for $module.  --#\n\n";
+    print CMD "prime_cell:    $module\n";
+    print CMD "merge_gds:     yes\n";
+    print CMD "ver2lvs:       yes\n";
+    print CMD "drc:           yes\n";
+    print CMD "lvs:           yes\n";
+    print CMD "ant:           yes\n";
+    print CMD "erc:           no\n";
+    print CMD "esd_lup:       no\n\n";
+    print CMD "submit:        yes\n";
+    print CMD "turbo_mode:    no\n";
+    print CMD "hcell_fn:        \n";
+    print CMD "netlist_fn:    $pdDir/$verilogOutDir/$module.cvgh\n";
+    print CMD "gds_fn:        $pdDir/$gdsDir/$module.gds\n";
+    print CMD "lib_name:      $module";
+    print CMD "_lib\n\n";
+    print CMD "cal_lvs_deck:  $processesDir/calibre/default_scr/cg18q_lvs.rules\n";
+    print CMD "cal_drc_deck:  $processesDir/calibre/default_scr/cg18q_drc.rules\n";
+    print CMD "cal_ant_deck:  $processesDir/calibre/default_scr/cg18q_ant.rules\n";
+    print CMD "cal_erc_deck:  $processesDir/calibre/default_scr/cg18q_erc.rules\n";
+    print CMD "cal_esd_deck:  $processesDir/calibre/default_scr/cg18q_esd_lup.rules\n";
+    print CMD "dfii_tech:     $processDir/tech/tech.dfII\n";
+    print CMD "layer_map:     \n";
+    print CMD "ver2lvs_cntl:  $processDir/tech/ver2lvs.cntl\n\n";
+    print CMD "run_dir:       $pdDir/$buildDir/$module/$cdsDir\n";
+    print CMD "gds_rlibs: ";
+    foreach $lib (@moduleLibs) {
+        print CMD "\\\n";
+	print CMD "           $lib $processDir/dfII/$lib ";
+    }
+    print CMD "\n";
+    print CMD "stdckm: ";
+    foreach $lib (@moduleLibs) {
+        print CMD "\\\n";
+	print CMD "           $processDir/checkmate/$lib ";
+    }
+    print CMD "\n";
+    print CMD "stdcdl: \n";
+    print CMD "\n";
+    print CMD "stdverilog: ";
+    foreach $lib (@moduleLibs) {
+        print CMD "\\\n";
+	print CMD "           $processDir/verilog/$lib.v ";
+    }
+    print CMD "\n";
+    print CMD "customcdl: \n";
+    print CMD "customckm: ";
+    foreach $lib (@moduleLibs) {
+        print CMD "\\\n";
+	print CMD "           $processDir/checkmate/$lib ";
+    }
+    print CMD "\n";
+    print CMD "customverilog: ";
+    foreach $lib (@moduleLibs) {
+        print CMD "\\\n";
+	print CMD "           $processDir/verilog/$lib.v ";
+    }
+    print CMD "\n";
+    print CMD "mail:          yes\n";
+    close(CMD);
+
+    chdir "..";
+}
+
+sub setupCDS {
+    chdir($cdsDir);
+    my $cellName = shift;
+    my $isTop = shift;
+ 
+    #
+    # virtuoso tech file
+    #
+    softLink($virtuosoTechFile, "tech.tf");
+
+    #
+    # create run_gdsmerge
+    #
+    $unmergedGdsFn = "../$dataDir/$cellName.gds";
+    $mergedGdsFn = "../$dataDir/$cellName.merged.gds";
+    $mergeRunDir = "./";
+    $logFn = $runGDSMerge . ".log";
+    open(CMD, ">$runGDSMerge") || die "$0: Can't open $runGDSMerge\n";
+
+    print(CMD "#!/usr/bin/csh -f\n\n");
+    print(CMD "echo \"Running gdsmerge ...\"\n");
+    print(CMD "echo \"----------------------\" >> $logFn\n");
+    print(CMD "echo \"-- gdsmerge Run Log --\" >> $logFn\n");
+    print(CMD "echo \"----------------------\" >> $logFn\n");
+    print(CMD "echo \"Merge Gds Flag:   YES\"  >> $logFn\n");
+    print(CMD "echo \"Cell Name:        $cellName\" >> $logFn\n");
+    print(CMD "echo \"Unmerged Gds:     $unmergedGdsFn\"     >> $logFn\n");
+    print(CMD "echo \"Library:          $cellName\" >> $logFn\n");
+    print(CMD "echo \"Merged Gds:       $mergedGdsFn\" >> $logFn\n");
+    print(CMD "echo \"Run Directory:    $mergeRunDir\" >> $logFn\n");
+    print(CMD "echo \"DFII Tech:        $virtuosoTechFile\" >> $logFn\n");
+    print(CMD "echo \"Referance Libs:\" >> $logFn\n");
+    my($name, $path);
+    foreach $name (keys(%stdRefLibs)) {
+        $path = $stdRefLibs{$name};
+        print(CMD "echo \"  $name: $path\" >> $logFn\n");
+    }
+    if( $isTop ) {
+        foreach $name (keys(%customRefLibs)) {
+            $path = $customRefLibs{$name};
+            print(CMD "echo \"  $name: $path\" >> $logFn\n");
+        }
+        foreach $module (@moduleList) {
+            $path = "../../$module/$cdsDir/$module";
+            print(CMD "echo \"  $module: $path\" >> $logFn\n");
+        }
+    }
+    print(CMD "echo \"Merge starting time = `date`\" >> $logFn\n"); 
+    print(CMD "echo \"Merging gds2 data\" >> $logFn\n");
+    print(CMD "gdsmerge -cell $cellName -run . -lib $cellName ");
+    print(CMD "-gdsin $unmergedGdsFn -gdsout $mergedGdsFn -tech $virtuosoTechFile ");
+    print(CMD "-rlibs ");
+    foreach $name (keys(%stdRefLibs)) {
+        $path = $stdRefLibs{$name};
+        print(CMD "$name:$path ");
+    }
+    if( $isTop ) {
+        foreach $name (keys(%customRefLibs)) {
+            $path = $customRefLibs{$name};
+            print(CMD "$name:$path ");
+        }
+        foreach $module (@moduleList) {
+            $path = "../../$module/$cdsDir/$module";
+            print(CMD "$module:$path ");
+        }
+    }
+    print(CMD ">> $logFn\n");
+    print(CMD "if (\$status != 0) then\n");
+    print(CMD "    echo \"*Error* Merge failed, check run directory cds for more information.\" >> $logFn\n");
+    print(CMD "else\n");
+    print(CMD "    echo \"Merge completed\" >> $logFn\n");
+    print(CMD "    echo \"Merge ending time = `date`\" >> $logFn\n");
+    print(CMD "endif\n");
+
+    close(CMD);
+    system("/bin/chmod a+x $runGDSMerge");
+
+    #
+    # create cds.lib for top level
+    #
+    if( $isTop ) {
+        open(CDSLIB, ">$cdsLib") || die "$0: Can't open $cdsLib\n";
+        foreach $name (keys(%stdRefLibs)) {
+            $path = $stdRefLibs{$name};
+            print(CDSLIB "DEFINE $name $path\n");
+        }
+        foreach $name (keys(%customRefLibs)) {
+            $path = $customRefLibs{$name};
+            print(CDSLIB "DEFINE $name $path\n");
+        }
+        foreach $name (@moduleList) {
+            $path = "../../$name/$cdsDir/$name";
+            print(CDSLIB "DEFINE $name $path\n");
+        }
+        close(CDSLIB);
+    }
+
+    #
+    # create .cdsinit
+    #
+    open(CDSINIT, ">$cdsinit") || die "$0: Can't open $cdsinit\n";
+    print CDSINIT ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+    print CDSINIT ";; environment variables\n";
+    print CDSINIT ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+    print CDSINIT "setShellEnvVar(\"RDS_CDS_VERIFY_TECH=$processName\")\n";
+    print CDSINIT "setShellEnvVar(\"CBR_DIR=$pdDir/$cbrDir\")\n";
+    print CDSINIT "setShellEnvVar(\"GDS_DIR=../$dataDir\")\n";
+    print CDSINIT "setShellEnvVar(\"VER_DIR=$pdDir/$verifyDir\")\n\n";
+    print CDSINIT ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+    print CDSINIT ";;  Load in User Specific .cdsinit file\n";
+    print CDSINIT ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+    print CDSINIT ";;\n";
+    print CDSINIT "if( InitPath = getShellEnvVar(\"RDS_CDS_INIT_FILES\") then\n";
+    print CDSINIT "    load(strcat(InitPath \"/system.cdsinit\"))\n";
+    print CDSINIT "else\n";
+    print CDSINIT "    printf(\"ERROR: system variable \\\"RDS_CDS_INIT_FILES\\\" is not set.\\n\");\n";
+    print CDSINIT "    printf(\"Initialization aborted!!\\n\");\n";
+    print CDSINIT "    printf(\"Exit from the Cadence environment, type cdsprj ProjID, and then run the tool again!\\n\");\n";
+    print CDSINIT ")\n";
+    close(CDSINIT);
+   
+    chdir "..";
+}
+
+sub setupCALIBRE {
+    chdir($verifyDir);
+    my $cellName = shift;
+    my $isTop = shift;
+    #
+    # create run_all
+    #
+    open(CMD, ">$runAll") || die "$0: Can't open $runAll\n";
+    print CMD "cd ../$cdsDir; $runGDSMerge; cd ../$verifyDir\n";
+    print CMD "cd $drcDir; $runDRC; cd ..\n";
+    print CMD "cd $ver2lvsDir; $runVer2lvs; cd ..\n";
+    print CMD "cd $lvsDir; $runLVS; cd ..\n";
+    print CMD "cd $antDir; $runANT; cd ..\n";
+    print CMD "cd $ercDir; $runERC; cd ..\n";
+    print CMD "cd $pexDir; $runPEX; cd ..\n";
+    if( $isTop ) {
+      print CMD "cd $esdDir; $runESD; cd ..\n";
+      print CMD "cd $stressDir; $runStress; cd ..\n";
+      print CMD "cd $densityDir; $runDensity; cd ..\n";
+    }
+    close(CMD);
+    system("/bin/chmod a+x $runAll");
+
+    #
+    # create run_drc
+    #
+    mkNewDir($drcDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$drcDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$drcDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$drcDir/$runDRC") || die "$0: Can't open $drcDir/$runDRC\n";
+    print CMD "echo \"Running DRC check...\"\n";
+    print CMD "run_cal $cellName -drc -proc $processName ";
+    print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+    close(CMD);
+    system("/bin/chmod a+x $drcDir/$runDRC");
+
+    #
+    # create ver2lvs
+    #
+    mkNewDir($ver2lvsDir);
+    $verilogFn = "../../../../vout/$cellName.cvgh";
+    $cbrFn = "$cellName" . ".cbr";
+    $logFn = $runVer2lvs . ".log";
+    $ver2lvsRunDir = "$pdDir/$buildDir/$cellName/$verifyDir/$ver2lvsDir";
+
+    my $stdcdl = join(':', @stdcdl);
+    my $stdverilog = join(':', @stdverilog);
+    my $customcdl = join(':', @customcdl);
+    my $customverilog = join(':', @customverilog);
+
+    open(CMD, ">$ver2lvsDir/$runVer2lvs") || die "$0: Can't open $ver2lvsDir/$runVer2lvs";
+
+    print(CMD "#!/usr/bin/csh -f\n\n");
+    print(CMD "echo \"Running ver2lvs ...\"\n");
+    print(CMD "echo \"---------------------\"        > $logFn\n");
+    print(CMD "echo \"-- ver2lvs Run Log --\"        >> $logFn\n");
+    print(CMD "echo \"---------------------\"        >> $logFn\n");
+    print(CMD "echo \"Verilog Netlist:            $verilogFn\"     >> $logFn\n");
+    print(CMD "echo \"LVS Netlist:                $netlistFn\"     >> $logFn\n");
+    print(CMD "echo \"STDCDL Variable:            $stdcdl\"    >> $logFn\n");
+    print(CMD "echo \"STDVERILOG Variable:        $stdverilog\"    >> $logFn\n");
+    print(CMD "echo \"CUSTOMCDL Variable:         $customcdl\" >> $logFn\n");
+    print(CMD "echo \"CUSTOMVERILOG Variable:     $customverilog\" >> $logFn\n");
+    print(CMD "echo \"Run Directory:              $ver2lvsRunDir\"     >> $logFn\n");
+    print(CMD "echo \"ver2lvs starting time = `date`\" >> $logFn\n"); 
+    print(CMD "setenv STDCDL $stdcdl\n");
+    print(CMD "setenv STDVERILOG $stdverilog\n");
+    print(CMD "setenv CUSTOMCDL $customcdl\n");
+    print(CMD "setenv CUSTOMVERILOG $customverilog\n");
+    print(CMD "ver2lvs $verilogFn -c $ver2lvs_cntl >>& $logFn\n");
+    print(CMD "if (\$status != 0) then\n");
+    print(CMD "  echo \"*Error* ver2lvs failed. check run directory $ver2lvsRunDir for more information\" >> $logFn\n");
+    print(CMD "else\n");
+    print(CMD "  echo \"ver2lvs completed\" >> $logFn\n");
+    print(CMD "  echo \"ver2lvs ending time = `date`\" >> $logFn\n");
+    print(CMD "endif\n");
+    close(CMD);
+    system("/bin/chmod a+x $ver2lvsDir/$runVer2lvs");
+
+    #
+    # create run_lvs
+    #
+    mkNewDir($lvsDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$lvsDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$lvsDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$lvsDir/$runLVS") || die "$0: Can't open $lvsDir/$runLVS\n";
+    print CMD "echo \"Running LVS check...\"\n";
+    print CMD "run_cal $cellName -lvs -proc $processName -top $cellName "; 
+    print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName ";
+    print CMD "-cbrpath ../$ver2lvsDir/$cellName.cbr -sch_top $cellName\n";
+    close(CMD);
+    system("/bin/chmod a+x $lvsDir/$runLVS");
+
+    #
+    # create run_ant
+    #
+    mkNewDir($antDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$antDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$antDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$antDir/$runANT") || die "$0: Can't open $antDir/$runANT\n";
+    print CMD "echo \"Running ANT check...\"\n";
+    print CMD "run_cal $cellName -ant -proc $processName "; 
+    print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+    close(CMD);
+    system("/bin/chmod a+x $antDir/$runANT");
+
+    #
+    # create run_erc
+    #
+    mkNewDir($ercDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$ercDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$ercDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$ercDir/$runERC") || die "$0: Can't open $ercDir/$runERC\n";
+    print CMD "echo \"Running ERC check...\"\n";
+    print CMD "run_cal $cellName -softerc -proc $processName "; 
+    print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+    close(CMD);
+    system("/bin/chmod a+x $ercDir/$runERC");
+
+    if( $isTop ) {
+        #
+        # create run_esd
+        #
+        mkNewDir($esdDir);
+
+        # build relative soft link
+        chdir("$pdDir/$verifyDir/$esdDir");
+        softLink("../../$buildDir/$cellName/$verifyDir/$esdDir", "$cellName");
+        chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+        open(CMD, ">$esdDir/$runESD") || die "$0: Can't open $esdDir/$runESD\n";
+        print CMD "echo \"Running ESD check...\"\n";
+        print CMD "run_cal $cellName -esd_lup -proc $processName "; 
+        print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+        close(CMD);
+        system("/bin/chmod a+x $esdDir/$runESD");
+
+        #
+        # create run_stress
+        #
+        mkNewDir($stressDir);
+
+        # build relative soft link
+        chdir("$pdDir/$verifyDir/$stressDir");
+        softLink("../../$buildDir/$cellName/$verifyDir/$stressDir", "$cellName");
+        chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+        open(CMD, ">$stressDir/$runStress") || die "$0: Can't open $stressDir/$runStress\n";
+        print CMD "echo \"Running Stress check...\"\n";
+        print CMD "run_cal $cellName -stress -proc $processName "; 
+        print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+        close(CMD);
+        system("/bin/chmod a+x $stressDir/$runStress");
+
+        #
+        # create run_density
+        #
+        mkNewDir($densityDir);
+
+        # build relative soft link
+        chdir("$pdDir/$verifyDir/$densityDir");
+        softLink("../../$buildDir/$cellName/$verifyDir/$densityDir", "$cellName");
+        chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+        open(CMD, ">$densityDir/$runDensity") || die "$0: Can't open $densityDir/$runDensity\n";
+        print CMD "echo \"Running Density check...\"\n";
+        print CMD "run_cal $cellName -density -proc $processName "; 
+        print CMD "-gdspath ../../$dataDir/$cellName.merged.gds -top $cellName\n";
+        close(CMD);
+        system("/bin/chmod a+x $densityDir/$runDensity");
+    } 
+    #
+    # create run_pex
+    #
+    mkNewDir($pexDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$pexDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$pexDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$pexDir/$runPEX") || die "$0: Can't open $pexDir/$runPEX\n";
+    print CMD "echo \"Running PEX check...\"\n";
+    print CMD "run_simplex $cellName -proc $processName "; 
+    print CMD "-asic -flow_type 2 -libgen -cell_list cell.list -lef_files lef.files ";
+    if( $isTop ) {
+      print CMD "-mergedef -block_defs def.files ";
+    }
+    print CMD "-auto \n";
+    close(CMD);
+    system("/bin/chmod a+x $pexDir/$runPEX");
+
+    chdir("$pexDir");
+    '/bin/rm cell.list';
+    '/bin/rm lef.files';
+    '/bin/rm def.files';
+    if( $isTop ) {
+      open(LEFFILES, ">lef.files") || die "$0: Can't open lef.files\n";
+      open(DEFFILES, ">def.files") || die "$0: Can't open def.files\n";
+      print LEFFILES "$techLefFile ";
+      foreach $file (@topcellLefFiles) {
+        system("/bin/grep MACRO $file | /bin/awk '{print \$2}' >> cell.list");
+        print LEFFILES "$file ";
+      } 
+      foreach $name (@moduleList) {
+        system("echo $name >> cell.list");
+        print LEFFILES "../../../$name/$dataDir/$name.lef ";
+        print DEFFILES "../../../$name/$dataDir/routed.def ";
+      }
+      print LEFFILES "../../$dataDir/$cellName.lef ";
+      print LEFFILES "\n";
+      print DEFFILES "\n";
+      close(LEFFILES);
+      close(DEFFILES);
+      system("ln -s ../../$dataDir/routed.def $cellName.def");
+    } else {
+      open(LEFFILES, ">lef.files") || die "$0: Can't open lef.files\n";
+      print LEFFILES "$techLefFile ";
+      foreach $file (@moduleLefFiles) {
+        system("/bin/grep MACRO $file | /bin/awk '{print \$2}' >> cell.list");
+        print LEFFILES "$file ";
+      } 
+      print LEFFILES "\n";
+      close(LEFFILES);
+      system("ln -s ../../$dataDir/routed.def $cellName.def");
+    }
+    chdir("..");
+
+    #
+    # create run_irdrop
+    #
+    mkNewDir($irdropDir);
+
+    # build relative soft link
+    chdir("$pdDir/$verifyDir/$irdropDir");
+    softLink("../../$buildDir/$cellName/$verifyDir/$irdropDir", "$cellName");
+    chdir("$pdDir/$buildDir/$cellName/$verifyDir");
+
+    open(CMD, ">$irdropDir/$runIRDROP") || die "$0: Can't open $irdropDir/$runIRDROP\n";
+    print CMD "echo \"Running IRDROP check...\"\n";
+    close(CMD);
+    system("/bin/chmod a+x $irdropDir/$runIRDROP");
+
+    chdir "..";  
+}

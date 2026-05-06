@@ -1,0 +1,17 @@
+* File: dl01d1.sp.dl01d1.pxi
+* Created: Sun Feb 14 19:11:09 2010
+* 
+cc_1 2 I 0.32575f
+cc_2 2 VDD 0.0462949f
+cc_3 2 VSS 0.0606301f
+cc_4 2 5 0.00116008f
+cc_5 2 4 0.187592f
+cc_6 I VDD 0.0465288f
+cc_7 I VSS 0.00556004f
+cc_8 VDD 5 0.276568f
+cc_9 VDD 4 0.0171795f
+cc_10 VSS 5 0.205769f
+cc_11 VSS 4 0.0452609f
+cc_12 VSS Z 0.0281772f
+cc_13 5 4 0.311493f
+cc_14 5 Z 0.20822f

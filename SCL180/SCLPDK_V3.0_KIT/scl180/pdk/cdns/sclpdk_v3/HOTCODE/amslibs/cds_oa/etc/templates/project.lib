@@ -1,0 +1,13 @@
+# Template of project.lib 
+# This file should be found in /ProjRoot/ProjID/cds_master/project.lib
+
+# Project cds.lib for project ProjID 
+
+# Libraries definitions
+DEFINE    ProjID_master      /ProjRoot/ProjID/cds_master/design
+DEFINE    softcells          /ProjRoot/ProjID/cds_master/softcells
+
+# Include system cds.lib
+INCLUDE  $RDS_CDS_LIB_VERS
+
+

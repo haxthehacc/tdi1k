@@ -1,0 +1,25 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'p3p3diode' implements the P+/Nwell thick oxide 3.3V junction diode.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><a href="p3p3diodestyle.html">Style</a> : Controls whether the interconnect scheme in the layout pcell is performed using metal 1 or metal 2 layer.
+
+<li><a href="p3p3diodewl.html">Specify</a> : Controls how user wishes to specify device dimensions. A/P means specify area and perimeter, WL means specify width and length, A/R means specify desired width/length aspect ratio.
+
+<li><a href="p3p3diodebulk.html">Bulk</a> : Controls the presence/absence and configuration of substrate ties in the layout pcell.
+
+<li>Count : Controls the number of diode instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n diode instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+</ul>
+<h1>NOTES:</h1>
+<ul>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS : area, perimeter. </li>
+</ul>
+</body>
+</html>

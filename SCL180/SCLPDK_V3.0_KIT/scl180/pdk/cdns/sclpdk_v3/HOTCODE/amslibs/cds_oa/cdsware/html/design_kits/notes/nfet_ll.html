@@ -1,0 +1,41 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'nfet_ll' implements the low-leakage nMOS transistor. The gate width and length can be modified, and wide transistors can be generated as an array of parallel fets using the 'Number of Fingers' and 'Number of Slices' attributes. Multiple fets connected in parallel on the same active area are called 'fingers'. Very wide transistors can be split up in multiple multi-finger sub-transistors that are connected in parallel. The resulting sub-transistors are called 'slices'. Multiple layout styles with different interconnect schemes are available and can be controlled with the 'Style' attribute. The presence/absence and configuration of substrate ties can be controlled with the 'Bulk' attribute.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Substrate Node:</b> The node to which the substrate of the fet is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li><b>Count:</b> Controls the number of fet instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n fet instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>On Grid:</b> Selecting this button puts the device pins on a .5um grid.</li>
+
+<li><a href="../images/nfetstyle.html"><b>Style:</b></a> Specifies the layout style to be used for the device. The 'unconnected' layout style leaves the sources, drains and gates of the transistors unconnected. The '1met' style uses metal1 to connect the source and drain areas. The '2met' and '2met(RF)' style use metal1 to connect the sources and metal2 to connect the drains. The difference between '2met' and '2met(RF)' is only visible when the number of slices is greater than 1. The '2met(RF)' style has a horizontal gate, source and drain wire for each slice. The '2met' style has only one horizontal gate wire at the top, and a horizontal source and drain wire at the bottom. The '2met(RF) style is recommended for high speed devices.</li>
+
+<li><a href="../images/nfetwl.html"><b>Width (finger):</b></a> Controls the width of a gate finger. </li>
+
+<li><a href="../images/nfetwl.html"><b>Length:</b></a> Controls the gate length.</li>
+
+<li><a href = "../images/nfet_fingers_slices.html"><b>Number of Fingers:</b></a> Controls the number of gate fingers connected in parallel in the same active area. </li> 
+
+<li><a href = "../images/nfet_fingers_slices.html"><b>Number of Slices:</b></a> Wide transistors can be split up into multiple sub-transistors ('slices') connected in parallel in the same pcell. 'Number of Slices' controls the number of parallel sub-transitors.</li>
+
+<li><a href = "../images/nfetcur.html"><b>Current:</b></a> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+<li><a href="../images/nfetbulk.html"><b>Bulk:</b></a> Indicates the location of substrate ties. This location is specified with a string of characters indicating the sides where substrate ties have to be added: 'l' means left, 'r' means right, 't' means top and 'b' means bottom. For instance, Bulk=l will add a substrate tie on the left side of the device, Bulk=lbrt will add a full substrate tie ring around the device. Bulk=n generates a device without substrate ties.</li>
+</ul>
+<h1>NOTES:</h1>
+<ul>
+<li>The total width of a transistor is given by: width = COUNT * NF * SLICES * WF</li>
+
+<li>The total number of gates of a transistor is given by: gates = COUNT * NF * SLICES</li>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: width, length. </li>
+</ul>
+</body>
+</html>
+

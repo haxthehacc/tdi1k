@@ -1,0 +1,425 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 09/09/08 
+Libraries: sbc18 
+Relevant Specification Documents:
+* sbc18qpa Design Application Note NPB-PS-0923
+* sbc18 design rules NPB-PS-0179
+* sbc18 electrical specification NPB-PS-0267 
+
+Highlights:
+* This is a development level design kit release for the sbc18qpa process variant.
+  Issues may arise which will be addressed in future kit releases.
+* Superset design kit with front-to-back flow support
+* Process Variant and Layer Setup
+* Jazz Inductor Toolbox (JIT) 4.0 support
+* X-Sigma model capability
+
+Software versions tested with this release:
+* This design kit REQUIRES the Open Access version of Cadence IC software
+* Cadence IC releases IC6.1.2 ISR 14 (minimum)
+* Cadence Spectre release MMSIM7.01.053 (minimum)
+* Mentor Calibre release 2008.1_32 (minimum)
+- xRC deck was calibrated with this version and may not function
+  properly in older calibre versions.
+
+Process Synopsis:
+* This sbc18 design kit library supports only the sbc18qpa process variant.
+* The sbc18qpa process has 4 layers of aluminum metal.  It contains the following
+  features:
+  - 5.2u thick top metal
+  - 1.8V/5V mosfets, poly capacitors, and diodes
+  - 8V BVCEO npn optimized for PA applications
+  - square and octagonal inductors
+  - 1.8V mos varactor
+  - low value unsilicided, high value unsilicided, silicided, and metal resistors
+  - 2fF/um2 mim capacitor between metal 2 and metal 3
+  - parasitic vertical pnp 
+  - Triple Well; No deep trench support 
+* This process is in the development phase, so future design kit releases may 
+  include changes to device behavior.
+* Currently, only the spectre simulator is supported.
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.  Possible values are: sbc18qpa.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in using a superset kit and customizing layers
+  and devices.  This utility is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+- Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+* Flow Changes
+- This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com
+- The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC.
+
+* Kit Updating and other Utilities
+- Include sbc18qpa Technology Components web pages.  From the icfb log window, 
+  go to Jazz->Technology Components Web.  Then select SiGe90 for PA Applications.
+- Trigger Callbacks
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Added warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+- CIW Jazz menu
+  - New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+- Added support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+
+General Kit Limitations:
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+
+General Device Updates:
+* Included Pcell library and technology file
+* sbc18_extlib is used to create the calibre extraction view
+
+Modified Devices (Incremental changes from previous sbc18 releases):
+* Inductors (square and octagonal)
+  - Support for Jazz Inductor Toolbox (JIT) 4.0
+  - Square inductor parameter ranges:
+    35u<=xsize<=1m
+    35u<=ysize<=1m
+    3u<=w<=35u
+    2.5u<=s<=10u
+    1.25<=n<=20 (single-ended inductor)
+    2<=n<=20 (differential inductor)
+  - Octagonal inductor parameter ranges:
+    35u<=xsize<=1m
+    35u<=ysize<=1m
+    3.01u<=w<=35u
+    2.51u<=s<=10u
+    1.25<=n<=20 (singled-ended inductor)
+    1<=n<=20 (differential inductor)
+  - updated inductor search files to follow new parameter ranges
+* Mixed-Signal Fets (1.8V/5V n and p mosfets)
+  - Added Model Switch field to select PSP or BSIM models for 1.8V mosfets.  The 5V
+    mosfets are currently only supported in BSIM.
+* NPN
+  - Allows multiple emitter width values: 0.2u, 0.6u, 0.9u
+  - Emitter length is scalable from 1.7u<=l<=10.16u.  Can be varied up to 40u for the case
+    where ew=0.9u and EBCf=232.  This value is valid only in the PADL library where the
+    slotvia has been broken up into shorter segment lengths. 
+  - EBCf (emitter/base/collector finger) configurations:
+    111, 121, 122, 232, 342, 452
+  - Provided ability to enable thermal resistance effects in the model.
+  - Introduced postlayout simulation option.  When enabled, it will include metal  
+    parasitics in the pre-layout simulation.  For postlayout-simulations, this field 
+    will be disabled so that the parasitics extracted by Calibre or Assura can be used.
+* RF Fets (1.8V/5V rf n and p mosfets)
+  - Added Model Switch field to select PSP or BSIM models for 1.8V rf mosfets.  The 5V
+    rf mosfets are currently only supported in BSIM. 
+  - Added nqs switch to 1.8V rf mosfets.  Provides ability to enable/disable 
+    non-quasi-static effects.
+  - Included sa and sb entry fields for WPE for pre-layout simulations.  These fields
+    will be seeded with the physical values from LVS extraction for post-layout
+    simulations
+  - Introduced postlayout simulation option.  When enabled, it will include metal
+    parasitics in the pre-layout simulation.  For postlayout-simulations, this field 
+    will be disabled so that the parasitics extracted by Calibre or Assura can be used.
+  - See also Simulation Parameter Update on CDF Property form.
+
+Device Library Limitations:
+* Process Variants: This kit does not hide devices or device parameters
+  when a device is used in an unsupported process variant.  Only a warning
+  message is displayed.  The DRC decks will show *.Bad violations for
+  unsupported device layers.
+* Balun and fuse layouts will be available in a future release.  They need to be updated
+  to match the new metal 4 design rules. 
+* Removed schottky diode from device library because it required additional process
+  development
+* An esd library will be delivered in a future release.
+
+Technology Library:
+* Contains layerDefinition and layerRule sections to support the Pcell library and VLE/VXL.
+* Included vias: v12, v23, v34, v12_g, and v34_g.  The *_g vias have larger metal dimensions
+  to pass minimum metal area checks.
+* Initial support for Multi-part paths (MPP)
+  - Created MPP templates for: PTAP, NTAP, v12, v23, and v34.
+  - Templates can be accessed through the Layout Window->Create Mpp form.
+  - Usage guidelines are available on the Technology Library web pages for sbc18.
+
+Model Updates:
+* General
+- Only Spectre MMSIM7.01.053 is supported 
+- MOSFET models require Philips/NXP SimKit version 2.5
+- Reconfigured x-sigma modeling environment to add greater flexibility in selecting 
+  independent process variables
+
+* Revision History
+- Details for the default and previous model versions are provided below.
+
+* v6.2a_sbc18qpa (default) -09/05/08
+General:
+- Reconfigured x-sigma modeling environment to add greater flexibility in
+  selecting independent process variables
+- Analog Environment Model libraries have been reorganized.
+  See DM for full details on corner model methodologies.
+- If you use Cadence ADE to load previous states, you must delete
+  previous model library entries to prevent errors.
+- You can reset the model paths in one of two ways:
+  1) Manually using the Cadence ADE->Setup->Model Libraries form,
+  2) Use ADE->Jazz->Set Active Library form to select a different model
+    version, apply the form, then select the default (v6.2a) version and apply the form again.
+
+* v6.2_sbc18qpa (previous) -07/22/08
+FET:
+- Aligned NOM, SLOW, and FAST corners and statistical models to new E-specs, based on recent
+  Fab data.  Typically, tighter variation in key E-specs such as Vt, Idsat and Body effect
+  for large geometry devices
+  Process variation for smaller geometry devices largely unchanged
+- RF FETs - some change in sub. resistance calculations to better fit measured data
+- New 5V FET models based on silicon from CA18
+- Predictive 5V RF FET models based on 3.3V parasitics
+
+NPN:
+- New extraction for all 3 flavors of NPNs, based on recent silicon. Improved modeling of 
+  quasi-saturation and high-current regime
+- NOM, SLOW, and FAST and statistical models aligned to new E-specs, based on recent Fab data
+  Ideal NPN current reduced by ~12%; Beta unchanged
+  Ft of high-speed device reduced from 155 to 150GHz based on statistical data
+- Added l-scalable 8v npns, with post_layout switch to allow schematic level calculation 
+  of layout parasitics. LPE now includes all interconnect parasitics
+
+LPNP:
+- Beta corners (SLOW-NOM-FAST) changed from 22-40-58 to 20-32-58
+
+Poly Resistors:
+- Aligned Delta_W to new E-specs, based on recent Fab data
+
+Verification:
+General:
+* New minimum software version required for verification:
+- Calibre 2008.1_32
+
+Calibre:
+* For the calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+- False 17.B errors may appear on the rtin resistor.
+- Some x/y dimension values may produce 51.B errors on the inductor shield.  This will be fixed
+  in the next release. 
+- Calibre SVRF used in ST.E may not check for 275u from the chip corner.  The checks along the
+  x and y axis will function properly.
+
+DRC
+-Initial deck release
+Antenna
+-Initial deck release
+Density
+-Initial deck release
+-Contains local and global area density checks for top metal (metal4)
+ERC
+-Initial deck release
+ESD_Latchup
+-Initial deck release
+Stress
+-Initial deck release
+
+LVS
+-Initial deck release
+
+xRC
+-Initial deck release
+-xRC deck was generated using 2008.1_32, so older calibre versions may cause errors  
+
+Assura:
+* Not included in the current release.  Will be available as a patch.
+
+___________________________________
+Date: 07/27/08 
+Libraries: sbc18 
+Relevant Specification Documents:
+* sbc18qpa Design Application Note (in development) 
+
+Highlights:
+* This is a development level design kit pre-release for the sbc18qpa process variant.
+  Issues may arise which will be addressed in future kit releases.
+* This kit includes front-end (simulation model) support only.
+* Jazz Inductor Toolbox (JIT) 4.0 support
+* X-Sigma model capability
+* New simulation features for mosfets and npn
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR3 (minimum)
+* Cadence Spectre release MMSIM6.2 (minimum)
+
+Process Synopsis:
+* This sbc18 design kit library supports only the sbc18qpa process variant.
+* The sbc18qpa process has 4 layers of aluminum metal.  it supports the following
+  features:
+  - 5.2u thick top metal
+  - 1.8V/5V mosfets
+  - 8V BVCEO npn optimized for PA applications
+  - 1.8V mos varactor
+  - low value unsilicided, high value unsilicided, silicided, and metal resistors
+  - 2fF/um2 mim capacitor between metal 2 and metal 3
+  - schottky diode
+  - parasitic vertical pnp 
+  - Triple Well; No deep trench support 
+* This process is in the development phase, so future design kit releases may 
+  include changes to device behavior.
+* Currently, only the spectre simulator is supported.
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.  Possible values are: sbc18qpa.
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+- Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* Kit Updating and other Utilities
+- Trigger Callbacks
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Added warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+- CIW Jazz menu
+  - New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+- Created new release notes function to show kit or variant specific release notes
+- Added support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+- Updated ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allow for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+- Updated Save State functions:
+  - Fixed issue with Jazz saved states and escaped characters.
+  - Updated code to coexist with IC51.41USR3 save state as cellview mode.
+  - Prompt for checkout if Jazz saved state is DM managed.
+
+General Kit Limitations:
+- Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+
+General Device Updates:
+* This is a development-level pre-release kit.
+* Front-end (simulation) support available for spectre.
+  - The nwell resistor (rnwell) and esd nfet (nfet_esd) were not included in this kit.
+    Upon completion of process development, it will be added to the design kit.
+
+Modified Devices (Incremental changes from previous sbc18 releases):
+* Inductors (square and octagonal)
+  - Support for Jazz Inductor Toolbox (JIT) 4.0
+  - Square inductor parameter ranges:
+    35u<=xsize<=1m
+    35u<=ysize<=1m
+    2.5u<=w<=35u
+    2.0u<=s<=10u
+    1.25<=n<=20 (single-ended inductor)
+    2<=n<=20 (differential inductor)
+  - Octagonal inductor parameter ranges:
+    35u<=xsize<=1m
+    35u<=ysize<=1m
+    2.51u<=w<=35u
+    2.01u<=s<=10u
+    1.25<=n<=20 (singled-ended inductor)
+    1<=n<=20 (differential inductor)
+* Mixed-Signal Fets (1.8V/5V n and p mosfets)
+  - Added Model Switch field to select PSP or BSIM models for 1.8V mosfets.  The 5V
+    mosfets are currently only supported in BSIM.
+* NPN
+  - Allows multiple emitter width values: 0.2u, 0.6u, 0.9u
+  - Emitter length is scalable from 1.7u<=l<=10.16u
+  - EBCf (emitter/base/collector finger) configurations:
+    111, 121, 122, 232, 342, 452
+  - Integrated thermal resistance option. Provided ability to enable thermal
+    resistance effects in the model.
+  - Introduced postlayout simulation option.  When enabled, it will include metal  
+    parasitics in the pre-layout simulation.  For postlayout-simulations, this field 
+    will be disabled so that the parasitics extracted by Calibre or Assura can be used.
+* RF Fets (1.8V/5V rf n and p mosfets)
+  - Added Model Switch field to select PSP or BSIM models for 1.8V rf mosfets.  The 5V
+    rf mosfets are currently only supported in BSIM. 
+  - Added nqs switch to 1.8V rf mosfets.  Provides ability to enable/disable 
+    non-quasi-static effects.
+  - Included sa and sb entry fields for WPE for pre-layout simulations.  These fields
+    will be seeded with the physical values from LVS extraction for post-layout
+    simulations
+  - Introduced postlayout simulation option.  When enabled, it will include metal
+    parasitics in the pre-layout simulation.  For postlayout-simulations, this field 
+    will be disabled so that the parasitics extracted by Calibre or Assura can be used.
+  - See also Simulation Parameter Update on CDF Property form.
+* Schottky Diode
+  - Similar to device in sbc18qtr.  Three models are available based on the
+    l value: schottky (2u<=l<=5u), schottky10x10 (l=10u), schottky20x20 (l=20u) 
+
+Technology Library:
+* Preliminary techfile included in sbc18 library.  Will be updated to support the
+  pcell library in a future release.
+
+Model Updates:
+* General
+- Only Spectre MMSIM6.2 is supported 
+- MOSFET models require Philips/NXP SimKit version 2.5
+- Reconfigured x-sigma modeling environment to add greater flexibility in selecting 
+  independent process variables
+
+* Revision History
+- Details for the default model version are provided below.
+
+* v6.2_sbc18qpa (default) -07/22/08
+FET:
+- Aligned NOM, SLOW, and FAST corners and statistical models to new E-specs, based on recent
+  Fab data.  Typically, tighter variation in key E-specs such as Vt, Idsat and Body effect
+  for large geometry devices
+  Process variation for smaller geometry devices largely unchanged
+- RF FETs - some change in sub. resistance calculations to better fit measured data
+- New 5V FET models based on silicon from CA18
+- Predictive 5V RF FET models based on 3.3V parasitics
+
+NPN:
+- New extraction for all 3 flavors of NPNs, based on recent silicon. Improved modeling of 
+  quasi-saturation and high-current regime
+- NOM, SLOW, and FAST and statistical models aligned to new E-specs, based on recent Fab data
+  Ideal NPN current reduced by ~12%; Beta unchanged
+  Ft of high-speed device reduced from 155 to 150GHz based on statistical data
+- Added l-scalable 8v npns, with post_layout switch to allow schematic level calculation 
+  of layout parasitics. LPE now includes all interconnect parasitics
+
+LPNP:
+- Beta corners (SLOW-NOM-FAST) changed from 22-40-58 to 20-32-58
+
+Poly Resistors:
+- Aligned Delta_W to new E-specs, based on recent Fab data
+
+Verification:
+* General
+- No verification support included in this kit release.  Will be part of
+  future design kit releases.
+
+</PLAINTEXT></BODY></HTML>

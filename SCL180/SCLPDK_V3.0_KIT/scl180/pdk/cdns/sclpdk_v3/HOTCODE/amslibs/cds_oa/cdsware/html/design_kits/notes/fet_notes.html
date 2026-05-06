@@ -1,0 +1,40 @@
+<html>
+<body>
+<h1>Notes on fet model, layout and layout verification/extraction: </h1>
+
+<h1>A. Digital fets (nfetd, pfetd, nfetd4, pfetd3, n3p3fetd, p3p3fetd, n3p3fetd4, p3p3fetd3) </h1>
+<ul>
+<li>Model: Primitive fets with L, W, and AS, AD, PS, PD (optional) </li>
+<li>Layout generator: Generates fet based on L and W, and adjusts width of metal based on the parameter CUR. </li>
+<li>Layout verification (LVS): L, W </li>
+<li>Layout extraction (PEX): L, W, AS, AD, PS, PD </li>
+
+<li>Digital fets in the design kit are modelled as primitive fets with pre-layout estimation of the Source/Drain diffusion area and perimeter (AS, AD, PS, PD) through the model parameter "hdif".  If user needs to merge fets by sharing source/drain, user can use count number of single fets in the schematic and after layout generation, merge S/D as needed. These fets have entry points in the CDF for AS, AD, PS, PD which can be set by the user.  If AS, AD, PS, PD are set by the user, they will be netlisted and their effects will be included in the simulation. If they are not set by the user, simulator will essentially use hdif from the model to estimate them. </li>
+
+</ul>
+
+<h1>B. Analog multifinger fets (nfet, pfet, nfet4, pfet3, n3p3fet, p3p3fet, n3p3fet4, p3p3fet3) </h1>
+<ul>
+<li>Model: Subckt with the fet of LF, WF, NF and estimation of AS, AD, PS, PD.  Accounts for the adjustment of the S/D diffusion based on CUR. </li>
+<li>Layout generator: Generates fet based on LF, WF, and NF and adjusts width of metal based on the parameter CUR. </li>
+<li>Layout verification (LVS): L, W </li>
+<li>Layout extraction (PEX): L, W, AS, AD, PS, PD </li>
+
+<li>Analog multifinger fets in the design kit are modelled as subckt model that includes pre-layout estimation of the parasitics for the junction diodes (AS, AD, PS, PD) based on the layout generator and current through the device (controlled by the parametr CUR). Since the metal lines going to source/drain can be very narrow, then for a wide device that is biased at high current, the metal lines have to be widened. This results in wider source and drain regions (with larger capacitance). The "CUR" parameter is used by both the layout generator (to generate the correct width of metal/diffusion), and the subcircuit model to calculate the size of the diffusion.  If user merges analog fets by sharing source/drain, the estimation of S/D diffusion area and perimeter will not work correctly as the layout and schematic views no longer maintain consistency. The subckt model will not account for the reduced capacitance due to the shared S/D.  If user needs to merge devices, user should use digital fets as described above. </li>
+
+</ul>
+
+<h1>C. RF multifinger fets (nfet_rf, pfet_rf) </h1>
+<ul>
+<li>Model: Subckt with the fet of LF, WF, NF and estimation of AS, AD, PS, PD.  Does not account for the adjustment of the S/D diffusion based on CUR. </li>
+<li>Layout generator: Generates fet based on LF, WF, and NF and adjusts width of metal based on the parameter CUR. </li>
+<li>Layout verification (LVS): LF, WF, NF </li>
+<li>Layout extraction (PEX): LF, WF, NF </li>
+
+<li>RF multifinger fets in the design kit are also modelled as subckt model that includes pre-layout estimation of the parasitics for the junction diodes (AS, AD, PS, PD) based on the layout generator.  However, these models presently do not account for the adjustment of the S/D diffusion based on the current parameter CUR.  These devices are treated as "black-box" during post-layout extraction, i.e., device internal parasitics are not extracted as the model includes them already.  If user merges RF fets by sharing source/drain, the estimation of S/D diffusion area and perimeter will not work correctly as the layout and schematic views no longer maintain consistency. The subckt model will not account for the reduced capacitance due to the shared S/D.  If user needs to merge devices, user should use digital fets as described above. </li>
+
+</ul>
+
+</body>
+</html>
+

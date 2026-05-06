@@ -1,0 +1,179 @@
+<html><body>
+<h1 align=center>Foundry Switching Capability for cg18a, cj15</h1>
+
+We have implemented complete front-to-back foundry switching capability 
+between CONEXANT and TSMC foundries including schematic capture, simulation, 
+device layout generation and verification for the cg18a library.  Due to 
+the difference in Espec. values (sheet resistance, end resistance, unit 
+area capacitance, dielectric thickness and constants etc.), properties of 
+resistors, capacitors and inductors will be affected between the foundries.
+
+<h4>A. MIM capacitors</h4> 
+
+There are substantial differences between the Conexant and TSMC processes
+for the MIM capacitors. The Conexant process (cg18a) supports MIM cap 
+only between M2 and M3. The TSMC 4-layer metal processes (cg18a_tsmc) 
+supports MIM cap only between M3 and M4. Furthermore, no devices are allowed
+to be placed under the MIM caps and no metal routing is allowed over the 
+MIM caps.  This requires creating new components for the MIM caps (symbol,
+model, layout generators, and layout verification) for the TSMC processes.
+The new components are called: 
+<ul>
+<li>c3t_mim_tsmc (MIM cap over sub.) for the 4-layer metal process cg18a_tsmc</li>
+<li>c3t_mimw_tsmc (MIM cap over well) for the 4-layer metal process cg18a_tsmc</li>
+</ul>
+The MIM cap devices in the Conexant cg18a process remain unchanged as 
+c3t_mim (MIM cap over sub.), and c3t_mimw (MIM cap over well).
+
+<h4>B. Foundry setup</h4>
+
+The foundry selection will be based on setting the UNIX environment variable
+RDS_CDS_FOUNDRY (i.e., setenv RDS_CDS_FOUNDRY "tsmc") prior to running
+any cadence application (icms, icfb, layout etc.).  The foundry selection 
+will be set to the value from RDS_CDS_FOUNDRY environment variable if it is 
+defined.  Otherwise an appropriate default value will be set based on the 
+current process (currently by default this would be "tsmc" for cj15, 
+and "cnxt" for any other processes).  This variable can be set at project 
+and/or user level. Note that if the value defined by RDS_CDS_FOUNDRY is not 
+a legal choice, then a warning and a beep are issued and the variable is 
+reset to the default for the technology.
+
+<h4>C. Foundry choices</h4>
+
+A select set of foundry choices for the CDS kit libraries are listed below.
+<br><br>
+<table border>
+<tr><th>library</th><th> Process/Technology</th><th>Foundry_default</th><th>Foundry_choices</th></tr>
+<tr><td rowspan="2">cg18a</td><td>cg18a</td><td>cnxt</td><td>cnxt, tsmc</td></tr>
+<tr><td>cg18a_tsmc</td><td>tsmc</td><td>cnxt, tsmc</td></tr>
+<tr><td>cg18r</td><td>cg18r</td><td>cnxt</td><td>cnxt</td></tr>
+<tr><td>cg18</td><td>cg18q</td><td>cnxt</td><td>cnxt</td></tr>
+<tr><td>cj15</td><td>cl015lv5</td><td>tsmc</td><td>tsmc</td></tr>
+</table>
+<br>
+
+We have added a new entry in CIW RDS menu: RDS -> Foundry Info...
+This shows foundry information in a popup dialog box. For example in cg18a:
+<br><br>
+<table border>
+<tr><td><h4>Technology:</h4></td><td>cg18a</td></tr>
+<tr><td><h4>Selected Foundry:</h4></td><td>cnxt</td></tr>
+<tr><td><h4>Available Foundries:</h4></td><td>cnxt tsmc</td></tr>
+</table>
+<br>
+<h4>D. Device properties display based on foundry selection (resistors/capacitors)</h4>
+
+The symbols were modified to add a label which will display an appropriate
+calculated electrical value depending on the foundry.  For example 
+in cg18a, this label toggles between displaying the value of rcalc or 
+rcalc_tsmc for resistors, depending on the foundry.  Note that the value 
+is displayed as "rcalc_cnxt=value" for cnxt and "rcalc_tsmc=value" for tsmc.  
+The requested electrical value (rreq) is also displayed as a label such that 
+if there are differences between rreq and rcalc the user can see this 
+visually.  Same goes with capacitors, and ccalc and creq.
+<br>
+If a particular device is supported in one foundry but not the other, then 
+rcalc/ccalc label will be set to a value of "**UNSUPPORTED**" as a visual 
+clue that there is a problem.  In addition, when user places the device, 
+edit properties on the device, or try and hit the "calculate" button on 
+the device and the foundry does not support it, dialog boxes will appear 
+indicating there is a problem.
+<br>
+Inductor components (l3t, ldiff etc.) based on the Matlab Inductorlib were 
+modified in a similar way. For example in cg18a, the label for the Matlab 
+function name "Process" will change depending on the foundry selection.
+<br>
+We have also implemented the following two schematic RDS pulldown menus that 
+work in sync with the latest changes:
+<br>
+<table>
+<tr><td>RDS -> Utilities -> Update R and C...</td></tr>
+<tr><td>RDS -> Utilities -> Req. vs Calc. R and C...</td></tr>
+</table>
+<br>
+The first menu (Update R and C) provides an interface to update 
+resistor/capacitor properties to sync up rreq and rcal as follows:
+<br>
+<table>
+<tr><td>   - for resistors (poly and well) to sync up rreq and rcal</td></tr>
+<tr><td>       Calculate -> R (preserve W and L) (LAYOUT REMAINS UNCHANGED)</td></tr>
+<tr><td>       Calculate -> W (preserve R and L) (LAYOUT NEED to BE CHANGED)</td></tr>
+<tr><td>       Calculate -> L (preserve R and W) (LAYOUT NEED to BE CHANGED)</td></tr>
+<tr><td>   - for capacitors (mimcaps) to sync up creq and ccal</td></tr>
+<tr><td>       Calculate -> C (preserve W and L) (LAYOUT REMAINS CHANGED)</td></tr>
+<tr><td>       Calculate -> W (preserve C and L) (LAYOUT NEED to BE CHANGED)</td></tr>
+<tr><td>       Calculate -> L (preserve C and W) (LAYOUT NEED to BE CHANGED)</td></tr>
+<tr><td>       Calculate -> WL (preserve C and A) (LAYOUT NEED to BE CHANGED)</td></tr>
+</table>
+<br>
+This is basically the same tool as before, but updated to include the 
+current foundry selection.  The scope of the update can be selected for
+the current cellview or the cellview hierarchy.
+<br>
+The second menu (Req. vs Calc. R and C) tabulates all resistors and/or, 
+capacitors with appropriate values for each foundry that is supported:
+<br>
+<table>
+<tr><td>   Values -> requested value [req], calculated value [cal], Deltas [cal-req]</td></tr>
+<tr><td>   Deltas -> Deltas [cal-req]</td></tr>
+<tr><td>   %Deltas -> %Deltas [(100*(calc-req)/req</td></tr>] 
+</table>
+<br>
+The scope of the listing can be selected for the current cellview and/or</td></tr> 
+the cellview hierarchy.
+
+<h4>E. Simulation based on foundry selection</h4>
+
+The simulation model libraries are based on appropriate foundry specific
+models. Model files are named in a consistent way for different foundries
+using the convention: <libraryName>_<foundryName>.lib (Note that the
+foundryName suffix is not used for the "cnxt" foundry).
+For example:
+<br><br>
+<table border>
+<tr><th>libraryName</th><th>foundryName</th><th>modelFileName</th></tr>
+<tr><td>cg18a</td><td>cnxt</td><td>cg18a.lib</td></tr>
+<tr><td>cg18a</td><td>tsmc</td><td>cg18a_tsmc.lib</td></tr>
+<tr><td>cg18r</td><td>cnxt</td><td>cg18r.lib</td></tr>
+<tr><td>cj15</td><td>tsmc</td><td>cj15_tsmc.lib</td></tr>
+</table>
+<br>
+All available foundry model library selections will be accessible for 
+simulation.  User can select the foundry model using the menu:
+<br>
+   RDS -> Set Active Library -> Foundry  -> "cnxt" or "tsmc"
+<br>
+If the model foundry selection is different from the technology foundry name 
+defined by RDS_CDS_FOUNDRY, a dialog box will appear reminding the user
+about the mismatch.  If user hits OK, simulation will proceed. If user hits 
+Cancel, simulation will be aborted.  Note that simulation will fail if 
+there is component mismatch between the model library selections.
+
+<h4>F. Layout verification (DRC, LVS, etc.) based on foundry selection</h4>
+
+The techfile for layout verification will be automatically chosen 
+based on the foundry selection. For example:
+<br><br>
+<table border>
+<tr><th>libraryName</th><th>foundryName</th><th>techFileName</th></tr>
+<tr><td>cg18a </td><td>cnxt </td><td>cg18a</td></tr>
+<tr><td>cg18a</td><td>tsmc</td><td>cg18a_tsmc</td></tr>
+<tr><td>cg18r</td><td>cnxt</td><td>cg18r</td></tr>
+<tr><td>cj15</td><td>tsmc </td><td>cl015lv5</td></tr>
+</table>
+<br>
+User can choose and select other techfile, if needed, using the menu:
+<br>
+<table>
+<tr><td rowspan="2">  RDS -> </td><td>Verification -> (Calibre DRC) (Calibre LVS) (Calibre PEX)</td></tr>
+<tr><td>-> Process (pick one of the applicable choices)</td></tr>
+</table>
+<br>
+
+<h4>G. Future foundry addition</h4>
+
+The same general method will be used in future when additional foundry
+is added to an existing kit library.
+
+</body>
+</html>

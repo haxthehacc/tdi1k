@@ -1,0 +1,17 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 
+
+'c3t_mis' implements a capacitor fabricated using N implanted active as the bottom plate and poly as the top plate. The top plate of the capacitor can be contacted using metal 1.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Count:</b> Indicates the number of capacitors connected in parallel. Specifying a 'Count' of n is equivalent to drawing n capacitor instances and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute is available when 'ToUse' is set to 'multiplier'. This attribute can only be used in the schematic.</li>
+
+<li><a href="../images/c3t_mis_bc.html"><b>Bottom Contacts:</b></a> Controls the location of bottom plate contacts around each unit capacitor in the capacitor array. This location is specified with a string of characters indicating the sides where bottom plate contacts have to be added: 'l' means left, 'r' means right, and 't' means top. For c3t_mis, the default value is 't' and the other possible value is 'lrt'.  </li>
+
+<li><a href="../images/c3t_mis_bulk.html"><b>Bulk:</b></a> The capacitor pcell support the use of a shield around the array. The shield is a stack of active, contact, metal1, via1, metal2, via2 and metal3. The 'Bulk' attribute controls the location of the shield around the capacitor array. This location is specified with a string of characters indicating the sides where shields have to be added: 'l' means left, 'r' means right, 't' means top and 'b' means bottom. For instance, Bulk=l will add a shield on the left side of the array, Bulk=lbrt will add a full shield ring around the array. Bulk=n generates a device without shield.</li> 
+
+</ul>
+</body>
+</html>

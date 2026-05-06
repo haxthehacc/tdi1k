@@ -1,0 +1,44 @@
+/***************************************
+Jazz Public Environment Variables 
+***************************************/
+To set an environment variable from the UNIX prompt:
+%setenv <variable> <value>
+
+
+RDS_CDS_VERIFY_TECH
+  -Defines the process technology for design and verification 
+
+RDS_CDS_PSF_WARN
+  -Possible values: Yes, No
+  -Default value: Yes
+  -Upon closing the simulation window, sets whether the user is asked if they want to delete 
+	the contents of their current run's psf directory. 
+
+
+/***************************************
+Jazz Public SKILL Functions
+***************************************/
+
+jazzPubRegUserTriggers(viewType userAppTrigger userMenuTrigger userPostInstallTrigger "tggg")
+  -Public function for registering userApp, userMenu, and userPostInstall triggers
+  -Maintains a list of all loaded triggers
+
+rdsSchCbrSetIncludes(includeFiles "t")
+  -Public function for setting default CBR netlister include files.
+  -Provide one or more include files in a space-delimited string.
+
+rdsSchCbrGetIncludes()
+  -Public function for getting default CBR netlister include files.
+  -Returns space-delimited CBR netlister include files or empty string.
+
+rdsSchCdlCompCall()
+  -Custom Cdl netlister function for primitives
+
+rdsSchSubcktCall()
+  -Custom Cdl netlister function for subcircuits
+
+jazzModelAddDir(modelDir "t") 
+  - Public function to add a modelDir to the list of model libraries in the Jazz
+    Model Corner form in ADE. modelDir must be a fully-qualified path that
+	 contains the simulator directory.
+

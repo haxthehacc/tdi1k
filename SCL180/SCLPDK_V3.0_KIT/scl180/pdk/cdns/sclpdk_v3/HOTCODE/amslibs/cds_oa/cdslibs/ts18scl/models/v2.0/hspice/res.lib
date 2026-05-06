@@ -1,0 +1,24 @@
+* library reslib
+
+.LIB NOM
+.LIB 'ts18sl_scl.lib' res2t_typ
+.LIB 'ts18sl_scl.lib' res3t_typ
+.LIB 'ts18sl_scl_2019.lib' res2tnew_typ
+.LIB 'ts18sl_scl_2019.lib' res3tnew_typ
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl.lib' res2t_low
+.LIB 'ts18sl_scl.lib' res3t_low
+.LIB 'ts18sl_scl_2019.lib' res2tnew_low
+.LIB 'ts18sl_scl_2019.lib' res3tnew_low
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl.lib' res2t_high
+.LIB 'ts18sl_scl.lib' res3t_high
+.LIB 'ts18sl_scl_2019.lib' res2tnew_high
+.LIB 'ts18sl_scl_2019.lib' res3tnew_high
+.ENDL SLOW
+
+* end library reslib

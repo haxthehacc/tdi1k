@@ -1,0 +1,7 @@
+cUiMoveCellToBin {PAN_50_CASESD_NMOS} {IO}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {layout} {1}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {logical} {0}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {abstract.pin} {0}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {abstract.ext} {0}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {abstract} {0}
+cUiSetViewStatus {PAN_50_CASESD_NMOS} {abstract.ver} {0}

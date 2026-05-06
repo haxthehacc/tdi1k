@@ -1,0 +1,2626 @@
+*SCL CONFIDENTIAL*
+* --------------------------------------------------------------------
+*date:       Dec, 2022
+****************************************************************
+******************************************************************
+*Content: 
+*======================================================================================================
+*       Device                   *      library/corners           *     model              *  Comment |
+*======================================================================================================
+*------------------------------------------------------------------------------------------------------
+* 1.8v (HVt)LowLeakage Mosfet models * tt_18dll,ss_18dll,ff_18dll,*     n18hvtb3,p18hvtb3 *          |
+*                                * sf_18dll,fs_18dll              *                        *          |
+*------------------------------------------------------------------------------------------------------
+*------------------------------------------------------------------------------------------------------
+* 5v   Mosfet                    * tt_5v,ff_5v,ss_5v,sf_5v,fs_5v  *     n5v,p5v            *          |
+*------------------------------------------------------------------------------------------------------
+* S/D Diodes                     *                                *                                   |  
+*                                *       diodesnew /*name changed * dn50,dp50              * 5.0V     |  
+* 					             *                                * 								  |
+*                                *                                * 								  |
+*                                *                                * 								  |
+*------------------------------------------------------------------------------------------------------
+* Native Mosfet                  * 					          *                                   |
+*                                *  			                  *									  |	
+*                                * tt_n5v,ff_n5v,ss_n5v 	  * nath5v                 *  5.0V        |
+*                                * sf_n5v,fs_n5v
+*------------------------------------------------------------------------------------------------------
+* BJTs                           * tt_bjt,ff_bjt,ss_bjt           * vd10,vd5,vd2           * PNP      |
+*                                *                                * vdn5,                          *  |
+*------------------------------------------------------------------------------------------------------
+* MIM Capacitors                 * mimcap_typ,mimcap_high,        * cmim_sq,                           |
+*                                * mimcap_low                     *                                    | 
+*                                *                                *                                  * |
+*------------------------------------------------------------------------------------------------------
+* Metal Fringe Capacitors        * mfc_typ,mfc_high,mfc_low       * usgcm52t, usgcm53t   * 6LM        |
+*                                *                                *                                   |
+*                                *                                * 				   	 *            | 
+*                                *                                *                      *            |
+*                                *                                * usgcm32t,usgcm33t   * 4LM         |
+*                                *                                *                *                  |
+*------------------------------------------------------------------------------------------------------
+* Resistors                      * res2tnew_typ,res2tnew_high,    * nasr2t,pasr2t,rm1,rm2, *          |/*adding 'new' on corner name for smooth integration of 2 files
+*                                * res2tnew_low                   * rm3,rm4,rm5,rml,rmt,   * 2Terminal|/*Only mr22t is retained, rest removed in this file */
+*                                *                                * rmt3(REMOVED),mr22t,rnmpoly2t,  * |
+*                                *                                * rnplus2t,rnwellaa2t,   *          |
+*                                *                                * rnwellsti2t,rphpoly2t, *          |
+*                                *                                * rplpoly2t,rpmpoly2t,   *          |
+*                                *                                * rpplus2t,rnlpoly2t     *          |
+*                                *---------------------------------------------------------------------
+*                                * res3tnew_typ,res3tnew_high,    * nasr3t,pasr3t,rnlpoly3t*          |/*adding 'new' on corner name for smooth integration of 2 files
+*                                * res3tnew_low                   * rnmpoly3t,rnplus3t,    * 3Terminal|/*Only mr23t is retained, rest removed in this file */
+*                                *                                * rnwellaa3t,rnwellsti3t,*          |
+*                                *                                * rphpoly3t,rplpoly3t,   *          |
+*                                *                                * rpmpoly3t,rpplus3t,    *          |
+*                                *                                * mr23t                  *          |
+*------------------------------------------------------------------------------------------------------
+*======================================================================================================
+* Please, refer to accompanying documentation for models usage guidelines and models applicability
+******************************************************************
+*
+*Usage:	    Netlist should include statement:
+*	    .lib 'path_to_model/ts18sl_scl_2019.lib' diodes ( for diodes, 3T resistors, 3T accumulation caps)
+*	    .lib 'path_to_model/ts18sl_scl_2019.lib' your_corner
+*	    change the path of the lib according to its actual path. diodes library should
+*           be included for 3T models.
+*
+*
+*
+* Note regarding hdif: hdif=0.15e-6 is used to define a default value of source/drain
+* junction capacitances when their dimensions (as,ps,ad,pd) are not specified in netlist.
+* For accurate parasitic capacitance modeling it is strongly recomended to use the mos parasitic diode
+* parameters as, ps, ad, pd  based on the actual device layout dimensions as netlisted from the PDK.
+********************************************************************
+
+
+*
+*
+.lib diodesnew
+*
+* diode model
+*
+
+***********5V N+Pwell Diode****************
+* hspice level-3
+.model dn50 d
++ level=3  is= 1.87e-07 jsw= 1.26e-13
++ n= 1  rs= 7.77e-12  ik=2.11E+007
++ ikr = 0.00 vb= 11.5  ibv= 0.001
++ lm = 0.00  lp = 0.00  wm = 0.00
++ wp = 0.00  xm = 0.00  xoi = 1.00e+04
++ xom = 1.00e+04  xp = 0.00 xw = 0.00
++ trs=0  cta= 9.52e-04  ctp= 3.65e-04
++ eg=1.16  tcv= -0.0006  gap1=4.73e-04
++ gap2=1.11e+03  tlev=1  fc=0
++ tref=25.0  tlevc=1  fcs = 0                 
++ tpb = 0.001385  tphp= 0.001153  xti= 3
++ cj= 0.0009592  mj= 0.2997  pb= 0.5929
++ cjsw=2.66E-011  mjsw=0.066  php=1.372
++ tt=5e-09
+
+
+
+***********5V P+Nwell Diode****************
+* hspice level-3
+.model dp50 d
++ level=3  is= 2.262e-007  jsw=  1.142e-013
++ n= 1  rs= 5.24e-12 ik=2.11E+007
++ ikr = 0.00  vb= 11.5  ibv= 0.005105
++ lm = 0.00  lp = 0.00  wm = 0.00
++ wp = 0.00  xm = 0.00  xoi = 1.00e+04
++ xom = 1.00e+04  xp = 0.00 xw = 0.00
++ trs=0  cta= 0.0006349  ctp= 0.0007433
++ eg=1.16  tcv=-0.0006  gap1=4.73e-04
++ gap2=1.11e+03  tlev=1  fc=0
++ tref=25.0  tlevc=1    fcs = 0               
++ tpb= 0.000968  tphp=0.0004376  xti= 3
++ cj= 0.0009174  mj= 0.3234  pb= 0.5548
++ cjsw= 5.11e-011 mjsw= 0.2166  php= 1.192
++ tt=5e-09
+
+
+**************************************************************
+
+.endl diodesnew
+
+*
+*
+* HSPICE model for 0.18um Low Leakage (1.8V)  
+***************************************************************
+*                                                             *
+*                  1.8V Low Leakage Mosfet models             *
+*                                                             *
+***************************************************************
+
+.lib tt_18dll
+.param
++ dtox_n18hvt = 0
++ dSrBySr_n18hvt = 0
++ dacd_n18hvt = 0
++ dpcd_n18hvt = 0
++ dvfb_n18hvt = 0
++ dvfbl_n18hvt = 0
++ dvfblw_n18hvt = 0
++ dvfbw_n18hvt = 0
++ dnsubw_n18hvt = 0
++ dnsubl_n18hvt = 0
++ dNsubByNsub_n18hvt = 0
++ dNovByNov_n18hvt = 0
++ dtox_p18hvt = 0
++ dSrBySr_p18hvt = 0
++ dacd_p18hvt = 0
++ dpcd_p18hvt = 0
++ dvfb_p18hvt = 0
++ dvfbl_p18hvt = 0
++ dvfblw_p18hvt = 0
++ dvfbw_p18hvt = 0
++ dnsubw_p18hvt = 0
++ dnsubl_p18hvt = 0
++ dNsubByNsub_p18hvt = 0
++ dNovByNov_p18hvt = 0
+.lib 'ts18sl_scl_2019.lib' mos18dll
+.endl tt_18dll
+
+************************************************************
+.lib ff_18dll
+.param
++ dtox_n18hvt = -1.5e-10
++ dSrBySr_n18hvt = -0.020405423365
++ dacd_n18hvt = 2.576234119e-08
++ dpcd_n18hvt =-2.781610011e-09
++ dvfb_n18hvt = 0.00992862742
++ dvfbl_n18hvt = 0.01650292031
++ dvfblw_n18hvt = -0.0001279616048
++ dvfbw_n18hvt = 0.003328473798
++ dnsubw_n18hvt = 0
++ dnsubl_n18hvt = 0
++ dNsubByNsub_n18hvt = 0
++ dNovByNov_n18hvt = 0
++ dtox_p18hvt = -1.5e-10
++ dSrBySr_p18hvt = -0.049870346655
++ dacd_p18hvt = 2.504992255e-08
++ dpcd_p18hvt = 3.786304002e-09
++ dvfb_p18hvt = 0.01635976938
++ dvfbl_p18hvt = 0.01522906876
++ dvfblw_p18hvt = -0.003079442832
++ dvfbw_p18hvt = 0.009393013171
++ dnsubw_p18hvt = 0
++ dnsubl_p18hvt = 0
++ dNsubByNsub_p18hvt = 0
++ dNovByNov_p18hvt = 0
+.lib 'ts18sl_scl_2019.lib' mos18dll 
+.endl ff_18dll
+
+************************************************************
+.lib ss_18dll
+.param
+
++ dtox_n18hvt = 1.5e-10
++ dSrBySr_n18hvt = 0.027768713685
++ dacd_n18hvt = -3.173530399e-08
++ dpcd_n18hvt = -6.780730812e-09
++ dvfb_n18hvt = -0.011142687235
++ dvfbl_n18hvt = -0.01883247026
++ dvfblw_n18hvt = 3.979969655e-05
++ dvfbw_n18hvt = -0.002645046177
++ dnsubw_n18hvt = 0
++ dnsubl_n18hvt = 0
++ dNsubByNsub_n18hvt = 0
++ dNovByNov_n18hvt = 0
++ dtox_p18hvt = 1.5e-10
++ dSrBySr_p18hvt = 0.049603103195
++ dacd_p18hvt = -4.586801647e-08
++ dpcd_p18hvt = -9.119672466e-10
++ dvfb_p18hvt = -0.01613552918
++ dvfbl_p18hvt = -0.0143853076
++ dvfblw_p18hvt = 0.002217728624
++ dvfbw_p18hvt = -0.004246783205
++ dnsubw_p18hvt = 0
++ dnsubl_p18hvt = 0
++ dNsubByNsub_p18hvt = 0
++ dNovByNov_p18hvt = 0
+.lib 'ts18sl_scl_2019.lib' mos18dll 
+.endl ss_18dll
+
+************************************************************
+.lib fs_18dll
+.param
++ dtox_n18hvt = 0
++ dSrBySr_n18hvt = -0.035890866505
++ dacd_n18hvt = 1.249700975e-08
++ dpcd_n18hvt = 1.894655285e-09
++ dvfb_n18hvt = -0.0029076426745
++ dvfbl_n18hvt = 0.008909980738
++ dvfblw_n18hvt = -6.384839596e-05
++ dvfbw_n18hvt = 0.001420876543
++ dnsubw_n18hvt = 0
++ dnsubl_n18hvt = 0
++ dNsubByNsub_n18hvt = 0
++ dNovByNov_n18hvt = 0
++ dtox_p18hvt = 0
++ dSrBySr_p18hvt = 0.04336876781
++ dacd_p18hvt = -1.740614391e-08
++ dpcd_p18hvt = -8.439402501e-10
++ dvfb_p18hvt = 0.0014624656485
++ dvfbl_p18hvt = -0.006905834145
++ dvfblw_p18hvt = 0.001073920953
++ dvfbw_p18hvt = -0.002216613825
++ dnsubw_p18hvt = 0
++ dnsubl_p18hvt = 0
++ dNsubByNsub_p18hvt = 0
++ dNovByNov_p18hvt = 0
+.lib 'ts18sl_scl_2019.lib' mos18dll 
+.endl fs_18dll
+
+************************************************************
+.lib sf_18dll
+.param
++ dtox_n18hvt = 0
++ dSrBySr_n18hvt = 0.03147182585
++ dacd_n18hvt = -1.574887385e-08
++ dpcd_n18hvt = -3.656028109e-09
++ dvfb_n18hvt = 0.002323094168
++ dvfbl_n18hvt = -0.009616932783
++ dvfblw_n18hvt = 6.87164342e-05
++ dvfbw_n18hvt = -0.0007785367469
++ dnsubw_n18hvt = 0
++ dnsubl_n18hvt = 0
++ dNsubByNsub_n18hvt = 0
++ dNovByNov_n18hvt = 0
++ dtox_p18hvt = 0
++ dSrBySr_p18hvt = -0.04719680484
++ dacd_p18hvt = 1.980631385e-08
++ dpcd_p18hvt = 3.214352977e-09
++ dvfb_p18hvt = -0.0012908695095
++ dvfbl_p18hvt = 0.007749380741
++ dvfblw_p18hvt = -0.00199721219
++ dvfbw_p18hvt = 0.004063916777
++ dnsubw_p18hvt = 0
++ dnsubl_p18hvt = 0
++ dNsubByNsub_p18hvt = 0
++ dNovByNov_p18hvt = 0
+.lib 'ts18sl_scl_2019.lib' mos18dll 
+.endl sf_18dll
+
+************************************************************
+
+
+.lib mos18dll
+
+*Hspice library for SCL18sl 1.8 HVT fets - PSP
+
+.param
+* n18hvtb3 mismatch
++ m_dSrBySr_n18hvt = 0.015
++ m_dpcd_n18hvt = 1n
++ m_dacd_n18hvt = 0.5n
++ m_dtox_n18hvt = 10p
++ m_dvfb_n18hvt = 18m
++ m_dNsubByNsub_n18hvt =25m
+* n18hvtb3 dl/dw
++ wot_n18hvt = 6.060928700000001e-08
++ wvaro_n18hvt = 7.351000000000000e-08
++ wvarl_n18hvt = 1.015000000000000e-03
++ wvarw_n18hvt = 1.605000000000000e-01
++ lap_n18hvt = 8.793533760000000e-09
++ lvaro_n18hvt = 2.580000000000000e-08
++ lvarl_n18hvt = -1.540000000000000e-01
++ lvarw_n18hvt = 1.111000000000000e-01
+* n18hvtb3 mapping equations
++ lvar_n18hvt = '(-1/2) * lvaro_n18hvt * (1 + lvarl_n18hvt * 1/0.13)'
+*+ dldd_n18hvt = 'dNovByNov_n18hvt * lap_n18hvt'
++ dldd_n18hvt = 'dNovByNov_n18hvt * lvar_n18hvt'
++ ddw_n18hvt = '-1*(dacd_n18hvt/2)'
++ ddl_n18hvt = 'dldd_n18hvt - dpcd_n18hvt/2'
++ knsub_n18hvt = '1 + dNsubByNsub_n18hvt'
++ kcj_n18hvt = '1 + 0.5*dNsubByNsub_n18hvt'
++ kcjsw_n18hvt = '1 + 0.5*dNsubByNsub_n18hvt'
++ kcjswg_n18hvt = '1 + 0.5*dNsubByNsub_n18hvt + dNovByNov_n18hvt'
++ kuo_n18hvt = '1 - dSrBySr_n18hvt'
++ krdsw_n18hvt = '1 - dNovByNov_n18hvt'
++ knov_n18hvt = '1 + dNovByNov_n18hvt'
++ kalp_n18hvt = '1 - 100*dNsubByNsub_n18hvt'
++ kcfl_n18hvt = '1 + 10*dNsubByNsub_n18hvt' 
+
+* p18hvtb3 mismatch
++ m_dSrBySr_p18hvt = 0.007
++ m_dpcd_p18hvt = 1n
++ m_dacd_p18hvt = 0.5n
++ m_dtox_p18hvt = 10p
++ m_dvfb_p18hvt = 9.5m
++ m_dNsubByNsub_p18hvt =10m
+* p18hvtb3 dl/dw
++ wot_p18hvt = 6.032596405000001e-08
++ wvaro_p18hvt = 1.243000000000000e-08
++ wvarl_p18hvt = 1.894000000000000e-02
++ wvarw_p18hvt = 2.076000000000000e+00
++ lap_p18hvt = 2.356945075000000e-09
++ lvaro_p18hvt = 1.710000000000000e-08
++ lvarl_p18hvt = -1.049000000000000e-01
++ lvarw_p18hvt = 4.684000000000000e-01
+* p18hvtb3 mapping equations
++ lvar_p18hvt = '(-1/2) * lvaro_p18hvt * (1 + lvarl_p18hvt * 1/0.13)'
+*+ dldd_p18hvt = 'dNovByNov_p18hvt * lap_p18hvt'
++ dldd_p18hvt = 'dNovByNov_p18hvt * lvar_p18hvt'
++ ddw_p18hvt = '-1*(dacd_p18hvt/2)'
++ ddl_p18hvt = 'dldd_p18hvt - dpcd_p18hvt/2'
++ knsub_p18hvt = '1 + dNsubByNsub_p18hvt'
++ kcj_p18hvt = '1 + 0.5*dNsubByNsub_p18hvt'
++ kcjsw_p18hvt = '1 + 0.5*dNsubByNsub_p18hvt'
++ kcjswg_p18hvt = '1 + 0.5*dNsubByNsub_p18hvt + dNovByNov_p18hvt'
++ kuo_p18hvt = '1 - dSrBySr_p18hvt'
++ krdsw_p18hvt = '1 - dNovByNov_p18hvt'
++ knov_p18hvt = '1 + dNovByNov_p18hvt'
++ kalp_p18hvt = '1 - 100*dNsubByNsub_p18hvt'
++ kcfl_p18hvt = '1 + 10*dNsubByNsub_p18hvt' 
+
+.subckt n18hvtb3 d g s b w=10e-6 l=0.18e-6 nf=1 slices=1 cur=0 as=0 ad=0 ps=0 pd=0 m=1
+.param 
++ Al= 'log(l*10)/abs(log(l*10))'
++ UnScale= '0.5*((1+Al)*1e6 + (1-Al))'
++ myHdif= '0.5*(0.15*(1+Al)+0.15e-6*(1-Al))'
++ aseff = '(int(1-as*1.5e-7/myHdif)*2*w*myHdif+as)'
++ pseff = '(int(1-ps*1.5e-7/myHdif)*(2*w+4*myHdif)+ps)'
++ adeff = '(int(1-ad*1.5e-7/myHdif)*2*w*myHdif+ad)'
++ pdeff = '(int(1-pd*1.5e-7/myHdif)*(2*w+4*myHdif)+pd)'
++ wf='w/UnScale'
++ lf='l/UnScale'
++ nsnd='nf*slices'
+* Local mismatch parameters
++ mis_poly_cd_18=AGAUSS(0,1,1) mis_active_cd_18=AGAUSS(0,1,1) mis_tox_18=AGAUSS(0,1,1)
++ mis_sr_18=AGAUSS(0,1,1) mis_vfb_n18hvt=AGAUSS(0,1,1) mis_nch_n18hvt=AGAUSS(0,1,1)
++ eff_wf = '(wf + wvaro_n18hvt*(1+wvarl_n18hvt*1e-6/lf)*(1+wvarw_n18hvt*1e-6/wf) - 2*wot_n18hvt)*1e6'
++ eff_lf = '(lf + lvaro_n18hvt*(1+lvarl_n18hvt*1e-6/lf)*(1+lvarw_n18hvt*1e-6/wf) - 2*lap_n18hvt)*1e6'
++ sqrt_eff_wf = 'sqrt(m*nf*eff_wf)'
++ sqrt_eff_lf = 'sqrt(eff_lf)'
++ mm_dtox = 'm_dtox_n18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_tox_18'
++ mm_dvfb = 'm_dvfb_n18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_vfb_n18hvt'
++ mm_kuo = '1 - m_dSrBySr_n18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_sr_18'
++ mm_knsub = '1 + m_dNsubByNsub_n18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_nch_n18hvt'
++ mm_ddl = '(-1/2)*(m_dpcd_n18hvt/sqrt_eff_wf) * mis_poly_cd_18'
++ mm_ddw = '(-1/2)*(m_dacd_n18hvt/sqrt_eff_lf) * mis_active_cd_18'
+* Combined stat. and mismatch parameters
++ dtox_n18hvts = 'dtox_n18hvt + mm_dtox'
++ ddl_n18hvts = 'ddl_n18hvt + mm_ddl'
++ ddw_n18hvts = 'ddw_n18hvt + mm_ddw'
++ kuo_n18hvts = 'kuo_n18hvt * mm_kuo'
++ dvfb_n18hvts = 'dvfb_n18hvt + mm_dvfb'
++ knsub_n18hvts = 'knsub_n18hvt * mm_knsub'
+
+mn18hvtb3 d g s b n18hvtb3s l=l w=w m=nsnd 
++ as=aseff ps=pseff ad=adeff pd=pdeff 
+
+.flat mn18hvtb3
+
+.model n18hvtb3s nmos 
++ LEVEL=69 GEOMOD=1 BINMOD=0 VERSION=102.5
++ tr = 25.00
++ swigate = 1.000
++ swimpact = 1.000
++ swgidl = 1.000
++ swjuncap = 3.000
++ swnqs = 0
++ qmc = 1.000
++ lvaro = 25.80e-9
++ lvarl = -154.0e-3
++ lvarw = 111.1e-3
++ lap = '0.000 + 8.79353376e-09 + ddl_n18hvts'
++ wvaro = 73.51e-9
++ wvarl = 1.015e-3
++ wvarw = 160.5e-3
++ wot = '0.000 + 60.609287e-09 + ddw_n18hvts'
++ dlq = -65.29e-9
++ dwq = 0.000
++ vfbo = '-978.8e-3 - 0.015744672685 + dvfb_n18hvts'
++ vfbl = '-58.03e-3 - 0.0077964894 + dvfbl_n18hvt'
++ vfbw = '11.74e-3 - 0.02289596998 + dvfbw_n18hvt'
++ vfblw = '-2.522e-3 + 3.595962068e-03 + dvfblw_n18hvt'
++ stvfbo = 964.6e-6
++ stvfbl = 35.38e-3
++ stvfbw = 45.90e-3
++ stvfblw = -5.847e-3
++ toxo = '3.067e-9 + dtox_n18hvts'
++ nsubo = '4.458E+23 * knsub_n18hvts'
++ nsubw = '-21.64e-3 + dnsubw_n18hvt'
++ wseg = 1.630e-9
++ npck = 2.808E+23
++ npckw = -8.979e-6
++ wsegp = 8.068e-6
++ lpck = 7.591e-9
++ lpckw = -13.77e-6
++ fol1 = '-7.863e-3 + dnsubl_n18hvt'
++ fol2 = 17.27e-3
++ vnsubo = -265.6e-3
++ nslpo = 50.00e-3
++ dnsubo = 4.850e-3
++ dphibo = -24.04e-3
++ dphibl = -20.71e-3
++ dphiblexp = 73.69e-3
++ dphibw = 531.2e-6
++ dphiblw = -2.952e-3
++ npo = 1.000E+26
++ npl = -141.7e-3
++ cto = 161.0e-3
++ ctl = 25.81e-3
++ ctlexp = 842.7e-3
++ ctw = -499.3e-6
++ ctlw = -3.012e-3
++ toxovo = '2.496e-9 + dtox_n18hvts'
++ lov = '26.49e-9 + dldd_n18hvt'
++ novo = '2.496E+25 * knov_n18hvt'
++ cfl = 788.9e-6
++ cflexp = 2.080
++ cfw = 0.000
++ cfbo = 289.0e-3
++ uo = '44.69e-3 * 1.0119462702 * kuo_n18hvts'
++ fbet1 = -3.260
++ fbet1w = -37.96e-3
++ lp1 = 8.213e-9
++ lp1w = -22.96e-3
++ fbet2 = -4.791
++ lp2 = 10.40e-9
++ betw1 = -142.1e-3
++ betw2 = 13.92e-3
++ wbet = 1.003e-9
++ stbeto = 1.892
++ stbetl = 10.78e-3
++ stbetw = -30.44e-3
++ stbetlw = -5.811e-3
++ mueo = 452.4e-3
++ muew = -2.683e-3
++ stmueo = 585.1e-3
++ themuo = 1.905
++ stthemuo = 567.5e-3
++ cso = 410.0e-3
++ csl = 289.6e-3
++ cslexp = 907.1e-3
++ csw = 1.353
++ cslw = -39.21e-3
++ stcso = 2.651
++ xcoro = 0.000
++ xcorl = 0.000
++ xcorw = 1.550
++ xcorlw = -50.50e-3
++ stxcoro = 2.206
++ fetao = 1.980
++ rsw1 = '240.6 * krdsw_n18hvt'
++ rsw2 = -62.03e-3
++ strso = -120.6e-3
++ rsbo = -63.17e-3
++ rsgo = 295.3e-3
++ thesato = 33.99e-3
++ thesatl = 867.0e-3
++ thesatlexp = 568.6e-3
++ thesatw = -4.285e-3
++ thesatlw = -740.4e-6
++ stthesato = 1.000
++ stthesatl = 226.7e-3
++ stthesatw = -616.6e-3
++ stthesatlw = -118.8e-3
++ thesatbo = -1.024
++ thesatgo = 395.3e-3
++ axo = 15.78
++ axl = 1.262
++ alpl = 1.840e-3
++ alplexp = 28.01e-3
++ alpw = 37.22e-3
++ alp1l1 = 3.231e-3
++ alp1lexp = 125.3e-3
++ alp1l2 = 61.26e-3
++ alp1w = 69.54e-3
++ alp2l1 = 244.9e-3
++ alp2lexp = 90.44e-3
++ alp2l2 = 565.7e-3
++ alp2w = 119.8e-3
++ vpo = 52.26e-3
++ a1o = 950.1e-3
++ a1l = -27.99e-3
++ a1w = 139.9e-3
++ a2o = 14.30
++ sta2o = -218.3e-3
++ a3o = 1.305
++ a3l = -95.64e-3
++ a3w = 873.6e-6
++ a4o = 138.6e-3
++ a4l = -213.8e-3
++ a4w = 4.689
++ gcoo = 0.000
++ iginvlw = 80e3
++ igovw = 1e6
++ stigo = 2.000
++ gc2o = 375.0e-3
++ gc3o = 63.00e-3
++ chibo = 3.100
++ agidlw = 914.6e-6
++ bgidlo = 24.82
++ stbgidlo = -1.472e-3
++ cgidlo = 188.9e-3
++ cgbovl = 0.000
++ cfrw = 0.000
++ fnto = 1.000
++ nfalw = 1.000E+25
++ nfblw = 659.0e6
++ nfclw = -8.200e-9
++ efo = 986.0e-3
++ lintnoi = 0.000
++ alpnoi = 2.000
++ dta = 0.000
++ saref = 1.000e-6
++ sbref = 1.000e-6
++ wlod = 0.000
++ kuo = 0.000
++ kvsat = 0.000
++ tkuo = 0.000
++ lkuo = 0.000
++ wkuo = 0.000
++ pkuo = 0.000
++ llodkuo = 0.000
++ wlodkuo = 0.000
++ kvtho = 0.000
++ lkvtho = 0.000
++ wkvtho = 0.000
++ pkvtho = 0.000
++ llodvth = 0.000
++ wlodvth = 0.000
++ stetao = 0.000
++ lodetao = 1.000
++ trj = 25.00
++ imax = 1.000e3
++ cjorbot = '1.207e-3 * kcj_n18hvt'
++ cjorsti = '30.38e-12 * kcjsw_n18hvt'
++ cjorgat = '640.5e-12 * kcjswg_n18hvt'
++ vbirbot = 851.9e-3
++ vbirsti = 858.9e-3
++ vbirgat = 721.8e-3
++ pbot = 415.9e-3
++ psti = 763.3e-3
++ pgat = 405.3e-3
++ phigbot = 1.160
++ phigsti = 1.160
++ phiggat = 1.160
++ idsatrbot = 56.16e-9
++ idsatrsti = 3.560E-19
++ idsatrgat = 2.060e-18
++ csrhbot = 104.6
++ csrhsti = 197.9e-6
++ csrhgat = 2.907e-3
++ xjunsti = 179.9e-9
++ xjungat = 611.6e-9
++ ctatbot = 0.000
++ ctatsti = 0.000
++ ctatgat = 0.000
++ mefftatbot = 250.0e-3
++ mefftatsti = 250.0e-3
++ mefftatgat = 250.0e-3
++ cbbtbot = 0.000
++ cbbtsti = 0.000
++ cbbtgat = 0.000
++ fbbtrbot = 1.000e9
++ fbbtrsti = 1.000e9
++ fbbtrgat = 1.000e9
++ stfbbtbot = -1.000e-3
++ stfbbtsti = -1.000e-3
++ stfbbtgat = -1.000e-3
++ vbrbot = 10.00
++ vbrsti = 10.00
++ vbrgat = 10.00
++ pbrbot = 2.000
++ pbrsti = 4.000
++ pbrgat = 4.000
+
+.ends n18hvtb3
+
+.subckt p18hvtb3 d g s b w=10e-6 l=0.18e-6 nf=1 slices=1 cur=0 as=0 ad=0 ps=0 pd=0 m=1
+.param 
++ Al= 'log(l*10)/abs(log(l*10))'
++ UnScale= '0.5*((1+Al)*1e6 + (1-Al))'
++ myHdif= '0.5*(0.15*(1+Al)+0.15e-6*(1-Al))'
++ aseff = '(int(1-as*1.5e-7/myHdif)*2*w*myHdif+as)'
++ pseff = '(int(1-ps*1.5e-7/myHdif)*(2*w+4*myHdif)+ps)'
++ adeff = '(int(1-ad*1.5e-7/myHdif)*2*w*myHdif+ad)'
++ pdeff = '(int(1-pd*1.5e-7/myHdif)*(2*w+4*myHdif)+pd)'
++ wf='w/UnScale'
++ lf='l/UnScale'
++ nsnd='nf*slices'
+* Local mismatch parameters
++ mis_poly_cd_18=AGAUSS(0,1,1) mis_active_cd_18=AGAUSS(0,1,1) mis_tox_18=AGAUSS(0,1,1)
++ mis_sr_18=AGAUSS(0,1,1) mis_vfb_p18hvt=AGAUSS(0,1,1) mis_nch_p18hvt=AGAUSS(0,1,1)
++ eff_wf = '(wf + wvaro_p18hvt*(1+wvarl_p18hvt*1e-6/lf)*(1+wvarw_p18hvt*1e-6/wf) - 2*wot_p18hvt)*1e6'
++ eff_lf = '(lf + lvaro_p18hvt*(1+lvarl_p18hvt*1e-6/lf)*(1+lvarw_p18hvt*1e-6/wf) - 2*lap_p18hvt)*1e6'
++ sqrt_eff_wf = 'sqrt(m*nf*eff_wf)'
++ sqrt_eff_lf = 'sqrt(eff_lf)'
++ mm_dtox = 'm_dtox_p18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_tox_18'
++ mm_dvfb = 'm_dvfb_p18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_vfb_p18hvt'
++ mm_kuo = '1 - m_dSrBySr_p18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_sr_18'
++ mm_knsub = '1 + m_dNsubByNsub_p18hvt/(sqrt_eff_wf*sqrt_eff_lf) * mis_nch_p18hvt'
++ mm_ddl = '(-1/2)*(m_dpcd_p18hvt/sqrt_eff_wf) * mis_poly_cd_18'
++ mm_ddw = '(-1/2)*(m_dacd_p18hvt/sqrt_eff_lf) * mis_active_cd_18'
+* Combined stat. and mismatch parameters
++ dtox_p18hvts = 'dtox_p18hvt + mm_dtox'
++ ddl_p18hvts = 'ddl_p18hvt + mm_ddl'
++ ddw_p18hvts = 'ddw_p18hvt + mm_ddw'
++ kuo_p18hvts = 'kuo_p18hvt * mm_kuo'
++ dvfb_p18hvts = 'dvfb_p18hvt + mm_dvfb'
++ knsub_p18hvts = 'knsub_p18hvt * mm_knsub'
+
+mp18hvtb3 d g s b p18hvtb3s l=l w=w m=nsnd 
++ as=aseff ps=pseff ad=adeff pd=pdeff 
+
+.flat mp18hvtb3
+
+.model p18hvtb3s pmos 
++ LEVEL=69 GEOMOD=1 BINMOD=0 VERSION=102.5
++ tr = 25.00
++ swigate = 1.000
++ swimpact = 1.000
++ swgidl = 1.000
++ swjuncap = 3.000
++ swnqs = 0
++ qmc = 1.000
++ lvaro = 17.10e-9
++ lvarl = -104.9e-3
++ lvarw = 468.4e-3
++ lap = '-5.370e-9 + 7.726945075e-09 + ddl_p18hvts'
++ wvaro = 12.43e-9
++ wvarl = 18.94e-3
++ wvarw = 2.076
++ wot = '0.000 + 60.32596405e-09 + ddw_p18hvts'
++ dlq = -83.00e-9
++ dwq = 0.000
++ vfbo = '-1.086 - 0.06115116785 + dvfb_p18hvts'
++ vfbl = '-449.8e-6 - 0.003373906801 + dvfbl_p18hvt'
++ vfbw = '1.831e-3 - 0.01292519795 + dvfbw_p18hvt'
++ vfblw = '24.24e-3 + 165.397757e-06 + dvfblw_p18hvt'
++ stvfbo = 805.6e-6
++ stvfbl = 22.85e-3
++ stvfbw = 20.58e-3
++ stvfblw = -7.564e-3
++ toxo = '2.886e-9 + dtox_p18hvts'
++ nsubo = '5.279E+23 * knsub_p18hvts'
++ nsubw = '-28.58e-3 + dnsubw_p18hvt'
++ wseg = 10.00e-9
++ npck = 5.745E+23
++ npckw = 366.3e-6
++ wsegp = 10.00e-9
++ lpck = 6.424e-9
++ lpckw = 495.0e-6
++ fol1 = '75.14e-3 + dnsubl_p18hvt'
++ fol2 = -1.407e-3
++ vnsubo = 0.000
++ nslpo = 50.00e-3
++ dnsubo = -47.04e-3
++ dphibo = 59.29e-3
++ dphibl = 57.90e-3
++ dphiblexp = 603.1e-3
++ dphibw = 1.288e-3
++ dphiblw = 95.95e-3
++ npo = 9.440E+25
++ npl = -120.1e-3
++ cto = 149.0e-3
++ ctl = 10.01e-3
++ ctlexp = 1.464
++ ctw = 34.99e-3
++ ctlw = -27.20e-3
++ toxovo = '3.000e-9 + dtox_p18hvts'
++ lov = '31.58e-9 + dldd_p18hvt'
++ novo = '2.065E+25 * knov_p18hvt'
++ cfl = 337.7e-6
++ cflexp = 2.073
++ cfw = 212.8e-3
++ cfbo = 1
++ uo = '12.12e-3 * 970.56470972e-03 * kuo_p18hvts'
++ fbet1 = -1.141
++ fbet1w = -54.66e-3
++ lp1 = 25.25e-9
++ lp1w = -53.61e-3
++ fbet2 = -191.7e-3
++ lp2 = 25.09e-9
++ betw1 = 27.53e-3
++ betw2 = 940.1e-6
++ wbet = 1.000e-9
++ stbeto = 998.8e-3
++ stbetl = -20.51e-3
++ stbetw = 53.64e-3
++ stbetlw = 1.758e-3
++ mueo = 1.066
++ muew = -43.50e-3
++ stmueo = 291.1e-3
++ themuo = 1.616
++ stthemuo = 356.2e-3
++ cso = 100.7e-3
++ csl = 36.73e-3
++ cslexp = 0.000
++ csw = 4.673
++ cslw = 452.4e-6
++ stcso = 648.0e-3
++ xcoro = 0.000
++ xcorl = 0.000
++ xcorw = 0.000
++ xcorlw = 0.000
++ stxcoro = 0.000
++ fetao = 1.178
++ rsw1 = '145.2 * krdsw_p18hvt'
++ rsw2 = -396.3e-6
++ strso = 40.76e-3
++ rsbo = -159.5e-3
++ rsgo = -131.1e-3
++ thesato = 452.5e-3
++ thesatl = 1.539
++ thesatlexp = 492.0e-3
++ thesatw = -113.1e-3
++ thesatlw = 42.71e-3
++ stthesato = 1.000
++ stthesatl = 29.57e-3
++ stthesatw = -63.29e-3
++ stthesatlw = 37.20e-3
++ thesatbo = 1.245
++ thesatgo = -626.0e-3
++ axo = 21.96
++ axl = 2.066
++ alpl = 40.06e-3
++ alplexp = 833.0e-3
++ alpw = -14.89e-3
++ alp1l1 = 5.737e-3
++ alp1lexp = 138.8e-3
++ alp1l2 = 8.889
++ alp1w = 246.1e-3
++ alp2l1 = -363.6e-3
++ alp2lexp = 305.7e-3
++ alp2l2 = 4.843
++ alp2w = 48.69e-3
++ vpo = 7.191e-3
++ a1o = 1.022
++ a1l = -164.6e-3
++ a1w = 167.8e-3
++ a2o = 17.04
++ sta2o = -347.5e-3
++ a3o = 1.631
++ a3l = -73.49e-3
++ a3w = 21.76e-3
++ a4o = 0.000
++ a4l = 0.000
++ a4w = 0.000
++ gcoo = 0.000
++ iginvlw = 220e3
++ igovw = 20e3
++ stigo = 2.000
++ gc2o = 375.0e-3
++ gc3o = 63.00e-3
++ chibo = 3.100
++ agidlw = 18.39e-9
++ bgidlo = 8.419
++ stbgidlo = -2.435e-3
++ cgidlo = 420.3e-3
++ cgbovl = 0.000
++ cfrw = 0.000
++ fnto = 1.000
++ nfalw = 1.000e26
++ nfblw = 3.5e9
++ nfclw = 7.5E-7
++ efo = 1.000
++ lintnoi = 0.000
++ alpnoi = 2.000
++ dta = 0.000
++ saref = 1.000e-6
++ sbref = 1.000e-6
++ wlod = 0.000
++ kuo = 0.000
++ kvsat = 0.000
++ tkuo = 0.000
++ lkuo = 0.000
++ wkuo = 0.000
++ pkuo = 0.000
++ llodkuo = 0.000
++ wlodkuo = 0.000
++ kvtho = 0.000
++ lkvtho = 0.000
++ wkvtho = 0.000
++ pkvtho = 0.000
++ llodvth = 0.000
++ wlodvth = 0.000
++ stetao = 0.000
++ lodetao = 1.000
++ trj = 25.00
++ imax = 1.000e3
++ cjorbot = '913.0e-6 * kcj_p18hvt'
++ cjorsti = '27.78e-12 * kcjsw_p18hvt'
++ cjorgat = '733.3e-12 * kcjswg_p18hvt'
++ vbirbot = 769.8e-3
++ vbirsti = 2.848
++ vbirgat = 856.9e-3
++ pbot = 354.8e-3
++ psti = 50.13e-3
++ pgat = 525.1e-3
++ phigbot = 1.160
++ phigsti = 1.160
++ phiggat = 1.160
++ idsatrbot = 114.4e-9
++ idsatrsti = 1.011e-18
++ idsatrgat = 4.367e-18
++ csrhbot = 500.0
++ csrhsti = 259.6e-6
++ csrhgat = 1.070e-3
++ xjunsti = 257.0e-9
++ xjungat = 6.977e-6
++ ctatbot = 0.000
++ ctatsti = 0.000
++ ctatgat = 0.000
++ mefftatbot = 250.0e-3
++ mefftatsti = 250.0e-3
++ mefftatgat = 250.0e-3
++ cbbtbot = 0.000
++ cbbtsti = 0.000
++ cbbtgat = 0.000
++ fbbtrbot = 1.000e9
++ fbbtrsti = 1.000e9
++ fbbtrgat = 1.000e9
++ stfbbtbot = -1.000e-3
++ stfbbtsti = -1.000e-3
++ stfbbtgat = -1.000e-3
++ vbrbot = 10.00
++ vbrsti = 10.00
++ vbrgat = 10.00
++ pbrbot = 4.000
++ pbrsti = 4.000
++ pbrgat = 4.000
+
+.ends p18hvtb3
+
+.endl mos18dll
+*
+*
+
+***************************************************************
+*                                                             *
+*                       5V MOS DEVICES LIB                    *
+*                                                             *
+***************************************************************
+.lib tt_5v
+.param
+* n5v
++ dtox_n5v=0
++ dSrBySr_n5v=0
++ dacd_n5v=0
++ dpcd_n5v=0
++ dvfb_n5v=0
++ dvfbl_n5v=0
++ dvfblw_n5v=0
++ dvfbw_n5v=0
++ dnsubw_n5v = 0
++ dnsubl_n5v = 0
++ dNsubByNsub_n5v = 0
++ dNovByNov_n5v = 0
+* p5v
++ dpcd_p5v = 0
++ dacd_p5v = 0
++ dvfb_p5v = 0
++ dvfbl_p5v = 0
++ dvfbw_p5v = 0
++ dvfblw_p5v = 0
++ dtox_p5v = 0
++ dnsubw_p5v = 0
++ dnsubl_p5v = 0
++ dNsubByNsub_p5v = 0
++ dSrBySr_p5v = 0
++ dNovByNov_p5v = 0
++ n5v_gidl_bsim=1
++ n5v_gidl_psp=1
++ p5v_gidl_bsim=1
++ p5v_gidl_psp=1
+.lib 'ts18sl_scl_2019.lib' mos5v 
+.endl tt_5v
+
+************************************************************
+.lib ff_5v
+.param
+* n5v
++ dtox_n5v=-5.5e-10
++ dSrBySr_n5v=-0.03345962773
++ dacd_n5v=2.614357479e-08
++ dpcd_n5v=-7.659685218e-08
++ dvfb_n5v=-0.0792452362
++ dvfbl_n5v=0.000923100349
++ dvfblw_n5v=0.006725320794
++ dvfbw_n5v=-0.003448508828
++ dnsubw_n5v = 0
++ dnsubl_n5v = 0
++ dNsubByNsub_n5v = 0
++ dNovByNov_n5v = 0
+* p5v
++ dpcd_p5v = -1.798202652e-08
++ dacd_p5v = 1.057107331e-07
++ dvfb_p5v = -0.047137481845
++ dvfbl_p5v = 0.02655972428
++ dvfbw_p5v = -0.007716978389
++ dvfblw_p5v = 0
++ dtox_p5v = -5.5e-10
++ dnsubw_p5v = 0
++ dnsubl_p5v = 0
++ dNsubByNsub_p5v = 0
++ dSrBySr_p5v = -0.008371580665
++ dNovByNov_p5v = 0
++ n5v_gidl_bsim=1.2e7
++ n5v_gidl_psp=1.3
++ p5v_gidl_bsim=1.01e7
++ p5v_gidl_psp=10
+.lib 'ts18sl_scl_2019.lib' mos5v 
+.endl ff_5v
+
+************************************************************
+.lib ss_5v
+.param
+* n5v
++ dtox_n5v=5.5e-10
++ dSrBySr_n5v=0.044979529815
++ dacd_n5v=-4.015095885e-08
++ dpcd_n5v=1.085838509e-07
++ dvfb_n5v=0.0787403153
++ dvfbl_n5v=-0.001504440837
++ dvfblw_n5v=-0.00776116631
++ dvfbw_n5v=0.0004202189269
++ dnsubw_n5v = 0
++ dnsubl_n5v = 0
++ dNsubByNsub_n5v = 0
++ dNovByNov_n5v = 0
+* p5v
++ dpcd_p5v = 3.447466106e-08
++ dacd_p5v = -2.328668457e-08
++ dvfb_p5v = 0.0872886965
++ dvfbl_p5v = -0.02504937938
++ dvfbw_p5v = -0.005456686999
++ dvfblw_p5v = 0
++ dtox_p5v = 5.5e-10
++ dnsubw_p5v = 0
++ dnsubl_p5v = 0
++ dNsubByNsub_p5v = 0
++ dSrBySr_p5v = 0.01837191497
++ dNovByNov_p5v = 0
++ n5v_gidl_bsim=1
++ n5v_gidl_psp=1
++ p5v_gidl_bsim=1
++ p5v_gidl_psp=1
+.lib 'ts18sl_scl_2019.lib' mos5v 
+.endl ss_5v
+
+************************************************************
+.lib sf_5v
+.param
+* n5v
++ dtox_n5v=0
++ dSrBySr_n5v=0.044979529815
++ dacd_n5v=0
++ dpcd_n5v=0
++ dvfb_n5v=0.0787403153
++ dvfbl_n5v=-0.001504440837
++ dvfblw_n5v=-0.00776116631
++ dvfbw_n5v=0.0004202189269
++ dnsubw_n5v = 0
++ dnsubl_n5v = 0
++ dNsubByNsub_n5v = 0
++ dNovByNov_n5v = 0
+* p5v
++ dpcd_p5v = 0
++ dacd_p5v = 0
++ dvfb_p5v = -0.047137481845
++ dvfbl_p5v = 0.02655972428
++ dvfbw_p5v = -0.007716978389
++ dvfblw_p5v = 0
++ dtox_p5v = 0
++ dnsubw_p5v = 0
++ dnsubl_p5v = 0
++ dNsubByNsub_p5v = 0
++ dSrBySr_p5v = -0.008371580665
++ dNovByNov_p5v = 0
++ n5v_gidl_bsim=1
++ n5v_gidl_psp=1
++ p5v_gidl_bsim=1
++ p5v_gidl_psp=1
+.lib 'ts18sl_scl_2019.lib' mos5v 
+.endl sf_5v
+
+************************************************************
+.lib fs_5v
+.param
+* n5v
++ dtox_n5v=0
++ dSrBySr_n5v=-0.03345962773
++ dacd_n5v=0
++ dpcd_n5v=0
++ dvfb_n5v=-0.0792452362
++ dvfbl_n5v=0.000923100349
++ dvfblw_n5v=0.006725320794
++ dvfbw_n5v=-0.003448508828
++ dnsubw_n5v = 0
++ dnsubl_n5v = 0
++ dNsubByNsub_n5v = 0
++ dNovByNov_n5v = 0
+* p5v
++ dpcd_p5v = 0
++ dacd_p5v = 0
++ dvfb_p5v = 0.0872886965
++ dvfbl_p5v = -0.02504937938
++ dvfbw_p5v = -0.005456686999
++ dvfblw_p5v = 0
++ dtox_p5v = 0
++ dnsubw_p5v = 0
++ dnsubl_p5v = 0
++ dNsubByNsub_p5v = 0
++ dSrBySr_p5v = 0.01837191497
++ dNovByNov_p5v = 0
++ n5v_gidl_bsim=1
++ n5v_gidl_psp=1
++ p5v_gidl_bsim=1
++ p5v_gidl_psp=1
+.lib 'ts18sl_scl_2019.lib' mos5v 
+.endl fs_5v
+***************************************************************************
+
+.lib mos5v
+
+.param
+* n5v mismatch
++ m_dSrBySr_n5v = '0.00625000037369129*0.6'
++ m_dpcd_n5v = 1.40000e-09
++ m_dacd_n5v = '6.00000e-10/2'
++ m_dtox_n5v = 1.83750e-11
++ m_dvfb_n5v = '1.18757e-02*0.75'
++ m_dNsubByNsub_n5v = 0.00275
+* n5v dl/dw
++ wot_n5v = -2.123770362500000e-08
++ wvaro_n5v = -7.390000000000000e-09
++ wvarl_n5v = -5.820000000000000e-01
++ wvarw_n5v = 1.055000000000000e+00
++ lap_n5v = -7.823493759999999e-09
++ lvaro_n5v = -6.242000000000000e-08
++ lvarl_n5v = -3.140000000000000e-01
++ lvarw_n5v = 4.174000000000000e-01
+* n5v mapping equations
++ lvar_n5v = '(-1/2) * lvaro_n5v * (1 + lvarl_n5v * 1/0.13)'
++ dldd_n5v = 'dNovByNov_n5v * lvar_n5v'
++ ddw_n5v = '-1*(dacd_n5v/2)'
++ ddl_n5v = 'dldd_n5v - dpcd_n5v/2'
++ knsub_n5v = '1 + dNsubByNsub_n5v'
++ kcj_n5v = '1 + 0.5*dNsubByNsub_n5v'
++ kcjsw_n5v = '1 + 0.5*dNsubByNsub_n5v'
++ kcjswg_n5v = '1 + 0.5*dNsubByNsub_n5v + dNovByNov_n5v'
++ kuo_n5v = '1 - dSrBySr_n5v'
++ krdsw_n5v = '1 - dNovByNov_n5v'
++ knov_n5v = '1 + dNovByNov_n5v'
++ kalp_n5v = '1 - 100*dNsubByNsub_n5v '
++ kcfl_n5v = '1 + 10*dNsubByNsub_n5v' 
+* p5v mismatch
++ m_dSrBySr_p5v = '0.00575*0.5'
++ m_dpcd_p5v = 1.10000e-09
++ m_dacd_p5v = '5.00000e-11/2.5'
++ m_dtox_p5v = 2.01250e-11
++ m_dvfb_p5v = '1.55000e-02*0.6'
++ m_dNsubByNsub_p5v = 0.00835
+* p5v dl/dw
++ wot_p5v = 0.000000000000000e+00
++ wvaro_p5v = -9.336000000000000e-08
++ wvarl_p5v = 1.094000000000000e-05
++ wvarw_p5v = -1.586000000000000e-01
++ lap_p5v = 0.000000000000000e+00
++ lvaro_p5v = -1.906000000000000e-09
++ lvarl_p5v = 9.879000000000000e-01
++ lvarw_p5v = 0.000000000000000e+00
+* p5v mapping equations
++ lvar_p5v = '(-1/2) * lvaro_p5v * (1 + lvarl_p5v * 1/0.13)'
++ dldd_p5v = 'dNovByNov_p5v * lvar_p5v'
++ ddw_p5v = '-1*(dacd_p5v/2)'
++ ddl_p5v = 'dldd_p5v - dpcd_p5v/2'
++ knsub_p5v = '1 + dNsubByNsub_p5v'
++ kcj_p5v = '1 + 0.5*dNsubByNsub_p5v'
++ kcjsw_p5v = '1 + 0.5*dNsubByNsub_p5v'
++ kcjswg_p5v = '1 + 0.5*dNsubByNsub_p5v + dNovByNov_p5v'
++ kuo_p5v = '1 - dSrBySr_p5v'
++ krdsw_p5v = '1 - dNovByNov_p5v'
++ knov_p5v = '1 + dNovByNov_p5v'
++ kalp_p5v = '1 - 100*dNsubByNsub_p5v '
++ kcfl_p5v = '1 + 10*dNsubByNsub_p5v' 
+
+.subckt n5v d g s b w=0.6e-6 l=0.5e-6 nf=1 slices=1 cur=0 as=0 ad=0 ps=0 pd=0 m=1
+.param 
+*.PARAM
++Al= 'log(l*10)/abs(log(l*10))'
++UnScale='0.5*((1+Al)*1e6 + (1-Al))'
++myHdif= '0.5*(0.15*(1+Al)+0.15e-6*(1-Al))'
++aseff = '(int(1-as*1.5e-7/myHdif)*2*w*myHdif+as)'
++pseff = '(int(1-ps*1.5e-7/myHdif)*(2*w+4*myHdif)+ps)'
++adeff = '(int(1-ad*1.5e-7/myHdif)*2*w*myHdif+ad)'
++pdeff = '(int(1-pd*1.5e-7/myHdif)*(2*w+4*myHdif)+pd)'
++ wf='w/UnScale'
++ lf='l/UnScale'
++ nsnd='nf*slices'
+* Local mismatch parameters
++ mis_poly_cd=AGAUSS(0,1,1) mis_active_cd=AGAUSS(0,1,1) mis_tox=AGAUSS(0,1,1)
++ mis_sr=AGAUSS(0,1,1) mis_vfb_n5v=AGAUSS(0,1,1) mis_nch_n5v=AGAUSS(0,1,1)
++ eff_wf = '(wf + wvaro_n5v*(1+wvarl_n5v*1e-6/lf)*(1+wvarw_n5v*1e-6/wf) - 2*wot_n5v)*1e6'
++ eff_lf = '(lf + lvaro_n5v*(1+lvarl_n5v*1e-6/lf)*(1+lvarw_n5v*1e-6/wf) - 2*lap_n5v)*1e6'
++ sqrt_eff_wf = 'sqrt(m*nf*eff_wf)'
++ sqrt_eff_lf = 'sqrt(eff_lf)'
++ mm_dtox = 'm_dtox_n5v/(sqrt_eff_wf*sqrt_eff_lf) * mis_tox'
++ mm_dvfb = 'm_dvfb_n5v/(sqrt_eff_wf*sqrt_eff_lf) * mis_vfb_n5v'
++ mm_kuo = '1 - (m_dSrBySr_n5v/(sqrt_eff_wf*sqrt_eff_lf) + 0.00045) * mis_sr'
++ mm_knsub = '1 + m_dNsubByNsub_n5v/(sqrt_eff_wf*sqrt_eff_lf) * mis_nch_n5v'
++ mm_ddl = '(-1/2)*(m_dpcd_n5v/sqrt_eff_wf) * mis_poly_cd'
++ mm_ddw = '(-1/2)*(m_dacd_n5v/sqrt_eff_lf) * mis_active_cd'
+* Combined stat. and mismatch parameters
++ dtox_n5vs = 'dtox_n5v + mm_dtox'
++ ddl_n5vs = 'ddl_n5v + mm_ddl'
++ ddw_n5vs = 'ddw_n5v + mm_ddw'
++ kuo_n5vs = 'kuo_n5v * mm_kuo'
++ dvfb_n5vs = 'dvfb_n5v + mm_dvfb'
++ knsub_n5vs = 'knsub_n5v * mm_knsub'
+
+mn5v d g s b n5vs l=l w=w m=nsnd 
++ as=aseff ps=pseff ad=adeff pd=pdeff 
+
+.flat mn5v
+
+.model n5vs nmos
++ LEVEL=69 GEOMOD=1 BINMOD=0 VERSION=102.5
++ tr = 25.00
++ swigate = 0.000
++ swimpact = 1.000
++ swgidl = 1.000
++ swjuncap = 3.000
++ swnqs = 0
++ qmc = 1.000
++ lvaro = -62.42e-9
++ lvarl = -314.0e-3
++ lvarw = 417.4e-3
++ lap = '0.000 - 7.82349376e-09 + ddl_n5vs'
++ wvaro = -7.390e-9
++ wvarl = -582.0e-3
++ wvarw = 1.055
++ wot = '0.000 - 2.1237703625e-08 + ddw_n5vs'
++ dlq = -138.9e-9
++ dwq = -35.25e-9
++ vfbo = '-1.210 - 0.033526891205 + dvfb_n5vs'
++ vfbl = '-168.0e-3 + 5.570046196e-03 + dvfbl_n5v'
++ vfbw = '18.90e-3 - 0.01434733929 + dvfbw_n5v'
++ vfblw = '-9.791e-3 + 2.678336316e-03 + dvfblw_n5v'
++ stvfbo =  1.031e-3
++ stvfbl = 2.948e-3
++ stvfbw = 38.61e-3
++ stvfblw = -46.16e-3
++ toxo = '10.50e-9 + dtox_n5vs'
++ nsubo = '1.752E+23 * knsub_n5vs'
++ nsubw = '-4.894e-3 + dnsubw_n5v'
++ wseg = 10.00e-9
++ npck = 7.911E+22
++ npckw = -211.8e-3
++ wsegp = 10.00e-9
++ lpck = 1.390e-9
++ lpckw = -53.11e-3
++ fol1 = '256.2e-3 + dnsubl_n5v'
++ fol2 = 27.21e-3
++ vnsubo = 0.000
++ nslpo = 50.00e-3
++ dnsubo = 0.000
++ dphibo = 150.4e-3
++ dphibl = 23.68e-3
++ dphiblexp = 1.000
++ dphibw = -3.618e-3
++ dphiblw = -52.48e-3
++ npo = 4.041E+25
++ npl = -230.0e-3
++ cto = 96.63e-3
++ ctl = 84.81e-3
++ ctlexp = 1.000
++ ctw = -50.76e-3
++ ctlw = 21.30e-3
++ toxovo = '10.00e-9 + dtox_n5vs'
++ lov = '135.9e-9 + dldd_n5v'
++ novo = '1.000E+24 * knov_n5v'
++ cfl = 0.000
++ cflexp = 2.000
++ cfw = 0.000
++ cfbo = 0.000
++ uo = '47.31e-3 * 975.41148258e-03 * kuo_n5vs'
++ fbet1 = -4.353
++ fbet1w = -246.8e-3
++ lp1 = 12.21e-9
++ lp1w = -405.0e-3
++ fbet2 = -2.432
++ lp2 = 19.22e-9
++ betw1 = 218.2e-3
++ betw2 = -54.04e-3
++ wbet = 1.221e-9
++ stbeto = 1.465
++ stbetl = 142.1e-3
++ stbetw = -112.4e-3
++ stbetlw = 8.48e-3
++ mueo = 690.6e-3
++ muew = -51.75e-3
++ stmueo = 42.83e-3
++ themuo = 2.202
++ stthemuo = 1.053
++ cso = -7.298e-3
++ csl = -16.50e-3
++ cslexp = 0.000
++ csw = 1.696e-3
++ cslw = -52.01e-3
++ stcso = 10.51e-3
++ xcoro = 18.86e-3
++ xcorl = 208.9e-3
++ xcorw = 0.000
++ xcorlw = 0.000
++ stxcoro = 640.9e-3
++ fetao = 1.315
++ rsw1 = '406.9 * krdsw_n5v'
++ rsw2 = 2.039e-3
++ strso = 719.4e-3
++ rsbo = 60.44e-3
++ rsgo = 65.58e-3
++ thesato = -62.25e-3
++ thesatl = 615.4e-3
++ thesatlexp = 868.0e-3
++ thesatw = -2.751e-3
++ thesatlw = 1.689e-3
++ stthesato =  1.295 
++ stthesatl =  136.7e-3
++ stthesatw = -26.25e-3
++ stthesatlw = -18.43e-3
++ thesatbo = 43.00e-3
++ thesatgo = 100.5e-3
++ axo = 14.96
++ axl = 130.3e-3
++ alpl = 23.76e-3
++ alplexp = 1.060
++ alpw = 19.73e-3
++ alp1l1 = 5.770e-3
++ alp1lexp = 509.9e-3
++ alp1l2 = 0.000
++ alp1w = 19.67e-3
++ alp2l1 = 232e-3
++ alp2lexp = 518.1e-3
++ alp2l2 = 0.000
++ alp2w = 141.2e-3
++ vpo = 50.00e-3
++ a1o = 29.18
++ a1l = 127.0e-3
++ a1w = -87.73e-3
++ a2o = 36.42
++ sta2o = 24.37e-3
++ a3o = 1.105
++ a3l = -114.9e-3
++ a3w = -12.01e-3
++ a4o = -1.318e-3
++ a4l = 447.3e-3
++ a4w = -20.33e-6
++ gcoo = 0.000
++ iginvlw = 0.000
++ igovw = 0.000
++ stigo = 2.000
++ gc2o = 375.0e-3
++ gc3o = 63.00e-3
++ chibo = 3.100
++ agidlw = 20e-9
++ bgidlo = 6.347
++ stbgidlo = '-3.6e-3*n5v_gidl_psp'
++ cgidlo = 100e-3
++ cgbovl = 0.000
++ cfrw = 11.22e-18
++ fnto = 1.000
++ nfalw = 1.468E+26
++ nfblw = 95.95e6
++ nfclw = 200.0e-18
++ efo = 1.000
++ lintnoi = 0.000
++ alpnoi = 2.000
++ dta = 0.000
++ saref = 1.000e-6
++ sbref = 1.000e-6
++ wlod = 0.000
++ kuo = 0.000
++ kvsat = 0.000
++ tkuo = 0.000
++ lkuo = 0.000
++ wkuo = 0.000
++ pkuo = 0.000
++ llodkuo = 0.000
++ wlodkuo = 0.000
++ kvtho = 0.000
++ lkvtho = 0.000
++ wkvtho = 0.000
++ pkvtho = 0.000
++ llodvth = 0.000
++ wlodvth = 0.000
++ stetao = 0.000
++ lodetao = 1.000
++ trj = 25.00
++ imax = 1.000e3
++ cjorbot = '922.8e-6 * kcj_n5v'
++ cjorsti = '26.20e-12 * kcjsw_n5v'
++ cjorgat = '222.8e-12 * kcjswg_n5v'
++ vbirbot = 737.5e-3
++ vbirsti = 5.013
++ vbirgat = 942.0e-3
++ pbot = 310.0e-3
++ psti = 50.00e-3
++ pgat = 451.3e-3
++ phigbot = 1.160
++ phigsti = 1.160
++ phiggat = 1.160
++ idsatrbot = 101.7e-9
++ idsatrsti = 30.80e-15
++ idsatrgat = 1.020e-18
++ csrhbot = 31.48
++ csrhsti = 534.4e-6
++ csrhgat = 627.1e-6
++ xjunsti = 167.3e-9
++ xjungat = 625.1e-9
++ ctatbot = 0.000
++ ctatsti = 0.000
++ ctatgat = 0.000
++ mefftatbot = 10.00e-3
++ mefftatsti = 10.00e-3
++ mefftatgat = 10.00e-3
++ cbbtbot = 0.000
++ cbbtsti = 0.000
++ cbbtgat = 0.000
++ fbbtrbot = 1.000e9
++ fbbtrsti = 1.000e9
++ fbbtrgat = 1.000e9
++ stfbbtbot = -1.000e-3
++ stfbbtsti = -1.000e-3
++ stfbbtgat = -1.000e-3
++ vbrbot = 10.70
++ vbrsti = 10.70
++ vbrgat = 10.70
++ pbrbot = 10.00
++ pbrsti = 10.00
++ pbrgat = 10.00
+
+.ends n5v
+
+.subckt p5v d g s b w=0.6e-6 l=0.5e-6 nf=1 slices=1 cur=0 as=0 ad=0 ps=0 pd=0 m=1
+.param 
+*.PARAM
++Al= 'log(l*10)/abs(log(l*10))'
++UnScale= '0.5*((1+Al)*1e6 + (1-Al))'
++myHdif= '0.5*(0.15*(1+Al)+0.15e-6*(1-Al))'
++aseff = '(int(1-as*1.5e-7/myHdif)*2*w*myHdif+as)'
++pseff = '(int(1-ps*1.5e-7/myHdif)*(2*w+4*myHdif)+ps)'
++adeff = '(int(1-ad*1.5e-7/myHdif)*2*w*myHdif+ad)'
++pdeff = '(int(1-pd*1.5e-7/myHdif)*(2*w+4*myHdif)+pd)'
++ wf='w/UnScale'
++ lf='l/UnScale'
++ nsnd='nf*slices'
+* Local mismatch parameters
++ mis_poly_cd=AGAUSS(0,1,1) mis_active_cd=AGAUSS(0,1,1) mis_tox=AGAUSS(0,1,1)
++ mis_sr=AGAUSS(0,1,1) mis_vfb_p5v=AGAUSS(0,1,1) mis_nch_p5v=AGAUSS(0,1,1)
++ eff_wf = '(wf + wvaro_p5v*(1+wvarl_p5v*1e-6/lf)*(1+wvarw_p5v*1e-6/wf) - 2*wot_p5v)*1e6'
++ eff_lf = '(lf + lvaro_p5v*(1+lvarl_p5v*1e-6/lf)*(1+lvarw_p5v*1e-6/wf) - 2*lap_p5v)*1e6'
++ sqrt_eff_wf = 'sqrt(m*nf*eff_wf)'
++ sqrt_eff_lf = 'sqrt(eff_lf)'
++ mm_dtox = 'm_dtox_p5v/(sqrt_eff_wf*sqrt_eff_lf) * mis_tox'
++ mm_dvfb = '(m_dvfb_p5v/(sqrt_eff_wf*sqrt_eff_lf) + 5e-4) * mis_vfb_p5v'
++ mm_kuo = '1 - (m_dSrBySr_p5v/(sqrt_eff_wf*sqrt_eff_lf) + 0.0007) * mis_sr'
++ mm_knsub = '1 + m_dNsubByNsub_p5v/(sqrt_eff_wf*sqrt_eff_lf) * mis_nch_p5v'
++ mm_ddl = '(-1/2)*(m_dpcd_p5v/sqrt_eff_wf) * mis_poly_cd'
++ mm_ddw = '(-1/2)*(m_dacd_p5v/sqrt_eff_lf) * mis_active_cd'
+* Combined stat. and mismatch parameters
++ dtox_p5vs = 'dtox_p5v + mm_dtox'
++ ddl_p5vs = 'ddl_p5v + mm_ddl'
++ ddw_p5vs = 'ddw_p5v + mm_ddw'
++ kuo_p5vs = 'kuo_p5v * mm_kuo'
++ dvfb_p5vs = 'dvfb_p5v + mm_dvfb'
++ knsub_p5vs = 'knsub_p5v * mm_knsub'
+
+mp5v d g s b p5vs l=l w=w m=nsnd 
++ as=aseff ps=pseff ad=adeff pd=pdeff 
+
+.flat mp5v
+
+.model p5vs pmos
++ LEVEL=69 GEOMOD=1 BINMOD=0 VERSION=102.5
++ tr = 25.00
++ swigate = 0.000
++ swimpact = 1.000
++ swgidl = 1.000
++ swjuncap = 3.000
++ swnqs = 0
++ qmc = 1.000
++ lvaro = -1.906e-9
++ lvarl = 987.9e-3
++ lvarw = 0.000
++ lap = '0.000 + ddl_p5vs'
++ wvaro = -93.36e-9
++ wvarl = 10.94e-6
++ wvarw = -158.6e-3
++ wot = '0.000 + ddw_p5vs'
++ dlq = -112.8e-9
++ dwq = 0
++ vfbo = '-1.000 + dvfb_p5vs'
++ vfbl = '-350.9e-3 + dvfbl_p5v'
++ vfbw = '-19.72e-3 + dvfbw_p5v'
++ vfblw = '-26.26e-3 + dvfblw_p5v'
++ stvfbo = 749.4e-6
++ stvfbl = 79.28e-3
++ stvfbw = 84.72e-3
++ stvfblw = -40.97e-3
++ toxo = '11.50e-9 + dtox_p5vs'
++ nsubo = '1.902E+23 * knsub_p5vs'
++ nsubw = '-13.88e-3 + dnsubw_p5v'
++ wseg = 14.39e-9
++ npck = 7.900E+22
++ npckw = 530.2e-3
++ wsegp = 603.6e-12
++ lpck = 100.0e-12
++ lpckw = 40.35e-3
++ fol1 = '260.0e-3 + dnsubl_p5v'
++ fol2 = 21.66e-3
++ vnsubo = 0.000
++ nslpo = 0.000
++ dnsubo = 0.000
++ dphibo = -24.72e-3
++ dphibl = -122.9e-3
++ dphiblexp = 1.000
++ dphibw = 6.221e-3
++ dphiblw = 11.57e-3
++ npo = 5.816E+37
++ npl = 0.000
++ cto = 0.000
++ ctl = -21.83e-3
++ ctlexp = 1.000
++ ctw = 0.000
++ ctlw = 0.000
++ toxovo = '10.04e-9 + dtox_p5vs'
++ lov = '67.34e-9 + dldd_p5v'
++ novo = '2.123E+23 * knov_p5v'
++ cfl = 1.460e-3
++ cflexp = 2.000
++ cfw = 0.000
++ cfbo = 1
++ uo = '15.53e-3 * kuo_p5vs'
++ fbet1 = 187.6e-3
++ fbet1w = -996.4e-3
++ lp1 = 3.492e-9
++ lp1w = 1.000
++ fbet2 = -1.343
++ lp2 = 46.71e-9
++ betw1 = -41.05e-3
++ betw2 = -70.28e-3
++ wbet = 693.9e-9
++ stbeto = 951.4e-3
++ stbetl = 52.45e-3
++ stbetw = -42.28e-3
++ stbetlw = -155.1e-3
++ mueo = 1.838
++ muew = -88.45e-3
++ stmueo = 199.0e-3
++ themuo = 1.644
++ stthemuo = 437.2e-3
++ cso = -28.95e-6
++ csl = 0.000
++ cslexp = 0.000
++ csw = -202.9e-3
++ cslw = 561.2e-3
++ stcso = 0.000
++ xcoro = 78.85e-3
++ xcorl = 38.88e-3
++ xcorw = -201.5e-3
++ xcorlw = -30.45e-3
++ stxcoro = 0.000
++ fetao = 827.4e-3
++ rsw1 = '1.095e3 * krdsw_p5v'
++ rsw2 = 0.000
++ strso = 244.3e-3
++ rsbo = 160.2e-3
++ rsgo = 120.2e-3
++ thesato = -181.6e-3
++ thesatl = 750.0e-3
++ thesatlexp = 871.1e-3
++ thesatw = 195.2e-3
++ thesatlw = -711.4e-6
++ stthesato = 1.259
++ stthesatl = 0.000
++ stthesatw = -280.3e-3
++ stthesatlw = -69.65e-3
++ thesatbo = 235.8e-3
++ thesatgo = -54.09e-3
++ axo = 7.250
++ axl = 500.0e-3
++ alpl = 50.12e-3
++ alplexp = 1.000
++ alpw = 100.3e-3
++ alp1l1 = -105.7e-6
++ alp1lexp = 500.0e-3
++ alp1l2 = 0.000
++ alp1w = 0.000
++ alp2l1 = 2.125e-3
++ alp2lexp = 500.0e-3
++ alp2l2 = 0.000
++ alp2w = 1.000
++ vpo = 46.55e-3
++ a1o = 3.000
++ a1l = 419.5e-3
++ a1w = 86.89e-3
++ a2o = 33.75
++ sta2o = 3.754e-3
++ a3o = 1.349
++ a3l = -86.00e-3
++ a3w = 10.21e-3
++ a4o = 94.35e-3
++ a4l = -638.9e-3
++ a4w = -190.0e-3
++ gcoo = 0.000
++ iginvlw = 0.000
++ igovw = 0.000
++ stigo = 2.000
++ gc2o = 375.0e-3
++ gc3o = 63.00e-3
++ chibo = 3.100
++ agidlw = '200.0e-3*p5v_gidl_psp'
++ bgidlo = 7.000
++ stbgidlo = -800.0e-6
++ cgidlo = 60.00e-3
++ cgbovl = -4.264e-6
++ cfrw = 238.9e-18
++ fnto = 1.000
++ nfalw = 3.529E+25
++ nfblw = 3.189e+06
++ nfclw = 95.74e-9
++ efo = 1.000
++ lintnoi = 0.000
++ alpnoi = 2.000
++ dta = 0.000
++ saref = 1.000e-6
++ sbref = 1.000e-6
++ wlod = 0.000
++ kuo = 0.000
++ kvsat = 0.000
++ tkuo = 0.000
++ lkuo = 0.000
++ wkuo = 0.000
++ pkuo = 0.000
++ llodkuo = 0.000
++ wlodkuo = 0.000
++ kvtho = 0.000
++ lkvtho = 0.000
++ wkvtho = 0.000
++ pkvtho = 0.000
++ llodvth = 0.000
++ wlodvth = 0.000
++ stetao = 0.000
++ lodetao = 1.000
++ trj = 25.00
++ imax = 1.000e3
++ cjorbot = '846.5e-6 * kcj_p5v'
++ cjorsti = '49.22e-12 * kcjsw_p5v'
++ cjorgat = '199.9e-12 * kcjswg_p5v'
++ vbirbot = 905.5e-3
++ vbirsti = 991.3e-3
++ vbirgat = 1.100
++ pbot = 359.9e-3
++ psti = 169.0e-3
++ pgat = 900.9e-3
++ phigbot = 1.583
++ phigsti = 1.057
++ phiggat = 1.160
++ idsatrbot = 1.000e-9
++ idsatrsti = 884.3e-18
++ idsatrgat = 1.000e-18
++ csrhbot = 100.0
++ csrhsti = 17.40e-15
++ csrhgat = 18.28e-15
++ xjunsti = 100.0e-9
++ xjungat = 591.5e-9
++ ctatbot = 0.000
++ ctatsti = 0.000
++ ctatgat = 0.000
++ mefftatbot = 266.6
++ mefftatsti = 10.24e-3
++ mefftatgat = 10.00e-3
++ cbbtbot = 0.000
++ cbbtsti = 0.000
++ cbbtgat = 0.000
++ fbbtrbot = 95.96e9
++ fbbtrsti = 5.179E+15
++ fbbtrgat = 1.042e9
++ stfbbtbot = -2.314e-3
++ stfbbtsti = -2.222e-3
++ stfbbtgat = -1.042e-3
++ vbrbot = 10.70
++ vbrsti = 10.70
++ vbrgat = 10.70
++ pbrbot = 10.00
++ pbrsti = 10.00
++ pbrgat = 10.00
+
+.ends p5v
+
+.endl mos5v
+
+
+*check1
+**************** CORNER_LIB OF  tt_bjt MODEL **************** 
+
+.lib tt_bjt
+.param
++ bf_vd10 = 1
++ vaf_vd10 =1
++ nf_vd10 = 1
++ rb_vd10 = 1
++ re_vd10 = 1
++ cje_vd10 = 1
++ cjc_vd10 = 1
++ bf_vd5 = 1
++ vaf_vd5 = 1
++ nf_vd5 = 1
++ rb_vd5 = 1
++ re_vd5 = 1
++ cje_vd5 = 1
++ cjc_vd5 = 1
++ bf_vd2 = 1
++ vaf_vd2 = 1
++ nf_vd2 = 1
++ rb_vd2 = 1
++ re_vd2 = 1
++ cje_vd2 = 1
++ cjc_vd2 = 1
+*
++ is_vdn5 = 1
++ bf_vdn5 = 1
++ vaf_vdn5 = 1
++ rb_vdn5 = 1
++ re_vdn5 = 1
++ cje_vdn5 = 1
++ cjc_vdn5 = 1
+.lib 'ts18sl_scl_2019.lib' bjt
+.endl tt_bjt 
+
+
+**************** CORNER_LIB OF  ff_bjt MODEL **************** 
+.lib ff_bjt
+.param
++ bf_vd10 = 1.35
+*+ bf_vd10 = '0.992*1.25'
++ vaf_vd10 = 0.675
++ nf_vd10 = 0.99
++ rb_vd10 = 0.8
++ re_vd10 = 0.8
++ cje_vd10 = 0.95
++ cjc_vd10 = 0.95
++ bf_vd5 = 1.35
+*+ bf_vd5 = '0.992*1.25'
++ vaf_vd5 = 0.675
++ nf_vd5 = 0.99
++ rb_vd5 = 0.8
++ re_vd5 = 0.8
++ cje_vd5 = 0.95
++ cjc_vd5 = 0.95
++ bf_vd2 = 1.35
+*+ bf_vd2 = '0.992*1.25'
++ vaf_vd2 = 0.675
++ nf_vd2 = 0.99
++ rb_vd2 = 0.8
++ re_vd2 = 0.8
++ cje_vd2 = 0.95
++ cjc_vd2 = 0.95
+*
++ is_vdn5 = 1.30 
++ bf_vdn5 = 1.36
++ vaf_vdn5 = 0.675
++ rb_vdn5 = 0.8
++ re_vdn5 = 0.8
++ cje_vdn5 = 0.95
++ cjc_vdn5 = 0.95
+*
+.lib 'ts18sl_scl_2019.lib' bjt
+.endl ff_bjt 
+
+**************** CORNER_LIB OF  ss_bjt MODEL **************** 
+
+.lib ss_bjt
+.param
++ bf_vd10 = 0.65
+*+ bf_vd10 = '1.018*0.75'
++ vaf_vd10 = 1.325
++ nf_vd10 = 1.01
++ rb_vd10 = 1.2
++ re_vd10 = 1.2
++ cje_vd10 = 1.05
++ cjc_vd10 = 1.05
++ bf_vd5 = 0.65
+*+ bf_vd5 = '1.018*0.75'
++ vaf_vd5 = 1.325
++ nf_vd5 = 1.01
++ rb_vd5 = 1.2
++ re_vd5 = 1.2
++ cje_vd5 = 1.05
++ cjc_vd5 = 1.05
++ bf_vd2 = 0.65
+*+ bf_vd2 = '1.018*0.75'
++ vaf_vd2 = 1.325
++ nf_vd2 = 1.01
++ rb_vd2 = 1.2
++ re_vd2 = 1.2
++ cje_vd2 = 1.05
++ cjc_vd2 = 1.05
+*
++ is_vdn5 = 0.70
++ bf_vdn5 = 0.64
++ vaf_vdn5 = 1.325
++ rb_vdn5 = 1.2
++ re_vdn5 = 1.2
++ cje_vdn5 = 1.05
++ cjc_vdn5 = 1.05
+*
+.lib 'ts18sl_scl_2019.lib' bjt
+.endl ss_bjt 
+
+*
+*
+* End corner definition 
+*
+* Begin BJT library 
+*
+.lib bjt
+
+*hspice model for 10x10 um vpnp bipolar junction transistor.
+
+.subckt vd10 c b e m=1
+.param   
++ area=1  areab=1  areac=1
++ vpnpismatch = agauss(0,1,1)
++ vpnpisematch = agauss(0,1,1)
++ is_mm  = '(1-1.8375e-03*vpnpismatch/sqrt(m))'
++ ise_mm = '(1-1.5500e-01*vpnpisematch/sqrt(m))'
+
+qvd10  c b e vpd10 area=area areab=areab areac=areac
+
+.flat qvd10
+
+.model vpd10 pnp level=1  
++ is = '7.047e-18 *is_mm'
++ bf = '0.8790*3.08*bf_vd10' 
++ nf = '0.9802*nf_vd10' 
++ vaf = '214*vaf_vd10' 
++ ikf = 0.002198 
++ ise = '1.786e-15*ise_mm' 
++ ne = 1.694 
++ br = 0.06668 
++ nr = 0.97 
++ var = 30.5 
++ ikr = 2e-4 
++ isc = 1e-16 
++ nc = 1.03 
++ rb = '37.5*rb_vd10' 
++ irb = 0.001381 
++ rbm = 1.1
++ re = '3.9*re_vd10' 
++ rc = 53.02 
++ xtb = 0 
++ eg = 1.17 
++ xti = 3 
++ cje = '9.8e-14*cje_vd10' 
++ vje = 0.839 
++ mje = 0.3681 
++ cjc = '7.88e-14*cjc_vd10' 
++ vjc = 0.55 
++ mjc = 0.035 
++ xcjc = 1 
++ tr = 0 
++ fc = 0.5 
++ tbf1 = 0.00515 
++ tbr1 = 0.014 
++ tnr1 = -50e-05 
++ tnr2 = -12e-06 
++ tnf1 = 0.0001 
++ tnf2 = -1.3e-06 
++ tlevc = 1 
++ ctc = 0.0001 
++ cte = 0.001 
+.ends  vd10
+
+*
+*hspice model for 5x5 vpnp bipolar junction transistor
+*
+.subckt vd5 c b e m=1
+.param   
++ area=1  areab=1  areac=1
++ vpnpismatch = agauss(0,1,1)
++ vpnpisematch = agauss(0,1,1)
++ is_mm  = '(1-3.1000e-03*vpnpismatch/sqrt(m))'
++ ise_mm = '(1-1.0400e-01*vpnpisematch/sqrt(m))'
+*
+
+qvd5  c b e vpd5 area=area areab=areab areac=areac
+
+.flat qvd5
+
+.model vpd5 pnp level = 1
++ is = '3.68e-18 *is_mm'
++ bf = '0.8790*2.99*bf_vd5' 
++ nf = '1.003*nf_vd5' 
++ vaf = '204*vaf_vd5' 
++ ikf = 0.001355 
++ ise = '8.364e-19 *ise_mm '
++ ne = 1.65 
++ br = 0.08913 
++ nr = 0.9939 
++ var = 41.56 
++ ikr = 2e-4
++ isc = 1e-16 
++ nc = 1 
++ rb = '53.02*rb_vd5' 
++ irb = 0.001688 
++ rbm = 1.1 
++ re = '5.062*re_vd5' 
++ rc = 107.7
++ xtb = 0 
++ eg = 1.17 
++ xti = 3 
++ cje = '2.99e-14*cje_vd5' 
++ vje = 0.8262 
++ mje = 0.3091 
++ cjc = '4.45e-14*cjc_vd5' 
++ vjc = 0.4 
++ mjc = 0.02 
++ xcjc = 1 
++ tr = 0 
++ fc = 0.5 
++ tbf1 = 0.0054 
++ tbr1 = 0.004464
++ tnr1 = -400e-6
++ tnr2 = -10.5e-06 
++ tnf1 = 0.000225 
++ tnf2 = -1e-06 
+*+ tirb1 = 0.026 
++ tlevc = 1 
++ ctc = 0.00465 
++ cte = 0.0028 
+.ends vd5
+
+*
+*hspice model for 2x2 vpnp bipolar junction transistor
+*
+.subckt vd2 c b e m=1
+.param   
++ area=1  areab=1  areac=1
++ vpnpismatch = agauss(0,1,1)
++ vpnpisematch = agauss(0,1,1)
++ is_mm  = '(1-6.7200e-03*vpnpismatch/sqrt(m))'
++ ise_mm = '(1-4.6000e-02*vpnpisematch/sqrt(m))'
+*
+qvd2  c b e vpd2 area=area areab=areab areac=areac
+
+.flat qvd2
+
+.model vpd2 pnp level = 1
++ is = '2.175e-18 *is_mm'
++ bf = '0.8790*2.87*bf_vd2' 
++ nf = '1.04*nf_vd2' 
++ vaf = '196*vaf_vd2' 
++ ikf = 0.0006699 
++ ise = '6.239e-17*ise_mm'
++ ne = 1.62 
++ br = 0.0177 
++ nr = 1.038 
++ var = 23.01 
++ ikr = 2e-4 
++ isc = 1.102e-15 
++ nc = 1.94 
++ rb = '76.56*rb_vd2' 
++ irb = 0.001275 
++ rbm = 1.1 
++ re = '10.69*re_vd2' 
++ rc = 131.5 
++ xtb = 0 
++ eg = 1.17 
++ xti = 3 
++ cje = '4.5e-15*cje_vd2' 
++ vje = 0.1569 
++ mje = 0.0903 
++ cjc = 6.37e-13 
++ vjc = 0.4111 
++ mjc = 0.01138 
++ xcjc = 1 
++ tr = 0 
++ fc = 0.5 
++ tbf1 = 0.006 
++ tnr2 = -1.3e-05 
++ tbr1 = 0.006 
++ tnr1 = -0.0003 
++ tnf1 = 0.0004 
++ tnf2 = -0.4e-06 
++ tikf1 = -0.002 
++ tlevc = 1 
++ ctc = 0.0045 
++ cte = 0.003 
+.ends vd2
+
+**********************************************
+.subckt  vdn5 c b e 
+.PARAM
++ dt='temper-25'
++ t_ne='1.30*((1+(8.0509e-04*dt))+((-3.5862e-07*dt)*dt))'
+qvdn5  c b e vnpn_5x5
+
+.flat qvdn5
+
+.model vnpn_5x5 npn level=1
+* + rbmod=spice
++ is = '3.513e-18  * is_vdn5'    
++ bf = '5.500      * bf_vdn5' 
++ vaf = '60        * vaf_vdn5' 
++ rb = '151.3      * rb_vdn5'  
++ re = '9.10       * re_vdn5'  
++ cje = '2.918e-14 * cje_vdn5' 
++ cjc = '6.854e-14 * cjc_vdn5' 
+*
++ nf=0.9878     ikf=1.340e-02  ise=1.847e-17  ne=t_ne  
++ irb=2e-3      rbm=4.66       rc=100 
++ vje=0.7514    mje=0.4075     fc=0.5 
++ vjc=0.7995    mjc=0.3510     xcjc=1 
++ tlev=0        tlevc=1  
++ tref=25       eg=1.17        xti=3   
++ cte=0.000669  ctc=0.000      tvje=0.0008538   
++ br=0.01       tr=5.099e-09 
++ tf=4.781e-11  xtf=4.359  vtf=3.237 itf=0.01753 ptf=10  
+*
++ tbf1=7.2817e-03    tbf2=5.5167e-06
++ tikf1=-1.9961e-02  tikf2=1.6628e-04
++ trb1=1.9172e-03    trb2=5.8275e-06
++ trc1=-1.3263e-03   trc2=3.2634e-06
+.ends vdn5 
+
+**********************************************
+
+.endl bjt
+*check1
+
+
+
+***************************************************************
+
+*                                                             *
+*               5V Native DEVICES MODEL                  *
+*                                                             *
+**************************************************************
+***************************************************************
+***************** CORNER_LIB OF TYPICAL MODEL ******************
+.lib tt_n5v
+.param 
++ dpcd_n5p0_vt0=0
++ dacd_n5p0_vt0=0
++ dvfb_n5p0_vt0=0.00242
++ dvfbl_n5p0_vt0=0
++ dvfblw_n5p0_vt0=0
++ dk3_n5p0_vt0=0
++ dtox_n5p0_vt0=0
++ dnchl_n5p0_vt0=0
++ dnpck_n5p0_vt0=-0.138u
++ dnchw_n5p0_vt0=0
++ dnchlw_n5p0_vt0=0
++ dnchbynch_n5p0_vt0=0
++ dsrbysr_n5p0_vt0=0
++ dnovbynov_n5p0_vt0=0.03
+.lib 'ts18sl_scl_2019.lib' h5tnative
+.endl tt_n5v
+**************** CORNER_LIB OF  SNSP   MODEL *******************
+.lib ss_n5v
+.param 
++ dpcd_n5p0_vt0=0
++ dacd_n5p0_vt0=0
++ dvfb_n5p0_vt0=0.1291
++ dvfbl_n5p0_vt0=0
++ dvfblw_n5p0_vt0=0
++ dk3_n5p0_vt0=43.641329985
++ dtox_n5p0_vt0=1.1e-09
++ dnchl_n5p0_vt0=0
++ dnpck_n5p0_vt0=0.282u
++ dnchw_n5p0_vt0=0
++ dnchlw_n5p0_vt0=0
++ dnchbynch_n5p0_vt0=0
++ dsrbysr_n5p0_vt0=0.204
++ dnovbynov_n5p0_vt0=-1.9
+.lib 'ts18sl_scl_2019.lib' h5tnative
+.endl ss_n5v
+**************** CORNER_LIB OF  FNFP   MODEL *******************
+.lib ff_n5v
+.param 
++ dpcd_n5p0_vt0=0
++ dacd_n5p0_vt0=0
++ dvfb_n5p0_vt0=-0.1275
++ dvfbl_n5p0_vt0=0
++ dvfblw_n5p0_vt0=0
++ dk3_n5p0_vt0=-35.990185345
++ dtox_n5p0_vt0=-1.1e-09
++ dnchl_n5p0_vt0=0
++ dnpck_n5p0_vt0=-1.25u
++ dnchw_n5p0_vt0=0
++ dnchlw_n5p0_vt0=0
++ dnchbynch_n5p0_vt0=0
++ dsrbysr_n5p0_vt0=-0.15
++ dnovbynov_n5p0_vt0=0.58
+.lib 'ts18sl_scl_2019.lib' h5tnative
+.endl ff_n5v
+**************** CORNER_LIB OF  SNFP   MODEL *******************
+.lib sf_n5v
+.param 
++ dpcd_n5p0_vt0=0
++ dacd_n5p0_vt0=0
++ dvfb_n5p0_vt0=0.0588
++ dvfbl_n5p0_vt0=0
++ dvfblw_n5p0_vt0=0
++ dk3_n5p0_vt0=43.641329985
++ dtox_n5p0_vt0=0
++ dnchl_n5p0_vt0=0
++ dnpck_n5p0_vt0=0.234u
++ dnchw_n5p0_vt0=0
++ dnchlw_n5p0_vt0=0
++ dnchbynch_n5p0_vt0=0
++ dsrbysr_n5p0_vt0=0.11
++ dnovbynov_n5p0_vt0=-1
+.lib 'ts18sl_scl_2019.lib' h5tnative
+.endl sf_n5v
+**************** CORNER_LIB OF  FNSP   MODEL *******************
+.lib fs_n5v
+.param 
++ dpcd_n5p0_vt0=0
++ dacd_n5p0_vt0=0
++ dvfb_n5p0_vt0=-0.0557
++ dvfbl_n5p0_vt0=0
++ dvfblw_n5p0_vt0=0
++ dk3_n5p0_vt0=-35.990185345
++ dtox_n5p0_vt0=0
++ dnchl_n5p0_vt0=0
++ dnpck_n5p0_vt0=-0.81u
++ dnchw_n5p0_vt0=0
++ dnchlw_n5p0_vt0=0
++ dnchbynch_n5p0_vt0=0
++ dsrbysr_n5p0_vt0=-0.105
++ dnovbynov_n5p0_vt0=0.62
+.lib 'ts18sl_scl_2019.lib' h5tnative
+.endl fs_n5v
+***************************************************************************
+.lib h5tnative
+.PARAM
+* 5v native fet process constants
++ type_n5p0_vt0=1
++ nch_n5p0_vt0=3.64e+15
++ tox_n5p0_vt0=1.10000e-08
++ lint_n5p0_vt0=-2.63098e-08
++ ll_n5p0_vt0=1.58412e-13
++ lw_n5p0_vt0=-1.74264e-13
++ lwl_n5p0_vt0=-5.44076e-20
++ lln_n5p0_vt0=1.00000
++ lwn_n5p0_vt0=1.00000
++ wint_n5p0_vt0=6.86624e-09
++ wl_n5p0_vt0=-8.35844e-14
++ ww_n5p0_vt0=-3.97551e-14
++ wwl_n5p0_vt0=-2.95405e-20
++ wln_n5p0_vt0=1.00000
++ wwn_n5p0_vt0=1.00000
+* Mapping Equations for process corners 
++ dldd_n5p0_vt0='dnovbynov_n5p0_vt0 * lint_n5p0_vt0'
++ ddw_n5p0_vt0='-1*(dacd_n5p0_vt0/2)'
++ ddl_n5p0_vt0='dldd_n5p0_vt0 + -1*(dpcd_n5p0_vt0/2)'
++ knch_n5p0_vt0='1 + dnchbynch_n5p0_vt0'
++ kcj_n5p0_vt0='1 + 0.5*dnchbynch_n5p0_vt0'
++ kcjsw_n5p0_vt0='1 + 0.5*dnchbynch_n5p0_vt0'
++ kcjswg_n5p0_vt0='1 + 0.5*dnchbynch_n5p0_vt0'
++ ku0_n5p0_vt0='1 - dsrbysr_n5p0_vt0'
++ krdsw_n5p0_vt0='1 - dnovbynov_n5p0_vt0'
++ vbi_n5p0_vt0='vthermal * log((nch_n5p0_vt0 * 1e6 * 1e26)/(ni*ni))'
++ phis_n5p0_vt0='vthermal * log(nch_n5p0_vt0/ni)'
++ ddvt0_n5p0_vt0='type_n5p0_vt0 * dvfbl_n5p0_vt0/(vbi_n5p0_vt0 - phis_n5p0_vt0)'
++ dnlx_n5p0_vt0='dnpck_n5p0_vt0'
++ ddvt2_n5p0_vt0='dnchl_n5p0_vt0 + dnpck_n5p0_vt0'
++ ddvt0w_n5p0_vt0='dvfblw_n5p0_vt0'
++ ddvt2w_n5p0_vt0='dnchlw_n5p0_vt0'
++ dk3b_n5p0_vt0='dnchw_n5p0_vt0'
++ dnch_n5p0_vt0='nch_n5p0_vt0 * dnchbynch_n5p0_vt0'
++ dvth0_dnch_n5p0_vt0='(type_n5p0_vt0*2*vthermal)/(nch_n5p0_vt0*1e6) + (type_n5p0_vt0*tox_n5p0_vt0/eox) * sqrt((esi*kboltz*tem)/(nch_n5p0_vt0*1e6)) * (1/sqrt(log(nch_n5p0_vt0*1e6/ni)) + sqrt(log(nch_n5p0_vt0*1e6/ni)))'
++ dvth0_dtox_n5p0_vt0='(type_n5p0_vt0*2/eox) * sqrt(esi*kboltz*tem*nch_n5p0_vt0*1e6*(log((nch_n5p0_vt0*1e6)/ni)))'
++ dvth0_nch_n5p0_vt0='dvth0_dnch_n5p0_vt0*1e6*dnch_n5p0_vt0'
++ dvth0_tox_n5p0_vt0='dvth0_dtox_n5p0_vt0 * dtox_n5p0_vt0'
++ dvth0_n5p0_vt0='dvfb_n5p0_vt0 + dvth0_nch_n5p0_vt0 + dvth0_tox_n5p0_vt0'
++ kk1_nch_n5p0_vt0='1 + 0.5*dnchbynch_n5p0_vt0'
++ kk1_tox_n5p0_vt0='1 + dtox_n5p0_vt0/tox_n5p0_vt0'
++ kk1_n5p0_vt0='kk1_nch_n5p0_vt0 * kk1_tox_n5p0_vt0'
++ kcovlp_n5p0_vt0='tox_n5p0_vt0/(tox_n5p0_vt0 + dtox_n5p0_vt0)'
+
+.subckt nath5v d g s b l=1u w=1u nrs=1 nrd=1 m=1 as=0 ad=0 ps=0 pd=0
++Aw='log(w*10)/abs(log(w*10))' 
++myHdif= '0.5*(0.15*(1+Aw)+0.15e-6*(1-Aw))'
++aseff = 'int(1-as*1.5e-7/myHdif)*2*w*myHdif+as'
++pseff = 'int(1-ps*1.5e-7/myHdif)*(2*w+4*myHdif)+ps'
++adeff = 'int(1-ad*1.5e-7/myHdif)*2*w*myHdif+ad'
++pdeff = 'int(1-pd*1.5e-7/myHdif)*(2*w+4*myHdif)+pd'
+
+m d g s b nath5vstat  w=w l=l  as=aseff ps=pseff ad=adeff pd=pdeff nrs=nrs nrd=nrd 
+.flat m
+
+.MODEL nath5vstat NMOS
++ LEVEL=49
++ version=3.24
++ binunit=2
++ mobmod=1
++ capmod=3
++ nqsmod=0
++ minr=1e-60
++ lmin=1.485e-6
++ lmax=1
++ wmin=4.95e-7
++ wmax=1
++ tox='1.1e-8 + dtox_n5p0_vt0'
++ xj=1.2e-7
++ nch=5.194633e15
++ wint='6.866236e-9 + ddw_n5p0_vt0'
++ wl=-8.358438e-14
++ wln=1
++ ww=-3.975508e-14
++ wwn=1
++ wwl=-2.95405e-20
++ lint='-2.630979e-8 + ddl_n5p0_vt0'
++ ll=1.584124e-13
++ lln=1
++ lw=-1.742635e-13
++ lwn=1
++ lwl=-5.440755e-20
++ dwg=9.172499e-9
++ dwb=3.014523e-8
++ xl=0
++ xw=0
++ vth0='-4.86773e-2 + dvth0_n5p0_vt0'
++ lvth0=-1.901078e-8
++ wvth0=-7.340497e-8
++ pvth0=-6.221487e-14
++ k1='0.20805 * kk1_n5p0_vt0'
++ pk1=3.367767e-13
++ k2=-1.17208e-2
++ lk2=-5.193219e-9
++ wk2=0
++ pk2=-3.51624e-14
++ k3='9.415957 + dk3_n5p0_vt0'
++ lk3=8.633666e-6
++ wk3=-1.480935e-5
++ pk3=-1.891155e-12
++ k3b='23.265622 + dk3b_n5p0_vt0'
++ lk3b=1.714405e-6
++ wk3b=-6.276647e-6
++ pk3b=-3.148796e-13
++ w0=2.326555e-6
++ nlx='2.811935e-6 + dnlx_n5p0_vt0'
++ dvt0='0.424374 + ddvt0_n5p0_vt0'
++ dvt1=9.76268e-2
++ dvt2='8.84478e-2 + ddvt2_n5p0_vt0'
++ dvt0w='5.302964 + ddvt0w_n5p0_vt0'
++ ldvt0w=-2.050524e-7
++ dvt1w=3.187286e5
++ dvt2w='0.319371 + ddvt2w_n5p0_vt0'
++ ldvt2w=-4.555756e-7
++ ngate=1e30
++ u0='7.08619e-2 * ku0_n5p0_vt0'
++ lu0=0
++ pu0=-1.456534e-14
++ ua=2.765736e-9
++ lua=1.08221e-16
++ wua=1.087615e-15
++ pua=-2.129702e-21
++ ub=-5.363679e-19
++ lub=-5.876877e-25
++ wub=-2.674102e-24
++ pub=2.285179e-30
++ uc=2.91835e-12
++ luc=-2e-17
++ wuc=-3.55048e-17
++ puc=1.588473e-22
++ vsat = 9.11528E4              
++ pvsat = -3.633468E-8          
++ a0 = 1.10946
++ la0 = -1.6594E-6              
++ wa0 = -7.71532E-7             
++ pa0 = 1.042932E-12
++ ags=0.435593
++ lags=8.618652e-7
++ wags=-9.035979e-8
++ pags=7.395267e-13
++ b0=-4.682504e-8
++ b1=-3.9e-8
++ keta=-7.50256e-2
++ lketa=7.128345e-8
++ wketa=2.87925e-8
++ pketa=-4.16509e-14
++ a1 = 0                        
++ la1 = 0
++ wa1 = 0                       
++ pa1 = 0                       
++ a2 = 1
++ la2 = 0                       
++ wa2 = 0                       
++ pa2 = 0
++ rdsw='916.306285 * krdsw_n5p0_vt0'
++ lrdsw=3.00251e-4
++ prdsw=-1.681065e-10
++ prwb=0.122365
++ lprwb=-4.279133e-8
++ pprwb=-5.308107e-14
++ prwg=-9.6375e-3
++ lprwg=-3.855e-8
++ wr=1
++ voff=-0.6475
++ lvoff=5.948518e-7
++ pvoff=0
++ nfactor=10.701403
++ lnfactor=-1.214063e-5
++ wnfactor=1.359166e-5
++ pnfactor=1e-14
++ eta0=0.365476
++ weta0=2.4e-7
++ peta0=-5.290125e-14
++ etab=0.129312
++ petab=-1.011451e-14
++ dsub=0.733214
++ cit=4.429209e-4
++ cdsc=0
++ cdscb=0
++ cdscd=4.007349e-6
++ pclm=5e-3
++ pdiblc1=-0.03705
++ ppdiblc1=-2.151355e-14
++ pdiblc2=0.012907
++ ppdiblc2=7.874471e-14
++ pdiblcb=0
++ drout=0.550938
++ pscbe1=1.220527e7
++ pscbe2=1.5e-9
++ pvag=-0.56539
++ delta=0.01
++ alpha0=0
++ beta0=0
++ elm=0
++ xpart=1
++ cgso='2.5e-10 * kcovlp_n5p0_vt0'
++ cgdo='2.5e-10 * kcovlp_n5p0_vt0'
++ cgbo=0
++ ckappa=0.6
++ cf=0
++ clc=1e-7
++ cle=0.6
++ dlc='0 + ddl_n5p0_vt0'
++ dwc=0
++ vfbcv=-1
++ cgsl='1e-10 * kcovlp_n5p0_vt0'
++ cgdl='1e-10 * kcovlp_n5p0_vt0'
++ ldif=0
++ acm=12
++ calcacm=1
++ hdif=0
++ rsh=0
++ rd=0
++ rs=0
++ rsc=0
++ rdc=0
++ cj='6.5412e-5 * kcj_n5p0_vt0'
++ mj=0.359
++ cjsw='1.09968e-11 * kcjsw_n5p0_vt0'
++ mjsw=0.342
++ pb=0.582
++ pbsw=0.498
++ tcj=0.00176
++ tcjsw=0.00148
++ tpb=0.00256
++ tpbsw=0.0023
++ tnom=25
++ ute=-1.703831
++ kt1=-0.168254
++ lkt1=-1.999481e-8
++ pkt1=-7.495551e-13
++ kt1l=6.578436e-9
++ kt2=4.11852e-2
++ wkt2=0
++ ua1=1.680725e-10
++ lua1=3.610189e-15
++ wua1=-2.673123e-15
++ pua1=-6.536181e-22
++ ub1=-2.009903e-18
++ lub1=-6.37057e-24
++ wub1=4.704149e-24
++ pub1=5.785637e-31
++ uc1=-2.8e-11
++ luc1=3.419922e-17
++ puc1=-8.4e-23
++ at=2.319603e4
++ wat=0.115365
++ pat=-2.250695e-7
++ prt=182.011453
++ xti=3
++ saref=1e-6
++ sbref=1e-6
++ wlod=0
++ ku0=0
++ kvsat=0
++ kvth0=0
++ tku0=0
++ llodku0=1
++ wlodku0=1
++ llodvth=1
++ wlodvth=1
++ lku0=0
++ wku0=0
++ lkvth0=0
++ wkvth0=0
++ pkvth0=0
++ stk2=0
++ lodk2=1
++ steta0=0
+
+.ends nath5v
+.endl h5tnative
+
+
+*                                             
+********************************************************************
+*0.18 um Accumulation Capacitor models
+* Scalable model 
+* Includes matching
+*                  
+********************************************************************
+*                                        17 Sept 2006    
+********************************************************************
+
+
+* Metal Fringe Capacitor
+* 2 Terminals & 3 Terminals Models
+*************************************************************
+*Model parameters: 
+*	length = length of finger
+*	nf     = number of finger PAIRS
+*************************************************************
+
+.lib mfc_typ
+.param c_den=0.84e-3
+.param c_den6=1.01e-3
+.param c_den4=0.67e-3
+.param c_den3=0.5e-3
+.param c_sub=1
+.param c_mpc=1
+.lib 'ts18sl_scl_2019.lib' mfc
+.endl mfc_typ
+
+.lib mfc_high
+.param c_den=1.04e-3
+.param c_den6=1.25e-3
+.param c_den4=0.83e-3
+.param c_den3=0.62e-3
+.param c_sub=0.85
+.param c_mpc=1.2
+.lib 'ts18sl_scl_2019.lib' mfc
+.endl mfc_high
+
+.lib mfc_low
+.param c_den=0.64e-3
+.param c_den6=0.77e-3
+.param c_den4=0.51e-3
+.param c_den3=0.38e-3
+.param c_sub=1.15
+.param c_mpc=0.8
+.lib 'ts18sl_scl_2019.lib' mfc
+.endl mfc_low
+
+
+.lib mfc
+
+
+
+.subckt usgcm52t n1 n2 l=length nf=num_fingers m=1
+.param c_density='c_den*1.136'
+.param pitch=0.58e-6	
+.param ptc1=23.554e-6   
+.param ptc2=0.0291e-6   
+.param vc2=-5.5e-7   
+.param pt='temper'  
+.param Al='log(l*10)/abs(log(l*10))'
+.param lreal='0.5*(l*(1+Al)*1e-6+l*(1-Al))'    
+.param tfac='1.0+ptc1*(pt-25.0)+ptc2*(pt-25.0)*(pt-25.0)'
+.param mfcmatch= 'sqrt(0.5)*(2.4e-6/(lreal*2*nf*2*m) + 6.6e-4)'
+.param rfac= agauss(0,mfcmatch,1)
+c1 n1 n2 '(2*nf-1)*c_density*lreal*pitch*tfac*(1-rfac)*(1+vc2*v(n1,n2)*v(n1,n2))'
+.ends usgcm52t 
+
+
+.subckt usgcm53t n1 n2 n3 l=length nf=num_fingers m=1
+.param c_density='c_den*1.136'
+.param pitch=0.58e-6	
+.param ptc1=23.554e-6   
+.param ptc2=0.0291e-6   
+.param vc2=-5.5e-7   
+.param c_density_parasitic='1.79e-5*c_sub'
+.param pt='temper'  
+.param Al='log(l*10)/abs(log(l*10))'
+.param lreal='0.5*(l*(1+Al)*1e-6+l*(1-Al))'              	
+.param tfac='1.0+ptc1*(pt-25.0)+ptc2*(pt-25.0)*(pt-25.0)'
+.param mfcmatch= 'sqrt(0.5)*(2.4e-6/(lreal*2*nf*2*m) + 6.6e-4)'
+.param rfac= agauss(0,mfcmatch,1)
+c1 n1 n2 '(2*nf-1)*c_density*lreal*pitch*tfac*(1-rfac)*(1+vc2*v(n1,n2)*v(n1,n2))'
+cp1 n1 n3 'nf*c_density_parasitic*lreal*pitch*tfac'
+cp2 n2 n3 'nf*c_density_parasitic*lreal*pitch*tfac'
+.ends usgcm53t 
+
+
+.subckt usgcm32t n1 n2 l=length nf=num_fingers m=1
+.param c_density='c_den3*1.136'
+.param pitch=0.58e-6	
+.param ptc1=23.554e-6   
+.param ptc2=0.0291e-6   
+.param vc2=-5.5e-7   
+.param pt='temper'  
+.param Al='log(l*10)/abs(log(l*10))'
+.param lreal='0.5*(l*(1+Al)*1e-6+l*(1-Al))'    
+.param tfac='1.0+ptc1*(pt-25.0)+ptc2*(pt-25.0)*(pt-25.0)'
+.param mfcmatch= 'sqrt(0.5)*(2.4e-6/(lreal*2*nf*2*m) + 6.6e-4)'
+.param rfac= agauss(0,mfcmatch,1)
+c1 n1 n2 '(2*nf-1)*c_density*lreal*pitch*tfac*(1-rfac)*(1+vc2*v(n1,n2)*v(n1,n2))'
+.ends usgcm32t 
+
+.subckt usgcm33t n1 n2 n3 l=length nf=num_fingers m=1
+.param c_density='c_den3*1.136'
+.param pitch=0.58e-6	
+.param ptc1=23.554e-6   
+.param ptc2=0.0291e-6   
+.param vc2=-5.5e-7   
+.param c_density_parasitic='1.79e-5*c_sub'
+.param pt='temper'  
+.param Al='log(l*10)/abs(log(l*10))'
+.param lreal='0.5*(l*(1+Al)*1e-6+l*(1-Al))'              	
+.param tfac='1.0+ptc1*(pt-25.0)+ptc2*(pt-25.0)*(pt-25.0)'
+.param mfcmatch= 'sqrt(0.5)*(2.4e-6/(lreal*2*nf*2*m) + 6.6e-4)'
+.param rfac= agauss(0,mfcmatch,1)
+c1 n1 n2 '(2*nf-1)*c_density*lreal*pitch*tfac*(1-rfac)*(1+vc2*v(n1,n2)*v(n1,n2))'
+cp1 n1 n3 'nf*c_density_parasitic*lreal*pitch*tfac'
+cp2 n2 n3 'nf*c_density_parasitic*lreal*pitch*tfac'
+.ends usgcm33t
+
+
+.endl mfc
+
+
+*******************************
+	*RESISTORS MODELS*
+*******************************
+
+
+.lib res2tnew_typ
+.param
++dw_lytho_2t=0             dl_lytho_2t=0
++var_tch2t=1
++cres_mr23t_2t=7 rsh_mr23t_2t=2000 
+.lib 'ts18sl_scl_2019.lib' res2tnew
+.endl res2tnew_typ
+
+
+.lib res2tnew_high
+.param
++dw_lytho_2t=+0.022u        dl_lytho_2t=+0.015u
++var_tch2t=1.12
++cres_mr23t_2t=30 rsh_mr23t_2t=2320 
+.lib 'ts18sl_scl_2019.lib' res2tnew
+.endl res2tnew_high
+
+
+.lib res2tnew_low
+.param
++dw_lytho_2t=-0.022u        dl_lytho_2t=-0.015u
++var_tch2t=0.88
++cres_mr23t_2t=1 rsh_mr23t_2t=1700
+.lib 'ts18sl_scl_2019.lib' res2tnew
+.endl res2tnew_low
+
+
+.lib res2tnew
+
+
+
+.subckt mr22t n1 n2 l='1u' w='1u' ssegs=1 m=1
+.param aw='log(w*10)/abs(log(w*10))'
+.param al='log(l*10)/abs(log(l*10))'
+.param wreal='0.5*(w*(1+aw)*1e-6+w*(1-aw))'
+.param lreal='0.5*(l*(1+al)*1e-6+l*(1-al))'
+.param ca='9.55320e-05'
+.param cp='1.66935e-11'
+.param cres='cres_mr23t_2t'
+.param dw='20.0e-9+dw_lytho_2t'
+.param pitch=0.47e-6
+.param rint='-75.6e-6+dl_lytho_2t*2000'
+.param rsh='rsh_mr23t_2t'
+.param tc1='-1.688m*var_tch2t'
+.param tc2=3.44u
+.param vc1='-0.142m/ssegs'
+.param vc2='-0.01645m/(ssegs*ssegs)'
+.param pt='temper'
+.param apelg=1.67e-8
+.param rmatch = '(apelg/sqrt(2*lreal*wreal*m))'
+.param rfac = agauss(0,rmatch,1)
+.param r3fac = agauss(0,1,1)
+.param match_r  = '1-rfac'
+.param tfac = '(1+tc1*(pt-27)+tc2*(pt-27)*(pt-27))'
+.param rcon = '(cres*pitch)/wreal'
+.param rend = 'rint/(wreal-dw)'
+r1 n1 n2 '2*rcon*ssegs + rsh*lreal/(wreal-dw)*(1+vc1*abs(v(n2,n1))+vc2*v(n2,n1)*v(n2,n1))*tfac*match_r'
+.ends mr22t
+
+.endl res2tnew
+
+
+.lib res3tnew_typ
+.param
++cres_mr23t_3t=7        rsh_mr23t_3t=2000 
++dw_lytho=0.0           dl_lytho=0.0
++var_tch=1
+.lib 'ts18sl_scl_2019.lib' res3tnew
+.endl res3tnew_typ
+
+
+.lib res3tnew_high
+.param
++cres_mr23t_3t=30       rsh_mr23t_3t=2320 
++dw_lytho=+0.022u       dl_lytho=+0.015u
++var_tch=1.12
+.lib 'ts18sl_scl_2019.lib' res3tnew
+.endl res3tnew_high
+
+
+.lib res3tnew_low
+.param
++cres_mr23t_3t=1        rsh_mr23t_3t=1700 
++dw_lytho=-0.022u       dl_lytho=-0.015u
++var_tch=0.88
+.lib 'ts18sl_scl_2019.lib' res3tnew
+.endl res3tnew_low
+
+.lib res3tnew
+
+*** .hdl 'r3_cmc.va' [REMOVED]
+
+
+
+
+.subckt mr23t n1 n2 n3 l='1u' w='1u' ssegs=1 m=1
+.param aw='log(w*10)/abs(log(w*10))'
+.param al='log(l*10)/abs(log(l*10))'
+.param wreal='0.5*(w*(1+aw)*1e-6+w*(1-aw))'
+.param lreal='0.5*(l*(1+al)*1e-6+l*(1-al))'
+.param ca='9.55320e-05'
+.param cp='1.66935e-11'
+.param cres='cres_mr23t_3t'
+.param dw='20.0e-9+dw_lytho'
+.param pitch=0.47e-6
+.param rint='-75.6e-6+dl_lytho*2000'
+.param rsh='rsh_mr23t_3t'
+.param tc1='-1.688m*var_tch'
+.param tc2=3.44u
+.param vc1='-0.142m/ssegs'
+.param vc2='-16.45u/(ssegs*ssegs)'
+.param pt='temper'
+.param apelg=1.67e-8
+.param rmatch = '(apelg/sqrt(2*lreal*wreal*m))'
+.param rfac = agauss(0,rmatch,1)
+.param r3fac = agauss(0,1,1)
+.param match_r  = '1-rfac'
+.param tfac = '(1+tc1*(pt-27)+tc2*(pt-27)*(pt-27))'
+.param rcon = '(cres*pitch)/wreal'
+.param rend = 'rint/(wreal-dw)'
+.param dl_r1='rint*ssegs*1e-3'
+rc1 n1 a 'rcon*ssegs' 
+r1 a b 'rsh*(lreal+dl_r1)/(4*(wreal-dw))*(1+vc1*abs(v(n2,n1))+vc2*v(n2,n1)*v(n2,n1))*tfac*match_r' 
+r2 b c 'rsh*(lreal+dl_r1)/(4*(wreal-dw))*(1+vc1*abs(v(n2,n1))+vc2*v(n2,n1)*v(n2,n1))*tfac*match_r' 
+r3 c d 'rsh*(lreal+dl_r1)/(4*(wreal-dw))*(1+vc1*abs(v(n2,n1))+vc2*v(n2,n1)*v(n2,n1))*tfac*match_r' 
+r4 d e 'rsh*(lreal+dl_r1)/(4*(wreal-dw))*(1+vc1*abs(v(n2,n1))+vc2*v(n2,n1)*v(n2,n1))*tfac*match_r' 
+rc2 e n2 'rcon*ssegs' 
+c1 a n3 '(ca*(wreal-dw) + 2*cp)*(lreal/5)' 
+c2 b n3 '(ca*(wreal-dw) + 2*cp)*(lreal/5)' 
+c3 c n3 '(ca*(wreal-dw) + 2*cp)*(lreal/5)' 
+c4 d n3 '(ca*(wreal-dw) + 2*cp)*(lreal/5)' 
+c5 e n3 '(ca*(wreal-dw) + 2*cp)*(lreal/5)' 
+.ends mr23t
+
+.endl res3tnew
+
+

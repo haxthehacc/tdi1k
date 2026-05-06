@@ -1,0 +1,8 @@
+cUiMoveCellToBin {PIOHO_50_50} {IO}
+cUiSelectCellP {PIOHO_50_50}
+cUiSetViewStatus {PIOHO_50_50} {layout} {1}
+cUiSetViewStatus {PIOHO_50_50} {logical} {1}
+cUiSetViewStatus {PIOHO_50_50} {abstract.pin} {1}
+cUiSetViewStatus {PIOHO_50_50} {abstract.ext} {1}
+cUiSetViewStatus {PIOHO_50_50} {abstract} {3}
+cUiSetViewStatus {PIOHO_50_50} {abstract.ver} {0}

@@ -1,0 +1,22 @@
+* File: nr02da.sp.nr02da.pxi
+* Created: Sun Feb 14 19:49:04 2010
+* 
+cc_1 A2 U36_in 0.238208f
+cc_2 A2 VSS 0.0507618f
+cc_3 A2 A1 0.0881235f
+cc_4 A2 VDD 0.0410375f
+cc_5 U36_in VSS 0.352351f
+cc_6 U36_in A1 0.396358f
+cc_7 U36_in VDD 0.280135f
+cc_8 U36_in U36_out 0.171137f
+cc_9 U36_in ZN 0.00160157f
+cc_10 U36_in u1_source 0.0672845f
+cc_11 VSS A1 0.0119831f
+cc_12 VSS U36_out 0.307496f
+cc_13 VSS ZN 0.381977f
+cc_14 A1 VDD 0.0667888f
+cc_15 A1 U36_out 0.14083f
+cc_16 VDD U36_out 0.564592f
+cc_17 VDD ZN 0.830008f
+cc_18 VDD u1_source 0.0131177f
+cc_19 U36_out ZN 1.33369f

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>DESCRIPTION :</h1>
+'ind_diff' is a differential inductor. The Design Kit
+for inductors is closely integrated with a Matlab executable that is
+used to calculate performance and model parameters for any inductor
+given a set of geometric properties of the inductor.
+<h1>ATTRIBUTES :</h1>
+<h3>Taken from 'Edit Inductor Parameters' form</h3>
+<ul>
+  <li><b>Inductor Type:</b> Indicates the name of the Matlab model that
+this inductor is using - for the vast majority of inductors, this
+parameter cannot be changed.</li>
+  <li><b>Xsize:</b> The total width of the inductor in the X direction.</li>
+  <li><b>Ysize:</b> The total height of the inductor in the Y
+direction. Value is equal to Xsize.</li>
+  <li><b>Width:</b> Controls the width of the inductor segments.</li>
+  <li><b>Spacing:</b> Controls the space between inductor segments.</li>
+  <li><b>Num of Turns:</b> Controls the total number of turns in the
+inductor. A quarter turn is .25, a full turn is 1. For instance, to
+create an inductor with four and a half turns, specify Num of Turns =
+4.5.</li>
+  <li><b>Draw Shield:</b> Not available for this inductor.</li>
+  <li><b>Polyimide:</b> Adds polyimide</li>
+  <li><b>PackageEr:</b> Sets the packaging dielectric constant</li>
+  <li><b>Operating Freq:</b> This specifies the application frequency
+at which the inductor is targeted for. This parameter is used by the
+Matlab executable from which to calculate some of the inductor
+performance parameters, such as Peak Q.</li>
+  <li><b>End Freq:</b> This parameter specifies the high end of the
+frequency range for which to compute Y parameters by the Matlab
+executable.</li>
+  <li><b>Draw Center Tap:</b> Controls whether the center tap is drawn.</li>
+  <li><b>Toggle Circuit Params Display:</b> Toggling this button
+displays or hides all parameters associated with the model for this
+inductor as computed by the Matlab executable.</li>
+</ul>
+<h1>NOTES:</h1>
+<ul>
+  <li>The inductor pcell generates a marking layer around the layout.
+This marking layer is used to identify the inductor during LVS.</li>
+  <li>No layer can be run over or under the inductor.</li>
+  <h1>LVS:</h1>
+  <li>The following attributes are checked during LVS: </li>
+  <br>
+Width, Spacing, Number of Turns, XSize and YSize
+</ul>
+<ul>
+  <br>
+</ul>
+</body>
+</html>

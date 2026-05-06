@@ -1,0 +1,15 @@
+* library mimcaplib
+
+.LIB NOM
+.LIB 'ts18sl_scl.lib' mimcap_typ
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl.lib' mimcap_low
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl.lib' mimcap_high
+.ENDL SLOW
+
+* end library mimcaplib

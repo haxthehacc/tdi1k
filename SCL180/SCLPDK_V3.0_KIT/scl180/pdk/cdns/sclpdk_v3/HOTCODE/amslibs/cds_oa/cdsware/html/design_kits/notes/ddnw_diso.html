@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>DESCRIPTION :</h1>
+'ddnw' and 'diso' implement the deep nwell "Triple Well" connectivity
+by
+providing a three terminal model of the isolated pwell, the nwell ring,
+and the bulk psubstrate. No layout view is provided at this time to
+generate the deep nwell ring structure.
+<h1>ATTRIBUTES:</h1>
+<ul>
+  <li><b>Calculate Parameter:</b> Calculate area, width, or length </li>
+  <li><b>Area:</b> Area of the inner isolated pwell island. </li>
+  <li><b>Width:</b> Width of the inner isolated pwell island. </li>
+  <li><b>Length:</b> Length of the inner isolated pwell island. </li>
+  <li><b>Perimeter:</b> Perimeter of the inner isolated pwell island. </li>
+</ul>
+<h1>NOTES:</h1>
+Connectivity for this device are best explained by example.<br>
+Here is a sample schematic and layout showing how the pins and
+connectivity is defined:<br>
+<br>
+<img src="../images/dnw_diso_sch.gif" title=""
+ alt="Schematic representation" style="width: 640px; height: 310px;"><br>
+<br>
+<br>
+<img src="../images/dnw_layout.gif" title="" alt="Layout representation"
+ style="width: 559px; height: 347px;"><br>
+<br>
+<ul>
+</ul>
+<h1>LVS:</h1>
+<ul>
+  <li>The following attributes are checked during LVS : connectivity.</li>
+  <li>An LVS runtime flag 'CompareDnwDiode' can be used to enable
+verification of area/perimeter of the ddnw and diso diodes.<br>
+  </li>
+</ul>
+</body>
+</html>

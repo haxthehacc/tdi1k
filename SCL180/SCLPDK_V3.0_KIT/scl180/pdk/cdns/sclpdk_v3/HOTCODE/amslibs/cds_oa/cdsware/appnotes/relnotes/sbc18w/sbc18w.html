@@ -1,0 +1,1672 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+_______________________________________________________________________________
+Date: 09/23/2005
+Library: sbc18w (sbc18mw/sbc18mv/sbc18mwd/sbc18qw)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0179, rev.11
+Electrical Spec: NPB-PS-0267, rev.11
+
+Highlights for this release:
+* Changed/update spectre Operating Point to work with latest models
+* Added warning on RF fets when any option other than "lr" or "lbrt" is
+  selected. All other options except these two will be removed in a future
+  kit release.
+* Initial release support for verification with Cadence Assura and Assura with SNA
+
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2, IC5.1.41USR1
+* Mentor Calibre releases 9.1_1, 9.1_5, 2003.04, 2004.04_11.22
+* Cadence Assura releases 3.1.2_USR1 and 3.1.3_USR1 (IC50.33USR2)
+* ADS release 2003C
+* Cadence SNA release 3.2
+* NOT Supported: IC5.1.41 USR2. This release causes issues with CDF callbacks.
+
+Process Variant Support:
+* This design kit supports the following process variants and verification decks:
+  sbc18mw, sbc18mv, sbc18mwd, sbc18qw
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to an
+  appropriate process variant in order to use these design kits.
+  If this variable is not set, the kit will refuse to function.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* Corrected issue with Jazz custom tool that saves Artist save states as
+  cellviews. Addressed issue where state names that required escaped
+  characters would not be saved as cellviews properly.
+* Created new release notes function to show kit or variant specific release notes
+* Fixed issue with Artist State loading to resolve spurious "Artist states
+  directory contents are different" message
+* Removed unused/legacy application notes from JAZZ menu item in all windows.
+  Removed unused/legacy documents from cdsware/appnotes directory.
+* Changed behavior of HTML based application notes to try to use existing
+  browser instead of opening a new one. Browser to be launched is still
+  hard-coded as "netscape" - this will be addressed in a future release.
+* Moved Inductor Toolkit "cdsio" environment variables to script file.
+  If you use the Jazz-provided RDS.cshrc file, this will not require any
+  changes in your setup.
+* Fix problem with Inductor Search tool in certain cases where the
+  CDF Property form would not be updated when an inductor was chosen from 
+  search list.
+* Removed non-functional system.cdsplotinit link from amslibs/cds445/etc.
+* Updated Artist-related Jazz functions to be aware of AMS Designer. AMS
+  Designer is not currently supported by this design kit release.
+* Change Jazz CBR netlist generator to use viewName from the currentWindow
+  instead of fixing it to view name "schematic".
+
+
+Kit Limitation:
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.  Off-grid errors may also
+  occur. You can correct these errors by using the Snap To Grid menu item.
+
+Technology Library:
+* Add layers and datatypes needed for Cadence Assura with SNA tool support.
+
+Device Library, general:
+* Remove Discrete_Devices library from Cadence Library Manager. This library
+  contained discrete passives that were not supported by Jazz. The library
+  itself is shipped with the kit, but will be removed from the next release.
+  If you still need this library, you can add it to your cds.lib file by
+  adding this line to your local or project cds.lib file:
+  DEFINE Discrete_Components $RDS_CDSLIBS/Discrete_Components/devices
+* Addressed an off-grid issue with guard-ring and area/line contact creation.
+  Affects many devices, but not all, that have integrated guard rings.
+  Affects Jazz area and line contact creation utilities.
+
+Device Library, Updated devices:
+* 3.3V M/S fets (p3p3fet*, n3p3fet*) - Fixed implant gap for 2MetRF, slice > 1
+* RF Fet devices: Added new simulator parameters ring_sub and ngcon and simulator
+  info note. Updated spectre operating point and model point data to
+  support Cadence IC50.33 release and match new model release.
+* MIM caps: Updated OP data to match latest model release.
+* MIM caps: Moved most parasitics from extraction to simulation model. This corrects
+  problem with simulated Q being too large.
+* balun: Update callback to work from interactive and batch mode. Remove "sub"
+  pin in ivpcell view.
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  creation. ADS views added where needed for all devices to enable ADS simulation
+  of Assura extracted views.
+
+ESD Library:
+* Updated schematic values for diodes to better match layout values.
+
+Model changes, version 5.0c
+2005/09/06
+CAP:
+- Add new models c3t_mim3, c4t_mimw3, c3t_smim6, c4t_smimw6. These models
+  are not used in the sbc18w design kit
+
+Model changes,  version 5.0b
+2005/08/30
+PNP:
+- Update vpnp_hp model to latest measurements from k31194. These models
+  are not used in the sbc18w design kit
+RES:
+- Add new model twv for through-wafer-via. These models are not used in
+  the sbc18w design kit
+
+Model changes, version 5.0a
+2005/05/19
+CAP:
+- Correct issue with metal resistance width calculation for top and bottom
+  plate in MIM caps.
+
+Model changes, version 5.0
+2005/05/13
+
+- Operating point or current probing in old kit may not work on new model,
+  and new OP or current probing may not work when using older model.
+  Use Results Browser or Results Display to review OP data if it is
+  not visible in the schematic.
+
+FET:
++ RF Fet changes:
+  = Improved gate resistance model for all RF FETs that includes salicide to
+    poly contact resistance, which is important in narrow width devices.
+  = New HV (3.3v) RF models (n3p3fet_rf and p3p3fet_rf) based on double sided
+    gate contacts and ringed substrate. Includes modified internal topology
+    from previous kit releases.
+  = New scalable substrate resistance model for 3.3v RF FETs.
+    Substrate T-network is now used for all 1.8 and 3.3v RF FETs
+    poly contact resistance, which is important in narrow width devices
+  = New high-frequency noise model for the 1.8v RF NFET is provided for
+    Spectre ONLY. Set cdf parameter hf_noise =1 to enable this model.
+- Re-targetted corner and statistical models w/ tighter oxide thickness
+    variation as per new E-spec. (1.8v: +/- 1 ang. corners, +/- 1.5 ang.
+    statistical; 3.3v: +/-1.8 ang. corners, +/- 3 ang. statistical).
+    Overlap capacitance corners now track oxide thickness and DL variations.
+    No change in nominal models for MS 1.8v and 3.3v FETs
+- Improved SLOWFAST and FASTSLOW corners that track statistical correlations
+  between N and PFETs
+- 3.3V HVMOS devices n3p3fet_ld, p3p3fet_ld: Improve AC performance
+  with model update and move drain-bulk diode out of MOS primitive.
+- Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+- Revise nwell resistor in PC to use simplified resistor model.
+- Modify mos varactor to add met2_con parameter. met2_con=1 adds metal2
+  interconnect parasitics from Pcell into model behavior.
+- Add silicide-to-poly contact resistance in mos varactor model.
+- Provide d_dnw deep nwell diodes subckt model.
+PNP:
+- Update pl1g model based on measurement data (lot:K38791,10 wafers,105 dies)
+  using new device structure (SB-opening=0.8x0.8um2) which shows very low
+  emitter contact resistance and much less high current variation.
+- Correct the sign for lpnp_vaf_factor in corner model 
+Capacitor:
+- Add R_via, R_tp and L_tp (top plate), L_bp (bottom plate)
+  into all mim cap models
+- add c3t_mim2_mw, c3t_mimw2_mw, c4t_mimw2_mw for SBC18MW (~MWD,~MV) process
+- add c3t_mim2_qb, c3t_mimw2_qb, c4t_mimw2_qb 
+  c3t_smim4_qb, c3t_smimw4_qb, c4t_smimw4_qb for SBC18QB process  
+Inductor:
+- Integrate Inductor Toolbox 2.0 inductor models.
+- Add balun models for sbc18_m3_3u metallization
+Statistical:
+- Update devices to match changes to corner model
++ Update devices to use common statistical parameters:
+- Add d_dnw device model
+- Inductors: Integrate Inductor Toolbox 2.0 inductor models.
+- Resistors: remove rho_factor from rhosub equation
+
+Verification:
+* If metal blocking layers are used, the data under the blocking layers
+  must obey the Analog Block (OP.*) rules. This is a design rule change
+  for this release.
+
+Calibre:
+- Tested with versions 9.1_1, 9.1_5, 2003.04, and 2004.04_11.22
+- To use Jazz PEX flow with XCalibre, you must use a Mentor Graphics
+  release earlier than 2003.05. Later releases no longer ship the
+  XCalibre extraction software needed for the PEX flow, although the
+  releases can be used for DRC and LVS.
+
+Calibre deck changes:
+- Updated Calibre common directory to version t018. Change history below
+  shows changes from t015 to t018.
+- Add polyimide support. To enable PI, you must set an environment variable
+  before using the deck:
+    setenv polyimide=y
+
+Antenna
+- No change
+Density
+- No change
+DRC
+- Add custom bump pad rules, 9.A/B for silox or polyimide
+- Revise vias and NPNs to support new variants
+- Revise Mos Varactor to support scalable varactor
+- Add 15.Bad
+- Update merged poly polygon derivation and rules for 2.M* rules.  - Limit 2.M
+  rules to unbroken rings (DONUT) of active. This improves run time and
+  enforces the unbroken ring rule.
+- Update metal spacing rules (8/18/28/38/48/58.B.a) to allow for
+  0.5 degree margin in spacing.
+- Remove Jazz Bump Pad rules
+- Add new rules B.41 and 23.D
+- Slight change to Active ring down/up size. Changed from 2.495 to 2.498,
+  and 4.495 to 4.498, and 9.995 to 9.998. Since the grid is 0.005, the previous
+  version would miss the check if it was 1 grid short of the rule.
+- Correct description of rule 8.B.b
+- Add checking of all vias to 27.A. Previously, vias inside the body of some devices weren't checked by 27.A
+- Add BD.54a for 6 metal process.
+- Update DNW.Bad for process that support DNW to not require DNW to have NWELL when it is in the artifact.
+- Update B.12/B.14 to allow for a ring structure to be drawn that is not part of a bipolar device.
+- Fix B.28/VAR.17/B.31 to check in artifact.
+- LP.C/D/E/F/G - Change error marker region that is displayed to show the actual drawn data in violation instead of the resized data used in the rule. Check greater-than vs GT-equal.
+- Fix SMC17 false error that could occur if SMIM has a regular MIM close to it that uses metal3 for routing
+ERC
+- Add deep<->nwell soft-connect check
+- Revise and simplify substrate derivation to support ldfet better
+LUP
+- No change
+LVS
+- Update support for mos varactor to handle finger/segment extraction
+  and scalable device. Also update tosupport metal filtering for model
+  update.
+- Update MIM cap to support metal filtering for model update
+- Update p3p3fet_ld extraction to support model pin change
+PEX
+- Add top plate MIM metal filtering to match model change.
+- Add polyimide overcoat support option to PEX deck
+STRESS
+- Update ST.A,B,I derivation to better handle slits, slit spacing,
+  and big metal
+- Change to rule description in MC13/14/15/16,SMC42/43/45/46 rules to better
+  explain small die vs large die. No change is made to small or large die
+  derivations. Small die is when all sides are <= 6350u. Large die is when
+  any side is > 6350u.
+- Change to MC13/14/15/16,SMC42/43/45/46 rules to check greater-than. Previously,
+  these rules checked greater-than or equal-to.
+
+Assura
+- Tested with version 3.1.2_USR1, 3.1.3_USR1
+- You must define the Jazz verification decks using the "technology library"
+  method in Assura. DRC, LVS, and RCX runs will not function correctly
+  if you directly reference the ruledeck files. See Cadence's documentation
+  for more information on defining the Assura ruledecks in this manner.
+
+Known issues:
+* DRC:
+  - Certain standard cell metal layout styles can create a false
+  8/18/28/38/48.C.a violation.
+* LVS:
+  - nfet_esd/n3p3fet_esd will not pass LVS when fingers > 1.
+
+Antenna:
+- Initial release
+Density:
+- Initial release
+- Change output library writing to use RDS_CDS_VERIFY_TECH instead
+  of CDS_TECH env variable to select technology file to load.
+- Created soft-links in cdslibs/sbc18w/techfiles directory for each process
+  variant so that density deck will function correctly for each process variant.
+DRC:
+- Initial release
+ERC:
+- Initial release
+LUP:
+- Initial release
+LVS:
+- Initial release
+RCX:
+- Initial release
+- Rebuild RCX data files with latest LVS deck.
+Stress:
+- Initial release
+
+_______________________________________________________________________________
+Date: 12/30/2004
+Library: sbc18pt (pt, pth)
+         sbc18 (hx, hxl, hk)
+         sbc18d (qtd, qtl, qtr)
+         sbc18w (mw, qw, mwd, mv)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0179, rev.10
+Electrical Spec: NPB-PS-0267, rev.11
+
+Highlights for this release:
+* Calibre Interactive / XRC Calibre View Initial Public release for
+  sbc18 (hx/hxl) and sbc18d (qtd) kit (variants) only
+* Add fixed-size balun and balun_xfmr with approximately 1, 5, and 10 nH
+  inductance value for all process variants.
+* Update spectre Operating Point to work with IC50.33
+* Assura requires version 3.1.2. A new menu item CIW->Jazz->Assura
+  Verification Flow for Assura 3.1 has been added to describe the
+  updated Assura flow.
+* Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 9.1_1, 9.1_5, 2003.04, 2004.02, and 2004.03
+* Cadence Assura releases 3.1.2 (IC50.33USR2)
+* ADS release 2003C
+
+Kit and environment changes:
+* Updated Calibre Integration loading with better error checking at load time.
+* Updated Technology Library web pages to better match kit contents.
+* Correct Jazz Calibre verification (DRC, LVS, PEX) to properly use
+  a view other than "layout" and "schematic"
+* Rename Layout->Jazz menu Map Hard Cell to Layout Migration Tool.
+* Artifact Generator:
+  - Removed all generated layers (3,6,11,61,14), buried layer (4),
+  silox (9) from all processes
+  - Remove unsupported layers from artifact generator for sbc18pt.
+* MakeProjectTree - Fix Y2K issue with datestamp printed in logfile.
+  There is no data integrity issue, just a log file reporting issue.
+
+Removed devices:
+* Removed process variant sbc18ptx
+* Removed package models library from design kit. These were unsupported
+  packaging examples. 
+
+New Devices:
+* Add fixed-size balun and balun_xfmr with approximately 1, 5, and 10 nH
+  inductance value for all process variants. See documentation in
+  Modeling Design Manual and in the CIW->Jazz->Technology Component
+  Info html documentation.
+* Metal and poly fill layers:
+	- Metal fill blocking and Metal fill mark layers implemented.
+	  These layers are used to block generation of metal fill and to mark
+	  customer-provided metal fill to prevent floating metal violations.
+	  See Design Rule document for more information on the revised layers and
+	  how they interact with the metal and poly fill generation.
+	- If metal blocking layers are used, the data under the blocking layers
+	  must obey the Analog Block (OP.*) rules. This is documented in the
+	  Design Rule document, but this requirement is not currently checked by
+	  the DRC ruledecks. This will be addressed in the next deck release.
+	- Introduce poly fill generation and poly fill block layer.
+	  Customer-generated poly fill is NOT currently allowed.
+	  See Design Rule document for more information on the revised layers and
+	  how they interact with the metal and poly fill generation.
+* Add 1.8V Mos Varactor to sbc18pt design kit.
+* Introduce "dummy" LVS metal resistor marker. The metal*/resistor layer/purpose
+  was added to the technology file as a placeholder.
+  However, it is not yet supported in the LVS deck or by any design kit
+  component.
+
+Modified devices, Design Library:
+* All devices: Updated spectre operating point and model point data to support
+  Cadence IC50.33 release. Previous design kits did not provide OP or MP data
+  for all devices when using IC50.33.
+* sbc18w - Added support for ADS in the sbc18w design kit.
+* sbc18d and sbc18 - Updated design kit to support
+  Mentor Graphics Calibre Interactive / XRC CalibreView verification flow.
+  - See the Calibre Interactive menu item in the CIW->Jazz->Verification menu.
+  - Most devices have had netlisting updated to support this.
+  - Process variants sbc18hx, sbc18hxl, and sbc18qtd only.
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or CalibreView extracted views.
+* Inductor - Fix problem with Inductor Search tool in certain cases where the
+  CDF Property form would not be updated when an inductor was chosen from 
+  search list.
+
+Modified Devices, ESD Library:
+* sbc18pt - esdlib_v2/pad_no_esd - Correct nwell overlap of metal5
+  - was 1.997 um and violated rule OBD.H - now it is 2.0 um.
+
+Models:
+v4.9 2004/12/18
+FET:
+- New LV (1.8V) RF models (nfet_rf and pfet_rf) based on
+  ringed substrate topology. Includes modified internal topology
+  from previous kit releases.
+- Updated thermal noise model to noimod=1 (instead of the old noimod=2)
+  for all FETs (nfet, nfet_rf, pfet, pfet_rf, p3p3fet, p3p3fet_rf,
+  n3p3fet, n3p3fet_rf) to give reasonable prediction of thermal noise
+  at Vgs=0. A factor of 1-3x change in thermal noise can be expected
+  for Vgs > Vt. Noimod=1 uses the Spice thermal noise model as opposed
+  to Noimod=2 which uses the BSIM3 Qinv based thermal noise model.
+-  Added hdif parameter to allow an approximate calculation of
+   ad, as, pd, ps in the primitive FETs.
+- Add acm=12, calcacm=1 for all FET models for Hspice compatibility
+- Add experimental nfet_rfld 1.8V device. This model is for use in 1.8V
+  only and is only available for Spectre. The Design Kit does not currently
+  provide schematic or layout support.
+NPN:
+- Improve match for the cbe, cbc, ccs and rb in the corner cases so that
+  model performance more closely matches the espec.
+- Change the statistical model to improve match with corner model.
+Inductor:
+- Add balun models for sbc18* series process nodes
+Statistical
+- Aligned statistical model to corner model changes listed above
+- Correct NPN mismatch simulation mode problem
+
+Verification:
+* If metal blocking layers are used, the data under the blocking layers
+  must obey the Analog Block (OP.*) rules. This is documented in the
+  Design Rule document, but this requirement is not currently checked by
+  the DRC ruledecks. This will be addressed in the next deck release.
+
+Calibre:
+
+- Tested with versions 9.1_1, 9.1_5, 2003.04, 2004.02, and 2004.03
+- To use Jazz PEX flow with XCalibre, you must use a Mentor Graphics
+  release earlier than 2003.05. Later releases no longer ship the
+  XCalibre extraction software needed for the PEX flow, although the
+  releases can be used for DRC and LVS.
+- To use the Mentor Calibre Interactive flow, you must use Mentor
+  Graphics release 2004.03. This flow is only supported for sbc18hx, sbc18hxl,
+  and sbc18qtd.
+
+- Updated Calibre common directory to version t015
+- Metal and poly dummy fill routines have been updated to match latest spec.
+  Some layer numbers have changed because of this update.
+  See latest Design Rule document for details. 
+- Added "LOOP" option for extraction to provide more accurate results.
+  This option may increase extraction run time and parasitic file size.
+  However, it provides much more accurate results for analog MS/RF
+  circuits. For more details, See Mentor documentation of LOOP option.
+- Added sbc18hk process variant support.
+
+Calibre deck changes since version t014:
+- Add MOS varactor support to sbc18pt kit.
+Antenna
+- Revise input layers to support metal/poly fill/block layers.
+- Revise AN.F poly layer derivation for poly antenna check.
+Density
+- Update with latest dummy metal and dummy poly fill/block algorithm
+  See Design Rules document for more details.
+- Fix typo in Metal5 pattern selection for sbc18pt kit.
+DRC
+- Revise input layers to support metal/poly fill/mark layers.
+- Revise 6_11.X, 6/11.A.a,a.1 to remove enclosure check
+- Revise 4.B.artifact (4.6->2.0)
+- Revise pnpv_hp to disallow device over deeptrench
+- Remove LUP.I.d.*
+- Remove sbc18ptx support
+ERC
+- Revise input layers to support metal/poly fill/mark layers.
+LUP
+- Revise input layers to support metal/poly fill/mark layers.
+- Remove LUP.A.a, LUP.A.b
+LVS
+- Revise input layers to support metal/poly fill/mark layers.
+- Add fixed-size balun/balun_xfmr
+- Update nwdiode tolerance
+- Revise rps resistor and mos/ni varactor conducting poly definition.
+PEX
+- Revise input layers to support metal/poly fill/mark layers.
+- Add fixed-size balun/balun_xfmr
+- Revise var_ni and var_mos metal/poly filtering to remove
+  parasitic double-counting.
+- Add via resistance between metal2 and device metal for npn, varactor, RF fet
+- Update mos varactor to provide ns=1 in extraction.
+- Revise dg fet and mos cap shielding
+- Add "LOOP" option for extraction to provide more accurate results.
+  This option may increase extraction run time and parasitic file size.
+  However, it provides much more accurate results for analog MS/RF
+  circuits.
+  For more details, See Mentor documentation of LOOP option.
+Stress
+- Revise input layers to support metal/poly fill/mark layers.
+
+
+Assura:
+Software versions supported:
+- Assura version 3.12 or later is required.
+- A new menu item CIW->Jazz->Assura Verification Flow for Assura 3.1
+  has been added to describe the updated Assura flow.
+- Assura 3.12 (IC446/IC5033) has been tested for this release.
+- Assura HRCX has not been tested and is not currently supported.
+- If you use the Jazz ASIC libraries, see the latest Digital Design Manual
+  for instructions.
+Highlights:
+- Assura is supported only for the following process variants:
+  sbc18qtd, sbc18qtl, sbc18qtr, sbc18pt, sbc18pth, sbc18hk, sbc18hx,
+  and sbc18hxl
+- Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+- Main_All switch automatically set for DRC checks by default
+- Assura decks contain an updated density fill algorithm that matches
+  the Calibre deck and the Design Rule document. The metal fill visualization
+  is implemented in a manner that is consistent with the Cadence Assura
+  documentation. Please see the Cadence Assura documentation for info on
+  how to visualize the dummy fill in your layout window.
+- Unified deck across process variants.
+
+Antenna:
+- Revise input layers to support metal/poly fill/block layers.
+- Revise diode area derivation for antenna checks to more thoroughly
+  sum total diode area for antenna calculation.
+- Add new AN.J.* rules for thick via/thick metals
+Density:
+- Revise input layers to support metal/poly fill/block layers.
+- New density deck provides results consistent with Design Rule document
+  and Calibre.
+DRC:
+- Revise input layers to support metal/poly fill/block layers.
+- Revise layer definitions for 5.E.1, 5.J, 6_11.X, 11.E.a, 28.A.artifact,
+  51.B*
+- Revise 4.B.artifact (4.6->2.0)
+- Revise 7.F for SRAM.
+- Revise big metal spacing 38.B.a
+- Revise OP.* coding to support unified decks.
+- Add sbc18hk support
+- Add SMC24, SMC_Bad_2fF_cap
+ERC:
+- Revise input layers to support metal/poly fill/block layers.
+- Revise rps resistor poly derivation.
+- Update ptap violation derivation to more thoroughly catch ptap_to_ground
+  violations.
+- Add floating_gate checks.
+LUP:
+- Revise input layers to support metal/poly fill/block layers.
+- Revise rps resistor poly derivation.
+LVS:
+- Revise input layers to support metal/poly fill/block layers.
+- Add Assura LvsBindingFile setting to techRuleSets
+- Add balun / balun_xfmr support.
+- Update compare rules for resistors to better support ASIC lib.
+- Update compare rules for MOS to allow more thorough permutation checks.
+- Revise ldiff turn derivation.
+- Revise nwell resistor extraction.
+RCX:
+- Revise input layers to support metal/poly fill/block layers.
+Stress:
+- Revise input layers to support metal/poly fill/block layers.
+- Revise slit derivation
+_______________________________________________________________________________
+Date: 08/20/2004
+Library: sbc18pt (pt, pth), sbc18 (hx, hxl)
+         sbc18d (qtd, qtl, qtr), sbc18w (mw, qw, mwd, mv, mtv)
+Relevant Specification Documents:
+Design Rules: NPB-PS-0179, rev.8
+Electrical Spec: NPB-PS-0267, rev.11
+
+Software versions tested with this release)
+* Cadence IC releases IC50.33USR2, IC446MSR7
+* Mentor Calibre releases 9.1_1, 9.1_5, 2003.04, and 2004.02
+* Cadence Assura releases 3.1.2 (IC50.33USR2 and IC446MSR7)
+* ADS releases 2003A and 2003C
+
+Kit and environment changes:
+* Updated "Trigger Callbacks" function to allow a "dry run" where callbacks
+  are run, but the schematic or layout is not saved. Added "Trigger Callbacks"
+  to the CIW that can be run on schematic or layout. Merged Trigger Callbacks
+  for cellview, hierarchy, and library into one form.
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Updated Calibre Integration loading with better error checking at load time.
+* Updated Technology Library web pages to better match kit contents.
+
+Removed devices:
+* Removed package models library from design kit. These were unsupported
+  package examples. If needed, this library can be copied from an older design kit.
+
+New Devices:
+* Metal fill blocking and Metal fill mark layers implemented.
+  These layers are used to block generation of metal fill and to mark
+  customer-provided metal fill to prevent floating metal violations.
+  See Design Rule document for more information on the revised layers and
+  how they interact with the metal and poly fill generation.
+* Introduce poly fill generation and poly fill block layer. Customer-generated
+  poly fill is NOT currently allowed.
+  See Design Rule document for more information on the revised layers and
+  how they interact with the metal and poly fill generation
+* Introduce "dummy" LVS metal resistor marker. The metal*/resistor layer/purpose
+  was added to the technology file as a placeholder.
+  However, it is not yet supported in the LVS deck or Design Rule manual.
+* MOS varactor 1.8V (varactor_mos) cell added to sbc18pt processes.
+
+Modified devices, Design Library:
+* All devices: Updated spectre operating point and model point data to support
+  Cadence IC50.33 release. Previous design kits did not provide OP or MP data
+  for all devices when using IC50.33.
+* sbc18d only - Updated design kit to support Calibre Interactive / CalibreView.
+* Most devices have had netlisting updated.
+* fuse
+  - Updated CDF to allow for open, close, or other state.
+  - Resistances at each state: Open=0.4, Close=1M, Other=user-defined.
+  - Fuse state in schematic is always copied to the extracted views.
+* Updated min/max RF Fet width/length to better match model validity region.
+  Trigger callbacks will reset the value if it is out of range. Use "dry run"
+  mode to see if your design will be affected before committing the value
+  change.
+             wmin      wmax       lmin       lmax
+  RFmodel  old  new   old  new   old  new   old  new
+  n 1.8    2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  p 1.8    2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  n 3.3    2.5u 2u    20u  10u  0.36u 0.36u 1u   0.7u
+  p 3.3    2.5u 2u    20u  10u  0.36u 0.30u 0.7u 0.7u
+
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or CalibreView extracted views.
+* Added gec3DBUPerUU to tech lib for LEF file generation
+
+Modified Devices, ESD Library
+* sbc18d - bignpn_drv3_wp9_ignd edited to remove the Assura dubious data error
+  and metal2 pin error
+* sbc18pt - pad_no_esd edited to fix nwell overlap of metal5 from 1.997 to 2.0
+
+Models:
+v4.8 2004/08/16
+FET:
+- Updated FET capacitance parameters to better match measured data
+- Corrected sidewall junction capacitance temp coefficients for
+  pfet, pfet_rf, n3p3fet, p3p3fet, n3p3fet_rf, and p3p3fet_rf
+- Corrected junction capacitance coefficients for pfet and pfet_rf
+- Corrected subcircuit default parameters for pfet_dg/nfet_dg
+- Added support for as/ad/ps/pd explicitly as subcircuit parameter
+  for fet subcircuits (*fets, *fet_dg)
+- Mos varactor updated with measured data at T=25, 100 and -20 [C] by
+  adding temp coefficients (tc1 and tc2) for nwell and poly resistance
+- Nwell resistor updated temp coefficients with measured data
+  at T=-40,0,25,40,80 and 125C.
+- Added thermal noise to Spectre nwell resistor Verilog-A model
+NPN:
+- Tune base resistance matches the fmax espec in the nominal model.
+- Modify the cbe, cbc, ccs and rb in the corner cases so that it matches the espec.
+- Modify the statistical model so that it matches the espec.
+PNP:
+- Update pl1g model to match new nominal data and cover larger high
+  current variation based on the latest statistical data measured
+  on K17157, K25127, K27602, K28670.
+- Update KF for pl1g from 2.4e-12 to 1.14e-11 to correct 1/f noise
+- Aligned Schottky diode corner to match latest Espec (Von, BV, C0 and Ileak)
+RES:
+- Update resistor tc model based on the latest measurement from
+  T=-40, 0, 25,40,80 125. Updates applied to rpp3t, rph3t, rps, rtin
+Statistical:
+- Aligned statistical model to corner model changes listed above
+- Added ms (simulation "m") parameter support to stat pc subcircuit
+- Statistical mos varactor model tied to fet statistical parameters
+- Corrected sign for cm1(cm2/cm4)_rshbp_factor
+- Initial release schottky diode statistical model with process variation
+- Statistical BL and NI varactor model tied to nwell statistical parameters
+
+Verification:
+Calibre:
+
+- Tested with versions 9.1_1, 9.1_5, 2003.04, and 2004.02
+- Updated Calibre common directory t013
+- Hard-coded Calibre ruledecks to use t013 instead of "current" link
+  so newer deck versions will not affect existing deck versions.
+- Metal and poly dummy fill routines have been updated to match latest spec.
+  Some layer numbers have changed because of this update.
+  See latest Design Rule document for details. 
+- Added sbc18mtv deck support
+- Added Mos Varactor (1.8V) to sbc18pt
+- Added "LOOP" option for extraction to provide more accurate results.
+  This option may increase extraction run time and parasitic file size.
+  However, it provides much more accurate results for analog MS/RF
+  circuits. For more details, See Mentor documentation of LOOP option.
+
+DRC
+  - Added 3.*, 29.C, 10.*, 31.B, 33.*, VAR.20,21, MVAR.13, MR.H, HR.U, MF.M,
+    6_x11.X, 12.B.artifact, B.*.artifact, MC*.artifact, SMC*.artifact
+  - Added rules 14.* and 15.* for generated layers
+  - Added *.fill rules, automatic rejection of artifact violations,
+    0.5deg tolerance to mask layer spacing checks,
+  - Added spacing checks between features inside & outside of artifact layer
+  - Updated 6.A.b and 11.A.b to filter out n+ and p+ butting implant before checking
+  - Revised DNW.* to verify in same region
+  - Revised BD.B.2 bond pad spacing from 9 to 12, BD.F
+  - Revised LUP.G.a.n/p using scale factors to speed up
+  - Revised 23.b.artifact, R.ARTF, MR.BAD, MVAR.10/11/12 wording only
+  - Revised 51.* to allow for customind text
+  - Renamed R2.* to 2.*
+  - Removed BD.F.1, MC.8, HR.Q, PR.Q, SR.I
+Antenna
+  - no change
+Density
+  - Updated with latest dummy metal and dummy poly fill/block algorithm
+    See Design Manual for more details.
+  - Implemented 5.L.a/b.before/after to indicate poly density before/after fill
+  - Implemented 8/18/28/38/48/58.F.before/after for maximum metal density check
+ERC
+  - Updated floating metal checks to handle metal fill block layer
+  - Updated floating poly checks to handle poly fill
+ESD/LUP
+  - Added "show_periphery" check which shows generated periphery. This check
+    is not a violation, it is a visual aid for understanding other
+    violations that use periphery.
+  - LUP.B.C.c.1 - Changed from error to recommended warning
+  - LUP.D/E.a - removed
+  - LUP.Q added
+  - LUP.I.* changed to check 3.3V devices only
+LVS
+  - Added netlist model to all device recognition for use with CalibreInteractive
+    and CalibreView creation.
+  - Updated LD Fet extraction to force m=1
+PEX
+  - Added "LOOP" option for extraction to provide more accurate results.
+    This option may increase extraction run time and parasitic file size.
+    However, it provides much more accurate results for analog MS/RF
+    circuits.
+    For more details, See Mentor documentation of LOOP option.
+  - Corrected nitride height by 0.4 to match Espec for qtd/qtl/qtr/pt/pth/ptx
+Stress
+  - Updated ST.E,G to match design rule document 150um exlusion; revised to
+    check total area (<=25squm) instead of 5um per side; Split into large
+   and small area check (ST.E, ST.E.1, ST.G, ST.G.1)
+SoftERC - no change
+
+Assura:
+Software versions supported:
+- Assura version 3.12 or later is required.
+- Assura 3.12 (IC446/IC5033) has been tested for this release.
+- If you use the Jazz ASIC libraries, see the latest Digital Design Manual
+  for instructions.
+Highlights:
+- Assura is supported only for the following process variants:
+  sbc18qtd, sbc18qtl, sbc18qtr, sbc18pt, sbc18pth, sbc18ptx, sbc18hx, and sbc18hxl
+- This release adds support for scb18qtl and sbc18pth
+- This Assura deck contains pre-release version of metal dummy fill routines
+  The metal dummy fill implementation matches the previous Design Rule
+  documentation. No Poly fill is provided. This will be addressed by a
+  patch after kit release. Because this is a first release, you may
+  encounter issues.
+  See previous Design Rule document rev 6 for details of how this pre-release
+  metal fill functions. This metal fill is acceptable for tape-in.
+- This Assura deck provides a first-release GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+- Main_All switch automatically set for DRC checks by default
+
+DRC:
+- Deleted extra check to flag shorts between artifact and real data
+- Added DNW.11 and DNW.16 rules and removed DNW.10 rule check
+- Updated BD.B and BD.F rule checks
+- Rewrote all MVAR rule checks, updated MVAR.5, added MVAR.13 rule checks
+- Deleted SMC18, MCB8 and MC8 rule checks
+- Added 61.A, 61.B, 61.BAD, 59.A, 59.B, 59.BAD, 14.A, 14.B, 14.BAD,
+  16.A, 16.B, 16.BAD, 15.BAD, 3.A, 3.B, HR.U, VAR.20, VAR.21, 29.C, MR.M,
+  MR.H, 10.A, 10.B, 31.B, 33.A, 33.B, 7.D.x
+- Added *.fill, 6_11.X rule checks
+- Deleted HR.Q, PR.Q, SR.I, MR.BAD rule checks
+- Fixed bug in 5.J check, updated 6.A.b and 11.A.b to filter out n+ and
+  p+ butting implant before checking
+- Added support for sbc18qtl variant
+- Updated spacing checks to check shapes between inside and outside artifact layer
+- Added MR and field artifact checks
+- Updated BD.A.b, BD.D.a.1, BD.D.a, 8.B, 29.B, MR.B, 7.C, renamed MF.BAD to MF.M
+- Pre-release metal density checks provided. However, they implement the previous
+  design rule document specification
+
+ERC:
+- Excluded dummy metal fills from floating metal checks.
+
+Stress:
+- Updated ST.E, ST.G and added ST.E.1 and ST.G.1
+
+ESD/Latchup:
+- Deleted LUP.A.a, LUP.A.b, LUP.D.a, LUP.D.b, LUP.E.a, LUP.E.b, LUP.I.a.1,
+  LUP.I.b.1, LUP.d
+- Added LUP.Q
+- Updated LUP.I.d
+- Used avGetVariable command to pass the power and ground net names to geomGetNet command
+
+LVS:
+- Unified compare and deviceInfo rule files
+- Extracting inductor parameters in all SBC18 processes
+- Updated capacitor parameters calculation to improve data quality
+- Add metal pin checks to make sure metal pin shapes are always covered by metal
+  drawing shapes
+- sbc18pt: Updated area cap value of c3t_mim2 and perimeter cap value of
+  c3t_smim4 device
+
+RCX:
+- Assura callback code (callProc) is updated to make sure the NPN, inductor and
+  MOS devices parameters are copied correctly to extracted devices. Updated
+  code also supports Assura 3.1 RCX and iterated instances. Also corrected area
+  vs perimeter scaling swapping problem that occurred.
+- Updated callback code to copy NPN non-simulation parameters to extracted view
+- Problems with previous callProc code have been fixed, but you may have existing
+  extracted views that were extracted with previous design kits which contain
+  the wrong parameters. A Utility to examine and fix extracted device
+  parameters in existing extracted views has been created.
+  - This utility will allow you to run a comparison to see if parameters were
+    not copied properly from the schematic to the extracted view.
+  - This utility will also allow you to examine your extracted views
+     to see if they have an Assura 3.1 MOS W parameter scaling problem. The utility
+     compensates for an Assura 3.1 tool issue that is under investigation where
+     the MOS W parameter is in micron units instead of meter units.
+  - Instructions for using this tool:
+    * In the CIW->Jazz->Verification menu, select the new menu item
+      Assura Extracted View parameter check/fix Tool
+    * A new form appears with instructions at the bottom. Here is a copy of the instructions:
+    - Select the library to examine in the 'Lib Name' menu.
+    - Enter the name of the 'Extracted View' using grep syntax. The default
+      is "av_extracted.*", meaning all views containing with the words "av_extracted".
+    - Select the cells you wish to check in the cell list.
+    - Click on the button 'Run Comparison and View Report'
+    - Review the report file. A summary at the bottom indicates which cells
+      have parameter discrepancies.
+    - Select the cells in the cell list that have parameter discrepancies and
+      need to be fixed.
+    - Click on the button 'Run Updater to Fix Parameters'
+    - Another report file appears showing all of the changes made. The count
+      of instances change will be different this time. It show ALL instances
+      that had parameters copied, not just the instances that required a change.
+    - Change the 'Extracted View' to "av_analog_extracted.*" to check/fix all
+      analog_extracted views used for simulation. Repeat the comparison,
+      review, and fix steps.
+_______________________________________________________________________________
+Date: 04/08/2004
+Library: sbc18w/sbc18d
+Relevant Specification Documents:
+Design Rules: NPB-PS-0170, rev.7
+Electrical Spec: NPB-PS-0267, rev.10
+
+Software versions tested:
+* Cadence IC releases IC446MSR7, IC50MSR3, IC50.32
+* Mentor Calibre releases 9.1_1, 9.1_5, 2003.04, and 2003.06
+* Cadence Assura releases 3.07 and 3.1.2
+* ADS releases 2003A and 2003C
+
+Kit and environment changes:
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Updated "Trigger Callbacks" function to allow a "dry run" where callbacks
+  are run, but the schematic or layout is not saved. Added "Trigger Callbacks"
+  to the CIW that can be run on schematic or layout. Merged Trigger Callbacks
+  for cellview, hierarchy, and library into one form.
+* Inductor search tool updated to load search tables when search tool is first
+  run. Also improved speed of search.
+* Updated Inductor search tool tables to remove search results that would
+  cause geometry problems.
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility.
+* Updated Calibre Integration loading with better error checking at load time.
+* Updated Technology Library web pages to better match kit contents.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+
+Removed devices:
+* Removed cds_generic/presistor/layout view. The device is for post-layout
+  extracted view creation. The pres cell can be used for layout instead.
+* Removed lpnpfeta cellview since it is an unsupported legacy devices.
+* Removed package models library from design kit. These were unsupported
+  package examples. If needed, this library can be copied from an older design kit.
+
+New Devices:
+* Added new layer dataprep with purposes blkm1-blkm6 to enable metal dummy
+  fill blocking. See Design Rule document for more information.
+* Added thickline display packets to general $RDS_ETC/display.drf for use
+  with metal dummy fill block layers
+
+Modified devices, ESD Library:
+* esdlib_v2/bignpn_drv3_wp9/layout metal2 pin layer was pulled back to coincide
+  with the metal2 dg layer. No metal drawing change was made.
+
+Modified devices, Design Library:
+* Differential inductor:
+  -  Fixed diff inductor crossover spacing issue, added checks to prevent
+     excessive vias in center tap.
+  -  Updated differential inductor min X/Y calculation to prevent shorts.
+* Fixed floating point negative zero error in PC layout routines.
+* ADS simulator support:
+  - Added ads simulator views to all cds_generic pex_* extracted view parasitic
+    devices for Jazz PEX flow with Calibre/XCalibre.
+  - Added ads views for pcapacitor, pinductor, pmind, and presistor for
+    support of ADS simulations with Calibre or Assura extracted views.
+* p3p3diode_3t/schematic area and perimeter of nwdiode was fixed to better
+  match layout and extracted results.
+* Updated min p3p3fet from 0.36um to 0.30um
+* Updated min/max RF Fet width/length to better match model validity region.
+  Trigger callbacks will reset the value if it is out of range. Use "dry run"
+  mode to see if your design will be affected before committing the value
+  change.
+             wmin      wmax       lmin       lmax
+  model    old  new   old  new   old  new   old  new
+  nfet     2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  pfet     2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  n3p3fet  2.5u 2u    20u  10u  0.36u 0.36u 1u   0.7u
+  p3p3fet  2.5u 2u    20u  10u  0.36u 0.30u 0.7u 0.7u
+
+Modified devices, sbc18d kit changes:
+* Rebuilt sbc18d_rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or Calibre extracted views.
+* Fuse (sbc18d).
+  - Updated CDF to allow for open, close, or other state.
+  - Resistances at each state: Open=0.4, Close=1M, Other=user-defined.
+  - Fuse state is not copied to the post-layout extracted views.
+* Modified device CDF in sbc18d design kit to implement preliminary support
+  for Mentor Calibre Interactive and Mentor PEX flow. Devices have auCdl CDF
+  changes to support Calibre Interactive.
+* sbc18d esdlib_v2 schematic callbacks triggered to update parameters for
+  Calibre Interactive.
+* sbc18d esdlib_v2/pad_no_esd_q/symbol - Added lvsIgnore=TRUE for Calibre
+  Interactive support
+* Added pex/calview.cellmap for Calibre Interactive CalibreView creation
+* Added gec3DBUPerUU to sbc18d for LEF file generation
+
+Model changes:
+v4.7 contents  2004/03/22
+Merged sbc18w devices with sbc18
+- sbc18w model versions v3.6-v4.6 were skipped to synchronize version numbers
+- Revision history reflects sbc18 not sbc18w. See previous sbc18w model
+  releases for sbc18w model history.
+FET:
+- Completely revised FET model using BPV scalable model instead of bins
+- Updated to match latest measured narrow fet and body effect parameters
+- Revised statistical model to match corner model changes
+- Integrated new mosvar_1p8 model for mos varactor.
+  Supported in sbc18hx/hxl/ptx only.
+- Updated min p3p3fet from 0.36um to 0.30um
+- Updated min/max RF Fet width/length to better match model validity region:
+             wmin      wmax       lmin       lmax
+  model    old  new   old  new   old  new   old  new
+  nfet     2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  pfet     2.5u 2u    15u  10u  0.18u 0.18u 1u   0.7u
+  n3p3fet  2.5u 2u    20u  10u  0.36u 0.36u 1u   0.7u
+  p3p3fet  2.5u 2u    20u  10u  0.36u 0.30u 0.7u 0.7u
+
+PNP:
+- Updated pnpn and vpnp models to align with Espec
+  lpnp: Beta and Va; vpnp: Va
+- Updated rfvar_bl and rfvar_ni to align with Espec
+  rfvar_bl: C0 and Q_min
+  rfvar_ni: C0, Sensitivity, Q_min, leakage current model
+- Updated schottky diode to align with Espec
+  schottky: Von, BV, C0 and Ileak
+- Fixed translation of tpb->pta for Spectre to
+  provide periphery capacitance temp coefficient in varactor_bl
+- Updated model for experimental pnp devices vpnpn and vpnpw
+RES:
+- Updated alpha 1/f noise parameter for rpp3t and rph3t
+- Aligned corner factor for rph3t Rend to espec and stat model
+- Aligned default model w/l in corner and stat model. For most devices,
+  l was changed from 1u to 2u. This is a model file default change only
+  and the default schematic design kit value has not changed.
+- fuse was updated to allow for user-specified resistance ('value' parameter)
+Statistical models:
+- FET models updated using BPV based statistical and mismatch model
+  and aligned to corner model
+- Added statistical model support for nwell resistor
+- Integrated new mosvar_1p8 model for mos varactor.
+  Supported in sbc18hx/hxl/ptx only.
+- Updated model for lpnp, vpnp, rfvar_ni, rfvar_bl, and schottky
+  to match corner model
+- Updated pnp model for experimental pnp devices vpnpn and vpnpw
+- Updated resistor alpha 1/f noise parameter for rpp3t and rph3t
+- Aligned resistor corner factor for rph3t Rend to espec and stat model
+- Aligned resistor w/l between corner and stat model
+
+Verification:
+Calibre:
+- Tested with versions 9.1_1, 9.1_5, 2003.04, and 2003.06
+- Updated Calibre common directory t011.
+- Hard-coded Calibre ruledecks to use t011 instead of "current" link
+  so newer deck versions will not affect existing deck versions.
+
+DRC
+  - Updated MC_Bad* to report SMC_Bad* when SMIM is missing layer70
+  - Revised LUP.G.a for better consistency across verification tools.
+  - Added 5.E back
+  - Revised 5.B from 0.18 to 0.30
+  - Added 41.B check for merged/shared deep trenches
+  - Added *.Pin check for metal/pin not enclosed by metal/drawing
+Antenna
+  - no change
+Density
+  - Addeed metal dummy fill block layers 117 datatype 11-16
+ERC
+  - Added rtin to floating conductor check
+ESD/LUP
+  - Reviesd LUP.G.a for better consistency across verification tools.
+LVS
+  - Added parameter comparison for nwdiode
+  - Added switch and parameter extract/compare for mos varactor
+  - Revised Ldiff width check
+  - Significant rework of DEVICE commands in Calibre Interactive support
+    sections. No change to run_cal (non Calibre Interactive) sections.
+PEX - no change
+Stress
+  - Revised ST.A to accomodate ldiff with wide metal body
+  - Revised ST.A,B,C,I to check in all levels. Previously checked
+    only top-level (whole chip)  layout
+  - ST.E splitted into ST.E.a & ST.E.b to allow for small chip
+    corner exclusion change (275um->200um when x/y <= 5000u)
+SoftERC - no change
+
+Assura:
+Assura is supported only for the sbc18qtd and sbc18qtr process variants.
+Software versions supported:
+- Assura version 3.07 or later is required.
+- Assura 3.07 and 3.1.2 have been tested for this release.
+- If you use the Jazz ASIC libraries, you must use Assura 3.1.2 for LVS
+  to work correctly. See the latest Digital Design Manual for instructions.
+DRC:
+- Assigned new layer numbers to metal pin layers per design rule manual change
+- Add rules to check metal pin shapes are completed covered by metal drawing
+  shapes (*.Pin rules)
+- Added artifact checks (*.artifact rules)
+- Updated BD.H.k, OBD.C, DNW.6, 8.A, 8.B, PR.C (exclude this check on bipolar
+  devices), LUP.G.a
+- Added 40.A, 41.A, 41.B, 4.B.a, DNW.20, DNW.21
+- Splitted 51.B into 51.B and 51.Bm, separated 51.Bm into process variants
+  specific checks
+- Reorganized substrate derivation to account for substrate isolation using DNW
+- Exclude latchup checks in DRC deck from Main_All switch
+
+LVS:
+- Use Assura 3.07 .avc_setup.tpl file for setting verification defaults.
+- Assigned new layer numbers to metal pin layers per design rule manual change
+- Connect nsd to res_ends_final layer to connect terminal of nwell resistor to
+  S/D of nfet in n3p3fet_esd device
+- Updated parameter exraction of rtin_m1 strip resistor devices
+- Revised fuse to support swappable pins
+
+RCX:
+- RCX decks are re-simulated using Assura version 3.0.7. You MUST use Assura
+  version 3.07 or later with this release.
+- Assura callback code (callProc) is updated to make sure the NPN, inductor and
+  MOS devices parameters are copied correctly to extracted devices. Updated
+  code also supports Assura 3.1 RCX.
+- Problems with previous callProc code have been fixed, but you may have existing
+  extracted views that were extracted with previous design kits which contain
+  the wrong parameters. A new Utility to examine and fix extracted device
+  parameters in existing extracted views has been created.
+  - This utility will allow you to run a comparison to see if parameters were
+    not copied properly from the schematic to the extracted view.
+  - This utility will also allow you to examine your extracted views
+     to see if they have an Assura 3.1 MOS W parameter scaling problem. The utility
+     compensates for an Assura 3.1 tool issue that is under investigation where
+     the MOS W parameter is in micron units instead of meter units.
+  - Instructions for using this tool:
+    * In the CIW->Jazz->Verification menu, select the new menu item
+      Assura Extracted View parameter check/fix Tool
+    * A new form appears with instructions at the bottom. Here is a copy of the instructions:
+    - Select the library to examine in the 'Lib Name' menu.
+    - Enter the name of the 'Extracted View' using grep syntax. The default
+      is "av_extracted.*", meaning all views containing with the words "av_extracted".
+    - Select the cells you wish to check in the cell list.
+    - Click on the button 'Run Comparison and View Report'
+    - Review the report file. A summary at the bottom indicates which cells
+      have parameter discrepancies.
+    - Select the cells in the cell list that have parameter discrepancies and
+      need to be fixed.
+    - Click on the button 'Run Updater to Fix Parameters'
+    - Another report file appears showing all of the changes made. The count
+      of instances change will be different this time. It show ALL instances
+      that had parameters copied, not just the instances that required a change.
+    - Change the 'Extracted View' to "av_analog_extracted.*" to check/fix all
+      analog_extracted views used for simulation. Repeat the comparison,
+      review, and fix steps.
+
+_______________________________________________________________________________
+Date: 12/18/2003
+Library: sbc18, sbc18pt, sbc18w design kits
+Relevant Specification Documents:
+Design Rules: NPB-PS-0179, rev.6
+Electrical Spec: NPB-PS-0268, rev.8
+
+General kit changes:
+
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to an
+  appropriate process variant in order to use these design kits.
+  If this variable is not set, the kit will refuse to function.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* sbc18 (sbc18hx or sbc18ptx) - The techfile and techlibrary have changed
+  from the "sbc18" library to the "sbc18_techlibs" library.
+  You MUST re-attach your design libraries from the sbc18 library to
+  the sbc18_techlib library before you can use this design kit.
+  The sbc18_techlib library will appear ONLY if you properly set the
+  RDS_CDS_VERIFY_TECH variable to a supported process variant: sbc18hx,
+  sbc18hxl, or sbc18ptx.
+* The Jazz makeProjectTree script now automatically supports the new
+  tech library attachment needed by the sbc18 (sbc18hx/ptx) design kit.
+  If you use the sbc18 design kit, your library will automatically be
+  attached to the correct sbc18_techlibs technology library. All other
+  kits remain unaffected by this change.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.  Off-grid errors may also occur. You can
+  correct these errors by using the Snap To Grid menu item.
+
+Modified Devices
+* c3t_mim/c3t_mim2/c3t_mimw/c3t_mimw2 - Updated nwell size.
+   The nwell size was accidentally increased in the last kit release.
+   It will revert back to the size drawn prior to Sept 2003.
+
+Models: Model version v4.6
+* Updated FET models:
+  - Improved Spectre translation to allow delta<0
+  - Updated models to match latest measured narrow fet and body effect parameters
+  - Re-organized to match ca18 file architecture
+  - Added fast/slow corner for 3.3V LD fet
+  - revised statistical model to match corner model changes.
+* PNP:
+  - Add high-performance pnp models vpnpn and vpnpw
+* Cap:
+  - Add c4t_mimw2 4-terminal mim over well. Substrate no longer
+    tied to spice ground. Only supported in sbc18d design kit.
+
+Verification:
+Calibre
+DRC
+* Revise HVN and HVP rules
+* Add MC_Bad_2fF_cap and MC_Bad_1fF_cap when mim2 layer is
+  incorrectly used in process. Forces presence of mim2 layer if
+  process is 2 fF MIM cap, and absence if process is 1 fF MIM cap.
+* Revised BAD_MOS to handle fetswitch (donut gate) legacy device
+* Remove pad filter for bipolar layers
+* Revised 6.A.b, B5, B8, B15, B34.a, PR.C, 68.A,C,G,H, 23.A,B
+* Fix issues in 21.B
+* Exclude pnpl from PR.C
+* Add pnpv_hp rules VP.* for high performance vertical PNP
+* Add SD.5, 38.C.artifact
+* Updated LUP.G.a -- note: 90 degree bends between taps can add to the
+  exclusion zone, causing potential false violations.
+* sbc18mwd: Correct process definition to remove dnw and add dt
+
+
+ERC
+* Exclude ngate to gnd, pgate to pwr from gate_pwr_gnd check
+* Update filtering to handle inductor conectivity better
+
+LVS
+* Revised MOS as/ad/ps/pd calculation
+* Change bend_effect for 3.3V devices from 0.35 to 0.5. For ASIC
+  standard cells, you must obtain the A30_d05e patch to correct the
+  ASIC library verification data.
+* Fixed TRACE PROPERTY for varactor, vpnp
+* Remove varactor_bl reduction
+* Add c4t_mimw2
+* Partial implementation for pnpv_hp device
+* Improve Calibre Interactive support for varactor, vpnp, resistor
+
+PEX
+* ADS views added to the extracted view devices in cds_generic to allow
+  for simulation of extracted views with ADS simulator.
+
+Antenna - no change
+
+Density
+* Fixed sbc18h* topmetal density check
+
+Stress - no change
+
+ESD/LUP
+* Updated LUP.G.a -- note: 90 degree bends between taps can add to the
+  exclusion zone, causing potential false violations.
+
+
+Assura
+DRC
+* Added Bad_ablb to indicate when ablb does not touch tm, sblk, lpnp, ind_mrk, n_cell
+* Add SRAM area-based rules. SRAM rules are only for use in Jazz-approved
+  cells. See Design Rules document for important details.
+* Add DRC rules for Schottky Diode and RTIN
+* Add error if high-speed (digital) NPN is used when process doesn't support it
+* Improve mos varactor definition
+* sbc18hxl: Fix Wirebond support
+Note: LUP.G.a fixes are not yet integrated into Assura
+
+ERC
+* SRAM area-based rules
+
+LVS
+* Change bend_effect for 3.3V devices to 0.5, for 1.8V devices to 0.35
+  to be consistent with Calibre
+* sbc18qtd: Add support for c4t_mimw2
+
+RCX
+* Assura sbc18*_rcx extracted device library re-built. ALL callbacks on all
+  devices have been disabled because this library should only be used by RCX
+  to generate the av_extracted view. ADS views have been added to allow
+  simulation of RCX-extracted views with ads.
+* sbc18pt: Recreated capgen data files, remove varactor_ni support
+
+Antenna
+* Schottky Diode and RTIN support
+* Add SRAM area-based rules
+
+Density - not currently supported
+
+Stress
+* Add SRAM area-based rules
+
+_______________________________________________________________________________
+Date: 10/14/2003
+Library: sbc18, sbc18d, sbc18pt, sbc18w design kits
+Relevant Specification Documents:
+Design Rules: NPB-PS-0179, rev.6
+Electrical Spec: NPB-PS-0268, rev.8
+
+General kit changes:
+
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to an
+  appropriate process variant in order to use these design kits.
+  If this variable is not set, the kit will refuse to function.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* sbc18 (sbc18hx or sbc18ptx) - The techfile and techlibrary have changed
+  from the "sbc18" library to the "sbc18_techlibs" library.
+  You MUST re-attach your design libraries from the sbc18 library to
+  the sbc18_techlib library before you can use this design kit.
+  The sbc18_techlib library will appear ONLY if you properly set the
+  RDS_CDS_VERIFY_TECH variable to a supported process variant: sbc18hx,
+  sbc18hxl, or sbc18ptx.
+* The Jazz makeProjectTree script now automatically supports the new
+  tech library attachment needed by the sbc18 (sbc18hx/ptx) design kit.
+  If you use the sbc18 design kit, your library will automatically be
+  attached to the correct sbc18_techlibs technology library. All other
+  kits remain unaffected by this change.
+* This design kit release now supports Cadence software release IC50.
+  When using IC50, this design kit also supports the Linux platform
+  in addition to Sun and HP.
+  Please contact Cadence for more information on system or platform
+  requirements to use IC50. We strongly recommend IC50 MSR3 or later
+  when using IC50, or IC446 MSR7 or IC446 MSR10 when using IC446.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors
+
+Modified Devices
+* Corrected pdiode_3t and p3p3diode_3t LVS by adding nwdiode ivpcell view.
+* MIM cap verification decks support smaller via2 to via2 spacing rule (MC9.a),
+  layout cells will automatically generate this smaller spacing when the design
+  is opened.
+* VPNP devices modified to make them DRC clean. Emitter window is upsized to 0.6u
+  in sbc18pt and sbc18w kits.
+* sbc18pt MIM cap perimeter capacitance and model name changed. Following the standard
+  kit update procedure will ensure your design uses the new values.
+* Added or updated the Inductor Search tool to support both single and differential
+  inductors for all kits and process variants.
+  You can open the Inductor Search tool by editing the inductor parameters, then
+  clicking on the "Search" button.
+
+Model Changes:
+* Version 4.5 for sbc18, sbc18d, sbc18pt
+* Version 3.4 for sbc18w
+* Updated MIM cap for sbc18pt and sbc18w process only
+  - New model name to differentiate PT caps from other caps
+  - Updated perimeter capacitance to latest Espec
+* Updated NPN models
+  - Update temperature coefficients of all npns.
+  - Correct mismatch of offset deltas between Fast/Slow corners.
+  - Reset temperature baseline to 25C
+* Updated PNP models
+  - Updated temperature fitting to measured data
+  - Better schottky diode temperature fitting to measured data
+  - Updated schottky diode leakage current to fit Espec
+  - Updated BL varactor leakage current to Espec
+  - Updated BL varactor breakdown voltage to obtain better match between
+    Spectre vs hspice and ads
+* Updated resistor models
+  - Added 1/f noise for rpp3t and rph3t - Only for Spectre simulator
+
+* For sbc18w only: Separated corner models into files by device type:
+  - fet, npn, pnp, cap, res, ind each have separate model file
+  - allows for independent model corner selection between device types,
+    for example fast fet, with slow res and nom npn, cap, ind, pnp.
+  - The Jazz Set Active Library form in Analog Artist supports this new
+    model setup and will allow setting the corner for all six files.
+* Statistical model updates:
+  - Updated to include NOM corner model changes
+
+
+Verification:
+* MIM cap verification decks support smaller via2 to via2 spacing rule (MC9.a)
+  - Applies when area is < 400 um^2.
+  - Layout cells will automatically generate this smaller spacing when the design
+    is opened.
+
+* Calibre:
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - Addition of "-lvs_reduce" option to run_cal script. Overrides the process
+    setting of "-no_lvs_reduce" that is used in mixed-signal LVS decks.
+    For mixed-signal designs, you may need to specify the -lvs_reduce option to
+    turn on mos reduction during LVS so digital design blocks pass LVS
+  - Ruledeck changes:
+    * Many ESD and Latchup related rule changes have occured in recent releases.
+      See Design Rule document for more details.
+    * Added support for sbc18mv process variant
+    * Added metal density checking. Calibre density check may be invoked either
+      by selecting the "density" button in the Jazz Calibre DRC interface, or by
+      using the switch "-density" when running from batch with run_cal.
+      Calibre density drc function first checks layout metal density before dummy
+      metal fill, then runs a routine that emulates the Jazz's MaskCAD dummy metal
+      generation algorithm. The resulting fill patterns will be displayed. Finally,
+      Calibre checks metal density after dummy fill (i.e. drawn layout metal + dummy
+      metal fill pattern)
+      Layout passing metal density checks post-dummy fill is deemed acceptable to Jazz.
+    * Antenna: corrected metal thickness in sbc18hx (SA.3); implemented RDB
+      output printing
+    * Density: Added top metal density checks,revised 38.D
+    * DRC: Use common deck for all sbc18* processes;
+      Include RAMs rules;
+      removed CROM(79), inductor integrity check;
+      Revised 2.L,M ("merged resistor rules");
+      artifact violations are now flagged separately
+    * ERC: Filtering inductor metal out of regular metal; added var_bl
+    * LVS: Added lvs/pex switches, switching for varbl, varni, SRAM support;
+      revised mim parameters for sbc18p, c3t_smim parameters for sbc18qw,
+        MOS PS/PD calculation, l3t parameter extraction routines
+    * ESD: Unchanged
+    * Stress: Unchanged
+    * PEX: Used common pex deck; revised cap order; revised n/p active
+      RESISTANCE CONNECTION; added xRC shielding
+    * Additional PEX for sbc18pt/pth/ptx: recalibrated for new overcoat thickness;
+      added switch for changing checking distance
+    * Additional PEX for sbc18qtd/qtr/qtl: recalibrated for new overcoat thickness;
+      added switch for changing checking distance
+
+* Assura:
+  - Assura 3.0.4 or later is required
+  - New assura runsets allow for hierarchic LVS and RCX. This can ONLY be
+    done with the Assura UI inside DFII. The RCX run will generate bad information
+    for NPN's and inductors if the LVS or RCX is run from outside the Assura DFII GUI.
+  - Asssura support is only provided for sbc18hx, sbc18hxl, sbc18pt,
+    sbc18ptx, and sbc18qtd processes. For sbc18qtl/qtr, the sbc18qtd deck can be used.
+  - Ruledeck Changes:
+    * Many ESD and Latchup related rule changes have occured in recent releases.
+      See Design Rule document for more details.
+    * Antenna: Unchanged
+    * Density: Metal density checks are not currently supported in Assura.
+    * DRC: Use common deck for all sbc18* processes;
+      RAM rules are not supported in Assura;
+      Fixed bugs in 6.E.a, 6.J, 5.E.1, MC9.a
+    * Latchup: filter diode from LUP.F.a and LUP.F.b checks;
+      exclude well resister in core circuit check
+    * ERC: Filtering inductor metal out of regular metal;
+      Fixed bugs in ptap to pad, ptap to ground and ntap to ground checks
+    * LVS: revised mim parameters for sbc18p*, c3t_smim parameters for sbc18qw,
+      MOS PS/PD calculation, l3t parameter extraction routines
+    * ESD: Unchanged
+    * Stress: Unchanged
+    * RCX:
+      - New RCX deck allows for hierarchic LVS and RCX extraction.
+        + Previous LVS results directories will NOT work with the new RCX deck. You must
+          re-run LVS with this new deck release before running RCX.
+        + REQUIRES that RCX be run from GUI and not from command line. You cannot run RCX
+          from a command line. Schematic properties for npn and inductors will not be
+          correct in the extracted view.
+        + Uses Assura user defined function to generate schematic parameter file.
+        + New callProc.il to read schematic parameter file and reset
+          extracted device parameters
+      - New overcoat thickness for sbc18pt, sbc18ptx, sbc18qtd processes
+      - sbc18pt/pth/ptx: recalibrated for new overcoat thickness;
+      - sbc18qtd/qtr/qtl: recalibrated for new overcoat thickness;
+
+_______________________________________________________________________________
+Date: 08/01/03
+Design Kit: sbc18, sbc18d, sbc18pt, sbc18w
+Design Rules: NPB-PS-0179, Rev.5
+Electrical Spec: NPB-PS-0267, Rev.7
+
+Framework:
+* First release to support IC50 . Requires IC50 MSR3 or better.
+* First kit to support Linux. Requires IC50 for Linux. Full Jazz Kit
+  support is provided, including inductor toolkit and layout cells.
+* First release of new Set Active Library model corner selection utility
+  for sbc18, sbc18pt, and sbc18d. Now allows independent corner speed
+  selection by device type.
+
+Devices:
+New
+* 3-terminal pdiode devices (pdiode_3t and p3p3diode_3t) are now provided.
+  - Layout footprint is identical. A small text label distinguishes the 2
+    and 3 terminal layouts.
+  - Symbol views have an added pin for the well connection.
+  - LVS will verify all three terminals.
+  - Existing designs should be updated to use these new devices. New
+    designs should always use these devices instead of the 2 terminal pdiodes.
+* nwdiode device is now provided. It is a component used in the 3-terminal
+  pdiodes and is not meant for use outside the 3-terminal diode.
+
+Removed
+* Removed all "example" / AMS Design Kit standard cell libraries.
+  Customers should use the separate ASIC design kit for all standard cells.
+
+Updated
+* sbc18, sbc18w, and sbc18pt: Fet layout cells may generate DRC errors if
+  very large values (> ~1mA) are used in the "current" parameter. This
+  layout issue is under investigation. The workarounds are either to use
+  multiple parallel layout cells with a smaller value for the current, or to
+  flatten the cell and fix the violations.
+* fetd layout cells (nfetd, pfetd, n3p3fetd, p3p3fetd) may generate
+  incorrect gate lengths. This issue is also under investigation.
+
+ESD Libraries:
+* Significantly revised ESD Library:
+- ESD rule changes were made to eliminate those that were:
+  1) used to ensure compatibility with other foundries
+  2) have no systematic benefit (based on new experimental data)
+  3) are better enforced by other Jazz quality processes (standard cell
+     releases and verification on silicon)
+- Other rules were migrated to the unchecked section and are kept as
+  recommendations:
+  a) optional depending on the customer's on-chip ESD circuit
+     implementation
+  b) previously specified but not actually implemented in code
+* Some ESD library cells have a revised footprint. This may cause LVS
+  errors when the new cells are used in an existing design.
+* Updated ESD and regular diodes to 3 terminals for LVS and simulation.
+  Provides more robust LVS.
+* Corrected DRC violations in ESD library. All cells are now DRC clean.
+* New "bignpn" cells do not show connectivity with VirtuosoXL. We are
+  investigating this currently.
+* Updated bignpn cell with better latchup prevention
+* By default the new library will automatically be used in all your
+  existing projects. If you wish to use the old library, you will need to
+  update your project library file. You will need to use the appropriate
+  sbc18 series library (sbc18, sbc18pt, sbc18d, sbc18w, etc) in the
+  following commands. Here are step-by-step instructions:
+    - Go to your project workarea as usual using the source and cdsprj
+      commands.
+    - Type the command "cd ../../../cds_master"
+    - Edit the file project.lib that is in this directory
+    - Add these two lines to the END of the file, below all existing lines:
+      UNDEFINE sbc18_esdlib
+      DEFINE sbc18_esdlib $RDS_CDSLIBS/sbc18/esdlib
+    - Save your changes to the file
+    - Quit and restart any open Cadence session
+
+Calibre Verification:
+* Support for Calibre "-cb" bundle license option. This option can now be
+  specified in the DRC, LVS, and PEX "run_cal Options" field if needed by
+  the customer for use with the Calibre "cb" license.
+* Calibre on Linux is supported when running the Jazz Design Kit on IC50
+  for Linux.
+* Calibre decks have been rewritten to be more modular. Common rules are
+  now shared across all sbc18 variants
+* Changes to decks:
+- introduced nwdiode to facilitate 3-terminal diode verification
+- introduced mos varactor (sbc18ptx)
+- introduced lateral diffusion fets (sbc18pth)
+- revised antenna rule AN.C for metal 4 and metal 5 (ant)
+- revised various design rules: 5.A.a, npn/mosfet/inductor integrity
+  checks (drc)
+- added forward-biased p+/nwell parasitic diode check (erc)
+- removed all ESD checks (esd_lup)
+- revised l3t device recognition
+- capacitor stress rules are now checked in stress deck
+
+
+Assura Verification:
+* Assura users should use Assura release 3.04 or later.
+* Assura on Linux is now supported.
+* Assura decks are available for the following process variants
+  ONLY: sbc18hx, sbc18hxl, sbc18pt, sbc18ptx, sbc18qtd.
+* Assura decks have been rewritten to be more modular.
+* Changes to decks:
+- introduced nwdiode to facilitate 3-terminal diode verification
+- revised various design rules: 5.A.a, npn/mosfet/inductor integrity
+  checks (drc)
+- added forward-biased p+/nwell parasitic diode check (erc)
+- removed all ESD checks (esd_lup)
+- revised l3t device recognition
+- capacitor stress rules are now checked in stress deck
+
+
+Model files:
+* Updated NPN models for ADS only
+ - ADS translation changes improve Beta and temperature matching with
+   Spectre.
+* Revised RF Fet models
+ - Corrected FAST/SLOW corner case for RF fets
+ - No effect on NOM or stat model
+ - Previous models used NOM model for FAST/SLOW corner
+* Revised DG fet models
+ - More accurate s/d size in simulation by calling subckt instead of
+   primitive.
+* Updated LPNP
+ - add 1/f noise parameter for pl1g model
+* Updated cap
+ - Unified cap models across design kits.
+ - Added mismatch data for stacked caps
+* Updated res
+ - Added mismatch data for metal resistor
+* Initial release of 3-terminal diode subckts (pdiodes, p3p3diodes)
+ - p3p3diodes implements parasitic nwdiode
+ - This device is NOT currently used by the diode schematic
+
+_______________________________________________________________________________
+  Date 5/30/2003
+  Library: sbc18 series design kits (sbc18, sbc18d, sbc18pt, sbc18w)
+  Model Changes:
+  * Updated NPN model:
+    - Parametric test distribution for Ic shifted, modeled Ic matches new
+      distribution.
+    - No change to Beta or other RF or DC parameters.
+    - No process change - only parametric test for Ic.
+    - ADS and Spectre simulation results show discrepancy at extreme
+      temperature.  This is under investigation.
+  * Revised rnw implementation for Spectre to use wrapper subckt. No model
+    or performance change.
+  * Revised statistical models to match new corner models
+
+  General kit changes:
+  - All "RDS" banner menus are now "JAZZ" menus. Documentation has
+    been updated to reflect this change.
+  - Updated technology files to correct spacing/overplot discrepancy
+    with process documentation.
+  - Updated ICC technology file to correct discrepancies with DFII Techfile.
+  - Fixed problem where design kit would fail to load when using icms.
+  - Fixed calculation of resistor rtotal display parameter - would show
+    the previous value. No effect on simulation or LVS
+
+  ESD Libraries:
+  * sbc18w:
+    - Added 1, 2, 3, 4, 6, and 8 fingered sub and well ESD diode
+  * sbc18w, sbc18d, sbc18pt, and sbc18
+    - Changed the fonts in text messages from roman to stick to prevent
+      warning messages from occurring during the stream out process.
+    - Changed text message "must connect to power" to
+      "MUST CONNECT TO VCC"
+    - Removed misleading metal1 pin connectivity layer attribute from the
+      guard rings to prevent VXL problems
+
+  Verification:
+  * Framework:
+  - Added the lib/cell/view names to the Calibre DRC/LVS/PEX forms.
+  - Fixed problem with Calibre Exclude Rules not working on non-Sun platform.
+
+  * Calibre:
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - sbc18hx:
+    DRC: Revised ptap definition, 2.G, MR.A,B,D,F,Bad, PR.E; removed BD.6-13,
+    BD.N
+    ERC, ESD: Revised blr, sub and ptap definitions, ntap_gnd to exclude
+    nwell with pfet as moscap
+  - sbc18pt :
+    DRC: Revised ptap definition, 2.G; removed BD.6-13, BD.N
+    ERC, ESD: Revised blr, sub and ptap definitions, ntap_gnd to exclude
+    nwell with pfet as moscap
+  - sbc18mw/qtd/qtr:
+    DRC: Revised system variable use, sub and ptap definitions, metalres
+    connectivity, metalres via def, 2.C, 2.G, 11.A.a, BD.H.d/j, HR/PR.C, MR.C,
+    R.ABLB, LUP.G.a; removed BD.6-13, BD.N; added schottky diode
+    ERC: Revised switches, blr, sub and ptap definitions, ntap_gnd to
+    exclude nwell with pfet as grounded moscap; added schottky diodes
+    ESD: Revised to optimize LUP.G.a, revised switches
+
+  * Assura 3.02 or later is required.
+    - All "rcx" libraries (sbc18_rcx, sbc18d_rcx) elements have callbacks
+    disabled to prevent incorrect display of data when examining extracted view.
+    rcx libraries cannot be used for schematic entry or layout. They are
+    automatically used for extracted view creation.
+    - sbc18hx:
+    - Updated rules B1,a, OBD.A, OBD.D, 1.C, MC6-10, 51.A-B, B1-2, B16-18,
+      68.A,B,G,H, BD.5-7, MR.G, B12, B14, B15, ldiff short check, bad NPN check
+    - Used new Assura command to check all metals enclosing vias at
+      two opposite sides to improve robustness; rules effected are 37.B.a,
+      28.C.a, 27.B.a, 18.C.a, 17.B.a and 8.C.a
+    - Added bipolar PNP and lateral PNP checks
+    - Added CMOS switch to improve performance for digital block
+    - Added 40.A, bad MOS check
+
+_______________________________________________________________________________
+  Date 3/25/2003
+  Library sbc18d, sbc18pt and sbc18w:
+  - Revised simulation model library (v3.0 for sbc18w, v4.1 for others)
+    to match latest espec.  Changes were made to resistors, inductors, lpnp,
+    vpnp, varactor, npn, and fuse.
+  - Updated statistical models to correlate with new corner models
+  - Fixed nfetswitch CDF so that current probing will work
+  - Add Vth OP point to CDF for all MOS devices
+  - Revised Inductor toolkit (version Jazz1.3), add underpass support
+  - Add inductor search tool for all supported processes (sbc18pt,
+    sbc18qtd, sbc18mw, sbc18qw).  The tool can be found on the inductor
+    calculation form
+  - ADS RFDE enabled for the sbc18pt design kit
+  - npn hicum models have been released for all Jazz sbc18* ADS model libraries.
+    To use hicum models, it's necessary to have ADS version v2002c and
+    a hotfix to hpeesofsim from Agilent
+  - Renaming of AMS Standard Cell libraries to prevent customer with ASIC
+    standard cell libraries; please see FAQ for more details
+  - Improved CBR netlister to better handle inherited connections.  Removed
+    problem on missing power and ground pins in certain designs that use
+    ASIC or AMS stdcells
+  - pex2skill now handles DSPF files with line continuation on instance lines
+  - Addition of schematic/CBR netlist include file option on Calibre LVS
+    and PEX forms
+  - Updated CDF for sbc18d to enable Calibre interactive netlisting.  (Calibre
+    interactive will not work until new ruledecks are released)
+  - Two new symbolic contact devices, NWTAPn and NWTAP adding the nwell layer
+    equal to the n+ implant layer
+  - Fixed issue where mimm cap is created off-grid when using array and size
+    is not even multiple of grid
+  - Fixed most off-grid device generator problems in fets
+  - Allow for custom bond-pads.  Use this table to determine layer name to use
+      Pad type             JazzPad layer    BumpPad Layer
+      Custom wirebond            N                N
+      Jazz wirebond              Y                N
+      Custom bumppad             N                Y
+      Jazz bumppad               Y                Y
+  - Clarify the MIM antenna checks in the design manual(SA.3, SA.4)
+  - Fix problem where dogboned fets would drop contacts
+  - Revise Calibre ruledecks to merge sbc18w/d ruledecks.  See sbc18qtd Calibre
+    rule files directory for more details
+  - Revise Calibre ruledecks for sbc18pt to address connectivity and device
+    recognition issues.  See sbc18pt Calibre rule files directory for more
+    details
+  - Update sbc18qtd Assura ruledecks.  Changes include using new drc commands
+    to improve robustness.  See Assura rule files directory for more details
+  - Added time-out feature to the design kit.  Design kit will stop to load
+    9 months after release.  There will be a notice in CIW when there are less
+    than 30 days till expiration.  To continue to use the kit beyond the
+    expiration, please contact Jazz to obtain extension
+ </PLAINTEXT></BODY></HTML>

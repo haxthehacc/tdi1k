@@ -1,0 +1,7 @@
+TDMCHECKPOINT="1.0"
+cds_generic/pcapacitor type="cell"
+cds_generic/pdiode type="cell"
+cds_generic/pinductor type="cell"
+cds_generic/pres type="cell"
+cds_generic/presistor type="cell"
+cds_generic/psoi type="cell"

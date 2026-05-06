@@ -1,0 +1,52 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1>
+
+'rpp' implements the P+ poly resistor formed by gate poly covered with salicide block and resistor block. The resistor is defined by the resistor block layer. Large resistors can be split up into a series connection of individual resistors ('strips') that are connected in series.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Substrate Node:</b> The node to which the substrate of the resistor is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li><b>Verify:</b> Controls the verification of the resistor. When 'Verify' is set to 'R', the resistor value and the resistor width are compared between layout and schematic. When 'Verify' is set to 'RWS', the resistor value, the resistor width and the number of strips are compared between layout and schematic. </li>
+
+<li><b>Parallel/Series:</b> When this attribute is set to 'Parallel', the 'Count' attribute is editable and can be used to specify a parallel resistor. When this attribute is set to 'Series', the 'Number of strips' attribute is editable and can be used to specify a multi-strip series resistor.</li>
+
+<li><b>On Grid:</b> Selecting this button puts the resistor terminals on a .5um grid.</li>
+
+<li><b>Count:</b> Indicates the number of resistors connected in parallel. Specifying a 'Count' of n is equivalent to drawing n capacitor instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute is available when 'Parallel/Series' is set to 'Parallel'. This attribute can only be used in the schematic.</li>
+
+<li><a href="../images/rpp3t_strips.html"><b>Number of strips:</b></a> Controls the number of resistor strips that are connected in the series to form the resistor. If you specify number of strips equal to n, the total resistance is split evenly among n individual resistors that are connected in series.</li> 
+
+<li><b>Resistor Calculation:</b> This button brings up the resistor calculation window.</li>
+
+<li><b>Calculate:</b> Indicates the data entry mode of the resistor calculator. A resistor is described by the attributes 'Resistance', 'Finger Width', 'Length' and 'Strips'. Depending on the value of the 'Calculate' attribute, three of these attributes will be editable and the other one will be calculated : 'R' calculates 'Resistance' based on 'Finger Width', 'Length' and 'Strips'. 'L' calculates 'Length' based on 'Resistance', 'Finger Width' and 'Strips'. 'W' calculates 'Width' based on 'Resistance', 'Strips' and 'Length'.</li> 
+
+<li><a href="../images/rpp3t_lw.html"><b>Finger Width:</b></a> Controls the width of the resistor strips.</li>
+
+<li><a href="../images/rpp3t_lw.html"><b>Length:</b></a> Controls the total length of the resistor.</li>
+
+<li><b>Resistance:</b> Controls the total resistance of the resistor.</li>
+
+<li><a href="../images/rpp3t_bulk.html"><b>Bulk:</b></a> Controls the location of substrate ties. The location is specified with a string of characters indicating the sides where substrate ties have to be added: 'l' means left, 'r' means right, 't' means top and 'b' means bottom. For instance, Bulk=l will add a substrate tie on the left side of the device, Bulk=lbrt will add a full substrate tie ring around the device. Bulk=n generates a device without substrate ties.</li>
+
+<li><b>Strip Resistance (Read Only):</b> Displays the resistance of one resistor strip.</li>
+
+<li><b>Finger Length (Read Only):</b> Displays the length of one resistor strip.</li>
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+<!--
+<a href="../cj15/simulation_notes.html">Simulation Notes For cj15</a>
+-->
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: Resistance, Width, Length for the option Verify="R" (or "RW"). </li>
+<li>The following attributes are checked during LVS: Resistance, Width, Strips for the option Verify="WL" (or "RWS"). </li>
+</ul>
+
+</body>
+</html>

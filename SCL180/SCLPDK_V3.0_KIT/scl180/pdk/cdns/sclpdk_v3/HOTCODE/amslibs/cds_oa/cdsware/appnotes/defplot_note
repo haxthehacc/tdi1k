@@ -1,0 +1,24 @@
+Setup default printer for use by individual user:
+
+Individual user can save a default setting that include the default
+printer name and other settings to a template file.  This file
+is located in the HOME directory of the user.  The file is called
+".defplot.tem" for Composer and ".defLeplot.tem" for layout tools.
+
+HOW TO SETUP PLOTTER TEMPLATE FILE:
+
+If you want to customerize the your plotter setting, you can modify the
+plotter setting in the plot submit/Option form, then click on "Save"
+template to save the setting in you ~/.defplot.tem file.  Next time
+when you start the system, your customerized template file will be loaded.
+Same procedure to save the template to ~/.defLeplot.tem for layout tools.
+
+To create a default plotter template file, In Composer, select
+Design/Plot/Submit... menu, click on "Plot Options...", select your
+default plotter name, and click "Fit to Page" button once.  Now, close
+the dialog box by clicking OK.  In the "Submit Plot" dialog box, fill
+in Template File as "~/.defplot.tem", and click "Save".  From now on,
+when you invoke Composer, it will automatically load the template file
+from your home directory ~/.defplot.tem and preset the plotter name and
+other settings for you.  You can also repeat these
+steps for layout tools, just change the Template File to "~/.defLeplot.tem".

@@ -1,0 +1,17 @@
+* File: invtd2.sp.invtd2.pxi
+* Created: Sun Feb 14 19:12:50 2010
+* 
+cc_1 4 VSS 0.284173f
+cc_2 4 VDD 0.0924476f
+cc_3 4 EN 0.468486f
+cc_4 4 ZN 0.0686694f
+cc_5 4 I 0.211455f
+cc_6 VSS EN 0.0241956f
+cc_7 VSS ZN 0.0221295f
+cc_8 VSS I 0.0420816f
+cc_9 VDD EN 0.150939f
+cc_10 VDD ZN 0.0158525f
+cc_11 VDD I 0.0775852f
+cc_12 EN ZN 0.036328f
+cc_13 EN I 0.259401f
+cc_14 ZN I 0.172013f

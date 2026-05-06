@@ -1,0 +1,27 @@
+<html><body>
+<h1 align=center>Inductor Optimization</h1>
+
+The Inductor Optimization form is a user-interface built around the Matlab Optimization algorithms for spiral and differential inductors.  For details on the Matlab implementation of the optimization algorithms, please refer to the following
+<a href="optL1.pdf">PDF document.</a>
+
+<br></br>
+The following are the available spiral inductor (Ind) and differential inductor (Diff) optimizations available for use:
+<ul>
+<li><b>maxIndArea:</b> Given a specified Maximum Tolerable Capacitance per Port, compute the maximum Area that the inductor can occupy before exceeding this capacitance limit.  Note that this is not an optimization algorithm but a simple analytical formula, and is useful to run before proceeding with an optimization to determine a good initial size for the inductor.</li>
+<li><b>optIndNt & optDiffNt:</b> Given an initial inductor area, optimize for the Quality factor of the inductor by varying Number of Turns and Width.  The purpose of this optimization is to find the best inductor that can fit within a given specified area.</li>
+<li><b>optIndQ & optDiffQ:</b> Optimize for the Quality factor of the inductor by varying Number of Turns, Width and Area.  The purpose of this optimization is to maximize the Quality Factor of an inductor.</li>
+<li><b>optIndA & optDiffA:</b> Given a specified target Quality Factor and Inductance, optimize for minimum Area of the inductor.  The purpose of this optimization is to find the smallest inductor size for a specific Q and Inductance.</li>
+</ul>
+
+A few notes about running the optimizations from RDS:
+<ul>
+<li>Once you are happy with the results of an optimization, you must click on the <b>OK</b> button of the "Edit Inductor Parameters" form and then click on the <b>OK</b> button of the "Edit Object Properties" form in order to return the optimized parameters back to the inductor in your schematic.
+<li>Select the relevant algorithm (optimization) you want to run in the form and then select <b>Run Optimization</b> button to run an optimization.</li>
+<li>In all cases, a call to the Matlab optimization executable is made and Matlab returns geometry information of the inductor.  This geometry information is reported in a popup dialog when Matlab completes and is also returned to the "Edit Inductor Parameters" form as well as the "RDS Inductor Optimization" form.</li>
+<li>The optimization process runs in background mode, which means you can proceed to do other things in DFII while the optimization is running.  However, do not close any of the forms while the optimization is running since otherwise the geometry in the forms cannot be properly updated once the run completes.</li>
+<li>If for any reason you wish to terminate the optimization that is currently running, simply click on the <b>Kill Optimization</b> button.
+<li>The <b>OK</b> and <b>Cancel</b> buttons serve no other purpose than to close the "RDS Inductor Optimization" form.
+<li>For all algorithms except maxIndArea, a view window showing the progress of an optimization will appear.  If for some reason the optimization algorithm runs into trouble, another view window showing the error from Matlab will appear and a dialog box pops up indicating there was trouble.
+</ul>
+
+</body></html>

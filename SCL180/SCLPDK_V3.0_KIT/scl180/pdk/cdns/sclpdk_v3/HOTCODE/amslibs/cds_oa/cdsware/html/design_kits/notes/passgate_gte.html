@@ -1,0 +1,39 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1>
+
+'passgate' implements the nMOS and pMOS transistor connected in a passgate logic configuration. The gate lengths of the two transistors have to be identical, but the gate widths for both transistors can be individually modified. Wide transistors can be generated as an array of parallel fets using the 'Number of Fingers' attributes. The number of fingers for both transistors can be individually modified.  Multiple fets connected in parallel on the same active area are called 'fingers'. Multiple layout styles with different interconnect schemes are available and can be controlled with the 'Style' attribute. The presence/absence and configuration of substrate ties can be controlled with the 'Bulk' attribute.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Count:</b> Controls the number of passgate instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n passgate instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic.</li>
+
+<li><b>Style:</b> Specifies the layout style to be used for the device. The 'Vertical' style puts the pMOS transistor on top of the nMOS transistor and uses metal1 and metal2 for the interconnections. The 'Horizontal' style puts the pMOS transistor to the right of the nMOS transistor and uses metal1 and metal3 for the interconnections. A metal2 shield is added between the input and output wires. The 'Vertical(3met)' style puts the pMOS transistor on top of the nMOS transistor and uses metal1 and metal3 for the interconnections.</li>
+
+<li><b>Width (finger) n:</b> Controls the width of the nMOS gate fingers.</li> 
+
+<li><b>Width (finger) p:</b> Controls the width of the pMOS gate fingers.</li> 
+
+<li><b>Length:</b> Controls the gate length of the nMOS and pMOS.</li> 
+
+<li><b>Number of Fingers (n):</b> Controls the number of gate fingers for the nMOS transistor.</li> 
+
+<li><b>Number of Fingers (p):</b> Controls the number of gate fingers for the pMOS transistor.</li> 
+
+<li><b>Current:</b> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+<li><b>Bulk:</b> Indicates the location of substrate ties. This location is specified with a string of characters indicating the sides where substrate ties have to be added: 'l' means to the left of the pMOS and nMOS transistors, 'r' means to the right of the pMOS and nMOS transistors, 't' means on top of the pMOS transistor and 'b' means on the bottom of the nMOS transistor. Bulk=n generates a device without substrate ties.</li>
+
+</ul>
+<h1>NOTES:</h1>
+
+<h1>LVS:</h1>
+<ul>
+<li>The passgate is implemented with a schematic. LVS verifies the connectivity and dimensions of the mos transistors in the schematic.</li> 
+</ul>
+</body>
+</html>
+
+
+<html>
+<body>

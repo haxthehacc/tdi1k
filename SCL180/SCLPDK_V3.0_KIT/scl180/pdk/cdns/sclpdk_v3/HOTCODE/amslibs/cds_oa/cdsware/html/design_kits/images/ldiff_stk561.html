@@ -1,0 +1,64 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1>
+
+'ldiff_stk561' is a rectangular differential stacked solenoid fabricated in M5 & M6, Cu.  
+
+<h1>ATTRIBUTES :</h1>
+<ul>
+<li>Substrate Node : The node to which the substrate of the inductor is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li>Change input parameters : This button brings up the inductor calculation window.  Electrical parameters for inductor models are automatically calculated from physical and functional parameters. </li>
+
+<li>Inductor Type (Read Only) : Displays the type of inductor.</li>
+
+<li><a href="ldiff_stk561_nt.html">Number of Turns</a> : Controls the total number of turns in the inductor. A quarter turn is .25, a full turn is 1. For instance, to create an inductor with four and a half turns, specify Num of Turns = 4.5.</li>
+
+<li><a href="ldiff_stk561_s.html">Spacing</a> : Controls the space between inductor segments.</li>
+
+<li><a href="ldiff_stk561_w.html">Width</a> : Controls the width of the inductor segments.</li>
+
+<li><a href="ldiff_stk561_xy.html">Xsize</a> : The total width of the inductor in the X direction.</li>
+
+<li><a href="ldiff_stk561_xy.html">Ysize</a> : The total height of the inductor in the Y direction.</li>
+
+<li>Operating Freq :</li>
+
+<li>Start Freq :</li>
+
+<li>End Freq :</li>
+
+<li>Freq Step :</li>
+
+<li>PeakQpDiff :</li>
+
+<li>FPeakQpDiff :</li>
+
+<li>SRFpDiff :</li>
+
+<li>QHalfSRFpDiff :</li>
+
+<li>QInterestpDiff :</li>
+
+<li>Lfgoes0pDiff :</li>
+
+<li>Rfgoes0pDiff :</li>
+
+<li>Toggle Circuit Params Display :</li>
+</ul>
+<h1>NOTES:</h1> 
+<ul>
+<li>The inductor pcell generates a marking layer around the layout. This marking layer is used to identify the inductor during LVS.</li> 
+
+<li>It is not allowed to run any layer over or under the inductor.</li>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>For LVS to recognize the differential inductor, the marking layer must be intersected by two metal3 wires that connect to the P1 and P2 pins and one metal1 wire that connects to the TAP pin. It is not allowed to connect the pins in any other layer.</li> 
+
+<li>The following attributes are checked during LVS: </li>
+</ul>
+
+</body>
+</html>

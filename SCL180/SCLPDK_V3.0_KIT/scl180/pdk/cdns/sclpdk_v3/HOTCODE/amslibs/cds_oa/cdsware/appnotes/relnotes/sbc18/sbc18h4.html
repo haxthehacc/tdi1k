@@ -1,0 +1,213 @@
+<HTML><HEAD>SBC18H4 Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+________________________
+Date: 09/09/2015
+Version: 2.0.2
+Library: sbc18
+
+Overview:
+* Released v1.3_sbc18h4 models
+* Updated PO.1C in Density check
+
+Verification:
+* Updated PO.1C value in Density check from 0.13 to 0.09
+
+Models:
+MiM Caps:
+* Rolled back increased inductance in MiM capacitor models introduced in v1.1_sbc18h4 release.
+  The major impact is on smaller size MiM (< 10x10um) and results in a higher self-resonant frequency
+  The model is now based off EM simulations, rather than measured data which appeared to be impacted
+  by de-embedding of very small inductances (~10pH)
+BL Varactor:
+* Aligned model to SBC18H3 lot (J31279w5) (H4 process is similar to H3 process for BL varactor)
+Schottky:
+* Aligned model to SBC18H3 lot (J31279w5) (H4 process is similar to H3 process for Schottky)
+
+________________________
+Date: 03/02/2015
+Version: 2.0.1
+Library: sbc18
+
+Overview:
+* Released v1.2_sbc18h4 models
+
+General:
+* Add TowerJazz menu item to remove large parasitic resistors from extracted calibre view
+* Fixed JIT parameter used in inductor parameter calculations.  This update has no impact
+  on inductor layout or simulation.  This is a spelling correction only.
+
+ESD Library:
+* Added lvsIgnore to some ESD cells (cells pad_no_esd*)
+
+Verification:
+* Added LVS option to extract a separate varactor device for each anode, instead 
+  of a single varactor device with the number of anodes as a parameter
+
+Models:
+NPN:
+* Replaced sbc18h3 medium-voltage NPN model w/ sbc18h4 silicon based model
+
+________________________
+Date: 02/02/2015
+Version: 2.0
+Library: sbc18
+
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 14
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18H4: NPB-PS-1106, Rev. 2
+
+Overview:
+* Major release of design kit
+* Kit updated to reflect changes in the Design Application Note for SBC18H4: NPB-PS-1106, Rev. 2
+- Updated list of supported devices throughout document to include RF diodes, ST NPN, HV CMOS and BL varactor
+- Updated SiGe HBT Design Rules in section 6.1
+- Added gate poly proximity rule in section 6.3
+- Added high voltage / low leakage region rules in section 6.5
+- Added section with DRs for back end and circuitry under pads in sections 6.6 and 6.7
+- Added table for back end process parameters in section 7.1
+- Updated HS SiGe HBT e-specs to align with latest v1.0 models and added preliminary ST NPN e-specs in section 8.1
+- Added table for back end electrical specifications in section 8.11
+* Added/enabled several devices
+* Removed NPN gridding requirements
+* Updated models
+
+Library:
+* The following devices were added to the SBC18H4 device library:  LDFETs 
+  (nfet3p3_ld, pfet3p3_ld), transmission line (rfline), 
+  3.3V MOS varactor (var_mos3p3).
+* The following devices were present but disabled in the previous library, 
+  and are enabled now:  lateral PNP (lpnp), PIN & Schottky diodes (dpin, dschottky), 
+  buried-layer varactor (var_bl).
+
+Verification:
+DRC:
+* Removed *.BAD checks related to new devices (LPNP,Schotkky,BL2/PINDIOD,Varactor)
+* Removed emitter grid checks
+* Added NPN ,HV.2 ,DSV checks
+* Changed 7.S.2, SD.1, SD.1.b, 39.B, 4.C, PO.1C (Poly proximity density)
+LVS:
+* added support for new devices
+
+Models:
+General:
+* Reformatted model cards to enable monte-carlo mismatch simulations at X-SIGMA corners
+* Added optional switch (warnings corner in the model selection box)
+  to turn on Spectre "assert" checks for maximum operating voltage for reliablie operation or worst-case breakdown
+  Notes:
+  1. BJT devices are not checked, as the max. operating voltage depends on impedance and biasing conditions
+  2. These are provided as a GUIDE ONLY. The user must verify all operating voltages defined
+     in the Electrical Specification documents for the technology
+  3. Checking should be enabled within Cadence ADE->Simulation->Options->Analog->dochecklimit: Yes
+NPN:
+* High-speed NPN: Modified corner models to align w/ estimated process variation. These will likely be further refined as the process matures
+* Medium Voltage NPN: Copied models form SBC18H3 medium-voltage NPN. These models should not be used if high degree of accuracy is needed.
+  These models will be updated (based on SBC18H4 silicon) in a future release
+RES:
+* Deleted m=m statement from rw3t spectre model to fix PDK extraction issue w/ nfet3p3_esd device
+* Poly resistors: Added small resistance to inductive element to improve simulation convergence and speed
+BL Varactor, Lateral PNP, PiN Diode, Schottky diode
+* Models copied from v7.6_sbc18h3. These are based on SBC18H3. These have not been validated on SBC18H4
+  silicon, so should not be used in precision circuits that require high-degree of accuracy. These models
+  will be updated (based on SBC18H4 silicon) in a future release
+T-lines:
+* Added new transmission line models (Spectre only) 
+Diode:
+* nwdiode; Removed duplicate specification of tnom parameter
+* Added "tnom" model parameter to diode models. This may impact simulated currents if the user had previous
+  specified tnom other than 25C in the top-level netlist. With this parameter now hard-coded in the model, the
+  top-level netlist will not over-ride the value in the model-card. This is the correct implementation
+* Created a copy of the diode models and lowered the series resistance for use in ESD (large-signal)
+  simulations. The "ESD" models can be accessed via the "ESD" options under diode_mod corners
+* Added breakdown voltage to the diode models when used under the "SS" (small-signal) option under diode_mod corners
+IND:
+* Support for JIT6.0 - Added 3.3um Cu inductor components ind_3p3u, inddiff_3p3u
+  for NPB/MH process and a new solenoid component indsol_5u, indsol_3u, indsol_3p3u, indsol_1u. 
+HVMOS:
+* Full re-extracted the n3p3fet_lds and p3p3fet_lds model using MOS20 + R3 to replace the old BSIM3 model.
+  The new models fit better the pcm data cross the temperature between 125c and -40c degree.
+  The capacitance(Cgg, Cgd, Cjun) model parameters are estimated based upon the Pcell layout. 
+  The NOM, FAST and SLOW corner models are also created with reasonable shift windows. 
+* Updated flicker noise model parameters in QLD FETs
+MiM Caps:
+* Updated MiM and stacked MiM cap models for parasitic resistance and inductance
+  to better match the smaller cap size data ( < 20um x 20um)
+* Swapped rows/columns in the model to align with expected RF signal direction in p-cell. This 
+  could impact the series resistance of the MiM (Q) for certain topologies.
+MOSVAR:
+* Clamped Rend value to 1e-3 ohms for fast corner/x-sigma/monte-carlo simulations to prevent it from going negative.
+  Note: This lowers the max Q of the device for the FAST process corner. There is no change to NOM model
+* Minor changes of temperature coefficients based on latest silicon
+* Minor changes to nwell resistance to better model small L (~0.18um) varactors
+* Chaned worst-case corner offset for well-resistance to align model with e-spec, to offset impact of above changes
+  (SLOW corner Q simulation should be the ~ same as v6.9a)
+RTIN:
+* Created independent statistical/x-sigma variables for rtin variation. They were 
+  previously tied w/ the inductor variations
+PNP:
+* Added predictive mismatch model for high-performance PNP, based on silicon 
+  measurements of similar device in previous generation of technology. 
+  (Note: This device is not currently offered in any SBC18H4 PDK - capability has been added for potential support in the future)
+FET:
+* Added capability to 5V rf pfets to accept source/drain area and perimeter dimensions (For post-layout simulations)
+  (Note: This device is not currently offered in any SBC18H4 PDK - capability has been added for potential support in the future)
+IND:
+* Added "rdm" and "kdm" to include resistively loaded transformer loops
+* Changed TCR from 4200 to 3800 ppm/deg C to correct an extraction error
+* removed "csbsig" corner modeling parameter since insignificant
+* Removed in ind unused parameter "lval=-1 rp=-1 rsub=-1 rs=-1 csub=-1 wf=-1"
+* Removed in inddiff unused parameter "cp12=-1 rp1=-1 rp2=-1 rs1=-1 rs2=-1"
+DSV:
+* Added model for deep-silicon-via (dsv)
+
+________________________
+Date: 10/31/2012
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 14
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18H4: NPB-PS-1106, Rev. 1
+
+________________________
+Date: 10/13/2014
+Library: sbc18
+
+Updates:
+
+DRC - 
+* Removed rules B1.a and B1.b* from checking. These rules no longer
+  apply.
+* Updated 7.S.2 to allow slot vias inside NPNs.
+
+________________________
+Date: 10/31/2012
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 14
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18H4: NPB-PS-1106, Rev. 1
+
+Process Synopsis:
+* The SBC18H4 process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed (340GHz) NPN with deep trench,
+  - TiN resistor between metal3 and metal4,
+  - poly resistors (silicided, low and high value unsilicided),
+  - N-well resistor,
+  - 2.8fF/um2 MIM capacitor between metal4/metal5 or metal3/metal4,
+  - 5.6fF/um2 stacked MIM capacitor between metal3 and metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - MOS varactor,
+  - triple well and deep trench isolation.
+
+Software versions tested with this release:
+* Cadence IC release 5.10.41_USR6.127.29, 6.1.3.500.10 
+* Cadence Spectre release 10.1.1.092.isr7
+* Synopsys Hspice release E-2010.12-ENG2
+* Mentor Calibre release v2010.2_38.23
+* Cadence Assura release 4.1_USR1_HF8
+
+This is the initial release of the SBC18H4 kit.  The SBC18H4 process
+differs from other SBC18 variants by using a grating and trim mask
+combination to form the NPN emitters.
+
+</PLAINTEXT></BODY></HTML>

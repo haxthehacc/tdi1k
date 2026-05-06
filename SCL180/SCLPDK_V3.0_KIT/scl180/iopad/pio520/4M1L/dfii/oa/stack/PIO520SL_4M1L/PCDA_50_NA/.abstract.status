@@ -1,0 +1,8 @@
+cUiMoveCellToBin {PCDA_50_NA} {IO}
+cUiSelectCellP {PCDA_50_NA}
+cUiSetViewStatus {PCDA_50_NA} {layout} {1}
+cUiSetViewStatus {PCDA_50_NA} {logical} {1}
+cUiSetViewStatus {PCDA_50_NA} {abstract.pin} {3}
+cUiSetViewStatus {PCDA_50_NA} {abstract.ext} {1}
+cUiSetViewStatus {PCDA_50_NA} {abstract} {1}
+cUiSetViewStatus {PCDA_50_NA} {abstract.ver} {0}

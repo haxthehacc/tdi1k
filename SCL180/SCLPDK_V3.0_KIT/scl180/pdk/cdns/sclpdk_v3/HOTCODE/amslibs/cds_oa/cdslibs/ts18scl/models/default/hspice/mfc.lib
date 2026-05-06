@@ -1,0 +1,16 @@
+*
+* library mfclib
+
+.LIB NOM
+.LIB 'ts18sl_scl_2019.lib' mfc_typ
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl_2019.lib' mfc_low
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl_2019.lib' mfc_high
+.ENDL SLOW
+
+* end library mfclib

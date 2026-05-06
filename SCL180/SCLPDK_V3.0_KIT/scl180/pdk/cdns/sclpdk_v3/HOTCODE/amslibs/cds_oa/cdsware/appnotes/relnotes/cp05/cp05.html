@@ -1,0 +1,1072 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date 2008/03/05
+Design Kit: cp05
+Process Variants: cp05ma, cp05md, cp05mfa, cp05mfd, cp05mrd
+Electrical Specification: NPB-PS-0400, Rev.10
+Design Rules Document: NPB-PS-0399, Rev.10
+
+Software versions tested with this release
+* Cadence IC releases IC51.41USR3
+* Mentor Calibre releases 2006.01_19.20
+  - Version 2006.01_19.19 required for XRC and CalibreView
+  - Jazz CBR flow no longer supported. Use the Mentor Calibre Interactive instead.
+
+Highlights
+* IC5.1USR3 is minimum required IC tools version
+* Calibre 2006.01_19.19 required for Calibre Interactive/XRC
+* Jazz CBR flow no longer supported
+* Kit support for new variants cp05ma and cp05mfa
+* Kit support for new SOI devices and extraction flow
+
+Helptickets Resolved:
+17877, 17803, 17352: Large stacked via arrays
+13488: Rule 40.B mismatches
+4890, 13635: Sealring consistency and effect on stress calculations
+13574: Density checks add *.F max rule and fix 28.D min rule
+13997: Antenna SA.1* flags all MIM on same net instead of true violation
+11562: Add layout view for r_dummy
+13909: Update diode OP mapping
+13957: Dont allow poly resistor over active
+20948: Update Calibre Interactive defaults
+21229: Remove run_cal flow
+
+Kit and environment changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+
+Device Library:
+* New devices for SOI: capsoi*, mom_cap, nwSOIdiode, pfet4_35vhv, pfet4_45vhv, pnwSOIdiode,
+  res_polyHR
+* Added layout view for r_dummy
+* Updated Nwell resistor and poly cap (rw3t, pc) to support bulk and SOI parameter values
+  and models.
+* Update OP data for diodes
+
+Model Updates:
+* v2.4 * 2008/03/05
+FET:
+- Add SOI version of nwell resistor and PC
+- Update SOI CBox and SOI Nwell values to match latest Espec
+Statistical:
+- Update to match corner model changes
+
+* v2.3a * 2007/04/02
+Statistical:
+- Added mismatch model for parasitic vpnp. Due to the use of inline subckts,
+  the region parameter is not supported.
+
+Verification Updates
+Only Calibre is supported in cp05.
+* The Jazz Calibre flow is now obsolete. Use the Mentor Graphics Calibre Interactive flow.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+* Calibre Interactive requires Calibre version 2006.01_19.19 or later.
+  Jazz has tested with 2006.01_19.19
+
+Antenna:
+- Revise SA.1.* to fix false flagging of all MIM on same net
+Density:
+- Fix 28.D from 30% to 25%
+- Add 8/18/28/F
+DRC:
+- Merge RPM2 + SOI + CP05 into one deck
+- Add 17.D/27.D
+- Add Megohm checks (5.B.a, 5.D.a, 40.*)
+- Add/revise 40.N/P/Q/R
+- Add 40.X.a
+- Add 60.A/B
+- Add SB.C.*.0 to check for missing Sealring layers
+- Remove 40.E/F/H
+* ERC:
+- Merge RPM2 + SOI + CP05 into one deck
+* LUP:
+- Merge RPM2 + SOI + CP05 into one deck
+* LVS:
+- Leave RPM2, SOI, and CP05 as separate deck
+- Update SOI deck cp05ma to use new nwell resistor value 913
+* Stress:
+- Update chip extent to include up to, but not including, sealring
+* XRC:
+- Leave RPM2, SOI, and CP05 as separate deck
+
+
+===============================================================================
+===============================================================================
+Differences from RFMD kit:
+===============================================================================
+===============================================================================
+
+===============================================================================
+$RDS_CDSLIBS/cp05/devices, $RDS_CDSLIBS/cp05/rcxlib
+===============================================================================
+Removed cell nfet_ipld
+
+===============================================================================
+$RDS_CDSLIBS/cp05/devices, $RDS_CDSLIBS/cp05/rcxlib
+===============================================================================
+Removed all view-based property (prop.xx) files. For example:
+c3t_mim2/auCdl/prop.xx
+c3t_mim2/auLvs/prop.xx
+c3t_mim2/hspiceS/prop.xx
+c3t_mim2/spectreS/prop.xx
+c3t_mim2/symbol/prop.xx
+
+
+===============================================================================
+$RDS_CDSWARE/calibre/src/skill/rssCalViewSetup.il
+===============================================================================
+17,18c17,18
+<       mgc_eview_globals->resetPropertyList = list("m=1" "ms=1" "nf=1" "count=1" "capcols=1" "caprows=1" "row=1" "col=1" "slices=1" "pstrips=1" "mEff=1" "countCT=1" "strips=1" "simM=1")
+<       mgc_eview_globals->resetPropertyNames = "m=1 ms=1 nf=1 count=1 capcols=1 caprows=1 row=1 col=1 slices=1 pstrips=1 mEff=1 countCT=1 strips=1 simM=1"
+---
+>       mgc_eview_globals->resetPropertyList = list("m=1" "ms=1" "count=1" "capcols=1" "caprows=1" "row=1" "col=1" "slices=1" "pstrips=1" "rthFlag=0")
+>       mgc_eview_globals->resetPropertyNames = "m=1 ms=1 count=1 capcols=1 caprows=1 row=1 col=1 slices=1 pstrips=1 rthFlag=0"
+
+===============================================================================
+$RDS_CDSWARE/bin/makeProjectTreeRDS.pl
+===============================================================================
+< ## ELH adding umask 002 setting back in 10/24/06
+< 
+< umask 002 ;
+< 
+
+===============================================================================
+$RDS_ROOT/amslibs/cds445/etc/display.drf
+===============================================================================
+<  ( display      nkmsk                dot1       dashed     yellow     yellow     outlineStipple)
+>  ( display      nkmsk                dots_rare  solid      forest     forest     outlineStipple)
+
+
+===============================================================================
+$RDS_ROOT/amslibs/cds445/etc/proj.cdsinit
+##### Removed this file. It is not loaded from this location
+===============================================================================
+
+===============================================================================
+$RDS_ROOT/amslibs/cds445/etc/system.cdsinit
+##### This is an ADS 2006a issue where the Jazz code trigger is no longer called
+##### The default ADS model path settings used to work fine in 2005a.
+===============================================================================
+202,205d208
+< ;ELH 08/30/06 adding for default ads model path for RFDE
+< envSetVal("ADSsim.envOpts" "includePath" 'string "$RDS_CDSLIBS/cp05/models/default/ads")
+< envSetVal("ADSsim.envOpts" "modelFiles" 'string "includes.net;NOM")
+222d224
+<       ;envSetVal( "layout" "useEditorBackgroundColorForLSW" 'boolean nil )
+338,350d341
+< unless( isFile( "attachLib.il" )
+<  if(getShellEnvVar("RDS_CDS_VERIFY_TECH") == "cp05mrd" then
+<         hiDisplayAppDBox(
+<           ?name 'xyz
+<           ?dboxBanner "DESIGN KIT WARNING"
+<           ?dboxText "For the cp05_20060724_EXP version of the cp05 design kit:\n\nProcess variant cp05mrd (HV MOS) is a BETA process.\n\nPlease contact Julio Costa before using the cp05mrd process."
+<           ?dialogType hicWarningDialog
+<           ?dialogStyle 'modeless
+<           ?buttonLayout 'Close
+<           ?location 300:50
+<         )
+<  ); if cp05mrd
+< ) ; end unless
+
+
+===============================================================================
+$RDS_ROOT/amslibs/cds445/etc/system.lib
+##### We updated the method for defining analogLib, etc. See Cadence's documentation:
+##### Cadence Application Infrastructure User Guide, Product Version 3.4, Chapter 5
+===============================================================================
+< -- RFMD Custom Reference Libraries
+< DEFINE cp05_io $KIT_DIR/reflibs/cp05_io
+<
+< -- Jazz A50H Digital Logic Libraries
+< DEFINE ri54sy215 /libs/jazz/A05/dfII/ri54sy215
+
+
+
+
+___________________________________
+Date 2006/07/24
+Design Kit: cp05
+Electrical Specification: NPB-PS-0400, Rev.9
+Design Rules Document: NPB-PS-0399, Rev.9
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2, IC51.41USR3
+* Mentor Calibre releases 9.1_5, 2006.01_19.19
+  - XCalibre is not supported in the CP05 design kit
+  - Version 2006.01_19.19 required for XRC and CalibreView
+
+Highlights
+* IC50.33USR2 is minimum required IC tools version
+* Calibre 2006.01_19.19 required for Calibre Interactive/XRC
+* Jazz Calibre flow supported for DRC and LVS, but not PEX
+* Integrated new process variant cp05mfa
+* Fix issue with PEX double-counting of contacts in poly resistor
+* Trigger callbacks tool now supports creation of detailed change log
+
+Helptickets Resolved:
+10294 - PEX double counts poly resistor end contacts
+10243 - ESD_LUP missing DRC SELECT CHECK for SR.2 and show_periphery
+10211 - DRC missing BD.6
+8512 - MIM via resistance update
+
+Kit and environment changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* Trigger Callbacks:
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+	 that is changed on any instance in any cellview.
+  - Add warning message if alternate views named layout* or schematic* are found
+    when running in hierarchic or library mode.
+  - Fix issue where non-writable cell would not generate error message.
+  - Fix issue where incorrect lib name could be used in schematic lib mode.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* MakeProjectTree: remove call to set umask to 002 on project directory creation.
+  Current umask will be used instead.
+* Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+* Add support for hspiceD simulator in Jazz Model Library Selection form. The cp05 kit
+  does not yet support hspiceD netlisting and simulation.
+
+
+Device Library:
+* inductor: Fix issue with change to exit property not being saved
+* nfet_vt04: Now supported in cp05mfa process variant
+* passgate: Resolve potential issue with N nf > 1 in CDL netlist
+* Update support for ubump, bump, and wire_bond devices in PEX flow and simulation
+  model.
+
+Model Updates:
+* v2.3 * 2006/05/15
+FET:
++ Initial Rev-0 5V native NFET model nfet_vt0 and subckt nfets_vt0
+  - Extracted from IV measurements only
+  - CV parameters copied from CP05 nfets
+  - Cj parameters copied from CA18 3.3v Native NFETs
+  - Flicker noise parameters copied from CP05 nfets
+CAP:
+- Update mim via2 resistance to match latest Espec
+Statistical:
+- Spectre version MMSIM6.0USR2 or later required for statistical simulation
+- Add Rev-0 5V native NFET model nfet_vt0 and subckt nfets_vt0
+- Update to match corner model changes
+- Add mismatch support for rps and rnp3t resistors
+
+
+Verification Updates
+Only Calibre is supported in cp05.
+* The Jazz Calibre flow can be used for DRC and LVS, but not PEX.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+* Calibre Interactive requires Calibre version 2006.01_19.19 or later.
+  Jazz has tested with 2006.01_19.19
+
+Antenna: No change
+Density: No change
+DRC:
+- Add BD.6
+ERC: No change
+LUP:
+- Add DRC SELECT CHECK for show_periphery and SR.2
+LVS:
+- Fix poly resistor contact resistance double-counting. Poly resistor
+  definition modified to separate head from conducting poly.
+PEX:
+- Fix poly resistor contact resistance double-counting. Poly resistor
+  definition modified to separate head from conducting poly.
+Stress: No change
+
+___________________________________
+Date 2006/01/18
+Design Kit: cp05
+Electrical Specification: NPB-PS-0400, Rev.7
+Design Rules Document: NPB-PS-0399, Rev.7
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 9.1_5, 2004.02
+  - XCalibre is not supported in the CP05 design kit
+  - Version v2004.02 required for XRC and CalibreView
+
+Highlights
+* IC50.33USR2 is minimum required IC tools version
+* Calibre 2004.2 required for Calibre Interactive/XRC
+* Jazz Calibre flow supported for DRC and LVS, but not PEX
+* Integrated latest changes for nfet_vt0, nfet4_vt0, nfet_ip,
+  nfet_hvld, and ubump devices
+* Add support for drawn inductors ind and ind_diff
+* Add LVS dummy resistor r_dummy
+
+Helptickets Resolved:
+4618
+4529
+2339
+3426
+4168
+4246
+4313
+4350
+4357
+4524
+4571
+4640
+4742
+4803
+4807
+4816
+5014
+5272
+5435
+5560
+5909
+6062
+6563
+6690
+670
+6979
+7485
+7508
+7520
+7642
+7961
+
+Kit and environment changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* Remove Discrete_Components design library. This was a legacy library with several
+  unsupported discrete elements. If you use this library, you will need to reference
+  a copy of the library provided in a previous kit release.
+* Corrected issue with Jazz custom tool that saves Artist save states as
+  cellviews. Addressed issue where state names that required escaped
+  characters would not be saved as cellviews properly.
+* Removed unused/legacy application notes from JAZZ menu item in all windows.
+  Removed unused/legacy documents from cdsware/appnotes directory.
+* Changed behavior of HTML based application notes to try to use existing
+  browser instead of opening a new one. Browser to be launched is still
+  hard-coded as "netscape" - this will be addressed in a future release.
+* Remove bin/asicbin/run_cal.pl script. Use the run_cal.pl program located
+  in bin/amsbin or in $RDS_CDSWARE/bin
+* Remove $RDS_ETC/system.cdsplotinit file. See Cadence Plotter setup guide
+  for information on setting up printers/plotters for your site.
+* Fix issue with running Inductor Toolkit on HPUX platform
+* Fix issue in Jazz automated streamin procedures to prevent GDS import failures
+  when using a technology library as a reference.
+* Fix issue where pcell drawing would fail when the SKILL path did not include the
+  "." directory.
+* Change schematic Jazz->Netlist->CBR netlist generator use the current window's
+  instead of forcing it to "schematic".
+* Update ADE (Artist) simulation window Jazz Model selection form so it will support
+  PCMT-based corner definitions.
+* Added hooks to load Xpedion GoldenGate context file when XPEDION environment
+  variable is set.
+* Add Jazz Inductor Toolkit 3.0 'cdsio' program in InductorLib directory.
+
+Device Library, new devices
+- Add ind and ind_diff drawn inductor using Jazz Inductor Toolkit 3.0
+  models. Support for schematic, simulation, layout, DRC, LVS, and extraction.
+  There is no support for drawn active shields in this kit release. The parameter
+  is still visible to toggle shields, but this will change the simulation model
+  but not the layout.
+- Add nfet_ip and nfet_iphd fixed cells
+- Add r_dummy dummy LVS resistor device.
+
+Device Library, changed devices:
+- Addressed an off-grid issue with guard-ring and area/line contact creation.
+  Affects many devices, but not all, that have integrated guard rings.
+  Affects Jazz area and line contact creation utilities.
+- Changed poly resistor rnp3t CDL model from rp to rp3 to improve compatibility
+  with Calibre Interactive and Cadence analogLib presistor.
+- Updated resistors to support RWS mode for calibre interactive lvs/pex
+- Added bumpmetal layer into kit layer 103. This is not a supported Jazz layer.
+- RDS_ROOT/amslibs/cds_default/etc updated display.drf for bumpmetal layer.
+  This is not a supported Jazz layer.
+- Update techfile to support inductors, dummy fill/block, and LVS resistor.
+- Integrate latest provided changes to cp05mrd specific devices
+- Update most device symbols to include inherited connection label
+- Update fuse_met2 L/W to match layout
+- Adjust location of implants in rnp3t cell to fix DRC violation in multi-strip use
+- Add proces variant checking for cp05mr devices to limit use in non MR designs
+- Add warning text to cp05mrd devices to indicate prototype component status.
+- Integrate latest provided changes for layout of nfet_vt0, nfet_ip
+- Update cds_generic devices pcapacitor, pdiode, pex_*, pinductor, presistor so they
+  all have AMS Designer simulation information. AMS Designer is not currently supported
+  by this design kit.
+- Remove fuse_poly cell from library
+
+Model Updates
+v2.2 * 2006/01/05
+Segmented model files by device class. Fet, pnp, cap, ind, and res
+corner selection can now be separately controlled.
+IND: Integrate sbc35x JIT3.0 inductor as first-pass inductor model support
+RES: Add r_met* dummy LVS resistors
+
+v2.1 * 2005/06/10
+CAP:
+- Updated MIM cap model to fix W scaling of plate/via resistances
+PNP:
+- Update vpnp to include IS calculation. Revised model to use corner
+  factors
+RES:
+- Corrected ADS simulator issue with noise containing extra sqrt()
+  for rnp3t resistor
+
+
+Verification Updates
+Only Calibre is supported in cp05.
+* The Jazz Calibre flow can be used for DRC and LVS, but not PEX.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+* Calibre Interactive requires Calibre version 2004.04_11.22 or later.
+
+ANTENNA:
+- Add support for metal fill/block layers and inductor
+- Fix metal3 MIM plate antenna check in AN.G
+- Fix SA.1.bot to properly flag violations
+DENSITY:
+- Add support for metal fill/block layers and inductor
+- Updated metal fill algorithm to use 3x3 array of fill
+DRC:
+- Add support for metal fill/block layers, inductor, and LVS resistors.
+- Added fill/block and LVS resistor shape checks
+- Enable butting pact-nact connected through salicide
+- Enhance ntap/nwell and diffusion/active/tap connectivity
+- Revise LUP.G.a to work in single-contact cases
+- Revise LUP.H to match 2.H. Change from enclose to interact
+- Add skew edge checks for most layers
+- Update text of 6/11.A.*
+- Enhance BMP.5 to check each edge, not all edges
+- Enhance BD.K to not flag bump pad
+- Add SB.* Seal ring rules
+- Add Poly fuse legacy check
+- Remove 40.F/K/L
+ERC:
+- Add support for metal fill/block layers and inductor
+- Update most layers to include sealring connectivity
+- Fix sealring support to ensure ring is not treated as large tap
+- Add SR.2
+- Update to latest Calibre Interactive pwr_gnd_nets creation flow.
+LUP:
+- Add support for metal fill/block layers and inductor
+- Revise LUP.G.a to work in single-contact cases
+- Update LUP.I* to call DRC deck
+- Add SR.2
+- Update to latest Calibre Interactive pwr_gnd_nets creation flow.
+LVS:
+- Add support for metal fill/block layers, inductor, and LVS resistors.
+- Add open/short for analogLib auCDL parasitic components
+  presistor pcapacitor pinductor
+- Revert to LVS REDUCE PARALLEL BIPOLAR NO to ensure parallel pnps
+  are not treated as equivalent area.
+- Fix problem extracting nfet with analog gate
+- Fix missing apsub DEVICE statements.
+- Change met1_rout CONNECT with NSD/PSD and NTAP/PTAP to remove double-counted
+  parasitics.
+- Change rp device to rp3 to allow presistor short component
+Stress:
+- Add support for metal fill/block layers and inductor
+- Change chip check to require >4 pads. Previously required >12 pads.
+- Add SR.2
+XRC:
+- Change $pexd check distance to use newer Calibre Environment Variable
+  approach so it can be set from CI GUI.
+
+___________________________________
+Date 03/18/2005
+Design Kit: cp05
+Electrical Specification: NPB-PS-0400, Rev.6
+Design Rules Document: NPB-PS-0399, Rev.6
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+  - Version v2004.02 required for XRC and CalibreView
+
+Highlights
+* IC50.33USR2 is minimum required IC tools version
+* Calibre 2004.2 required for Calibre Interactive/XRC
+* Jazz Calibre flow supported for DRC and LVS, but not PEX
+* Integrated latest changes for nfet_vt0, nfet4_vt0, nfet_ip,
+  nfet_hvld, and ubump devices
+* Added custom bump pad checks in DRC
+* Latest released A50 library has problems with CP05MR hv fet marking layer.
+  You will find LVS discrepancies if you use the A50 libarary with the
+  cp05mr design kit. This will be addressed by a revised A50 library release.
+
+Helptickets Resolved:
+1849
+2339
+3252
+3426
+3477
+3650
+3838
+4118
+4143
+4168
+4246
+4313
+4342
+4357
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Removed loading of Inductor.cshrc file. Added 'cdsio' Inductor Toolbox
+  wrapper script to $RDS_CDSWARE/bin directory. The following environment
+  variables no longer need to be set or changed in order to make the
+  Jazz Inductor Toolbox function: RDS_INDUCTOR_DATA, RDS_INDUCTOR_BIN
+  RDS_INDUCTOR_LIB, LD_LIBRARY_PATH/SHLIB_PATH
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* Correct Jazz Calibre verification (DRC, LVS, PEX) to properly use
+  a view other than "layout" and "schematic"
+* Updated JAZZ->Application Notes to remove legacy menu items
+* Updated pwrGndNets script to work with $PERL5 instead of a hard-coded
+  PERL path.
+* Mentor Calibre menu now automatically added when using a process variant
+  that supports Calibre Interactive
+Device Library, new devices
+* Added SEALRING cell. This cell creates a sealring for the cp05 3-metal
+  variants.
+* Added c4t_mimw2 cell. This is a four-terminal cap over well with plus,
+  minus, well, and sub connections. The c3t_mimw2 cell has only plus, minus,
+  and well connections.
+* Added nfet_vt0, nfet4_vt0, nfet_ip, nfet_hvld, and ubump devices
+- Integrated nfet_vt0/nfet4_vt0 into pdk -simulation/drc/lvs/pex support
+  (both Calibre Interactive and Jazz run_cal flow)
+- ADS CDF SimInfo has been added to the nfet_vt0, nfet4_vt0, nfet_ip, and
+  nfet_hvld devices.
+- ADS CDF parameters VTj_node and Tsub have been added to the nfet_ip device,
+  and views have been updated for the additional VTj_inh inherited connection.
+- nfet_hvld exists in the kit, but no model was available and was not tested
+  in simulation or pex flow
+
+Device Library, changed devices:
+* Modified nfet_pass pfet_pass to correct multiplicity mismatch when
+  rows/cols/strips/fingers and count were all used. Simulation is affected,
+  LVS is not affected. Trigger callbacks should be performed to correct
+  existing designs.
+* Updated resistors to support RWS mode for calibre interactive lvs/pex
+* Modified min l of rnp3t to 2u - pcell will now pass drc
+* RDS_ROOT/amslibs/cds_default/etc updated display.drf for bumpmetal layer.
+  This is not a supported Jazz layer.
+* Layer added to techfile,(added bumpmetal layer into kit ,layer 103).
+  This is not a supported Jazz layer.
+* Min spacing/width rules modified/added to techfile (cp05/devices/techfile.cds).
+* RDS_CDSWARE/rodpcell added src/skill directory with pcell skill code
+  and pcIndex.il for loading in the skill code.
+* RDS_CDSLIBS/cp05 added src/skill directory with cdf skill code for
+  low vt, hvld, ip, and ubump dvices
+* RDS_CDSLIBS/cp05/devices modified libInit.il file for loading in the pcell
+  index (pcell skill code) and my additional devices cdf skill code.
+* RDS_CDSLIBS/cp05/src/skill added devicePcCdf directory for extra
+  device pcell and cdf code that is used to create the device initially. 
+* In nfet_ip when style "2met" is selected added option to toggle
+  Bump Metal interconect on and off in the pcell.  Default is off.
+  The Bump metal option is still in development,and may change. For example,
+  the ablb layer needs to be added into it still. 
+* nfet_ip had pcell eval errors, so this was not tested in pex flow.
+
+Model Updates
+Model version v2.0, 2005/03/02
+FET:
+- Add additional cp05mr models for lvtnfets
+CAP:
+- Updated MIM cap model to incorporate R_via, R_tp and L_tp (top plate),
+  L_bp (bottom plate) into c3t_mp and mim2 models
+- Added c4t_mimw2 4-terminal cap model
+RES:
+- Change default metal fuse from 5 to 0.5 ohms to be consistent with
+  device CDF and Espec.
+Statistical:
+- Updated to match corner model v2.0
+
+Verification Updates
+Only Calibre is supported in cp05.
+* The Jazz Calibre flow can be used for DRC and LVS, but not PEX.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+
+ANTENNA:
+- No change
+DENSITY:
+- No change
+DRC:
+- Change to Calibre Interactive switch-style deck selection for drc-type
+  decks (ant, drc, erc, lup, stress, density)
+- Added CI drc interface code, custom bump pad checks
+- Fixed MF.J.met2 bug (incorrectly checked met3 instead of met2)
+- Removed unused connect statements
+- Added custom bump pad checks
+ERC:
+- Added poly and metal2 fuses
+LUP:
+- Fixed ptap_perif definition. Previously excluded periphery-generation
+  region from ptap periphery derivation.
+LVS:
+- Added c4t mim
+- Revised metal to support new mim models and correctly identify connection
+  through the plates.
+- Revised pnp comparison for run_cal flow to fix unflagged size mismatch
+- Revised poly fuse hierarchical management for better LVS control
+- Fixed CI flow so that strip resistor verification (RWS) mode functions
+  correctly
+STRESS:
+- Revised slot derivation based on new algorithm that better identifies
+  slot versus arrayed metal
+- Implemented rule for ST.B (previously unchecked, now a warning)
+- Revised ST.E/G to work according to die size
+XRC:
+- Added updates shown in LVS improvements
+- Support for new fet models (HV, IP, vt0) is for L/W extraction only. No
+  source or drain size information (as/ad/ps/pd) is extracted.
+
+___________________________________
+Date 11/12/2004
+Design Kit: cp05
+Electrical Specification: NPB-PS-0400, Rev.4
+Design Rules Document: NPB-PS-0399, Rev.5
+Design Application Note For CP05 Poly/Metal Fuses: PS-0660, Rev.1
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2, IC446MSR7
+* Mentor Calibre releases 9.1_1, 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+  - Version v2004.02 required for XRC and CalibreView
+
+Highlights
+* IC50.33USR2 is minimum recommended IC tools version
+* Calibre 2004.2 required for Calibre Interactive/XRC
+* Jazz Calibre flow supported for DRC and LVS, but not PEX
+* Added full kit support for metal and poly fuses to cp05mf/cp05mr
+
+Kit and environment changes:
+* Removed Jazz Area DRC menu item. You should use the Cell DRC instead.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+
+
+Devices
+- Update termMapping for rw3t to reflect model change
+- Add ads and auCdl views for fuses. Enable CI/CalibreView+XRC for fuses.
+- Seal Ring generator is included in design kit. Select Jazz->Build SealRing
+  in the layout window to use this new tool.
+
+Model version v1.9 * 2004/11/02
+FET:
+- Updated FET models with new scalable model with temp coeff based on
+  measurements from latest CP05 wafer.
+- Update Hspice and ADS models to add acm=12 and calacm=1
+- PC cap fet oxide thickness increased to reflect latest measurements.
+- PC Temp Coeff for vsat (AT) updated to fix high-temp convergence issue
+PNP:
+- Updated vpnp to align with Espec by modifying BF.
+RES:
+- Nwell resistor updated to align with Espec. Subcircuit modified to
+  use new format for Spectre and ADS. R_nwpc (nwell resistor for PC)
+  uses simplified voltage-independent model.
+- Poly resistor updated to add ns (number slices) into rsub scaling
+  to better account for multiple parallel slices.
+Statistical:
+- Updated to match corner model v1.9
+
+Verification
+Only Calibre is supported for verification
+Mentor Calibre releases supported: 9.1_1, 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+  - Version v2004.02 required for XRC and CalibreView
+Due to deck limitations, the Calibre Interactive flow for DRC requires
+  manually changing the ruledeck to switch from DRC to another DRC-type
+  deck like Antenna, density, ERC, or LUP. This will be corrected in a
+  future release.
+
+
+Antenna:
+- No Change
+Density:
+- No Change
+DRC:
+- Revised 40.T
+- Add poly and metal2 fuses
+- Suppress drawn nplus in nfet_esd cell (6.E.a)
+- Add comment for drawn vs generated n+/p+ implants
+ERC:
+- Revised floating nwell,ntap_gnd,recognize nwell under pads to fix
+  false soft ties errors under bump pad
+- Exclude sealring from input
+- Deleted unused statements.
+ESD_LUP:
+- Exclude maskout and sealring data from input layers to fix LUP.Q
+- Fixed LUP.H
+Extraction:
+- Only supported for Calibre Interactive / XRC
+- Added Calibre Interactive / XRC support for fuse_poly and fuse_met2
+  for cp05mf/cp05mr
+LVS:
+- Added LVS and Calibre Interactive support for fuse_poly and fuse_met2
+  for cp05mf/cp05mr
+Stress:
+- No Change
+
+  
+___________________________________
+Date 8/10/2004
+Design Kit: cp05
+Electrical Specification: NPB-PS-0400, Rev.4
+Design Rules Document: NPB-PS-0399, Rev.5
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2, IC446MSR7
+* Mentor Calibre releases 9.1_1, 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+  - Version v2004.02 required for XRC and CalibreView
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+
+Devices
+* Added 3 terminal pdiode_3t cell. Designs should be updated to use this device
+  instead of the 2 terminal pdiode.
+* Updated design kit to support Calibre Interactive / CalibreView. Most
+  devices have had netlisting updated.
+* Updated most device OP data for Spectre to support IC50.33
+* c3t_mim2, c3t_mimw2: Removed bulk parameter to make device consistent with
+  all other kit components. Use inherited expressions instead.
+* Seal Ring generator is included in design kit. Select Jazz->Build SealRing
+  in the layout window to use this new tool.
+
+Models
+Verion v1.8
+FET:
+- Updated FET subcircuits to support "current" parameter
+RESL:
+- Added prototype model for poly and metal fuse
+Statistical:
+- Updated FET subcircuits to support "current" parameter
+- Added prototype model for poly and metal fuse
+
+Verification
+Only Calibre is supported for verification
+Mentor Calibre releases supported: 9.1_1, 9.1_5, 2004.02
+  - XCalibre is not supported in v2003.04 or later releases
+  - Version v2004.02 required for XRC and CalibreView
+
+Antenna:
+- Updated deck title
+Density:
+- Added seal ring support
+DRC:
+- Added seal ring support, spacing checks between artifact and non-artifact,
+  more *.artifact rules
+- Revised LUP.G.a
+- Updated *.artifact to denote Automatic Rejection status
+- Removed R* prefix from rules (e.g., RLUP->LUP)
+ERC:
+- Reformatted deck
+- Revised floating poly and floating gate
+- Combined and revised floating metal and floating metal net checks
+- Removed soft_ntap (redundant)
+- Added power_pdiff_in_grounded_well
+- Rename nwel_no_st to Shorting_well
+ESD_LUP:
+- Revised LUP.B.C.c, LUP.F, LUP.G.a, LUP.H, LUP.I.c, device periphery derivation
+- Added periphery display marker for visualization of periphery region
+- Removed LUP.B.C.c.1
+Extraction:
+- Initial release of XRC and Calibre Interactive/CalibreView deck
+LVS:
+- Added support for XRC and Calibre Interactive
+- Added 3 terminal pdiode
+Stress:
+- Added seal ring support
+- Revised ST.C
+
+  
+_______________________________________________________________________________
+Date: 11/21/2003
+Library: cp05 - re-release to replace 10/27/2003 release.
+Relevant Documents:
+Electrical Specification: NPB-PS-0400, Rev.2
+Design Rules Document: NPB-PS-0399, Rev.3
+
+General kit changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+New Devices
+* c3t_mim2 - Addition of 2fF/um^2 MIM cap to support cp05mf process. Only available
+  in cp05mf process.
+* c3t_mimw2 - Addition of 2fF/um^2 MIM cap over well to support cp05mf process.
+  Only available in cp05mf process.
+
+Modified Devices
+* Poly Resistor now optionally includes ABLB layer generation over resistor area
+* Removed "field" layer from streamout. However, it is still drawn on the FET pcells.
+* Added symbolics for use in ABLB regions (symbolics with name *_ablb)
+
+
+Models v1.6
+* Fets
+  - Corrected 1/f noise on fets
+  - Corrected PC ngate scale factor to fix ADS incompatibility
+  - Added 1/f white noise to Spectre nwell resistor model
+* Cap
+  - Added preliminary 2fF MIM cap based on sbc35x models
+
+Verification
+* Calibre
+  - Added cp05mr as exact copy of cp05mf
+  - Updated DRC and ESD and latchup rules to reduce false violations
+  - Added metal density check and fill. See FAQ for info on how to view metal
+    density check results.
+  - Added cp05mf process to support 2fF MIM cap
+  - Added ABLB support for both cp05mt and cp05mf
+  - No support for seal ring, logo, or part number error suppression in this release
+
+_______________________________________________________________________________
+Date: 10/22/2003
+Library: cp05
+Relevant Documents:
+Electrical Specification: NPB-PS-0400, Rev.2
+Design Rules Document: NPB-PS-0399, Rev.2
+
+General kit changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+New Devices
+* c3t_mim2 - Addition of 2fF/um^2 MIM cap to support cp05mf process. Only available
+  in cp05mf process.
+* c3t_mimw2 - Addition of 2fF/um^2 MIM cap over well to support cp05mf process.
+  Only available in cp05mf process.
+
+Modified Devices
+* Poly Resistor now include ABLB layer generation over resistor area
+* Removed "field" layer from streamout. However, it is still drawn on the FET pcells.
+* Added symbolics for use in ABLB regions (symbolics with name *_ablb)
+
+
+Models
+* Fets
+  - Corrected 1/f noise on fets
+  - Corrected PC ngate scale factor to fix ADS incompatibility
+* Cap
+  - Added preliminary 2fF MIM cap based on sbc35x models
+
+
+Verification
+* Calibre
+  - Updated DRC and ESD and latchup rules to reduce false violations
+  - Added metal density check and fill. See FAQ for info on how to view metal
+    density check results.
+  - Added cp05mf process to support 2fF MIM cap
+  - Added ABLB support for both cp05mt and cp05mf
+  - No support for seal ring, logo, or part number error suppression in this release
+
+_______________________________________________________________________________
+  Date 7/25/2003
+  Design Kit: C05HA
+  Electrical Specification: NPB-PS-0166, Rev.3
+  Design Rules Document: NPB-PS-0181, Rev.3
+
+  Design Kit: CP05
+  Electrical Specification: NPB-PS-0400, Rev.1
+  Design Rules Document: NPB-PS-0399, Rev.1
+
+
+  * Models
+  - Changed CAPMOD from 0 to 3 on MOS models to correct the gate capacitance
+    calculations in Spectre
+  - First release of ADS model files. Only models are available for ADS.
+    ADS/Cadence integrations like RFDE or Dynamic Link are not currently
+    supported.
+
+  * Kit: This kit integrates many Jazz Kit improvements. This is a short summary:
+  - Renamed banner menu from RDS to JAZZ.
+  - Design kit now has expiration date. The Kit will expire 9 months after
+    release. You will receive notifications when expiration is less than 30 days.
+  - Updated CBR Calibre netlister. Better support of inherited connections
+  - New Analog Artist Set Active Library tool. Enhancements include detecting
+    when the Model Libraries form differs from the Set Active Library Form.
+  - Addition of lib/cell/view to Jazz Calibre DRC/LVS/PEX run forms.
+  - Support for Calibre "-cb" option. Specify this option in the "run_cal
+    options" field
+
+_______________________________________________________________________________
+  Date: 3/3/2003
+  Library cp05:
+  - Added pc & modified nfet_pass and pfet_pass layout
+</PLAINTEXT></BODY></HTML>

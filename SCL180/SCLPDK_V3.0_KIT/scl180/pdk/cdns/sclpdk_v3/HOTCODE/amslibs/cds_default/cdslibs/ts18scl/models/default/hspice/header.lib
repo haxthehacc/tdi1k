@@ -1,0 +1,71 @@
+
+* header file to allow selecting same corner for all devices simultaneously
+
+* library headerlib
+
+.LIB NOM
+.LIB 'global.lib' GLOBAL
+.LIB 'fet.lib' NOM
+.LIB 'fethv.lib' NOM
+.LIB 'bjt.lib' NOM
+.LIB 'accap.lib' NOM
+.LIB 'mimcap.lib' NOM
+.LIB 'mfc.lib' NOM
+.LIB 'res.lib' NOM
+.LIB 'diode.lib' NOM
+.LIB 'nat.lib' NOM
+.ENDL NOM
+
+.LIB FAST
+.LIB 'global.lib' GLOBAL
+.LIB 'fet.lib' FAST
+.LIB 'fethv.lib' FAST
+.LIB 'bjt.lib' FAST
+.LIB 'accap.lib' FAST
+.LIB 'mimcap.lib' FAST
+.LIB 'mfc.lib' FAST
+.LIB 'res.lib' FAST
+.LIB 'diode.lib' FAST
+.LIB 'nat.lib' FAST
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'global.lib' GLOBAL
+.LIB 'fet.lib' SLOW
+.LIB 'fethv.lib' SLOW
+.LIB 'bjt.lib' SLOW
+.LIB 'accap.lib' SLOW
+.LIB 'mimcap.lib' SLOW
+.LIB 'mfc.lib' SLOW
+.LIB 'res.lib' SLOW
+.LIB 'diode.lib' SLOW
+.LIB 'nat.lib' SLOW
+.ENDL SLOW
+
+.LIB FASTSLOW
+.LIB 'global.lib' GLOBAL
+.LIB 'fet.lib' FASTSLOW
+.LIB 'fethv.lib' FASTSLOW
+.LIB 'bjt.lib' NOM
+.LIB 'accap.lib' NOM
+.LIB 'mimcap.lib' NOM
+.LIB 'mfc.lib' NOM
+.LIB 'res.lib' NOM
+.LIB 'diode.lib' NOM
+.LIB 'nat.lib' FASTSLOW
+.ENDL FASTSLOW
+
+.LIB SLOWFAST
+.LIB 'global.lib' GLOBAL
+.LIB 'fet.lib' SLOWFAST
+.LIB 'fethv.lib' SLOWFAST
+.LIB 'bjt.lib' NOM
+.LIB 'accap.lib' NOM
+.LIB 'mimcap.lib' NOM
+.LIB 'mfc.lib' NOM
+.LIB 'res.lib' NOM
+.LIB 'diode.lib' NOM
+.LIB 'nat.lib' SLOWFAST
+.ENDL SLOWFAST
+
+* end library headerlib

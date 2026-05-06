@@ -1,0 +1,7 @@
+TDMCHECKPOINT="1.0"
+cds_generic/Actives.Cat type="category"
+cds_generic/Analysis.Cat type="category"
+cds_generic/Artifacts.Cat type="category"
+cds_generic/Parasitics.Cat type="category"
+cds_generic/Passives.Cat type="category"
+cds_generic/Sources.Cat type="category"

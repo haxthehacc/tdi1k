@@ -1,0 +1,16 @@
+
+* library accaplib
+
+.LIB NOM
+.LIB 'ts18sl_scl.lib' acc_typ
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl.lib' acc_low
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl.lib' acc_high
+.ENDL SLOW
+
+* end library accaplib

@@ -1,0 +1,17 @@
+* File: dl04d1.sp.dl04d1.pxi
+* Created: Sun Feb 14 19:11:33 2010
+* 
+cc_1 2 I 0.333383f
+cc_2 2 VDD 0.0517197f
+cc_3 2 VSS 0.121813f
+cc_4 2 4 0.0534922f
+cc_5 2 5 0.171127f
+cc_6 I VDD 0.0542716f
+cc_7 I VSS 0.0193074f
+cc_8 VDD 4 0.523133f
+cc_9 VDD 5 0.162642f
+cc_10 VSS 4 0.257958f
+cc_11 VSS 5 0.0925225f
+cc_12 VSS Z 0.012995f
+cc_13 4 5 0.698604f
+cc_14 4 Z 0.252879f

@@ -1,0 +1,2535 @@
+*HSPICE model for 0.18u CMOS process (for DR2 0018SL_SCL)
+*
+*-------------------------------------------------------------------
+*Content: 
+*       1.8v Mosfet 
+*       3.3v Mosfet
+*
+*Usage:	    Netlist should include statement:
+*	    .lib 'path_to_model/ts18sl_scl_mat.lib' your_corner
+*	    change the path of the lib according to its actual path.
+*
+*
+*
+* Note regarding hdif: hdif=0.15e-6 is used to define a default value of source/drain
+* junction capacitances when their dimensions (as,ps,ad,pd) are not specified in netlist.
+* For accurate parasitic capacitance modeling it is strongly recomended to use the mos parasitic diode
+* parameters as, ps, ad, pd  based on the actual device layout dimensions as netlisted from the Tower PDK.
+*
+********************************************************************
+*
+*
+*
+* HSPICE model for 0.18um (1.8V) standard Vt CMOS process
+***************************************************************
+*                                                             *
+*                  1.8V Standard Vt DEVICES LIB               *
+*                                                             *
+***************************************************************
+.options gmindc=1e-14
+**************** CORNER_LIB OF  TT_18 MODEL **************** 
+* Typical 
+.lib tt_18 
+.param 
++ delta_n_dlc =  0        delta_p_dlc = 0
++ delta_n_vth0_18 = -12m    delta_p_vth0_18 = 25m
++ delta_n_lint_18 = -15n    delta_p_lint_18 = 10n
++ delta_n_wint_18 = 0    delta_p_wint_18 = -40n
++ delta_n_tox_18 = 0.0    delta_p_tox_18 = 0.0
++ delta_n_nfactor_18 = -50m    delta_p_nfactor_18 = 400m
++ delta_n_u0_18 = 4    delta_p_u0_18 = -10
++ delta_n_dvt0_18 = 0    delta_p_dvt0_18 = 0
++ delta_n_nlx_18 = -10n    delta_p_nlx_18 = 6n
++ delta_n_cgdo_18 = 0    delta_p_cgdo_18 = 0
++ delta_n_cgso_18 = 0    delta_p_cgso_18 = 0
++ delta_n_cj_18 = 0    delta_p_cj_18 = 0
++ delta_n_cjsw_18 = 0    delta_p_cjsw_18 = 0
+.lib 'ts18sl_scl_mat.lib' np18mos 
+.endl tt_18 
+*
+*
+**************** CORNER_LIB OF  SS_18 MODEL **************** 
+* Slow n, Slow p 
+.lib ss_18 
+.param 
++ delta_n_dlc =  0        delta_p_dlc = 0
++ delta_n_vth0_18 = -22m    delta_p_vth0_18 = 35m
++ delta_n_lint_18 = -14n    delta_p_lint_18 = 14n
++ delta_n_wint_18 = 0    delta_p_wint_18 = -40n
++ delta_n_tox_18 = 150.0p    delta_p_tox_18 = 150.0p
++ delta_n_nfactor_18 = 0    delta_p_nfactor_18 = 500m
++ delta_n_u0_18 = -10    delta_p_u0_18 = -13.5
++ delta_n_dvt0_18 = 0    delta_p_dvt0_18 = 0
++ delta_n_nlx_18 = 20n    delta_p_nlx_18 = 15n
++ delta_n_cgdo_18 = -3.4E-011    delta_p_cgdo_18 = -4E-011
++ delta_n_cgso_18 = -3.4E-011    delta_p_cgso_18 = -4E-011
++ delta_n_cj_18 = 1.151e-4    delta_p_cj_18 = 9.621e-5
++ delta_n_cjsw_18 = 2E-012    delta_p_cjsw_18 = 2.8E-012
+.lib 'ts18sl_scl_mat.lib' np18mos 
+.endl ss_18 
+*
+*
+**************** CORNER_LIB OF  FF_18 MODEL **************** 
+* Fast n, Fast p 
+.lib ff_18 
+.param 
++ delta_n_dlc =  4n        delta_p_dlc = 4n
++ delta_n_vth0_18 = -3m    delta_p_vth0_18 = 7m
++ delta_n_lint_18 = -14n    delta_p_lint_18 = -4n
++ delta_n_wint_18 = 0    delta_p_wint_18 = -40n
++ delta_n_tox_18 = -150.0p    delta_p_tox_18 = -150p
++ delta_n_nfactor_18 = -50m    delta_p_nfactor_18 = 500m
++ delta_n_u0_18 = 4    delta_p_u0_18 = 5
++ delta_n_dvt0_18 = 2.8    delta_p_dvt0_18 = 0
++ delta_n_nlx_18 = 0    delta_p_nlx_18 = -6n
++ delta_n_cgdo_18 = 3.4E-011    delta_p_cgdo_18 = 4E-011
++ delta_n_cgso_18 = 3.4E-011    delta_p_cgso_18 = 4E-011
++ delta_n_cj_18 = -1.151e-4    delta_p_cj_18 = -9.621e-5
++ delta_n_cjsw_18 = -2E-012    delta_p_cjsw_18 = -2.8E-012
+.lib 'ts18sl_scl_mat.lib' np18mos 
+.endl ff_18 
+*
+*
+**************** CORNER_LIB OF  FS_18 MODEL **************** 
+* Fast n, Slow p 
+.lib fs_18 
+.param 
++ delta_n_dlc =  0        delta_p_dlc = 0
++ delta_n_vth0_18 = -0.0075    delta_p_vth0_18 = 0.03
++ delta_n_lint_18 = -1.45E-008    delta_p_lint_18 = 1.2E-008
++ delta_n_wint_18 = 0    delta_p_wint_18 = -40n
++ delta_n_tox_18 = -7.5E-011    delta_p_tox_18 = 7.5E-011
++ delta_n_nfactor_18 = -0.05    delta_p_nfactor_18 = 0.45
++ delta_n_u0_18 = 4    delta_p_u0_18 = -11.75
++ delta_n_dvt0_18 = 1.4    delta_p_dvt0_18 = 0
++ delta_n_nlx_18 = -5E-009    delta_p_nlx_18 = 1.05E-008
++ delta_n_cgdo_18 = 0    delta_p_cgdo_18 = 0
++ delta_n_cgso_18 = 0    delta_p_cgso_18 = 0
++ delta_n_cj_18 = 0    delta_p_cj_18 = 0
++ delta_n_cjsw_18 = 0    delta_p_cjsw_18 = 0
+.lib 'ts18sl_scl_mat.lib' np18mos 
+.endl fs_18 
+*
+*
+**************** CORNER_LIB OF  SF_18 MODEL **************** 
+* Slow n, Fast p 
+.lib sf_18 
+.param 
++ delta_n_dlc =  0        delta_p_dlc = 0
++ delta_n_vth0_18 = -0.017    delta_p_vth0_18 = 0.016
++ delta_n_lint_18 = -1.45E-008    delta_p_lint_18 = 3E-009
++ delta_n_wint_18 = 0    delta_p_wint_18 = -40n
++ delta_n_tox_18 = 7.5E-011    delta_p_tox_18 = -7.5E-011
++ delta_n_nfactor_18 = -0.025    delta_p_nfactor_18 = 0.45
++ delta_n_u0_18 = -3    delta_p_u0_18 = -2.5
++ delta_n_dvt0_18 = 0    delta_p_dvt0_18 = 0
++ delta_n_nlx_18 = 5E-009    delta_p_nlx_18 = 0
++ delta_n_cgdo_18 = 0    delta_p_cgdo_18 = 0
++ delta_n_cgso_18 = 0    delta_p_cgso_18 = 0
++ delta_n_cj_18 = 0    delta_p_cj_18 = 0
++ delta_n_cjsw_18 = 0    delta_p_cjsw_18 = 0
+.lib 'ts18sl_scl_mat.lib' np18mos 
+.endl sf_18 
+*
+*
+* End corner definition 
+*
+* Begin MOS library 
+*
+.lib np18mos
+.subckt n18 d g s b l=1u w=1u nrs=1 nrd=1 m=1
++Aw='log(w*10)/abs(log(w*10))' 
++myHdif= '0.5*(0.15*(1+Aw)+0.15e-6*(1-Aw))'
++as = '2*w*myHdif'
++ad = '2*w*myHdif'
++ps = '2*w+4*myHdif'
++pd = '2*w+4*myHdif'
+.param 
++ delvtn_lv = '4.8518*1e-3/sqrt(2*w*l*m)*0.5*((1+Aw)+1e-6*(1-Aw))'
++ sigvtn_lv = AGAUSS(0,delvtn_lv,1)
+m  d g s b n18stat  w=w l=l delvto=sigvtn_lv as=as ps=ps ad=ad pd=pd nrs=nrs nrd=nrd m=m
+.model n18stat.1 nmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.378117 + delta_n_vth0_18' lvth0 = -1.47403e-008 wvth0 = 2.66725e-008 pvth0 = -3.56297e-015
++ k1 = 0.545245 lk1 = 2.98012e-008 wk1 = -3.37317e-008 pk1 = 2.15531e-015
++ k2 = -0.0828741 lk2 = -3.13688e-009 wk2 = 2.2083e-008 pk2 = -2.21616e-015
++ u0 = '78.1962 + delta_n_u0_18' lu0 = -7.21406e-007 wu0 = 3.91347e-005 pu0 = -3.05508e-012
++ ua = -2.20996e-009 lua = -1.9575e-017 wua = 1.47763e-016 pua = -1.78406e-023
++ ub = 2.05305e-018 lub = 1.96594e-026 wub = 8.35067e-026 pub = -4.38281e-033
++ uc = 2.54121e-011 luc = 1.89694e-018 wuc = 9.47866e-018 puc = -1.08694e-024
++ vsat = 160610 lvsat = -0.00671812 wvsat = -0.0106955 pvsat = 1.42312e-009
++ a0 = 0.792804 la0 = 6.44625e-008 wa0 = 8.80982e-008 pa0 = -5.98125e-015
++ ags = 0.0494074 lags = -1.05104e-007 wags = 1.95167e-007 pags = -1.94303e-014
++ keta = 0.128524 lketa = -5.75606e-009 wketa = -3.64768e-008 pketa = 3.3e-015
++ voff = -0.0396063 lvoff = -8.33438e-009 wvoff = -3.8775e-008 pvoff = 3.465e-015
++ nfactor = '1.37076 + delta_n_nfactor_18' lnfactor = -5.88197e-008 wnfactor = -3.35812e-007 pnfactor = 3.6563e-014
++ pclm = 2.36668 lpclm = -1.41825e-007 wpclm = -8.54955e-008 ppclm = 1.74281e-014
++ pdiblcb = -6.62619 lpdiblcb = 6.82999e-007 wpdiblcb = 1.54688e-009 ppdiblcb = -6.49688e-016
++ pscbe1 = 1.30128e+009 lpscbe1 = -95.1788 wpscbe1 = -237.831 ppscbe1 = 2.71734e-005
++ pvag = 8.93382 lpvag = -8.79934e-007 wpvag = -1.74885e-006 ppvag = 1.73451e-013
++ ute = -0.724151 lute = -2.08706e-008 wute = -1.81402e-008 pute = -6.04313e-015
++ ua1 = 1.75309e-009 lua1 = -4.99594e-017 wua1 = 1.18422e-016 pua1 = -2.03672e-023
++ ub1 = -2.09579e-018 lub1 = 5.69102e-026 wub1 = -1.56513e-025 pub1 = 2.77855e-032
++ uc1 = 1.94736e-027 luc1 = -8.17891e-034 wuc1 = -5.95026e-034 puc1 = 2.49911e-040
++ at = -3811.21 lat = 0.00453291 wat = 0.0114515 pat = -9.58547e-010
++ kt1 = -0.253838 lkt1 = -6.73687e-009 wkt1 = 1.64754e-008 pkt1 = -2.05219e-015
++ kt2 = -0.044602 lkt2 = 1.70752e-009 wkt2 = -2.35371e-009 pkt2 = 7.75706e-016
++ eta0 = 0.474555 leta0 = -3.98752e-008 weta0 = -2.351e-009 peta0 = 9.21422e-016
++ etab = -0.428366 letab = 2.49788e-008 wetab = -2.02321e-009 petab = 7.0125e-016
++ pdiblc2 = 6.40625e-005 lpdiblc2 = -5.90625e-012 wpdiblc2 = 1.65815e-027 ppdiblc2 = -5.0822e-034
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.2 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.410096 + delta_n_vth0_18' lvth0 = -2.81712e-008 wvth0 = -4.62786e-009 pvth0 = 9.5832e-015
++ k1 = 0.566269 lk1 = 2.09712e-008 wk1 = -2.97943e-008 pk1 = 5.016e-016
++ k2 = -0.0595162 lk2 = -1.29472e-008 wk2 = 1.28571e-008 pk2 = 1.65871e-015
++ u0 = '215.507 + delta_n_u0_18' lu0 = -5.8392e-005 wu0 = 1.48264e-005 pu0 = 7.1544e-012
++ ua = -1.77897e-009 lua = -2.00592e-016 wua = 1.53686e-016 pua = -2.0328e-023
++ ub = 2.29849e-018 lub = -8.3424e-026 wub = -4.38429e-026 pub = 4.9104e-032
++ uc = 5.04269e-011 luc = -8.60928e-018 wuc = 5.10557e-018 puc = 7.4976e-025
++ vsat = 121231 lvsat = 0.0098208 wvsat = 0.00438429 pvsat = -4.9104e-009
++ a0 = 1.90663 la0 = -4.03344e-007 wa0 = -1.35143e-008 pa0 = 3.6696e-014
++ ags = 0.889132 lags = -4.57788e-007 wags = -5.00571e-008 pags = 8.35639e-014
++ keta = 0.0418875 lketa = 3.06313e-008 wketa = -8.02576e-009 pketa = -8.64943e-015
++ voff = -0.159953 lvoff = 4.22112e-008 wvoff = 2.07664e-008 pvoff = -2.15424e-014
++ nfactor = '0.375869 + delta_n_nfactor_18' lnfactor = 3.59035e-007 wnfactor = 1.27066e-007 pnfactor = -1.57846e-013
++ pclm = 3.41917 lpclm = -5.83872e-007 wpclm = 2.89143e-008 ppclm = -3.0624e-014
++ pdiblcb = -5 lpdiblcb = -2.23821e-022 wpdiblcb = -2.31922e-022 ppdiblcb = -2.17371e-044
++ pscbe1 = -2.67747e+008 lpscbe1 = 563.813 wpscbe1 = 175.034 ppscbe1 = -0.00014623
++ pvag = -1.05376 lpvag = 3.31485e-006 wpvag = 8.4238e-007 ppvag = -9.14866e-013
++ ute = -1.88107 lute = 4.65034e-007 wute = 1.75403e-007 pute = -8.73312e-014
++ ua1 = 7.94486e-010 lua1 = 3.52656e-016 wua1 = 3.87357e-016 pua1 = -1.3332e-022
++ ub1 = -1.71171e-018 lub1 = -1.044e-025 wub1 = -2.50643e-025 pub1 = 6.732e-032
++ uc1 = -8.2164e-027 luc1 = 3.45089e-033 wuc1 = 1.52326e-033 puc1 = -6.39771e-040
++ at = 75811.1 lat = -0.0289085 wat = -0.00550157 pat = 6.16176e-009
++ kt1 = -0.451924 lkt1 = 7.64592e-008 wkt1 = 4.86121e-008 pkt1 = -1.55496e-014
++ kt2 = -0.0198657 lkt2 = -8.68171e-009 wkt2 = 1.10218e-008 pkt2 = -4.84202e-015
++ eta0 = 0.0717514 leta0 = 1.29302e-007 weta0 = 9.42857e-011 peta0 = -1.056e-016
++ etab = -0.0807443 letab = -1.21022e-007 wetab = 2.12143e-010 petab = -2.376e-016
++ pdiblc2 = 5e-005 lpdiblc2 = 4.55365e-027 wpdiblc2 = 1.78536e-027 ppdiblc2 = -7.4688e-034
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.3 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.387165 + delta_n_vth0_18' lvth0 = -2.48902e-009 wvth0 = 4.28286e-009 pvth0 = -3.968e-016
++ k1 = 0.368742 lk1 = 2.42201e-007 wk1 = 5.07664e-008 pk1 = -8.97264e-014
++ k2 = 0.0316753 lk2 = -1.15082e-007 wk2 = -2.1718e-008 pk2 = 4.03828e-014
++ u0 = '-28.3374 + delta_n_u0_18' lu0 = 0.000214714 wu0 = 0.000149421 pu0 = -1.43592e-010
++ ua = -4.24684e-009 lua = 2.56342e-015 wua = 1.58766e-015 pua = -1.62638e-021
++ ub = 3.68593e-018 lub = -1.63737e-024 wub = -8.62858e-025 pub = 9.66401e-031
++ uc = 2.76337e-011 luc = 1.6919e-017 wuc = 1.71609e-017 puc = -1.27522e-023
++ vsat = 130000 lvsat = 2.07431e-018 wvsat = 2.34805e-018 pvsat = 1.52305e-039
++ a0 = 1.93944 la0 = -4.40087e-007 wa0 = -9.32357e-008 pa0 = 1.25984e-013
++ ags = 0.416984 lags = 7.10182e-008 wags = 2.11436e-008 pags = 3.8192e-015
++ keta = 0.046052 lketa = 2.59671e-008 wketa = -9.87126e-009 pketa = -6.58247e-015
++ voff = -0.107988 lvoff = -1.59892e-008 wvoff = -3.295e-009 pvoff = 5.4064e-015
++ nfactor = '0.595191 + delta_n_nfactor_18' lnfactor = 1.13395e-007 wnfactor = -2.98107e-008 pnfactor = 1.7856e-014
++ pclm = 8.89857 lpclm = -6.7208e-006 wpclm = 8.45214e-007 ppclm = -9.4488e-013
++ pdiblcb = 6.27273 lpdiblcb = -1.26255e-005 wpdiblcb = 1.87723e-022 ppdiblcb = -2.31211e-028
++ pscbe1 = 1.86886e+008 lpscbe1 = 54.6231 wpscbe1 = 11.4786 ppscbe1 = 3.6952e-005
++ pvag = 6.75972 lpvag = -5.43625e-006 wpvag = -9.29707e-007 ppvag = 1.06987e-012
++ ute = -0.807248 lute = -7.37642e-007 wute = -4.42414e-008 pute = 1.5867e-013
++ ua1 = 7.00157e-010 lua1 = 4.58304e-016 wua1 = 1.00612e-015 pua1 = -8.26336e-022
++ ub1 = -1.01619e-019 lub1 = -1.90771e-024 wub1 = -1.34994e-024 pub1 = 1.29853e-030
++ uc1 = 3.19034e-010 luc1 = -3.57318e-016 wuc1 = -1.59517e-016 puc1 = 1.78659e-022
++ at = 50000 lat = 9.29206e-018 wat = 1.53782e-018 pat = -1.89408e-024
++ kt1 = -0.30966 lkt1 = -8.28771e-008 wkt1 = 1.93171e-008 pkt1 = 1.72608e-014
++ kt2 = -0.0509517 lkt2 = 2.61346e-008 wkt2 = 1.8332e-008 pkt2 = -1.30294e-014
++ eta0 = 0.1872 leta0 = 3.54464e-023 weta0 = 5.86633e-024 peta0 = -7.22533e-030
++ etab = -0.1888 letab = 0 wetab = 0 petab = 0
++ pdiblc2 = 5.46854e-005 lpdiblc2 = -5.24768e-012 wpdiblc2 = -2.34271e-012 ppdiblc2 = 2.62384e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.4 nmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.49758 + delta_n_vth0_18' lvth0 = -3.33638e-008 wvth0 = -3.30589e-008 pvth0 = 5.74875e-015
++ k1 = 0.394017 lk1 = 5.43169e-008 wk1 = 4.18821e-008 pk1 = -1.01025e-014
++ k2 = -0.00480062 lk2 = -1.74399e-008 wk2 = -1.69538e-008 pk2 = 4.93538e-015
++ u0 = '195.198 + delta_n_u0_18' lu0 = -9.63506e-006 wu0 = -1.93661e-005 pu0 = 1.40175e-012
++ ua = -1.69394e-009 lua = -7.37063e-017 wua = -1.1025e-016 pua = 9.225e-024
++ ub = 2.18438e-018 lub = 1.65187e-026 wub = 1.78393e-026 pub = -2.8125e-033
++ uc = 5.66512e-011 luc = -1.02169e-018 wuc = -6.14089e-018 puc = 3.72375e-025
++ vsat = 125408 lvsat = -0.00318337 wvsat = 0.00690536 pvsat = -3.4425e-010
++ a0 = 1.09296 la0 = -5.325e-009 wa0 = -6.19821e-008 pa0 = 2.89125e-014
++ ags = 0.214795 lags = -1.21487e-007 wags = 1.12473e-007 pags = -1.12388e-014
++ keta = 0.0368046 lketa = -1.42631e-009 wketa = 9.38304e-009 pketa = 1.13513e-015
++ voff = -0.155321 lvoff = 3.68062e-009 wvoff = 1.90821e-008 pvoff = -2.5425e-015
++ nfactor = '0.806334 + delta_n_nfactor_18' lnfactor = 3.04838e-008 wnfactor = -5.35982e-008 pnfactor = -8.08875e-015
++ pclm = 1.45522 lpclm = -5.22938e-008 wpclm = 3.70232e-007 ppclm = -2.73375e-014
++ pdiblcb = -6.60622 lpdiblcb = 6.74612e-007 wpdiblcb = -8.4375e-009 ppdiblcb = 3.54375e-015
++ pscbe1 = -7.67063e+007 lpscbe1 = 78.0806 wpscbe1 = 451.163 ppscbe1 = -5.94563e-005
++ pvag = 0.284509 lpvag = -2.53537e-008 wpvag = 2.57581e-006 ppvag = -2.53839e-013
++ ute = -0.994024 lute = -1.13119e-008 wute = 1.16796e-007 pute = -1.08225e-014
++ ua1 = 1.83865e-009 lua1 = -9.69938e-017 wua1 = 7.56429e-017 pua1 = 3.15e-024
++ ub1 = -2.13763e-018 lub1 = 1.18106e-025 wub1 = -1.35589e-025 pub1 = -2.8125e-033
++ uc1 = 3.24562e-028 luc1 = -1.36316e-034 wuc1 = 2.16372e-034 puc1 = -9.08764e-041
++ at = -4403.48 lat = 0.00482306 wat = 0.0117477 pat = -1.10363e-009
++ kt1 = -0.215038 lkt1 = -6.02625e-009 wkt1 = -2.925e-009 pkt1 = -2.4075e-015
++ kt2 = -0.0611915 lkt2 = 2.16544e-009 wkt2 = 5.94107e-009 pkt2 = 5.4675e-016
++ eta0 = 0.45083 leta0 = -2.19066e-008 weta0 = 9.51161e-009 peta0 = -8.06287e-015
++ etab = -0.367977 letab = 1.40062e-008 wetab = -3.22179e-008 petab = 6.1875e-015
++ pdiblc2 = 6.40534e-005 lpdiblc2 = -5.90243e-012 wpdiblc2 = 4.55357e-015 ppdiblc2 = -1.9125e-021
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.5 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.428886 + delta_n_vth0_18' lvth0 = -4.512e-009 wvth0 = -1.40229e-008 pvth0 = -2.2464e-015
++ k1 = 0.507777 lk1 = 6.5376e-009 wk1 = -5.48571e-010 pk1 = 7.7184e-015
++ k2 = -0.0501117 lk2 = 1.59072e-009 wk2 = 8.15486e-009 pk2 = -5.61024e-015
++ u0 = '225.103 + delta_n_u0_18' lu0 = -2.21952e-005 wu0 = 1.00286e-005 pu0 = -1.0944e-011
++ ua = -1.8436e-009 lua = -1.0848e-017 wua = 1.86e-016 pua = -1.152e-022
++ ub = 2.50669e-018 lub = -1.18848e-025 wub = -1.47943e-025 pub = 6.6816e-032
++ uc = 5.37569e-011 luc = 1.9392e-019 wuc = 3.44057e-018 puc = -3.65184e-024
++ vsat = 73942.9 lvsat = 0.018432 wvsat = 0.0280286 pvsat = -9.216e-009
++ a0 = 0.927829 la0 = 6.4032e-008 wa0 = 4.75886e-007 pa0 = -1.96992e-013
++ ags = 1.04712 lags = -4.71063e-007 wags = -1.29051e-007 pags = 9.02016e-014
++ keta = -0.0661855 lketa = 4.18295e-008 wketa = 4.60107e-008 pketa = -1.42485e-014
++ voff = -0.13954 lvoff = -2.9472e-009 wvoff = 1.056e-008 pvoff = 1.0368e-015
++ nfactor = '0.687394 + delta_n_nfactor_18' lnfactor = 8.04384e-008 wnfactor = -2.86971e-008 pnfactor = -1.85472e-014
++ pclm = 2.68294 lpclm = -5.67936e-007 wpclm = 3.97029e-007 ppclm = -3.8592e-014
++ pdiblcb = -5 lpdiblcb = -3.12639e-022 wpdiblcb = 3.3497e-022 ppdiblcb = 1.7053e-028
++ pscbe1 = 2.26731e+008 lpscbe1 = -49.3632 wpscbe1 = -72.2057 ppscbe1 = 0.000160358
++ pvag = 54.2689 lpvag = -2.26988e-005 wpvag = -2.6819e-005 ppvag = 1.2092e-011
++ ute = -0.665094 lute = -1.49462e-007 wute = -4.32583e-007 pute = 2.19917e-013
++ ua1 = 3.07331e-009 lua1 = -6.15552e-016 wua1 = -7.52057e-016 pua1 = 3.50784e-022
++ ub1 = -3.77163e-018 lub1 = 8.04384e-025 wub1 = 7.79314e-025 pub1 = -3.87072e-031
++ uc1 = 3.69277e-027 luc1 = -1.55096e-033 wuc1 = -4.43132e-033 puc1 = 1.86115e-039
++ at = 75752 lat = -0.0288422 wat = -0.005472 pat = 6.12864e-009
++ kt1 = -0.158551 lkt1 = -2.97504e-008 wkt1 = -9.80743e-008 pkt1 = 3.75552e-014
++ kt2 = -0.09975 lkt2 = 1.836e-008 wkt2 = 5.0964e-008 pkt2 = -1.83629e-014
++ eta0 = 0.0603171 leta0 = 1.42109e-007 weta0 = 5.81143e-009 peta0 = -6.5088e-015
++ etab = -0.101303 letab = -9.79968e-008 wetab = 1.04914e-008 petab = -1.17504e-014
++ pdiblc2 = 5e-005 lpdiblc2 = 1.68519e-042 wpdiblc2 = -1.85863e-027 ppdiblc2 = -2.88889e-048
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.6 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.387593 + delta_n_vth0_18' lvth0 = 4.17361e-008 wvth0 = 4.06909e-009 pvth0 = -2.25094e-014
++ k1 = 0.584552 lk1 = -7.94502e-008 wk1 = -5.71387e-008 pk1 = 7.10993e-014
++ k2 = -0.0593683 lk2 = 1.19581e-008 wk2 = 2.38038e-008 pk2 = -2.3137e-014
++ u0 = '287.577 + delta_n_u0_18' lu0 = -9.21658e-005 wu0 = -8.53558e-006 pu0 = 9.84785e-012
++ ua = -1.16629e-009 lua = -7.69431e-016 wua = 4.73922e-017 pua = 4.00407e-023
++ ub = 2.19863e-018 lub = 2.26176e-025 wub = -1.19205e-025 pub = 3.46298e-032
++ uc = 8.80703e-011 luc = -3.82371e-017 wuc = -1.30574e-017 puc = 1.48259e-023
++ vsat = 55171.1 lvsat = 0.0394563 wvsat = 0.0374144 pvsat = -1.97282e-008
++ a0 = 1.667 la0 = -7.6384e-007 wa0 = 4.29818e-008 pa0 = 2.8786e-013
++ ags = 0.503543 lags = 1.37744e-007 wags = -2.21361e-008 pags = -2.95436e-014
++ keta = 0.0244443 lketa = -5.96758e-008 wketa = 9.32587e-010 pketa = 3.6239e-014
++ voff = -0.115906 lvoff = -2.94173e-008 wvoff = 6.63896e-010 pvoff = 1.21204e-014
++ nfactor = '0.680386 + delta_n_nfactor_18' lnfactor = 8.8288e-008 wnfactor = -7.24083e-008 pnfactor = 3.04093e-014
++ pclm = 4.68291 lpclm = -2.8079e-006 wpclm = 2.95304e-006 ppclm = -2.90133e-012
++ pdiblcb = -13.0519 lpdiblcb = 9.01818e-006 wpdiblcb = 9.66234e-006 ppdiblcb = -1.08218e-011
++ pscbe1 = 7.37887e+008 lpscbe1 = -621.858 wpscbe1 = -264.022 ppscbe1 = 0.000375192
++ pvag = -8.00473 lpvag = 4.70477e-005 wpvag = 6.45252e-006 ppvag = -2.51721e-011
++ ute = -1.32284 lute = 5.8721e-007 wute = 2.13553e-007 pute = -5.03756e-013
++ ua1 = 1.59774e-009 lua1 = 1.03709e-015 wua1 = 5.5733e-016 pua1 = -1.11573e-021
++ ub1 = -1.59345e-018 lub1 = -1.63518e-024 wub1 = -6.04021e-025 pub1 = 1.16226e-030
++ uc1 = -2.50521e-027 luc1 = 5.39077e-033 wuc1 = 1.91353e-033 puc1 = -5.24507e-039
++ at = 50000 lat = -6.56159e-018 wat = -3.21271e-018 pat = 4.12216e-024
++ kt1 = -0.254989 lkt1 = 7.82598e-008 wkt1 = -8.01818e-009 pkt1 = -6.33076e-014
++ kt2 = 0.00601755 lkt2 = -1.001e-007 wkt2 = -1.01526e-008 pkt2 = 5.00877e-014
++ eta0 = 0.1872 leta0 = -2.50305e-023 weta0 = -1.22555e-023 peta0 = 1.57248e-029
++ etab = -0.1888 letab = 3.95643e-024 wetab = 9.22762e-024 petab = 3.17785e-045
++ pdiblc2 = 5e-005 lpdiblc2 = 0 wpdiblc2 = 0 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.7 nmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.450692 + delta_n_vth0_18' lvth0 = -3.46733e-008 wvth0 = 2.32074e-008 pvth0 = 7.32017e-015
++ k1 = 0.474068 lk1 = 4.89855e-008 wk1 = -5.4179e-008 pk1 = -3.70483e-015
++ k2 = -0.0166319 lk2 = -1.95227e-008 wk2 = -2.75625e-009 pk2 = 7.43472e-015
++ u0 = '213.473 + delta_n_u0_18' lu0 = -8.79357e-006 wu0 = -4.12969e-005 pu0 = 3.9196e-013
++ ua = -1.82317e-009 lua = -7.70557e-017 wua = 4.48295e-017 pua = 1.32443e-023
++ ub = 2.49357e-018 lub = 3.80386e-026 wub = -3.53182e-025 pub = -2.86364e-032
++ uc = 1.05368e-010 luc = -3.75846e-018 wuc = -6.46014e-017 puc = 3.65651e-024
++ vsat = 141457 lvsat = -0.00450086 wvsat = -0.0123537 pvsat = 1.23673e-009
++ a0 = 1.32718 la0 = -1.06134e-008 wa0 = -3.4304e-007 pa0 = 3.52585e-014
++ ags = 0.316318 lags = -1.31632e-007 wags = -9.35335e-009 pags = 9.35335e-016
++ keta = 0.0217935 lketa = 2.87992e-009 wketa = 2.73963e-008 pketa = -4.03236e-015
++ voff = -0.102217 lvoff = -2.70375e-009 wvoff = -4.4642e-008 pvoff = 5.11875e-015
++ nfactor = '0.827699 + delta_n_nfactor_18' lnfactor = 2.95151e-008 wnfactor = -7.92358e-008 pnfactor = -6.92642e-015
++ pclm = 1.60608 lpclm = -5.1808e-008 wpclm = 1.89205e-007 ppclm = -2.79205e-014
++ pdiblcb = -5.79365 lpdiblcb = 5.96309e-007 wpdiblcb = -9.83523e-007 ppdiblcb = 9.75068e-014
++ pscbe1 = 2.49518e+008 lpscbe1 = 24.8945 wpscbe1 = 59.6932 ppscbe1 = 4.36705e-006
++ pvag = 1.78241 lpvag = -1.68267e-007 wpvag = 7.7833e-007 ppvag = -8.23439e-014
++ ute = -0.974457 lute = -3.3918e-008 wute = 9.33153e-008 pute = 1.63048e-014
++ ua1 = 2.11816e-009 lua1 = -1.02721e-016 wua1 = -2.59773e-016 pua1 = 1.00227e-023
++ ub1 = -2.59352e-018 lub1 = 1.27098e-025 wub1 = 4.11477e-025 pub1 = -1.36023e-032
++ uc1 = 2.18012e-028 luc1 = -9.15653e-035 wuc1 = 3.44231e-034 puc1 = -1.44577e-040
++ at = -9988.75 lat = 0.00574088 wat = 0.01845 pat = -2.205e-009
++ kt1 = -0.23935 lkt1 = -6.24273e-009 wkt1 = 2.625e-008 pkt1 = -2.14773e-015
++ kt2 = -0.04585 lkt2 = 3.74564e-009 wkt2 = -1.24688e-008 pkt2 = -1.34949e-015
++ eta0 = 0.382648 leta0 = -4.82165e-009 weta0 = 9.13295e-008 peta0 = -2.85648e-014
++ etab = -0.43192 letab = 2.05197e-008 wetab = 4.45142e-008 petab = -1.62869e-015
++ pdiblc2 = 6.40632e-005 lpdiblc2 = -5.90655e-012 wpdiblc2 = -7.24432e-015 ppdiblc2 = 3.04261e-021
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.8 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.417882 + delta_n_vth0_18' lvth0 = -2.08931e-008 wvth0 = -8.18182e-010 pvth0 = 1.74109e-014
++ k1 = 0.548184 lk1 = 1.78569e-008 wk1 = -4.90364e-008 pk1 = -5.86473e-015
++ k2 = -0.0561705 lk2 = -2.91648e-009 wk2 = 1.54255e-008 pk2 = -2.016e-016
++ u0 = '311.46 + delta_n_u0_18' lu0 = -4.99479e-005 wu0 = -9.36e-005 pu0 = 2.23593e-011
++ ua = -1.47224e-009 lua = -2.24448e-016 wua = -2.59636e-016 pua = 1.4112e-022
++ ub = 2.59454e-018 lub = -4.368e-027 wub = -2.53364e-025 pub = -7.056e-032
++ uc = 9.48035e-011 luc = 6.7872e-019 wuc = -4.58155e-017 puc = -4.2336e-024
++ vsat = 134595 lvsat = -0.00161891 wvsat = -0.0447545 pvsat = 1.48451e-008
++ a0 = 1.61122 la0 = -1.2991e-007 wa0 = -3.44182e-007 pa0 = 3.57382e-014
++ ags = 0.897288 lags = -3.75639e-007 wags = 5.07485e-008 pags = -2.43075e-014
++ keta = 0.00120544 lketa = 1.15269e-008 wketa = -3.48584e-008 pketa = 2.21146e-014
++ voff = -0.105695 lvoff = -1.2432e-009 wvoff = -3.00545e-008 pvoff = -1.008e-015
++ nfactor = '0.865616 + delta_n_nfactor_18' lnfactor = 1.35897e-008 wnfactor = -2.42564e-007 pnfactor = 6.16713e-014
++ pclm = 1.88425 lpclm = -1.68641e-007 wpclm = 1.35545e-006 ppclm = -5.17745e-013
++ pdiblcb = -5.37568 lpdiblcb = 4.20764e-007 wpdiblcb = 4.50818e-007 ppdiblcb = -5.04916e-013
++ pscbe1 = 2.18696e+008 lpscbe1 = 37.8397 wpscbe1 = -62.5636 ppscbe1 = 5.57149e-005
++ pvag = -1.77088 lpvag = 1.32411e-006 wpvag = 4.04288e-005 ppvag = -1.67355e-011
++ ute = -1.21333 lute = 6.64089e-008 wute = 2.253e-007 pute = -3.91287e-014
++ ua1 = 2.7541e-009 lua1 = -3.69814e-016 wua1 = -3.69e-016 pua1 = 5.58982e-023
++ ub1 = -3.65629e-018 lub1 = 5.7346e-025 wub1 = 6.40909e-025 pub1 = -1.09964e-031
++ uc1 = 0 luc1 = 0 wuc1 = 0 puc1 = 0
++ at = 77792 lat = -0.031127 wat = -0.00792 pat = 8.8704e-009
++ kt1 = -0.258439 lkt1 = 1.77469e-009 wkt1 = 2.17909e-008 pkt1 = -2.74909e-016
++ kt2 = -0.0512118 lkt2 = 5.9976e-009 wkt2 = -7.28182e-009 pkt2 = -3.528e-015
++ eta0 = 0.0768191 leta0 = 1.23627e-007 weta0 = -1.39909e-008 peta0 = 1.56698e-014
++ etab = -0.0722418 letab = -1.30545e-007 wetab = -2.43818e-008 petab = 2.73076e-014
++ pdiblc2 = 5e-005 lpdiblc2 = 1.72487e-027 wpdiblc2 = 1.84807e-027 ppdiblc2 = -2.06984e-033
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model n18stat.9 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.377942 + delta_n_vth0_18' lvth0 = 2.38392e-008 wvth0 = 1.56496e-008 pvth0 = -1.03299e-015
++ k1 = 0.569482 lk1 = -5.99709e-009 wk1 = -3.90545e-008 pk1 = -1.70444e-014
++ k2 = -0.0501868 lk2 = -9.6183e-009 wk2 = 1.2786e-008 pk2 = 2.75464e-015
++ u0 = '320.947 + delta_n_u0_18' lu0 = -6.05735e-005 wu0 = -4.85802e-005 pu0 = -2.80629e-011
++ ua = -1.27163e-009 lua = -4.49122e-016 wua = 1.73802e-016 pua = -3.44331e-022
++ ub = 2.51793e-018 lub = 8.14342e-026 wub = -5.02364e-025 pub = 2.0832e-031
++ uc = 1.12434e-010 luc = -1.90673e-017 wuc = -4.22938e-017 puc = -8.17785e-024
++ vsat = 135952 lvsat = -0.00313857 wvsat = -0.059523 pvsat = 3.13857e-008
++ a0 = 1.42887 la0 = 7.4318e-008 wa0 = 3.28736e-007 pa0 = -7.17929e-013
++ ags = 0.426177 lags = 1.52005e-007 wags = 7.07033e-008 pags = -4.66568e-014
++ keta = -0.00648863 lketa = 2.01443e-008 wketa = 3.80521e-008 pketa = -5.95451e-014
++ voff = -0.0989085 lvoff = -8.84356e-009 wvoff = -1.97331e-008 pvoff = -1.25681e-014
++ nfactor = '0.791667 + delta_n_nfactor_18' lnfactor = 9.64126e-008 wnfactor = -2.05946e-007 pnfactor = 2.06598e-014
++ pclm = 1.00521 lpclm = 8.15891e-007 wpclm = 7.36629e-006 ppclm = -7.24988e-012
++ pdiblcb = -0.145041 lpdiblcb = -5.43755e-006 wpdiblcb = -5.82595e-006 ppdiblcb = 6.52506e-012
++ pscbe1 = 3.76497e+008 lpscbe1 = -138.897 wpscbe1 = 169.646 ppscbe1 = -0.00020436
++ pvag = 22.4538 lpvag = -2.58075e-005 wpvag = -3.00977e-005 ppvag = 6.22541e-011
++ ute = -0.87374 lute = -3.13932e-007 wute = -3.25364e-007 pute = 5.77615e-013
++ ua1 = 3.17611e-009 lua1 = -8.42462e-016 wua1 = -1.33671e-015 pua1 = 1.13973e-021
++ ub1 = -2.72841e-018 lub1 = -4.65764e-025 wub1 = 7.57934e-025 pub1 = -2.41031e-031
++ uc1 = -9.10604e-028 luc1 = 1.01988e-033 wuc1 = 3.11297e-050 puc1 = -1.56495e-055
++ at = 50000 lat = 1.03715e-018 wat = -9.82666e-034 pat = 1.3719e-039
++ kt1 = -0.242605 lkt1 = -1.59597e-008 wkt1 = -2.28793e-008 pkt1 = 4.97558e-014
++ kt2 = 0.0262542 lkt2 = -8.07643e-008 wkt2 = -3.44366e-008 pkt2 = 2.68853e-014
++ eta0 = 0.1872 leta0 = -4.77855e-024 weta0 = -8.90146e-024 peta0 = 6.47416e-031
++ etab = -0.1888 letab = 0 wetab = 0 petab = 0
++ pdiblc2 = 5e-005 lpdiblc2 = 0 wpdiblc2 = 0 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_n_tox_18' 
++ toxm = 4e-009 nch = 4.06574e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -4.827 k3b = 3.062 w0 = 1.39e-007
++ nlx = '1.705e-007 + delta_n_nlx_18' dvt0 = '2.483 + delta_n_dvt0_18' dvt1 = 0.6728 dvt2 = -0.06749
++ dvt0w = -1.602 dvt1w = 5.3e+006 dvt2w = -0.032 dsub = 1.431
++ b0 = 0 b1 = 0 a1 = 0 a2 = 1
++ rdsw = 340.2 prwb = 0.04881 prwg = -0.2326 wr = 1
++ wint = '0 + delta_n_wint_18' wl = 0 wln = 1 ww = 0
++ wwn = 1 wwl = 0 lint = '4e-008 + delta_n_lint_18' ll = 0
++ lln = 0.18 lw = 0 lwn = 1 lwl = 0
++ cit = 0 cdsc = 0.00024 cdscb = 0 cdscd = 0
++ pdiblc1 = 0.05871 drout = 0.56 pscbe2 = 1e-005 
++ alpha0 = 0 alpha1 = 0 beta0 = 30 js = 1.663e-005
++ jsw = 6.906e-011 nj = 1.427 ijth = 0.1 cj = '0.001151 + delta_n_cj_18' 
++ mj = 0.409 pb = 0.75 cjsw = '2e-011 + delta_n_cjsw_18' mjsw = 0.33
++ pbsw = 1 cjswg = 5e-010 mjswg = 0.33 pbswg = 1
++ cgdo = '2.2e-010 + delta_n_cgdo_18' cgso = '2.2e-010 + delta_n_cgso_18' cgbo = 0 cgsl = 0 
++ cgdl = 0 ckappa = 0.6 cf = 0 noff = 3
++ voffcv = -0.09 acde = 1.2 moin = 15 dlc='-142n+delta_n_dlc' 
++ dwc = 0 llc = 9.7n lwc = 0 lwlc = 0
++ wlc = 0 wwc = 0 wwlc = 0 clc = 1e-007
++ cle = 0.6 elm = 2 xpart = 0.5 kt1l = 0
++ prt = 88.16 xti = 1 tpb = 0.0008538 tpbsw = 0.007691
++ tpbswg = 0 tcj = 0.0006691 tcjsw = 0.002736 tcjswg = 0
++ ef = 0.986 em = 5916433 
++ noia = 7.943E+19 noib = 251188 noic = -2.511E-12 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+.ends n18
+*
+*
+* 
+.subckt p18 d g s b l=1u w=1u nrs=1 nrd=1 m=1
++Aw='log(w*10)/abs(log(w*10))' 
++myHdif= '0.5*(0.15*(1+Aw)+0.15e-6*(1-Aw))'
++as = '2*w*myHdif'
++ad = '2*w*myHdif'
++ps = '2*w+4*myHdif'
++pd = '2*w+4*myHdif'
+.param
++ delvtp_lv = '(4.5956*1e-3)/sqrt(2*w*l*m)*0.5*((1+Aw)+1e-6*(1-Aw))'
++ sigvtp_lv = AGAUSS(0,delvtp_lv,1)
+m d g s b p18stat  w=w l=l delvto=sigvtp_lv as=as ps=ps ad=ad pd=pd nrs=nrs nrd=nrd m=m
+.model p18stat.1 pmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.4503 + delta_p_vth0_18' lvth0 = 9.705e-009 wvth0 = 1.12406e-008 pvth0 = -1.86656e-015
++ k1 = 0.434498 lk1 = 4.78238e-008 wk1 = 8.46853e-008 pk1 = -1.17253e-014
++ k2 = 0.0578256 lk2 = -1.52753e-008 wk2 = -3.07462e-008 pk2 = 3.30052e-015
++ u0 = '76.6004 + delta_p_u0_18' lu0 = -4.32947e-006 wu0 = -5.08676e-006 pu0 = 5.90391e-013
++ ua = 3.45013e-010 lua = -2.14416e-016 wua = -2.63838e-016 pua = 3.20409e-023
++ ub = 1.17418e-018 lub = 1.20675e-025 wub = 5.9567e-026 pub = -2.15531e-032
++ uc = -1.33336e-010 luc = 1.65518e-017 wuc = 1.60416e-017 puc = -4.69477e-024
++ vsat = 120403 lvsat = 0.00243187 wvsat = -0.00436071 pvsat = -3.3e-010
++ a0 = 1.45659 la0 = 1.18255e-007 wa0 = -1.73326e-007 pa0 = -2.62453e-015
++ ags = 0.114358 lags = 1.99911e-007 wags = 5.94835e-008 pags = -4.09716e-014
++ keta = 0.000583741 lketa = 2.17727e-009 wketa = 1.504e-009 pketa = -9.67622e-016
++ voff = -0.132098 lvoff = 2.75906e-009 wvoff = 8.51763e-009 pvoff = -1.36641e-015
++ nfactor = '0.74491 + delta_p_nfactor_18' lnfactor = 1.65319e-008 wnfactor = -5.95179e-009 pnfactor = 1.93875e-015
++ pclm = 2.65776 lpclm = -1.9952e-007 wpclm = -2.13849e-007 ppclm = 2.41467e-014
++ pdiblcb = -3.9798 lpdiblcb = 5.29266e-007 wpdiblcb = -6.2285e-007 ppdiblcb = 5.08922e-014
++ pscbe1 = -5.3e+008 lpscbe1 = 153 wpscbe1 = 336.6 ppscbe1 = -3.366e-005
++ pvag = 6.04997 lpvag = -5.9257e-007 wpvag = -1.33093e-006 ppvag = 1.30361e-013
++ ute = -0.414135 lute = -4.36472e-008 wute = 2.52239e-008 pute = 2.8478e-014
++ ua1 = 4.37327e-009 lua1 = -3.27984e-016 wua1 = -4.00199e-016 pua1 = 1.00598e-022
++ ub1 = -6.10158e-018 lub1 = 4.15322e-025 wub1 = 7.03288e-025 pub1 = -1.14211e-031
++ uc1 = -8.57234e-011 luc1 = 2.46323e-017 wuc1 = -1.69555e-017 puc1 = -6.33445e-024
++ at = 38950.9 lat = 0.00464062 wat = 0.00552455 pat = -2.32031e-009
++ kt1 = -0.243082 lkt1 = -6.1275e-009 wkt1 = 1.01504e-008 pkt1 = 9.17812e-016
++ kt2 = 0.014073 lkt2 = -8.36527e-009 wkt2 = 9.40795e-010 pkt2 = 1.25091e-015
++ pdiblc2 = 4.625e-005 lpdiblc2 = -2.625e-012 wpdiblc2 = -9.96873e-028 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.2 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.370907 + delta_p_vth0_18' lvth0 = -2.364e-008 wvth0 = -1.70264e-008 pvth0 = 1.00056e-014
++ k1 = 1.01236 lk1 = -1.9488e-007 wk1 = -9.10721e-008 pk1 = 6.20928e-014
++ k2 = -0.172616 lk2 = 8.15102e-008 wk2 = 3.52361e-008 pk2 = -2.44121e-014
++ u0 = '74.075 + delta_p_u0_18' lu0 = -3.2688e-006 wu0 = 2.8435e-006 pu0 = -2.74032e-012
++ ua = -2.21809e-010 lua = 2.36496e-017 wua = 3.62843e-017 pua = -9.40104e-023
++ ub = 1.59293e-018 lub = -5.52e-026 wub = -1.26264e-025 pub = 5.6496e-032
++ uc = -7.03043e-011 luc = -9.9216e-018 wuc = -6.65186e-018 puc = 4.83648e-024
++ vsat = 88787.1 lvsat = 0.0157104 wvsat = 0.00283643 pvsat = -3.3528e-009
++ a0 = 1.23391 la0 = 2.11781e-007 wa0 = 1.25345e-007 pa0 = -1.28066e-013
++ ags = 0.400153 lags = 7.98768e-008 wags = -3.93643e-009 pags = -1.43352e-014
++ keta = 0.0143634 lketa = -3.61018e-009 wketa = 1.97591e-009 pketa = -1.16582e-015
++ voff = -0.0756771 lvoff = -2.09376e-008 wvoff = -8.94143e-009 pvoff = 5.9664e-015
++ nfactor = '0.964626 + delta_p_nfactor_18' lnfactor = -7.57488e-008 wnfactor = -6.02329e-008 pnfactor = 2.47368e-014
++ pclm = 1.95391 lpclm = 9.6096e-008 wpclm = 1.16443e-007 ppclm = -1.14576e-013
++ pdiblcb = -6.36821 lpdiblcb = 1.5324e-006 wpdiblcb = 3.01007e-007 ppdiblcb = -3.37128e-013
++ pscbe1 = 1.69943e+009 lpscbe1 = -783.36 wpscbe1 = -153.874 ppscbe1 = 0.000172339
++ pvag = -3.81443 lpvag = 3.55048e-006 wpvag = 1.12782e-006 ppvag = -9.02312e-013
++ ute = -0.455531 lute = -2.62608e-008 wute = 4.45657e-008 pute = 2.03544e-014
++ ua1 = 3.90824e-009 lua1 = -1.32672e-016 wua1 = -9.82143e-018 pua1 = -6.336e-023
++ ub1 = -5.81283e-018 lub1 = 2.94048e-025 wub1 = 3.27014e-025 pub1 = 4.3824e-032
++ uc1 = -2.24594e-010 luc1 = 8.29578e-017 wuc1 = 7.45538e-017 puc1 = -4.47683e-023
++ at = 50000 lat = 1.83354e-018 wat = 4.25664e-034 pat = 0
++ kt1 = -0.284769 lkt1 = 1.13808e-008 wkt1 = 1.78043e-008 pkt1 = -2.2968e-015
++ kt2 = 0.0345746 lkt2 = -1.69759e-008 wkt2 = -1.55119e-008 pkt2 = 8.16103e-015
++ pdiblc2 = 4e-005 lpdiblc2 = 1.70762e-027 wpdiblc2 = 3.9643e-043 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.3 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.419133 + delta_p_vth0_18' lvth0 = 3.03732e-008 wvth0 = 1.91571e-009 pvth0 = -1.12096e-014
++ k1 = 0.927644 lk1 = -9.99936e-008 wk1 = -5.05121e-008 pk1 = 1.66656e-014
++ k2 = -0.143316 lk2 = 4.86937e-008 wk2 = 2.15041e-008 pk2 = -9.03216e-015
++ u0 = '99.5484 + delta_p_u0_18' lu0 = -3.1799e-005 wu0 = -4.67393e-006 pu0 = 5.6792e-012
++ ua = 5.27702e-010 lua = -8.15803e-016 wua = -2.34486e-016 pua = 2.09252e-022
++ ub = 1.19926e-018 lub = 3.85708e-025 wub = 1.67857e-027 pub = -8.68e-032
++ uc = -1.09272e-010 luc = 3.37226e-017 wuc = 8.45443e-018 puc = -1.20826e-023
++ vsat = 102661 lvsat = 0.000171345 wvsat = -2.42857e-005 pvsat = -1.488e-010
++ a0 = 0.905904 la0 = 5.79148e-007 wa0 = 8.18571e-008 pa0 = -7.936e-014
++ ags = 0.333493 lags = 1.54536e-007 wags = -7.43571e-009 pags = -1.0416e-014
++ keta = 0.0190003 lketa = -8.80355e-009 wketa = 1.45757e-009 pketa = -5.8528e-016
++ voff = -0.103357 lvoff = 1.00643e-008 wvoff = 3.71429e-010 pvoff = -4.464e-015
++ nfactor = '0.875333 + delta_p_nfactor_18' lnfactor = 2.42589e-008 wnfactor = -1.14229e-007 pnfactor = 8.52128e-014
++ pclm = 8.34302 lpclm = -7.0597e-006 wpclm = -1.53453e-006 ppclm = 1.73451e-012
++ pdiblcb = -5 lpdiblcb = -1.00768e-021 wpdiblcb = -1.87723e-022 ppdiblcb = 2.31211e-028
++ pscbe1 = 1e+009 lpscbe1 = 1.52241e-013 wpscbe1 = 2.51957e-014 ppscbe1 = -3.10326e-020
++ pvag = 0.0820127 lpvag = -8.13542e-007 wpvag = -4.1005e-008 ppvag = 4.06769e-013
++ ute = -0.718983 lute = 2.68805e-007 wute = 1.17078e-007 pute = -6.08592e-014
++ ua1 = 2.54769e-009 lua1 = 1.39114e-015 wua1 = 2.29436e-016 pua1 = -3.31328e-022
++ ub1 = -4.20795e-018 lub1 = -1.50342e-024 wub1 = 4.33e-026 pub1 = 3.61584e-031
++ uc1 = -3.70116e-010 luc1 = 2.45943e-016 wuc1 = 6.87719e-017 puc1 = -3.82927e-023
++ at = 50000 lat = 9.29206e-018 wat = 1.53782e-018 pat = -1.89408e-024
++ kt1 = -0.183491 lkt1 = -1.0205e-007 wkt1 = -3.20071e-009 pkt1 = 2.12288e-014
++ kt2 = 0.0548603 lkt2 = -3.96959e-008 wkt2 = -1.15328e-008 pkt2 = 3.70443e-015
++ pdiblc2 = 4e-005 lpdiblc2 = 7.68798e-027 wpdiblc2 = 1.43221e-027 ppdiblc2 = -1.764e-033
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.4 pmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.428708 + delta_p_vth0_18' lvth0 = 1.11694e-008 wvth0 = 4.44643e-010 pvth0 = -2.59875e-015
++ k1 = 0.688576 lk1 = 2.16281e-008 wk1 = -4.23536e-008 pk1 = 1.3725e-015
++ k2 = -0.0386994 lk2 = -7.29506e-009 wk2 = 1.75163e-008 pk2 = -6.89625e-016
++ u0 = '61.9462 + delta_p_u0_18' lu0 = -2.72119e-006 wu0 = 2.24036e-006 pu0 = -2.1375e-013
++ ua = -5.28016e-010 lua = -1.22141e-016 wua = 1.72677e-016 pua = -1.40963e-023
++ ub = 1.99371e-018 lub = 2.60438e-026 wub = -3.50196e-025 pub = 2.57625e-032
++ uc = -2.37524e-011 luc = 2.21681e-018 wuc = -3.87504e-017 puc = 2.47275e-024
++ vsat = 88163.4 lvsat = 0.00372938 wvsat = 0.0117589 pvsat = -9.7875e-010
++ a0 = 1.11326 la0 = 1.08731e-007 wa0 = -1.66071e-009 pa0 = 2.1375e-015
++ ags = 0.470914 lags = 8.478e-008 wags = -1.18795e-007 pags = 1.65938e-014
++ keta = -0.000338968 lketa = -5.56298e-010 wketa = 1.96536e-009 pketa = 3.99161e-016
++ voff = -0.0989375 lvoff = -2.42625e-009 wvoff = -8.0625e-009 pvoff = 1.22625e-015
++ nfactor = '0.946606 + delta_p_nfactor_18' lnfactor = 3.48937e-009 wnfactor = -1.068e-007 pnfactor = 8.46e-015
++ pclm = 1.8706 lpclm = -1.00331e-007 wpclm = 1.79732e-007 ppclm = -2.54475e-014
++ pdiblcb = -7.9157 lpdiblcb = 8.41493e-007 wpdiblcb = 1.3451e-006 ppdiblcb = -1.05221e-013
++ pscbe1 = 1.612e+009 lpscbe1 = -61.2 wpscbe1 = -734.4 ppscbe1 = 7.344e-005
++ pvag = -1.65062 lpvag = 1.60533e-007 wpvag = 2.51937e-006 ppvag = -2.4619e-013
++ ute = -0.46122 lute = 8.57362e-008 wute = 4.87661e-008 pute = -3.62137e-014
++ ua1 = 3.82188e-009 lua1 = 2.71125e-017 wua1 = -1.245e-016 pua1 = -7.695e-023
++ ub1 = -5.145e-018 lub1 = 4.47e-026 wub1 = 2.25e-025 pub1 = 7.11e-032
++ uc1 = 1.66738e-011 luc1 = 6.30919e-018 wuc1 = -6.81541e-017 puc1 = 2.82713e-024
++ at = 50000 lat = 9.09495e-019 wat = 4.14682e-018 pat = -4.49875e-025
++ kt1 = -0.266142 lkt1 = -3.86437e-009 wkt1 = 2.16804e-008 pkt1 = -2.1375e-016
++ kt2 = -0.0307558 lkt2 = -5.78156e-009 wkt2 = 2.33552e-008 pkt2 = -4.095e-017
++ pdiblc2 = -1.42364e-005 lpdiblc2 = 9.129e-013 wpdiblc2 = 3.02432e-011 ppdiblc2 = -1.76895e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.5 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.426389 + delta_p_vth0_18' lvth0 = 1.01952e-008 wvth0 = 1.07143e-008 pvth0 = -6.912e-015
++ k1 = 0.566631 lk1 = 7.28448e-008 wk1 = 1.31794e-007 pk1 = -7.17696e-014
++ k2 = 0.00138514 lk2 = -2.41306e-008 wk2 = -5.17646e-008 pk2 = 2.84083e-014
++ u0 = '91.5769 + delta_p_u0_18' lu0 = -1.51661e-005 wu0 = -5.90743e-006 pu0 = 3.20832e-012
++ ua = 8.07426e-010 lua = -6.83027e-016 wua = -4.78333e-016 pua = 2.59328e-022
++ ub = 1.27629e-018 lub = 3.2736e-025 wub = 3.20571e-026 pub = -1.34784e-031
++ uc = -1.09384e-010 luc = 3.81821e-017 wuc = 1.2888e-017 puc = -1.92154e-023
++ vsat = 106049 lvsat = -0.0037824 wvsat = -0.00579429 pvsat = 6.3936e-009
++ a0 = 1.40369 la0 = -1.3248e-008 wa0 = 4.04571e-008 pa0 = -1.5552e-014
++ ags = 0.300977 lags = 1.56154e-007 wags = 4.56514e-008 pags = -5.24736e-014
++ keta = -0.0270773 lketa = 1.06738e-008 wketa = 2.26963e-008 pketa = -8.30782e-015
++ voff = -0.174063 lvoff = 2.91264e-008 wvoff = 4.02514e-008 pvoff = -1.90656e-014
++ nfactor = '1.08714 + delta_p_nfactor_18' lnfactor = -5.5536e-008 wnfactor = -1.21491e-007 pnfactor = 1.46304e-014
++ pclm = 1.90189 lpclm = -1.13472e-007 wpclm = 1.42457e-007 ppclm = -9.792e-015
++ pdiblcb = -4.45271 lpdiblcb = -6.1296e-007 wpdiblcb = -6.56743e-007 ppdiblcb = 7.35552e-013
++ pscbe1 = 7.20229e+008 lpscbe1 = 313.344 wpscbe1 = 335.726 ppscbe1 = -0.000376013
++ pvag = 0.761042 lpvag = -8.52366e-007 wpvag = -1.15992e-006 ppvag = 1.29911e-012
++ ute = -0.945657 lute = 2.892e-007 wute = 2.89629e-007 pute = -1.37376e-013
++ ua1 = -1.02009e-009 lua1 = 2.06074e-015 wua1 = 2.45434e-015 pua1 = -1.16006e-021
++ ub1 = 9.23486e-019 lub1 = -2.50406e-024 wub1 = -3.04114e-024 pub1 = 1.44288e-030
++ uc1 = 7.39654e-011 luc1 = -1.77533e-017 wuc1 = -7.47257e-017 puc1 = 5.5872e-024
++ at = 50000 lat = -1.80946e-033 wat = 1.99569e-018 pat = 3.10193e-039
++ kt1 = -0.0953886 lkt1 = -7.55808e-008 wkt1 = -7.68857e-008 pkt1 = 4.1184e-014
++ kt2 = 0.0165417 lkt2 = -2.56465e-008 wkt2 = -6.49543e-009 pkt2 = 1.24963e-014
++ pdiblc2 = 7.12377e-005 lpdiblc2 = -3.49862e-011 wpdiblc2 = -1.56189e-011 ppdiblc2 = 1.74931e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.6 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.40487 + delta_p_vth0_18' lvth0 = -1.3906e-008 wvth0 = -5.2161e-009 pvth0 = 1.093e-014
++ k1 = 0.717859 lk1 = -9.65306e-008 wk1 = 5.43803e-008 pk1 = 1.49341e-014
++ k2 = -0.0530152 lk2 = 3.67978e-008 wk2 = -2.36462e-008 pk2 = -3.08422e-015
++ u0 = '79.1066 + delta_p_u0_18' lu0 = -1.19942e-006 wu0 = 5.54696e-006 pu0 = -9.6206e-012
++ ua = -1.92408e-010 lua = 4.36787e-016 wua = 1.25569e-016 pua = -4.17043e-022
++ ub = 1.59949e-018 lub = -3.46298e-026 wub = -1.98436e-025 pub = 1.23369e-031
++ uc = -5.57476e-011 luc = -2.18907e-017 wuc = -1.83079e-017 puc = 1.57241e-023
++ vsat = 102591 lvsat = 9.01818e-005 wvsat = 1.09091e-005 pvsat = -1.08218e-010
++ a0 = 1.33147 la0 = 6.76364e-008 wa0 = -1.30925e-007 pa0 = 1.76396e-013
++ ags = 0.342665 lags = 1.09463e-007 wags = -1.20218e-008 pags = 1.21204e-014
++ keta = 0.0298048 lketa = -5.30341e-008 wketa = -3.94465e-009 pketa = 2.153e-014
++ voff = -0.0877352 lvoff = -6.75606e-008 wvoff = -7.43969e-009 pvoff = 3.43485e-014
++ nfactor = '0.82315 + delta_p_nfactor_18' lnfactor = 2.40136e-007 wnfactor = -8.81377e-008 pnfactor = -2.27258e-014
++ pclm = 6.38245 lpclm = -5.13171e-006 wpclm = -5.54244e-007 ppclm = 7.70513e-013
++ pdiblcb = -5 lpdiblcb = 0 wpdiblcb = 0 ppdiblcb = 0
++ pscbe1 = 1e+009 lpscbe1 = 1.48231e-029 wpscbe1 = -3.96323e-014 ppscbe1 = -6.82439e-036
++ pvag = 2.69357e-006 lpvag = -1.76295e-012 wpvag = 2.15751e-014 ppvag = -4.86116e-019
++ ute = -0.59557 lute = -1.02897e-007 wute = 5.53714e-008 pute = 1.24992e-013
++ ua1 = 3.39664e-009 lua1 = -2.886e-015 wua1 = -1.95039e-016 pua1 = 1.80724e-021
++ ub1 = -5.40235e-018 lub1 = 4.58088e-024 wub1 = 6.40504e-025 pub1 = -2.68056e-030
++ uc1 = 6.33352e-011 luc1 = -5.84739e-018 wuc1 = -1.47954e-016 puc1 = 8.76026e-023
++ at = 50000 lat = -6.56159e-018 wat = -3.21271e-018 pat = 4.12216e-024
++ kt1 = -0.32011 lkt1 = 1.76107e-007 wkt1 = 6.51086e-008 pkt1 = -1.1785e-013
++ kt2 = -0.104224 lkt2 = 1.09611e-007 wkt2 = 6.80093e-008 pkt2 = -7.09489e-014
++ pdiblc2 = 4e-005 lpdiblc2 = 0 wpdiblc2 = 0 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.7 pmos (
++ lmin = 1.65e-007 lmax = 5e-007 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.408387 + delta_p_vth0_18' lvth0 = 5.8269e-009 wvth0 = -2.39403e-008 pvth0 = 3.81222e-015
++ k1 = 0.698899 lk1 = 1.71192e-008 wk1 = -5.47415e-008 pk1 = 6.78324e-015
++ k2 = -0.0438809 lk2 = -7.14191e-009 wk2 = 2.37341e-008 pk2 = -8.73409e-016
++ u0 = '69.0766 + delta_p_u0_18' lu0 = -2.59953e-006 wu0 = -6.31619e-006 pu0 = -3.59744e-013
++ ua = -3.58245e-010 lua = -1.55112e-016 wua = -3.10483e-017 pua = 2.54685e-023
++ ub = 1.66885e-018 lub = 7.57014e-026 wub = 3.96307e-026 pub = -3.38267e-032
++ uc = -4.13462e-011 luc = 4.67626e-018 wuc = -1.76378e-017 puc = -4.78585e-025
++ vsat = 105782 lvsat = -0.000322756 wvsat = -0.00938352 pvsat = 3.88381e-009
++ a0 = 1.472 la0 = -8.03518e-008 wa0 = -4.32145e-007 pa0 = 2.29037e-013
++ ags = 0.787139 lags = -7.30162e-008 wags = -4.98264e-007 pags = 2.05949e-013
++ keta = 0.00759787 lketa = -3.26518e-009 wketa = -7.55885e-009 pketa = 3.64982e-015
++ voff = -0.0919134 lvoff = -3.11957e-009 wvoff = -1.64915e-008 pvoff = 2.05824e-015
++ nfactor = '0.875632 + delta_p_nfactor_18' lnfactor = 1.02709e-008 wnfactor = -2.16307e-008 pnfactor = 3.22159e-016
++ pclm = 1.00198 lpclm = -3.31526e-008 wpclm = 1.22207e-006 ppclm = -1.06062e-013
++ pdiblcb = -2.05114 lpdiblcb = 2.21455e-007 wpdiblcb = -5.69237e-006 ppdiblcb = 6.38824e-013
++ pscbe1 = 1e+009 lpscbe1 = -3.30872e-031 wpscbe1 = 1.52996e-014 ppscbe1 = 2.01343e-036
++ pvag = -0.0999233 lpvag = 2.24342e-008 wpvag = 6.58529e-007 ppvag = -8.04717e-014
++ ute = -0.616419 lute = 6.78897e-008 wute = 2.35006e-007 pute = -1.47978e-014
++ ua1 = 3.06159e-009 lua1 = -2.80636e-017 wua1 = 7.87841e-016 pua1 = -1.07386e-023
++ ub1 = -4.13357e-018 lub1 = 1.33034e-025 wub1 = -9.88722e-025 pub1 = -3.49006e-032
++ uc1 = 1.50568e-011 luc1 = -2.14018e-018 wuc1 = -6.62137e-017 puc1 = 1.29664e-023
++ at = 61466.6 lat = -0.00481598 wat = -0.0137599 pat = 5.77918e-009
++ kt1 = -0.23995 lkt1 = -4.40045e-009 wkt1 = -9.75e-009 pkt1 = 4.29545e-016
++ kt2 = -0.0223535 lkt2 = -2.75965e-009 wkt2 = 1.32724e-008 pkt2 = -3.66724e-015
++ pdiblc2 = -7.81152e-006 lpdiblc2 = 5.2536e-012 wpdiblc2 = 2.25333e-011 ppdiblc2 = -6.97779e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.8 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.424528 + delta_p_vth0_18' lvth0 = 1.26061e-008 wvth0 = 8.48182e-009 pvth0 = -9.80509e-015
++ k1 = 0.692983 lk1 = 1.96041e-008 wk1 = -1.98273e-008 pk1 = -7.88073e-015
++ k2 = -0.0435793 lk2 = -7.2686e-009 wk2 = 2.19273e-009 pk2 = 8.17396e-015
++ u0 = '82.6313 + delta_p_u0_18' lu0 = -8.29248e-006 wu0 = 4.82727e-006 pu0 = -5.04e-012
++ ua = -2.4552e-010 lua = -2.02456e-016 wua = 7.85203e-016 pua = -3.17357e-022
++ ub = 1.73709e-018 lub = 4.704e-026 wub = -5.20909e-025 pub = 2.016e-031
++ uc = -4.53599e-011 luc = 6.36201e-018 wuc = -6.39409e-017 puc = 1.89687e-023
++ vsat = 5970 lvsat = 0.0415983 wvsat = 0.1143 pvsat = -4.80633e-008
++ a0 = 1.07399 la0 = 8.68102e-008 wa0 = 4.36091e-007 pa0 = -1.35622e-013
++ ags = 0.414338 lags = 8.35601e-008 wags = -9.03818e-008 pags = 3.46385e-014
++ keta = 0.0160455 lketa = -6.81317e-009 wketa = -2.90511e-008 pketa = 1.26766e-014
++ voff = -0.0930064 lvoff = -2.66051e-009 wvoff = -5.70164e-008 pvoff = 1.90787e-014
++ nfactor = '0.828741 + delta_p_nfactor_18' lnfactor = 2.99651e-008 wnfactor = 1.88591e-007 pnfactor = -8.79709e-014
++ pclm = 4.05628 lpclm = -1.31596e-006 wpclm = -2.44282e-006 ppclm = 1.43319e-012
++ pdiblcb = -7.08568 lpdiblcb = 2.33596e-006 wpdiblcb = 2.50282e-006 ppdiblcb = -2.80316e-012
++ pscbe1 = -2.43636e+008 lpscbe1 = 522.327 wpscbe1 = 1492.36 ppscbe1 = -0.000626793
++ pvag = 90.9006 lpvag = -3.81978e-005 wpvag = -0.000109327 ppvag = 4.61136e-011
++ ute = -0.0633227 lute = -1.64411e-007 wute = -7.69173e-007 pute = 4.06957e-013
++ ua1 = 4.38088e-009 lua1 = -5.82166e-016 wua1 = -4.02682e-015 pua1 = 2.01142e-021
++ ub1 = -4.66125e-018 lub1 = 3.54663e-025 wub1 = 3.66055e-024 pub1 = -1.98759e-030
++ uc1 = -2.99795e-010 luc1 = 1.30098e-016 wuc1 = 3.73787e-016 puc1 = -1.71834e-022
++ at = 50000 lat = 0 wat = 0 pat = 0
++ kt1 = -0.214915 lkt1 = -1.49153e-008 wkt1 = 6.65455e-008 pkt1 = -3.16145e-014
++ kt2 = 0.0435665 lkt2 = -3.04461e-008 wkt2 = -3.89253e-008 pkt2 = 1.82558e-014
++ pdiblc2 = 6.11818e-005 lpdiblc2 = -2.37236e-011 wpdiblc2 = -3.55173e-012 ppdiblc2 = 3.97793e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model p18stat.9 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.400278 + delta_p_vth0_18' lvth0 = -1.45537e-008 wvth0 = -1.07256e-008 pvth0 = 1.17072e-014
++ k1 = 0.695765 lk1 = 1.64877e-008 wk1 = 8.08934e-008 pk1 = -1.20688e-013
++ k2 = -0.0437881 lk2 = -7.03467e-009 wk2 = -3.47187e-008 pk2 = 4.95147e-014
++ u0 = '82.1241 + delta_p_u0_18' lu0 = -7.72448e-006 wu0 = 1.92595e-006 pu0 = -1.79052e-012
++ ua = -4.04273e-010 lua = -2.46527e-017 wua = 3.79808e-016 pua = 1.36685e-022
++ ub = 1.70157e-018 lub = 8.68287e-026 wub = -3.20926e-025 pub = -2.23815e-032
++ uc = -4.05573e-011 luc = 9.83064e-019 wuc = -3.65363e-017 puc = -1.17245e-023
++ vsat = 110427 lvsat = -0.075394 wvsat = -0.00939298 pvsat = 9.04729e-008
++ a0 = 1.43383 la0 = -3.1621e-007 wa0 = -2.5376e-007 pa0 = 6.37012e-013
++ ags = 0.337614 lags = 1.69491e-007 wags = -5.96033e-009 pags = -5.99135e-014
++ keta = 0.0235095 lketa = -1.51729e-008 wketa = 3.60962e-009 pketa = -2.39034e-014
++ voff = -0.0829957 lvoff = -1.38725e-008 wvoff = -1.31271e-008 pvoff = -3.00773e-014
++ nfactor = '0.924444 + delta_p_nfactor_18' lnfactor = -7.72219e-008 wnfactor = -2.0969e-007 pnfactor = 3.58104e-013
++ pclm = 9.96812 lpclm = -7.93722e-006 wpclm = -4.85705e-006 ppclm = 4.13713e-012
++ pdiblcb = -5 lpdiblcb = 1.52913e-022 wpdiblcb = 1.54147e-022 ppdiblcb = -7.74926e-028
++ pscbe1 = 1.09893e+009 lpscbe1 = -981.342 wpscbe1 = -118.711 ppscbe1 = 0.00117761
++ pvag = -7.2285 lpvag = 7.17068e-005 wpvag = 8.6742e-006 ppvag = -8.60482e-011
++ ute = -0.200229 lute = -1.1076e-008 wute = -4.19038e-007 pute = 1.48062e-014
++ ua1 = 3.60597e-009 lua1 = 2.85737e-016 wua1 = -4.46231e-016 pua1 = -1.99884e-021
++ ub1 = -3.72961e-018 lub1 = -6.88776e-025 wub1 = -1.36679e-024 pub1 = 3.64302e-030
++ uc1 = -1.4241e-010 luc1 = -4.6173e-017 wuc1 = 9.8941e-017 puc1 = 1.35993e-022
++ at = 50000 lat = 1.03715e-018 wat = -9.82666e-034 pat = 1.3719e-039
++ kt1 = -0.168917 lkt1 = -6.64328e-008 wkt1 = -1.16323e-007 pkt1 = 1.73198e-013
++ kt2 = 0.0412832 lkt2 = -2.78887e-008 wkt2 = -1.06599e-007 pkt2 = 9.40505e-014
++ pdiblc2 = 4e-005 lpdiblc2 = 0 wpdiblc2 = 0 ppdiblc2 = 0
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '4e-009 + delta_p_tox_18' 
++ toxm = 4e-009 nch = 8.11518e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -5.059 k3b = 3.962 w0 = 2.705e-007
++ nlx = '7.66e-008 + delta_p_nlx_18' dvt0 = '0.9523 + delta_p_dvt0_18' dvt1 = 0.2578 dvt2 = 0.099
++ dvt0w = -2.973 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.003519
++ etab = -0.004696 dsub = 0.2 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1505 prwb = -0.009067
++ prwg = -0.2868 wr = 1 wint = '0 + delta_p_wint_18' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_p_lint_18' ll = 0 lln = 0.21 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.1029 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 1.775e-006 jsw = 1e-018 nj = 1.127
++ ijth = 0.001416 cj = '0.0009621 + delta_p_cj_18' mj = 0.3626 pb = 0.775
++ cjsw = '2.8e-011 + delta_p_cjsw_18' mjsw = 0.05 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '2.6e-010 + delta_p_cgdo_18' cgso = '2.6e-010 + delta_p_cgso_18' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.08 acde = 0.9
++ moin = 15 dlc = '-136n+delta_p_dlc' dwc = 0 llc = 5.77n
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 565.7 xti = 1.311
++ tpb = 0.0008294 tpbsw = 0 tpbswg = 0 tcj = 0.0006115
++ tcjsw = 0 tcjswg = 0 ef = 1.24 
++ em = 21500000 noia = 5.623E+19 noib = 1526000 
++ noic = 3.630E-11 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+.ends p18
+*
+*
+* 
+.endl np18mos
+*
+* HSPICE model for 0.18um high voltage (3.3V) standard Vt CMOS process 
+* The model below is the proprietary of Tower Semiconductor LTD.
+* And is an integral part of Tower's spec 
+* Date: Thu Aug 19 05:55:41  2004
+***************************************************************
+*                                                             *
+*                  3.3V Standard Vt DEVICES LIB               *
+*                                                             *
+***************************************************************
+.options gmindc=1e-14
+**************** CORNER_LIB OF  TT_hv MODEL **************** 
+* Typical 
+.lib tt_hv 
+.param 
++ delta_n_vth0_hv = 8.5m      delta_p_vth0_hv = 24m
++ delta_n_lint_hv = -2.5n     delta_p_lint_hv = -5.3n
++ delta_n_wint_hv = -13n      delta_p_wint_hv = -33.5n
++ delta_n_tox_hv = 0.0        delta_p_tox_hv = 0.0
++ delta_n_nfactor_hv = 1.2    delta_p_nfactor_hv = 650m
++ delta_n_u0_hv = 2           delta_p_u0_hv = 1.5
++ delta_n_dvt0_hv = 0         delta_p_dvt0_hv = 0
++ delta_n_nlx_hv = -19.8n     delta_p_nlx_hv = 7n
++ delta_n_cgdo_hv = 0         delta_p_cgdo_hv = 0
++ delta_n_cgso_hv = 0         delta_p_cgso_hv = 0
++ delta_n_cj_hv = 0           delta_p_cj_hv = 0
++ delta_n_cjsw_hv = 0         delta_p_cjsw_hv = 0
+.lib 'ts18sl_scl_mat.lib' nphvmos 
+.endl tt_hv 
+*
+*
+**************** CORNER_LIB OF  SS_hv MODEL **************** 
+* Slow n, Slow p 
+.lib ss_hv 
+.param 
++ delta_n_vth0_hv = 30m         delta_p_vth0_hv = -10.5m
++ delta_n_lint_hv = -20.5n        delta_p_lint_hv = -5.8n
++ delta_n_wint_hv = -1n         delta_p_wint_hv = -24n
++ delta_n_tox_hv = 150.0p       delta_p_tox_hv = 150.0p
++ delta_n_nfactor_hv = 0     delta_p_nfactor_hv = 0
++ delta_n_u0_hv = -3            delta_p_u0_hv = -6.1
++ delta_n_dvt0_hv = 0           delta_p_dvt0_hv = 0
++ delta_n_nlx_hv = 52n          delta_p_nlx_hv = 30n
++ delta_n_cgdo_hv = -3.5E-011   delta_p_cgdo_hv = -4E-011
++ delta_n_cgso_hv = -3.5E-011   delta_p_cgso_hv = -4E-011
++ delta_n_cj_hv = 8.61e-5       delta_p_cj_hv = 9.174e-5
++ delta_n_cjsw_hv = 4E-012      delta_p_cjsw_hv = 3.5E-012
+.lib 'ts18sl_scl_mat.lib' nphvmos 
+.endl ss_hv 
+*
+*
+**************** CORNER_LIB OF  FF_hv MODEL **************** 
+* Fast n, Fast p 
+.lib ff_hv 
+.param 
++ delta_n_vth0_hv = -18m    delta_p_vth0_hv = 34m
++ delta_n_lint_hv = 9.5n    delta_p_lint_hv = -4.7n
++ delta_n_wint_hv = -30n    delta_p_wint_hv = -50n
++ delta_n_tox_hv = -150.0p    delta_p_tox_hv = -150p
++ delta_n_nfactor_hv = 1.2    delta_p_nfactor_hv = 0.9
++ delta_n_u0_hv = -4.5    delta_p_u0_hv = 7
++ delta_n_dvt0_hv = 0    delta_p_dvt0_hv = 0
++ delta_n_nlx_hv = -59n    delta_p_nlx_hv = -14.9n
++ delta_n_cgdo_hv = 3.5E-011    delta_p_cgdo_hv = 4E-011
++ delta_n_cgso_hv = 3.5E-011    delta_p_cgso_hv = 4E-011
++ delta_n_cj_hv = -8.61e-5    delta_p_cj_hv = -9.174e-5
++ delta_n_cjsw_hv = -4E-012    delta_p_cjsw_hv = -3.5E-012
+.lib 'ts18sl_scl_mat.lib' nphvmos 
+.endl ff_hv 
+*
+*
+**************** CORNER_LIB OF  FS_hv MODEL **************** 
+* Fast n, Slow p 
+.lib fs_hv 
+.param 
++ delta_n_vth0_hv = -20.5m    delta_p_vth0_hv = 5m
++ delta_n_lint_hv = 1n    delta_p_lint_hv = -4.6n
++ delta_n_wint_hv = -19.5n    delta_p_wint_hv = -29n
++ delta_n_tox_hv = -7.5E-011    delta_p_tox_hv = 7.5E-011
++ delta_n_nfactor_hv = 1.2    delta_p_nfactor_hv = 0.325
++ delta_n_u0_hv = -1    delta_p_u0_hv = -1.9
++ delta_n_dvt0_hv = 0    delta_p_dvt0_hv = 0
++ delta_n_nlx_hv = -36n    delta_p_nlx_hv = 18.2n
++ delta_n_cgdo_hv = 0    delta_p_cgdo_hv = 0
++ delta_n_cgso_hv = 0    delta_p_cgso_hv = 0
++ delta_n_cj_hv = 0    delta_p_cj_hv = 0
++ delta_n_cjsw_hv = 0    delta_p_cjsw_hv = 0
+.lib 'ts18sl_scl_mat.lib' nphvmos 
+.endl fs_hv 
+*
+*
+**************** CORNER_LIB OF  SF_hv MODEL **************** 
+* Slow n, Fast p 
+.lib sf_hv 
+.param 
++ delta_n_vth0_hv = 22m    delta_p_vth0_hv = 54.5m
++ delta_n_lint_hv = -15n    delta_p_lint_hv = -4n
++ delta_n_wint_hv = -9.5n    delta_p_wint_hv = -34.5n
++ delta_n_tox_hv = 7.5E-011    delta_p_tox_hv = -7.5E-011
++ delta_n_nfactor_hv = 0.6    delta_p_nfactor_hv = 1.225
++ delta_n_u0_hv = 4.2    delta_p_u0_hv = 3.5
++ delta_n_dvt0_hv = 0    delta_p_dvt0_hv = 0
++ delta_n_nlx_hv = 22n    delta_p_nlx_hv = -11.2n
++ delta_n_cgdo_hv = 0    delta_p_cgdo_hv = 0
++ delta_n_cgso_hv = 0    delta_p_cgso_hv = 0
++ delta_n_cj_hv = 0    delta_p_cj_hv = 0
++ delta_n_cjsw_hv = 0    delta_p_cjsw_hv = 0
+.lib 'ts18sl_scl_mat.lib' nphvmos 
+.endl sf_hv 
+*
+*
+* End corner definition 
+*
+* Begin MOS library 
+*
+.lib nphvmos
+.subckt nhv d g s b l=1u w=1u nrs=1 nrd=1 m=1
++Aw='log(w*10)/abs(log(w*10))' 
++myHdif= '0.5*(0.15*(1+Aw)+0.15e-6*(1-Aw))'
++as = '2*w*myHdif'
++ad = '2*w*myHdif'
++ps = '2*w+4*myHdif'
++pd = '2*w+4*myHdif'
+.param
++ delvtn_hv = '8.9297*1e-3/sqrt(2*w*l*m)*0.5*((1+Aw)+1e-6*(1-Aw))'
++ sigvtn_hv = AGAUSS(0,delvtn_hv,1)
+m  d g s b nhvstat  w=w l=l delvto=sigvtn_hv as=as ps=ps ad=ad pd=pd nrs=nrs nrd=nrd m=m
+.model nhvstat.1 nmos (
++ lmin = 3.35e-007 lmax = 5e-007 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.626064 + delta_n_vth0_hv' lvth0 = -9.72e-009 wvth0 = -2.13321e-008 pvth0 = 5.049e-015
++ k1 = 0.6462 lk1 = 1.2339e-008 wk1 = 3.3e-008 pk1 = 4.455e-016
++ k2 = -0.0149127 lk2 = 1.31414e-008 wk2 = -8.92744e-009 pk2 = -2.75972e-015
++ u0 = '141.517 + delta_n_u0_hv' lu0 = 3.32478e-005 wu0 = 3.05014e-005 pu0 = -7.5141e-012
++ ua = -1.80386e-009 lua = 2.30013e-016 wua = 1.49482e-016 pua = -4.67775e-023
++ ub = 1.86427e-018 lub = 9.8496e-026 wub = 1.17464e-025 pub = -7.722e-032
++ uc = 8.37193e-011 luc = 4.752e-018 wuc = 1.15744e-017 puc = -6.15978e-024
++ vsat = 94104.3 lvsat = 0.0023922 wvsat = 0.00517786 pvsat = -3.267e-010
++ a0 = -2.2303 la0 = 1.00867e-006 wa0 = 6.2843e-007 pa0 = -2.00119e-013
++ ags = -1.06673 lags = 4.83041e-007 wags = 1.74876e-007 pags = -9.97326e-014
++ keta = -0.219162 lketa = 6.99796e-008 wketa = 4.79808e-008 pketa = -1.53338e-014
++ voff = -0.12225 lvoff = 3.42522e-009 wvoff = 1.22351e-008 pvoff = -3.18681e-015
++ nfactor = '1.09223 + delta_n_nfactor_hv' lnfactor = -7.78464e-008 wnfactor = -5.50236e-008 pnfactor = 1.43154e-014
++ pclm = -1.79663 lpclm = 3.36587e-006 wpclm = 8.09914e-007 ppclm = -6.31719e-013
++ pdiblcb = -6.47466 lpdiblcb = 2.70544e-006 wpdiblcb = 8.1873e-007 ppdiblcb = -3.59905e-013
++ pscbe1 = 2.15432e+009 lpscbe1 = -531.614 wpscbe1 = -595.579 ppscbe1 = 0.000208464
++ pvag = 49.5853 lpvag = -1.09785e-005 wpvag = -1.00366e-005 ppvag = 2.43124e-012
++ pdiblc2 = 8.03571e-005 lpdiblc2 = -2.025e-011 wpdiblc2 = -6.67857e-012 ppdiblc2 = 4.455e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.2 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.649939 + delta_n_vth0_hv' lvth0 = -1.97472e-008 wvth0 = -2.13793e-008 pvth0 = 5.0688e-015
++ k1 = 0.692104 lk1 = -6.9408e-009 wk1 = 5.20379e-008 pk1 = -7.5504e-015
++ k2 = -0.023963 lk2 = 1.69426e-008 wk2 = -2.04325e-008 pk2 = 2.0724e-015
++ u0 = '289.867 + delta_n_u0_hv' lu0 = -2.90592e-005 wu0 = -5.74357e-006 pu0 = 7.7088e-012
++ ua = -1.10741e-009 lua = -6.2496e-017 wua = 2.90714e-018 pua = 1.4784e-023
++ ub = 2.09867e-018 lub = 4.8e-029 wub = 9.66429e-027 pub = -3.1944e-032
++ uc = 7.4685e-011 luc = 8.5464e-018 wuc = 6.105e-019 puc = -1.55496e-024
++ vsat = 143549 lvsat = -0.0183744 wvsat = -0.00163429 pvsat = 2.5344e-009
++ a0 = 0.561457 la0 = -1.63872e-007 wa0 = 1.43911e-007 pa0 = 3.3792e-015
++ ags = 0.177433 lags = -3.95088e-008 wags = 6.29436e-008 pags = -5.27208e-014
++ keta = 0.0307706 lketa = -3.49919e-008 wketa = -6.87056e-009 pketa = 7.70378e-015
++ voff = -0.10083 lvoff = -5.57136e-009 wvoff = 1.86293e-009 pvoff = 1.16952e-015
++ nfactor = '0.838673 + delta_n_nfactor_hv' lnfactor = 2.86464e-008 wnfactor = -3.36364e-008 pnfactor = 5.3328e-015
++ pclm = -6.44836 lpclm = 5.3196e-006 wpclm = 3.13948e-006 ppclm = -1.61014e-012
++ pdiblcb = -1.41887 lpdiblcb = 5.8201e-007 wpdiblcb = 7.67819e-007 ppdiblcb = -3.38522e-013
++ pscbe1 = -7.488e+007 lpscbe1 = 404.65 wpscbe1 = 118.25 ppscbe1 = -9.1344e-005
++ pvag = 54.6639 lpvag = -1.31115e-005 wpvag = -1.03369e-005 ppvag = 2.55737e-012
++ pdiblc2 = 9.65303e-005 lpdiblc2 = -2.70427e-011 wpdiblc2 = -2.02651e-011 ppdiblc2 = 1.01614e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.3 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '0.594519 + delta_n_vth0_hv' lvth0 = 4.23223e-008 wvth0 = -2.01786e-009 pvth0 = -1.6616e-014
++ k1 = 0.872841 lk1 = -2.09366e-007 wk1 = 5.88214e-009 pk1 = 4.4144e-014
++ k2 = -0.0582771 lk2 = 5.53743e-008 wk2 = -4.362e-009 pk2 = -1.59266e-014
++ u0 = '275.685 + delta_n_u0_hv' lu0 = -1.31756e-005 wu0 = -7.05357e-006 pu0 = 9.176e-012
++ ua = -1.19953e-009 lua = 4.0672e-017 wua = 4.04643e-017 pua = -2.728e-023
++ ub = 2.16603e-018 lub = -7.5392e-026 wub = -3.39143e-026 pub = 1.6864e-032
++ uc = 7.64958e-011 luc = 6.51834e-018 wuc = -2.46429e-019 puc = -5.952e-025
++ vsat = 130364 lvsat = -0.00360727 wvsat = -8e-005 pvsat = 7.936e-010
++ a0 = 1.29804 la0 = -9.88844e-007 wa0 = -3.86286e-008 pa0 = 2.07824e-013
++ ags = 0.261479 lags = -1.3364e-007 wags = -3.65857e-009 pags = 2.18736e-014
++ keta = 0.0164674 lketa = -1.89723e-008 wketa = -8.63011e-009 pketa = 9.67448e-015
++ voff = -0.106134 lvoff = 3.69745e-010 wvoff = 1.82657e-009 pvoff = 1.21024e-015
++ nfactor = '0.766193 + delta_n_nfactor_hv' lnfactor = 1.09823e-007 wnfactor = -3.58721e-008 pnfactor = 7.8368e-015
++ pclm = 8.00276 lpclm = -1.08656e-005 wpclm = -9.34914e-007 ppclm = 2.95318e-012
++ pdiblcb = -2.65885 lpdiblcb = 1.97079e-006 wpdiblcb = 1.79087e-006 ppdiblcb = -1.48434e-012
++ pscbe1 = 3.26682e+008 lpscbe1 = -45.0999 wpscbe1 = -9.14286 ppscbe1 = 5.1336e-005
++ pvag = 37.7387 lpvag = 5.84468e-006 wpvag = 3.68657e-006 ppvag = -1.3149e-011
++ pdiblc2 = 4.97421e-005 lpdiblc2 = 2.536e-011 wpdiblc2 = -1.07786e-013 ppdiblc2 = -1.24149e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.4 nmos (
++ lmin = 3.35e-007 lmax = 5e-007 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.707171 + delta_n_vth0_hv' lvth0 = -1.9062e-008 wvth0 = -6.18857e-008 pvth0 = 9.72e-015
++ k1 = 0.597343 lk1 = 6.831e-008 wk1 = 5.74286e-008 pk1 = -2.754e-014
++ k2 = -0.0389534 lk2 = -4.44636e-009 wk2 = 3.09291e-009 pk2 = 6.03418e-015
++ u0 = '242.977 + delta_n_u0_hv' lu0 = 1.62756e-005 wu0 = -2.02286e-005 pu0 = 9.72e-013
++ ua = -1.65823e-009 lua = 2.02295e-016 wua = 7.66629e-017 pua = -3.29184e-023
++ ub = 2.3056e-018 lub = -2.7432e-026 wub = -1.032e-025 pub = -1.4256e-032
++ uc = 5.83126e-011 luc = 1.19761e-017 wuc = 2.42777e-017 puc = -9.77184e-024
++ vsat = 106483 lvsat = 0.0100332 wvsat = -0.00101143 pvsat = -4.1472e-009
++ a0 = 0.947657 la0 = 2.0304e-008 wa0 = -9.60549e-007 pa0 = 2.94062e-013
++ ags = 0.695591 lags = -4.96616e-007 wags = -7.06286e-007 pags = 3.90096e-013
++ keta = -0.0835045 lketa = 4.37759e-008 wketa = -1.98477e-008 pketa = -2.23197e-015
++ voff = -0.248603 lvoff = 3.67092e-008 wvoff = 7.54114e-008 pvoff = -1.98288e-014
++ nfactor = '0.635174 + delta_n_nfactor_hv' lnfactor = 8.09028e-008 wnfactor = 1.73503e-007 pnfactor = -6.50592e-014
++ pclm = 23.4251 lpclm = -6.35526e-006 wpclm = -1.1801e-005 ppclm = 4.22885e-012
++ pdiblcb = 13.1976 lpdiblcb = -3.67776e-006 wpdiblcb = -9.01742e-006 ppdiblcb = 2.8317e-012
++ pscbe1 = 1.55183e+008 lpscbe1 = 64.0332 wpscbe1 = 403.989 ppscbe1 = -8.93592e-005
++ pvag = 23.9766 lpvag = -6.69276e-006 wpvag = 2.76771e-006 ppvag = 2.8836e-013
++ pdiblc2 = 5.50274e-005 lpdiblc2 = -6.31152e-012 wpdiblc2 = 5.98629e-012 ppdiblc2 = -2.51424e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.5 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.586746 + delta_n_vth0_hv' lvth0 = 3.15168e-008 wvth0 = 1.02171e-008 pvth0 = -2.05632e-014
++ k1 = 0.798477 lk1 = -1.61664e-008 wk1 = -1.14857e-009 pk1 = -2.9376e-015
++ k2 = -0.0430257 lk2 = -2.736e-009 wk2 = -1.09011e-008 pk2 = 1.19117e-014
++ u0 = '274.711 + delta_n_u0_hv' lu0 = 2.9472e-006 wu0 = 1.83429e-006 pu0 = -8.2944e-012
++ ua = -1.32034e-009 lua = 6.0384e-017 wua = 1.09371e-016 pua = -4.6656e-023
++ ub = 2.3676e-018 lub = -5.3472e-026 wub = -1.248e-025 pub = -5.184e-033
++ uc = 1.04439e-010 luc = -7.3968e-018 wuc = -1.42663e-017 puc = 6.41664e-024
++ vsat = 52611.4 lvsat = 0.0326592 wvsat = 0.0438343 pvsat = -2.29824e-008
++ a0 = -0.338994 la0 = 5.60698e-007 wa0 = 5.94137e-007 pa0 = -3.58906e-013
++ ags = 0.774406 lags = -5.29718e-007 wags = -2.35543e-007 pags = 1.92384e-013
++ keta = -0.0130173 lketa = 1.41713e-008 wketa = 1.50234e-008 pketa = -1.68778e-014
++ voff = -0.0745371 lvoff = -3.63984e-008 wvoff = -1.12834e-008 pvoff = 1.6583e-014
++ nfactor = '0.969537 + delta_n_nfactor_hv' lnfactor = -5.95296e-008 wnfactor = -9.90686e-008 pnfactor = 4.94208e-014
++ pclm = 5.3194 lpclm = 1.24915e-006 wpclm = -2.7444e-006 ppclm = 4.25088e-013
++ pdiblcb = -3.01381 lpdiblcb = 3.13105e-006 wpdiblcb = 1.56529e-006 ppdiblcb = -1.61304e-012
++ pscbe1 = 5.95986e+008 lpscbe1 = -121.104 wpscbe1 = -217.183 ppscbe1 = 0.000171533
++ pvag = 101.632 lpvag = -3.93082e-005 wpvag = -3.38211e-005 ppvag = 1.56557e-011
++ pdiblc2 = 3.28229e-005 lpdiblc2 = 3.0144e-012 wpdiblc2 = 1.15886e-011 ppdiblc2 = -4.8672e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.6 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '0.643679 + delta_n_vth0_hv' lvth0 = -3.2249e-008 wvth0 = -2.65979e-008 pvth0 = 2.06697e-014
++ k1 = 0.736585 lk1 = 5.31532e-008 wk1 = 7.40104e-008 pk1 = -8.71156e-014
++ k2 = -0.0259651 lk2 = -2.18438e-008 wk2 = -2.0518e-008 pk2 = 2.26825e-014
++ u0 = '307.699 + delta_n_u0_hv' lu0 = -3.39985e-005 wu0 = -2.30603e-005 pu0 = 1.95875e-011
++ ua = -1.15161e-009 lua = -1.28599e-016 wua = 1.65039e-017 pua = 5.73556e-023
++ ub = 2.46914e-018 lub = -1.67197e-025 wub = -1.8547e-025 pub = 6.27665e-032
++ uc = 9.75798e-011 luc = 2.84975e-019 wuc = -1.07885e-017 puc = 2.52148e-024
++ vsat = 136138 lvsat = -0.0608908 wvsat = -0.00296727 pvsat = 2.94353e-008
++ a0 = 1.27692 la0 = -1.24913e-006 wa0 = -2.80691e-008 pa0 = 3.37965e-013
++ ags = 0.237156 lags = 7.20012e-008 wags = 8.50286e-009 pags = -8.09472e-014
++ keta = -0.000252304 lketa = -1.25515e-010 wketa = -2.70281e-010 pketa = 2.51066e-016
++ voff = -0.106995 lvoff = -4.50909e-011 wvoff = 2.25709e-009 pvoff = 1.41766e-015
++ nfactor = '0.89748 + delta_n_nfactor_hv' lnfactor = 2.11747e-008 wnfactor = -1.01515e-007 pnfactor = 5.21612e-014
++ pclm = 15.3808 lpclm = -1.00196e-005 wpclm = -4.62391e-006 ppclm = 2.53014e-012
++ pdiblcb = -0.351424 lpdiblcb = 1.49179e-007 wpdiblcb = 6.37159e-007 ppdiblcb = -5.73535e-013
++ pscbe1 = 5.32304e+008 lpscbe1 = -49.7804 wpscbe1 = -111.954 ppscbe1 = 5.36762e-005
++ pvag = -10.6857 lpvag = 8.6488e-005 wpvag = 2.78988e-005 ppvag = -5.34706e-011
++ pdiblc2 = 5.21818e-005 lpdiblc2 = -1.86676e-011 wpdiblc2 = -1.32764e-012 ppdiblc2 = 9.59895e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.7 nmos (
++ lmin = 3.35e-007 lmax = 5e-007 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.582691 + delta_n_vth0_hv' lvth0 = 3.38482e-009 wvth0 = 8.74909e-008 pvth0 = -1.72162e-014
++ k1 = 0.653473 lk1 = 5.47241e-008 wk1 = -9.92727e-009 pk1 = -1.12369e-014
++ k2 = 0.0526854 lk2 = -3.50959e-008 wk2 = -1.06874e-007 pk2 = 4.28137e-014
++ u0 = '149.075 + delta_n_u0_hv' lu0 = 5.74629e-005 wu0 = 9.24545e-005 pu0 = -4.84527e-011
++ ua = -2.4915e-009 lua = 4.13261e-016 wua = 1.07659e-015 pua = -2.86077e-022
++ ub = 2.92755e-018 lub = -4.36075e-026 wub = -8.49545e-025 pub = 5.15455e-033
++ uc = 1.84017e-010 luc = -1.74468e-017 wuc = -1.26567e-016 puc = 2.55356e-023
++ vsat = 133322 lvsat = -0.000896891 wvsat = -0.0332182 pvsat = 8.96891e-009
++ a0 = 1.25902 la0 = -3.36076e-008 wa0 = -1.33418e-006 pa0 = 3.58756e-013
++ ags = 0.601293 lags = -3.10022e-007 wags = -5.93127e-007 pags = 1.66183e-013
++ keta = -0.131182 lketa = 5.42505e-008 wketa = 3.73654e-008 pketa = -1.48014e-014
++ voff = -0.0352236 lvoff = -2.10426e-008 wvoff = -1.80644e-007 pvoff = 4.94733e-014
++ nfactor = '0.99276 + delta_n_nfactor_hv' lnfactor = -1.18005e-008 wnfactor = -2.556e-007 pnfactor = 4.61847e-014
++ pclm = 2.38305 lpclm = 3.90371e-007 wpclm = 1.34495e-005 ppclm = -3.86591e-012
++ pdiblcb = -18.3415 lpdiblcb = 5.1713e-006 wpdiblcb = 2.88295e-005 ppdiblcb = -7.78718e-012
++ pscbe1 = 4.76317e+008 lpscbe1 = -0.381436 wpscbe1 = 18.6273 ppscbe1 = -1.20616e-005
++ pvag = 10.3503 lpvag = -1.9199e-006 wpvag = 1.91193e-005 ppvag = -5.43908e-012
++ pdiblc2 = 3.72705e-005 lpdiblc2 = 1.14637e-012 wpdiblc2 = 2.72945e-011 ppdiblc2 = -1.14637e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.8 nmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.626874 + delta_n_vth0_hv' lvth0 = -1.51719e-008 wvth0 = -3.79364e-008 pvth0 = 3.54633e-014
++ k1 = 0.809179 lk1 = -1.06726e-008 wk1 = -1.39909e-008 pk1 = -9.53018e-015
++ k2 = -0.0638691 lk2 = 1.38569e-008 wk2 = 1.41109e-008 pk2 = -7.99985e-015
++ u0 = '330.785 + delta_n_u0_hv' lu0 = -1.88557e-005 wu0 = -6.54545e-005 pu0 = 1.78691e-011
++ ua = -1.20784e-009 lua = -1.25878e-016 wua = -2.56364e-017 pua = 1.76858e-022
++ ub = 2.45951e-018 lub = 1.52972e-025 wub = -2.35091e-025 pub = -2.52916e-031
++ uc = 8.65386e-011 luc = 2.3494e-017 wuc = 7.21364e-018 puc = -3.06524e-023
++ vsat = 135572 lvsat = -0.00184189 wvsat = -0.0557182 pvsat = 1.84189e-008
++ a0 = 0.87412 la0 = 1.2805e-007 wa0 = -8.616e-007 pa0 = 1.60272e-013
++ ags = 0.283393 lags = -1.76504e-007 wags = 3.53673e-007 pags = -2.31473e-013
++ keta = 0.000485615 lketa = -1.05001e-009 wketa = -1.18015e-009 pketa = 1.38774e-015
++ voff = -0.10882 lvoff = 9.86771e-009 wvoff = 2.98555e-008 pvoff = -3.89363e-014
++ nfactor = '0.941071 + delta_n_nfactor_hv' lnfactor = 9.90895e-009 wnfactor = -6.49091e-008 pnfactor = -3.39055e-014
++ pclm = 4.10399 lpclm = -3.32426e-007 wpclm = -1.28591e-006 ppclm = 2.32298e-012
++ pdiblcb = 3.70763 lpdiblcb = -4.08933e-006 wpdiblcb = -6.50043e-006 ppdiblcb = 7.05141e-012
++ pscbe1 = 4.67409e+008 lpscbe1 = 3.36 wpscbe1 = -62.8909 ppscbe1 = 2.2176e-005
++ pvag = 13.5325 lpvag = -3.25645e-006 wpvag = 7.18985e-005 ppvag = -2.76064e-011
++ pdiblc2 = 5.78436e-005 lpdiblc2 = -7.49433e-012 wpdiblc2 = -1.84364e-011 ppdiblc2 = 7.74327e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model nhvstat.9 nmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '0.594205 + delta_n_vth0_hv' lvth0 = 2.14174e-008 wvth0 = 3.27719e-008 pvth0 = -4.373e-014
++ k1 = 0.812527 lk1 = -1.44217e-008 wk1 = -1.71198e-008 pk1 = -6.02579e-015
++ k2 = -0.0375719 lk2 = -1.55959e-008 wk2 = -6.58983e-009 pk2 = 1.5185e-014
++ u0 = '311.029 + delta_n_u0_hv' lu0 = 3.27114e-006 wu0 = -2.7057e-005 pu0 = -2.51361e-011
++ ua = -1.28011e-009 lua = -4.49351e-017 wua = 1.70702e-016 pua = -4.30413e-023
++ ub = 2.65384e-018 lub = -6.46768e-026 wub = -4.07107e-025 pub = -6.02579e-032
++ uc = 1.03707e-010 luc = 4.26568e-018 wuc = -1.81408e-017 puc = -2.25537e-024
++ vsat = 122070 lvsat = 0.0132797 wvsat = 0.013914 pvsat = -5.95692e-008
++ a0 = 1.54753 la0 = -6.26171e-007 wa0 = -3.52802e-007 pa0 = -4.09581e-013
++ ags = 0.306973 lags = -2.02914e-007 wags = -7.52777e-008 pags = 2.48951e-013
++ keta = -0.0377877 lketa = 4.18161e-008 wketa = 4.47722e-008 pketa = -5.00789e-014
++ voff = -0.100127 lvoff = 1.31993e-010 wvoff = -5.98512e-009 pvoff = 1.20516e-015
++ nfactor = '0.829177 + delta_n_nfactor_hv' lnfactor = 1.3523e-007 wnfactor = -1.95521e-008 pnfactor = -8.47053e-014
++ pclm = 8.35865 lpclm = -5.09764e-006 wpclm = 3.80261e-006 ppclm = -3.37616e-012
++ pdiblcb = 2.45031 lpdiblcb = -2.68113e-006 wpdiblcb = -2.72492e-006 ppdiblcb = 2.82284e-012
++ pscbe1 = 4.43662e+008 lpscbe1 = 29.9568 wpscbe1 = -5.58347 ppscbe1 = -4.20083e-005
++ pvag = 60.1164 lpvag = -5.54303e-005 wpvag = -5.70637e-005 ppvag = 1.16831e-010
++ pdiblc2 = -7.13413e-006 lpdiblc2 = 6.52808e-011 wpdiblc2 = 6.98515e-011 ppdiblc2 = -9.11391e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_n_tox_hv' 
++ toxm = 7e-009 nch = 3.37637e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.9212 k3b = 0.183 w0 = 4.44089e-021
++ nlx = '1.388e-007 + delta_n_nlx_hv' dvt0 = '10 + delta_n_dvt0_hv' dvt1 = 0.8963 dvt2 = -0.1631
++ dvt0w = -7.235 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.5383
++ etab = -1.444 dsub = 1.178 b0 = 0 b1 = 0
++ a1 = 0 a2 = 1 rdsw = 455 prwb = 0.07454
++ prwg = 0.02233 wr = 1 wint = '0 + delta_n_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '4e-008 + delta_n_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.001 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 0.0001416 jsw = 6.458e-010 nj = 1.614
++ ijth = 0.1 cj = '0.000861 + delta_n_cj_hv' mj = 0.3132 pb = 0.6969
++ cjsw = '4e-011 + delta_n_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '3.5e-010 + delta_n_cgdo_hv' cgso = '3.5e-010 + delta_n_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.07 acde = 1
++ moin = 15 dlc = 40n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1 = -0.3779 kt1l = 0 kt2 = -0.07094
++ ute = -1.568 ua1 = 1.563e-009 ub1 = -3.008e-018 uc1 = 0
++ at = 50000 prt = -256.5 xti = 1 tpb = 0.000915
++ tpbsw = 0.0006033 tpbswg = 0 tcj = 0.0006095 tcjsw = 0.0005256
++ tcjswg = 0 ef = 1.0165 
++ em = 6638347 noia = 2.558E+019 noib = 125892 noic = -3.685E-13 
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+.ends nhv
+*
+*
+* 
+.subckt phv d g s b l=1u w=1u nrs=1 nrd=1 m=1
++Aw='log(w*10)/abs(log(w*10))' 
++myHdif= '0.5*(0.15*(1+Aw)+0.15e-6*(1-Aw))'
++as = '2*w*myHdif'
++ad = '2*w*myHdif'
++ps = '2*w+4*myHdif'
++pd = '2*w+4*myHdif'
+.param
++ delvtp_hv = '(5.9551*1e-3)/sqrt(2*w*l*m)*0.5*((1+Aw)+1e-6*(1-Aw))'
++ sigvtp_hv = AGAUSS(0,delvtp_hv,1)
+m d g s b phvstat w=w l=l delvto=sigvtp_hv as=as ps=ps ad=ad pd=pd nrs=nrs nrd=nrd m=m
+.model phvstat.1 pmos (
++ lmin = 2.85e-007 lmax = 5e-007 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.657936 + delta_p_vth0_hv' lvth0 = 7.76571e-009 wvth0 = -3.73214e-009 pvth0 = -1.82286e-015
++ k1 = 0.596314 lk1 = 1.59951e-007 wk1 = 4.60429e-008 pk1 = -1.98157e-014
++ k2 = 0.189823 lk2 = -6.20054e-008 wk2 = -2.01614e-008 pk2 = 7.57271e-015
++ u0 = '58.9286 + delta_p_u0_hv' lu0 = 1.42543e-006 wu0 = 7.71571e-006 pu0 = -6.86714e-013
++ ua = -6.79421e-010 lua = 8.464e-017 wua = 5.09261e-016 pua = -5.588e-023
++ ub = 1.79106e-018 lub = 1.58343e-026 wub = -4.41528e-025 pub = 1.54828e-032
++ uc = -5.72143e-012 luc = -5.75714e-019 wuc = -3.27093e-017 puc = 9.97857e-025
++ vsat = 183075 lvsat = -0.0230843 wvsat = -0.0143825 pvsat = 5.14014e-009
++ a0 = 1.35036 la0 = -7.1e-008 wa0 = -1.76786e-008 pa0 = 1.65e-014
++ ags = -0.521229 lags = 3.0088e-007 wags = 1.60914e-007 pags = -6.93e-014
++ keta = -0.0200964 lketa = -6.174e-009 wketa = 2.90321e-009 pketa = -1.551e-015
++ voff = -0.0255193 lvoff = -7.55257e-009 wvoff = -6.41536e-009 pvoff = -4.55714e-016
++ nfactor = '1.16857 + delta_p_nfactor_hv' lnfactor = -3.45714e-008 wnfactor = 5.36643e-008 pnfactor = -1.76943e-014
++ pclm = -0.6535 lpclm = 7.33286e-007 wpclm = 2.7225e-007 ppclm = -1.23043e-013
++ pdiblcb = -2.85714 lpdiblcb = 3.14286e-006 wpdiblcb = 3.92857e-006 ppdiblcb = -1.57143e-012
++ pscbe1 = 3.66536e+008 lpscbe1 = 38.4029 wpscbe1 = 56.5321 ppscbe1 = -1.44414e-005
++ pvag = -7.89801 lpvag = 3.15924e-006 wpvag = 1.73755e-006 ppvag = -6.95028e-013
++ ute = -0.363307 lute = 2.10543e-008 wute = -1.28464e-008 pute = -2.02714e-015
++ ua1 = 1.6005e-009 lua1 = 4.728e-016 wua1 = 7.0675e-016 pua1 = -1.056e-022
++ ub1 = -1.50657e-018 lub1 = -6.686e-025 wub1 = -1.05521e-024 pub1 = 1.309e-031
++ uc1 = 1.36286e-010 luc1 = -5.79257e-017 wuc1 = -9.71929e-017 puc1 = 1.83229e-023
++ at = -65714.3 lat = 0.0141429 wat = 0.0353571 pat = -7.07143e-009
++ kt1 = -0.232386 lkt1 = -1.55714e-008 wkt1 = -7.85714e-009 pkt1 = -2.29429e-015
++ kt2 = 0.00852114 lkt2 = -2.00694e-009 wkt2 = 1.26343e-009 pkt2 = -1.52633e-015
++ pdiblc2 = 0.000150714 lpdiblc2 = -3.08571e-011 wpdiblc2 = -3.53571e-011 ppdiblc2 = 9.42857e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.2 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.815891 + delta_p_vth0_hv' lvth0 = 7.09478e-008 wvth0 = 2.57883e-008 pvth0 = -1.3631e-014
++ k1 = 1.11925 lk1 = -4.92216e-008 wk1 = 1.49622e-008 pk1 = -7.38347e-015
++ k2 = -0.0404071 lk2 = 3.00866e-008 wk2 = -2.39643e-009 pk2 = 4.66714e-016
++ u0 = '96.8099 + delta_p_u0_hv' lu0 = -1.37271e-005 wu0 = -6.24923e-006 pu0 = 4.89927e-012
++ ua = 5.06857e-010 lua = -3.89871e-016 wua = -1.37343e-016 pua = 2.02761e-022
++ ub = 1.22027e-018 lub = 2.44149e-025 wub = -6.69924e-026 pub = -1.34332e-031
++ uc = -3.53993e-011 luc = 1.12954e-017 wuc = -5.92821e-018 puc = -9.71457e-024
++ vsat = 132649 lvsat = -0.00291388 wvsat = 0.00087551 pvsat = -9.63061e-010
++ a0 = 1.04092 la0 = 5.27731e-008 wa0 = -6.44622e-008 pa0 = 3.52135e-014
++ ags = 0.180349 lags = 2.0249e-008 wags = -1.64102e-008 pags = 1.6298e-015
++ keta = 0.0284254 lketa = -2.55827e-008 wketa = -2.61705e-009 pketa = 6.57104e-016
++ voff = -0.0971289 lvoff = 2.10913e-008 wvoff = 1.42158e-009 pvoff = -3.59049e-015
++ nfactor = '1.26622 + delta_p_nfactor_hv' lnfactor = -7.36327e-008 wnfactor = 6.95918e-009 pnfactor = 9.87755e-016
++ pclm = 0.299827 lpclm = 3.51955e-007 wpclm = 2.30472e-007 ppclm = -1.06332e-013
++ pdiblcb = -10.7143 lpdiblcb = 6.28571e-006 wpdiblcb = 4.65236e-022 ppdiblcb = 6.13621e-044
++ pscbe1 = 4.85901e+008 lpscbe1 = -9.34327 wpscbe1 = -19.1434 ppscbe1 = 1.58288e-005
++ pvag = -0.121615 lpvag = 4.86791e-008 wpvag = 6.07944e-008 ppvag = -2.4325e-014
++ ute = -0.533298 lute = 8.90506e-008 wute = 9.04918e-008 pute = -4.33624e-014
++ ua1 = 5.27972e-009 lua1 = -9.9889e-016 wua1 = -3.03005e-016 pua1 = 2.98302e-022
++ ub1 = -8.21428e-018 lub1 = 2.01448e-024 wub1 = 9.20352e-025 pub1 = -6.59327e-031
++ uc1 = -4.50853e-010 luc1 = 1.7693e-016 wuc1 = 1.14069e-016 puc1 = -6.61821e-023
++ at = 95918.4 lat = -0.0505102 wat = -0.010102 pat = 1.11122e-008
++ kt1 = -0.386713 lkt1 = 4.61596e-008 wkt1 = 1.59781e-008 pkt1 = -1.18284e-014
++ kt2 = 0.0590557 lkt2 = -2.22208e-008 wkt2 = -1.82904e-008 pkt2 = 6.29521e-015
++ pdiblc2 = -8.73681e-005 lpdiblc2 = 6.43758e-011 wpdiblc2 = 3.39924e-011 ppdiblc2 = -1.83113e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.3 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 2.05e-007 wmax = 5e-007
++ level = 49 version = 3.24
++ vth0 = '-0.666134 + delta_p_vth0_hv' lvth0 = -9.37848e-008 wvth0 = -8.08304e-009 pvth0 = 2.36274e-014
++ k1 = 0.948018 lk1 = 1.3913e-007 wk1 = 9.84107e-009 pk1 = -1.75018e-015
++ k2 = 0.0382338 lk2 = -5.64185e-008 wk2 = -5.10567e-009 pk2 = 3.44688e-015
++ u0 = '116.865 + delta_p_u0_hv' lu0 = -3.57876e-005 wu0 = -8.49554e-008 pu0 = -1.88144e-012
++ ua = 1.30065e-009 lua = -1.26305e-015 wua = 3.34616e-017 pua = 1.48765e-023
++ ub = 7.78421e-019 lub = 7.30183e-025 wub = -1.67155e-025 pub = -2.41522e-032
++ uc = -1.11721e-010 luc = 9.52495e-017 wuc = -6.81754e-018 puc = -8.73631e-024
++ vsat = 130000 lvsat = -1.02903e-017 wvsat = -2.59856e-018 pvsat = 0
++ a0 = 1.33884 la0 = -2.74937e-007 wa0 = -3.08589e-008 pa0 = -1.75018e-015
++ ags = 0.130823 lags = 7.47273e-008 wags = -1.49286e-009 pags = -1.47793e-014
++ keta = 0.00798126 lketa = -3.09419e-009 wketa = 5.96308e-010 pketa = -2.87759e-015
++ voff = -0.0729568 lvoff = -5.49804e-009 wvoff = -5.21911e-009 pvoff = 3.71427e-015
++ nfactor = '1.30086 + delta_p_nfactor_hv' lnfactor = -1.11729e-007 wnfactor = -2.66161e-008 pnfactor = 3.79205e-014
++ pclm = 0.689536 lpclm = -7.6725e-008 wpclm = 1.00395e-007 ppclm = 3.67537e-014
++ pdiblcb = -5 lpdiblcb = 3.14035e-022 wpdiblcb = -9.5162e-023 ppdiblcb = 1.43493e-042
++ pscbe1 = 3.32909e+008 lpscbe1 = 158.948 wpscbe1 = 27.333 ppscbe1 = -3.52953e-005
++ pvag = 0.12673 lpvag = -2.24501e-007 wpvag = -3.05883e-008 ppvag = 7.6196e-014
++ ute = 0.41901 lute = -9.58488e-007 wute = -2.04605e-007 pute = 2.81244e-013
++ ua1 = 9.52631e-009 lua1 = -5.67014e-015 wua1 = -1.04878e-015 pua1 = 1.11866e-021
++ ub1 = -1.03882e-017 lub1 = 4.40577e-024 wub1 = 9.51647e-025 pub1 = -6.93751e-031
++ uc1 = -2.31933e-010 luc1 = -6.38824e-017 wuc1 = 1.5979e-017 puc1 = 4.17175e-023
++ at = 50000 lat = 0 wat = 0 pat = 0
++ kt1 = -0.321173 lkt1 = -2.59345e-008 wkt1 = 3.28036e-009 pkt1 = 2.13911e-015
++ kt2 = -0.0265919 lkt2 = 7.19916e-008 wkt2 = 9.51569e-009 pkt2 = -2.42915e-014
++ pdiblc2 = -4.03438e-007 lpdiblc2 = -3.12853e-011 wpdiblc2 = 1.10863e-011 ppdiblc2 = 6.88549e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.4 pmos (
++ lmin = 2.85e-007 lmax = 5e-007 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.615343 + delta_p_vth0_hv' lvth0 = -8.08571e-009 wvth0 = -2.50286e-008 pvth0 = 6.10286e-015
++ k1 = 0.974686 lk1 = 4.09143e-009 wk1 = -1.43143e-007 pk1 = 5.81143e-014
++ k2 = 0.0350543 lk2 = -3.38571e-009 wk2 = 5.72229e-008 pk2 = -2.17371e-014
++ u0 = '23.12 + delta_p_u0_hv' lu0 = 1.80314e-005 wu0 = 2.562e-005 pu0 = -8.98971e-012
++ ua = -1.79575e-009 lua = 6.44994e-016 wua = 1.06743e-015 pua = -3.36057e-022
++ ub = 2.21943e-018 lub = -2.53543e-025 wub = -6.55714e-025 pub = 1.50171e-031
++ uc = 2.918e-011 luc = -1.76566e-017 wuc = -5.016e-017 puc = 9.53829e-024
++ vsat = -25158.6 lvsat = 0.0331046 wvsat = 0.0897343 pvsat = -2.29543e-008
++ a0 = 0.535 la0 = 1.66343e-007 wa0 = 3.9e-007 pa0 = -1.02171e-013
++ ags = 0.601857 lags = -8.26571e-008 wags = -4.00629e-007 pags = 1.22469e-013
++ keta = 0.0964793 lketa = -2.80699e-008 wketa = -5.53846e-008 pketa = 9.39693e-015
++ voff = -0.0500243 lvoff = -4.35657e-009 wvoff = 5.83714e-009 pvoff = -2.05371e-015
++ nfactor = '1.17561 + delta_p_nfactor_hv' lnfactor = -3.80743e-008 wnfactor = 5.01429e-008 pnfactor = -1.59429e-014
++ pclm = 8.48814 lpclm = -1.51577e-006 wpclm = -4.29857e-006 ppclm = 1.00149e-012
++ pdiblcb = -15.6811 lpdiblcb = 4.13623e-006 wpdiblcb = 1.03406e-005 ppdiblcb = -2.06811e-012
++ pscbe1 = 3.44857e+008 lpscbe1 = 19.4629 wpscbe1 = 67.3714 ppscbe1 = -4.97143e-006
++ pvag = 158.988 lpvag = -3.24294e-005 wpvag = -8.17053e-005 ppvag = 1.70993e-011
++ ute = -0.213971 lute = -1.04097e-007 wute = -8.75143e-008 pute = 6.05486e-014
++ ua1 = 4.27057e-009 lua1 = 5.86286e-017 wua1 = -6.28286e-016 pua1 = 1.01486e-022
++ ub1 = -5.501e-018 lub1 = -4.73314e-025 wub1 = 9.42e-025 pub1 = 3.32571e-032
++ uc1 = -1.87186e-010 luc1 = 3.47429e-018 wuc1 = 6.45429e-017 puc1 = -1.23771e-023
++ at = 159286 lat = -0.0308571 wat = -0.0771429 pat = 1.54286e-008
++ kt1 = -0.512271 lkt1 = 1.47429e-008 wkt1 = 1.32086e-007 pkt1 = -1.74514e-014
++ kt2 = -0.0378571 lkt2 = -5.04657e-009 wkt2 = 2.44526e-008 pkt2 = -6.51429e-018
++ pdiblc2 = 4.57143e-005 lpdiblc2 = 1.71429e-012 wpdiblc2 = 1.71429e-011 ppdiblc2 = -6.85714e-018
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.5 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.639441 + delta_p_vth0_hv' lvth0 = 1.55347e-009 wvth0 = -6.24367e-008 pvth0 = 2.10661e-014
++ k1 = 0.914559 lk1 = 2.8142e-008 wk1 = 1.17306e-007 pk1 = -4.60653e-014
++ k2 = 0.0437837 lk2 = -6.87747e-009 wk2 = -4.44918e-008 pk2 = 1.89487e-014
++ u0 = '94.6412 + delta_p_u0_hv' lu0 = -1.05771e-005 wu0 = -5.1649e-006 pu0 = 3.32424e-012
++ ua = 9.36685e-010 lua = -4.47982e-016 wua = -3.52257e-016 pua = 2.31817e-022
++ ub = 8.62939e-019 lub = 2.89053e-025 wub = 1.11673e-025 pub = -1.56784e-031
++ uc = -1.12673e-010 luc = 3.90846e-017 wuc = 3.27086e-017 puc = -2.36091e-023
++ vsat = 171370 lvsat = -0.0455068 wvsat = -0.0184849 pvsat = 2.03334e-008
++ a0 = 1.54261 la0 = -2.36702e-007 wa0 = -3.15306e-007 pa0 = 1.79951e-013
++ ags = 0.0541245 lags = 1.36436e-007 wags = 4.6702e-008 pags = -5.64637e-014
++ keta = -0.0325695 lketa = 2.35496e-008 wketa = 2.78804e-008 pketa = -2.39091e-014
++ voff = -0.06288 lvoff = 7.85714e-010 wvoff = -1.57029e-008 pvoff = 6.56229e-015
++ nfactor = '0.98749 + delta_p_nfactor_hv' lnfactor = 3.71755e-008 wnfactor = 1.46327e-007 pnfactor = -5.44163e-014
++ pclm = -0.976388 lpclm = 2.27004e-006 wpclm = 8.6858e-007 ppclm = -1.06537e-012
++ pdiblcb = -1.03127 lpdiblcb = -1.72372e-006 wpdiblcb = -4.84151e-006 ppdiblcb = 4.00472e-012
++ pscbe1 = 5.131e+008 lpscbe1 = -47.8343 wpscbe1 = -32.7429 ppscbe1 = 3.50743e-005
++ pvag = -44.0386 lpvag = 4.87811e-005 wpvag = 2.20193e-005 ppvag = -2.43906e-011
++ ute = 0.135522 lute = -2.43895e-007 wute = -2.43918e-007 pute = 1.2311e-013
++ ua1 = 6.70514e-009 lua1 = -9.152e-016 wua1 = -1.01571e-015 pua1 = 2.56457e-022
++ ub1 = -7.481e-018 lub1 = 3.18686e-025 wub1 = 5.53714e-025 pub1 = 1.88571e-031
++ uc1 = -1.5549e-010 luc1 = -9.20408e-018 wuc1 = -3.36122e-017 puc1 = 2.68849e-023
++ at = 31632.7 lat = 0.0202041 wat = 0.0220408 pat = -2.42449e-008
++ kt1 = -0.231573 lkt1 = -9.75363e-008 wkt1 = -6.15918e-008 pkt1 = 6.00196e-014
++ kt2 = 0.00759633 lkt2 = -2.3228e-008 wkt2 = 7.43927e-009 pkt2 = 6.79881e-015
++ pdiblc2 = 9.95595e-005 lpdiblc2 = -1.98238e-011 wpdiblc2 = -5.94714e-011 ppdiblc2 = 2.37886e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.6 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 5e-007 wmax = 1.2e-006
++ level = 49 version = 3.24
++ vth0 = '-0.700836 + delta_p_vth0_hv' lvth0 = 6.90879e-008 wvth0 = 9.26786e-009 pvth0 = -5.78089e-014
++ k1 = 0.942007 lk1 = -2.05071e-009 wk1 = 1.28464e-008 pk1 = 6.88404e-014
++ k2 = 0.0315625 lk2 = 6.56582e-009 wk2 = -1.77e-009 pk2 = -2.80453e-014
++ u0 = '136.409 + delta_p_u0_hv' lu0 = -5.65219e-005 wu0 = -9.85714e-006 pu0 = 8.48571e-012
++ ua = 2.15377e-009 lua = -1.78677e-015 wua = -3.93096e-016 pua = 2.7674e-022
++ ub = 3.89945e-019 lub = 8.09347e-025 wub = 2.70829e-026 pub = -6.37341e-032
++ uc = -1.09045e-010 luc = 3.50937e-017 wuc = -8.15571e-018 puc = 2.13416e-023
++ vsat = 130000 lvsat = 8.57524e-019 wvsat = 6.40304e-018 pvsat = -7.14603e-025
++ a0 = 1.28934 la0 = 4.18982e-008 wa0 = -6.10714e-009 pa0 = -1.60168e-013
++ ags = 0.131888 lags = 5.08966e-008 wags = -2.025e-009 pags = -2.86393e-015
++ keta = 0.010415 lketa = -2.37333e-008 wketa = -6.20571e-010 pketa = 7.44197e-015
++ voff = -0.08554 lvoff = 2.57117e-008 wvoff = 1.0725e-009 pvoff = -1.18906e-014
++ nfactor = '1.19084 + delta_p_nfactor_hv' lnfactor = -1.86509e-007 wnfactor = 2.83929e-008 pnfactor = 7.53107e-014
++ pclm = 0.682125 lpclm = 4.45677e-007 wpclm = 1.041e-007 ppclm = -2.24447e-013
++ pdiblcb = -2.00236 lpdiblcb = -6.55521e-007 wpdiblcb = -1.49882e-006 ppdiblcb = 3.27761e-013
++ pscbe1 = 3.68846e+008 lpscbe1 = 110.845 wpscbe1 = 9.36429 ppscbe1 = -1.12436e-005
++ pvag = 4.04762 lpvag = -4.11371e-006 wpvag = -1.99103e-006 ppvag = 2.0208e-012
++ ute = -0.120651 lute = 3.78958e-008 wute = 6.52254e-008 pute = -2.16948e-013
++ ua1 = 7.75961e-009 lua1 = -2.07511e-015 wua1 = -1.65429e-016 pua1 = -6.78857e-022
++ ub1 = -8.60059e-018 lub1 = 1.55023e-024 wub1 = 5.78571e-026 pub1 = 7.34014e-031
++ uc1 = -2.21746e-010 luc1 = 6.36782e-017 wuc1 = 1.08857e-017 puc1 = -2.20629e-023
++ at = 50000 lat = 7.43187e-018 wat = 7.79567e-019 pat = -4.03751e-024
++ kt1 = -0.286284 lkt1 = -3.73548e-008 wkt1 = -1.41643e-008 pkt1 = 7.84929e-015
++ kt2 = -0.00846393 lkt2 = -5.56168e-009 wkt2 = 4.51714e-010 pkt2 = 1.44851e-014
++ pdiblc2 = 8.93277e-006 lpdiblc2 = 7.98656e-011 wpdiblc2 = 6.41818e-012 ppdiblc2 = -4.869e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.7 pmos (
++ lmin = 2.85e-007 lmax = 5e-007 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.66745 + delta_p_vth0_hv' lvth0 = 1.95455e-009 wvth0 = 3.75e-008 pvth0 = -5.94545e-015
++ k1 = 0.749036 lk1 = 9.78836e-008 wk1 = 1.27636e-007 pk1 = -5.44364e-014
++ k2 = 0.127365 lk2 = -4.02318e-008 wk2 = -5.355e-008 pk2 = 2.24782e-014
++ u0 = '77.595 + delta_p_u0_hv' lu0 = 5.19455e-006 wu0 = -3.975e-005 pu0 = 6.41455e-012
++ ua = 3.08123e-010 lua = 1.45073e-017 wua = -1.45723e-015 pua = 4.20527e-022
++ ub = 1.11391e-018 lub = 2.43273e-026 wub = 6.70909e-025 pub = -1.83273e-031
++ uc = -4.72677e-011 luc = -1.03073e-018 wuc = 4.15773e-017 puc = -1.04127e-023
++ vsat = 128575 lvsat = -0.00176945 wvsat = -0.0947455 pvsat = 1.88945e-008
++ a0 = 1.32136 la0 = -1.51636e-008 wa0 = -5.53636e-007 pa0 = 1.15636e-013
++ ags = 0.208909 lags = -7.91818e-009 wags = 7.09091e-008 pags = 3.27818e-014
++ keta = -0.0539989 lketa = 3.88715e-009 wketa = 1.25189e-007 pketa = -2.89515e-014
++ voff = -0.0528077 lvoff = -5.05436e-009 wvoff = 9.17727e-009 pvoff = -1.21636e-015
++ nfactor = '0.858082 + delta_p_nfactor_hv' lnfactor = 1.614e-008 wnfactor = 4.31182e-007 pnfactor = -8.1e-014
++ pclm = -0.387864 lpclm = 3.38027e-007 wpclm = 6.35264e-006 ppclm = -1.22307e-012
++ pdiblcb = 6.64509 lpdiblcb = -3.29018e-007 wpdiblcb = -1.64509e-005 ppdiblcb = 3.29018e-012
++ pscbe1 = 5.09068e+008 lpscbe1 = -1.86182 wpscbe1 = -129.682 ppscbe1 = 2.06182e-005
++ pvag = -12.5418 lpvag = 2.53763e-006 wpvag = 0.00012413 ppvag = -2.48611e-011
++ ute = -0.172468 lute = -6.40945e-008 wute = -1.37318e-007 pute = 1.25455e-014
++ ua1 = 4.42768e-009 lua1 = -5.49818e-017 wua1 = -8.16818e-016 pua1 = 2.37818e-022
++ ub1 = -4.73077e-018 lub1 = -2.32873e-025 wub1 = 1.77273e-026 pub1 = -2.55273e-031
++ uc1 = -1.31127e-010 luc1 = -1.26582e-017 wuc1 = -2.72727e-018 puc1 = 6.98182e-024
++ at = 95000 lat = -0.018 wat = 1.01329e-017 pat = -1.3229e-024
++ kt1 = -0.283564 lkt1 = -1.73909e-008 wkt1 = -1.42364e-007 pkt1 = 2.11091e-014
++ kt2 = 0.00219045 lkt2 = -1.00338e-008 wkt2 = -2.36045e-008 pkt2 = 5.97818e-015
++ pdiblc2 = -1.95455e-005 lpdiblc2 = 1.41818e-011 wpdiblc2 = 9.54545e-011 ppdiblc2 = -2.18182e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.8 pmos (
++ lmin = 5e-007 lmax = 1.2e-006 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.687478 + delta_p_vth0_hv' lvth0 = 9.96571e-009 wvth0 = -4.79221e-009 pvth0 = 1.09714e-014
++ k1 = 1.08865 lk1 = -3.796e-008 wk1 = -9.15974e-008 pk1 = 3.32571e-014
++ k2 = -0.0233706 lk2 = 2.00624e-008 wk2 = 3.60933e-008 pk2 = -1.33791e-014
++ u0 = '99.8128 + delta_p_u0_hv' lu0 = -3.69257e-006 wu0 = -1.13708e-005 pu0 = -4.93714e-012
++ ua = 4.8467e-010 lua = -5.61115e-017 wua = 1.90162e-016 pua = -2.38428e-022
++ ub = 1.29837e-018 lub = -4.94571e-026 wub = -4.10844e-025 pub = 2.49429e-031
++ uc = -4.48167e-011 luc = -2.01114e-018 wuc = -4.87188e-017 puc = 2.57057e-023
++ vsat = 20842.3 lvsat = 0.0413234 wvsat = 0.162148 pvsat = -8.38629e-008
++ a0 = 0.47549 la0 = 3.23186e-007 wa0 = 9.6524e-007 pa0 = -4.91914e-013
++ ags = 0.118335 lags = 2.83114e-008 wags = -3.03506e-008 pags = 7.32857e-014
++ keta = 0.0276117 lketa = -2.87571e-008 wketa = -4.4337e-008 pketa = 3.8859e-014
++ voff = -0.0825972 lvoff = 6.86143e-009 wvoff = 7.95779e-009 pvoff = -7.28571e-016
++ nfactor = '0.941182 + delta_p_nfactor_hv' lnfactor = -1.71e-008 wnfactor = 2.01896e-007 pnfactor = 1.07143e-014
++ pclm = 0.948955 lpclm = -1.967e-007 wpclm = -1.44183e-006 ppclm = 1.89471e-012
++ pdiblcb = -8.35417 lpdiblcb = 5.67069e-006 wpdiblcb = 3.94597e-006 ppdiblcb = -4.86857e-012
++ pscbe1 = 4.99678e+008 lpscbe1 = 1.89429 wpscbe1 = -16.6364 ppscbe1 = -2.46e-005
++ pvag = 92.7888 lpvag = -3.95946e-005 wpvag = -0.000142174 ppvag = 8.16603e-011
++ ute = -0.476055 lute = 5.734e-008 wute = 4.89974e-007 pute = -2.38371e-013
++ ua1 = 4.15644e-009 lua1 = 5.35143e-017 wua1 = 2.04273e-015 pua1 = -9.06e-022
++ ub1 = -5.6811e-018 lub1 = 1.47257e-025 wub1 = -1.60617e-024 pub1 = 3.94286e-031
++ uc1 = -7.50584e-011 luc1 = -3.50857e-017 wuc1 = -1.3013e-016 puc1 = 5.79429e-023
++ at = 50000 lat = 0 wat = 0 pat = 0
++ kt1 = -0.378241 lkt1 = 2.048e-008 wkt1 = 1.14409e-007 pkt1 = -8.16e-014
++ kt2 = -0.0474169 lkt2 = 9.80914e-009 wkt2 = 7.34552e-008 pkt2 = -3.28457e-014
++ pdiblc2 = 6.94805e-005 lpdiblc2 = -2.14286e-011 wpdiblc2 = -2.33766e-011 ppdiblc2 = 2.57143e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+*
+*
+.model phvstat.9 pmos (
++ lmin = 1.2e-006 lmax = 1.02e-005 wmin = 1.2e-006 wmax = 10.02e-005
++ level = 49 version = 3.24
++ vth0 = '-0.690911 + delta_p_vth0_hv' lvth0 = 1.37419e-008 wvth0 = -2.64205e-009 pvth0 = 8.60625e-015
++ k1 = 0.960511 lk1 = 1.02988e-007 wk1 = -9.35795e-009 pk1 = -5.72063e-014
++ k2 = 0.0308288 lk2 = -3.9557e-008 wk2 = -8.89602e-010 pk2 = 2.73021e-014
++ u0 = '128.077 + delta_p_u0_hv' lu0 = -3.47833e-005 wu0 = 1.41477e-007 pu0 = -1.76006e-011
++ ua = 1.23918e-009 lua = -8.86078e-016 wua = 7.04403e-016 pua = -8.04094e-022
++ ub = 8.91305e-019 lub = 3.98315e-025 wub = -5.74549e-025 pub = 4.29504e-031
++ uc = -5.89591e-011 luc = 1.35456e-017 wuc = -6.82585e-017 puc = 4.71994e-023
++ vsat = 138949 lvsat = -0.0885938 wvsat = -0.0107386 pvsat = 1.06312e-007
++ a0 = 1.36889 la0 = -6.59559e-007 wa0 = -1.01574e-007 pa0 = 6.81581e-013
++ ags = 0.145356 lags = -1.41187e-009 wags = -1.81875e-008 pags = 5.99062e-014
++ keta = 0.00789947 lketa = -7.07366e-009 wketa = 2.39809e-009 pketa = -1.25496e-014
++ voff = -0.0879772 lvoff = 1.27794e-008 wvoff = 3.99716e-009 pvoff = 3.62813e-015
++ nfactor = '0.85852 + delta_p_nfactor_hv' lnfactor = 7.38281e-008 wnfactor = 4.27176e-007 pnfactor = -2.37094e-013
++ pclm = 0.726261 lpclm = 4.82625e-008 wpclm = 5.11364e-008 ppclm = 2.5245e-013
++ pdiblcb = 1.17753 lpdiblcb = -4.81418e-006 wpdiblcb = -5.31469e-006 ppdiblcb = 5.31816e-012
++ pscbe1 = 3.7834e+008 lpscbe1 = 135.366 wpscbe1 = -2.02841 ppscbe1 = -4.06687e-005
++ pvag = 48.0166 lpvag = 9.65476e-006 wpvag = -5.47539e-005 ppvag = -1.45014e-011
++ ute = -0.471556 lute = 5.23918e-008 wute = 4.86312e-007 pute = -2.34343e-013
++ ua1 = 6.26578e-009 lua1 = -2.26676e-015 wua1 = 1.62716e-015 pua1 = -4.48875e-022
++ ub1 = -7.86928e-018 lub1 = 2.55426e-024 wub1 = -8.19716e-025 pub1 = -4.70813e-031
++ uc1 = -3.63071e-011 luc1 = -7.77122e-017 wuc1 = -2.11641e-016 puc1 = 1.47606e-022
++ at = 50000 lat = 2.45564e-018 wat = 3.30725e-018 pat = 1.88079e-037
++ kt1 = -0.446539 lkt1 = 9.56081e-008 wkt1 = 1.78142e-007 pkt1 = -1.51706e-013
++ kt2 = -0.0509881 lkt2 = 1.37374e-008 wkt2 = 5.14807e-008 pkt2 = -8.67375e-015
++ pdiblc2 = 4.27898e-005 lpdiblc2 = 7.93125e-012 wpdiblc2 = -3.42102e-011 ppdiblc2 = 3.76313e-017
++ dwg = 0 dwb = 0
++ binunit = 2 mobmod = 1 capmod = 3 noimod = 2 
++ paramchk = 1 delta = 0.01 tnom = 27 tox = '7e-009 + delta_p_tox_hv' 
++ toxm = 7e-009 nch = 8.34002e+017 xj = 1.5e-007 ngate = 0
++ rsh = 0 k3 = -0.5713 k3b = 0.8249 w0 = 9.877e-008
++ nlx = '1.72e-008 + delta_p_nlx_hv' dvt0 = '2.525 + delta_p_dvt0_hv' dvt1 = 0.5689 dvt2 = -0.121
++ dvt0w = -4.943 dvt1w = 5.3e+006 dvt2w = -0.032 eta0 = 0.01228
++ etab = -0.05572 dsub = 0.56 b0 = 0 b1 = 0
++ a1 = 1e-015 a2 = 0.995 rdsw = 1030 prwb = -0.1509
++ prwg = -0.02556 wr = 1 wint = '0 + delta_p_wint_hv' wl = 0
++ wln = 1 ww = 0 wwn = 1 wwl = 0
++ lint = '5e-008 + delta_p_lint_hv' ll = 0 lln = 1 lw = 0
++ lwn = 1 lwl = 0 cit = 0 cdsc = 0.00024
++ cdscb = 0 cdscd = 0 pdiblc1 = 0.01259 drout = 0.56
++ pscbe2 = 1e-005 alpha0 = 0 alpha1 = 0
++ beta0 = 30 js = 4.636e-007 jsw = 1.44e-013 nj = 1.089
++ ijth = 0.001337 cj = '0.0009174 + delta_p_cj_hv' mj = 0.3428 pb = 0.7578
++ cjsw = '3.5e-011 + delta_p_cjsw_hv' mjsw = 0.33 pbsw = 1 cjswg = 5e-010
++ mjswg = 0.33 pbswg = 1 cgdo = '4e-010 + delta_p_cgdo_hv' cgso = '4e-010 + delta_p_cgso_hv' 
++ cgbo = 0 cgsl = 0 cgdl = 0 ckappa = 0.6
++ cf = 0 noff = 3 voffcv = -0.1 acde = 0.7925
++ moin = 15 dlc = 50n dwc = 0 llc = 0
++ lwc = 0 lwlc = 0 wlc = 0 wwc = 0
++ wwlc = 0 clc = 1e-007 cle = 0.6 elm = 2
++ xpart = 0.5 kt1l = 0 prt = 342.9 xti = 2.256
++ tpb = 0.0009459 tpbsw = 0 tpbswg = 0 tcj = 0.0006304
++ tcjsw = 0.0007391 tcjswg = 0 ef = 1.1 
++ em = 31692799 noia = 1.412E+019 noib = 23988 
++ noic = 1E-11  
++ binflag = 1 lref = 1e14 wref = 1e14 tref = 25 
++ xl = 0 xw = 0 lmlt = 1 wmlt = 1 
++ rd = 0 rdc = 0 rs = 0 rsc = 0 
++ acm = 12 hdif = 0.15e-6 ldif = 0 calcacm = 1 )
+.ends phv
+*
+*
+* 
+.endl nphvmos
+
+
+

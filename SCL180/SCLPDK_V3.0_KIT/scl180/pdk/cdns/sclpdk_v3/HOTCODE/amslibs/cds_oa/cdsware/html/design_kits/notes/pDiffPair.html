@@ -1,0 +1,38 @@
+<body>
+<html>
+<h1>DESCRIPTION :</h1> 
+
+<ul>
+<li>'pDiffPair' implements the differential pair of pfets. This device contains a custom layout pcell to optimize the layout of this structure, and several attributes control exactly how to draw the layout of the structure. For simulation purposes, this device contains a schematic view with 'pfet' devices that inherit properties from the pDiffPair instance.</li>
+</ul>
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Width (finger):</b> The finger width to use for each pfet gate.</li>
+
+<li><b>Length:</b> The gate length to use for each pfet gate.</li>
+
+<li><b>Number of Fingers:</b> Number of fingers to use for each pfet gate.</li>
+
+<li><b>Number of Slices:</b> Number of slices to use for each pfet. Wide transistors can be split up into multiple sub-transistors ('slices') connected in parallel in the same pcell. 'Number of Slices' controls the number of parallel sub-transitors.</li>
+
+<li><b>Current:</b> Specifies the current through each pfet. The layout width of the source/drain metal will be adjusted to carry this current so as not to exceed maximum current density requirements.</li>
+
+<li><b>Top Metal on Bulk:</b> Controls which metal is used in the layout to connect the Bulk (substrate) nodes of the fets.</li>
+
+<li><b>Top Metal on Src:</b> Controls which top metal is used in the layout for the Source nodes of the fets.</li>
+
+<li><b>SD Width:</b> </li>
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>This cell is implemented with a schematic. LVS verifies the connectivity and dimensions of the devices in the schematic.</li> 
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+#!/bin/sh
+# Script for manipulating a set of paths
+#
+# Can be used to add or delete a path from a set of paths
+# Can use either colon or space delimited paths
+#
+# Usage:
+# pathUtils   [--delimiter ':'] [[--add|--del] Dir1[:Dir2]] ... path1[:path2] [path3[:path4]] ...
+# prependPath addDir[:addDir2] path1[:path2] [path3[:path4]] ...
+# prependLib  addDir[:addDir2] path1[:path2] [path3[:path4]] ...
+#
+# Add Dir1, Dir2, etc. at front of one or more colon or space delimited
+# paths. Remove any duplicate entries in path.
+#
+# OR
+# removePath addDir[:addDir2] path1[:path2] [path3[:path4]] ...
+# removeLib  addDir[:addDir2] path1[:path2] [path3[:path4]] ...
+# 
+# Delete Dir1, Dir2, etc. from one or more colon-delimited paths
+# Remove any duplicate entries in path.
+
+# THEN
+# Join all paths into one colon or space delimited path.
+
+# Written in Perl through Bourne shell to simplify shell quoting
+# and escaping issues.
+# Be careful about the \$ - it is to prevent shell interpolation
+#
+# $Id: prependPath 1 2019/07/01 11:02:24 GMT ronenha Exp $
+# $Log: Revision 1 2019/07/01 11:02:24 GMT ronenha $
+#   Initial revision.
+# 
+#  Revision 1 2019/07/01 11:02:09 GMT ronenha
+#   Initial revision.
+# 
+#  Revision: 1.1 Thu Feb  1 10:19:58 2007 milkovr
+#  Initial release. Path manipulation script
+#
+
+exec $PERL5 -- - "$@" << EOF
+@path = ();
+@newPath = ();
+%seen   = ();
+\$me    = (split '/', "$0")[-1];
+\$delim = ":";
+@del    = ();
+# Determine if prepend or remove
+if (\$me =~ m/^remove/) {
+	@del = \$ARGV[0];
+	shift;
+}
+# Use space delimiter for path
+if (\$me =~ m/Path\$/) {
+	\$delim = " ";
+}
+
+while (\$#ARGV >= 0) {
+	\$dir = \$ARGV[0];
+	if (\$dir =~ m/^--delim(iter)?\$/) {
+		shift;
+		\$delim = \$ARGV[0];
+		next;
+	} elsif (\$dir =~ m/^--add\$/) {
+		shift;
+		next;
+	} elsif (\$dir =~ m/^--del\$/) { 
+		shift;
+		push @del, \$ARGV[0];
+		next;
+	}
+	@item=split \$delim, \$dir;
+	foreach \$item (@item) {
+		if (! \$seen{\$item}) {
+			push @newPath, \$item;
+			\$seen{\$item}++;
+		}
+	}
+	shift;
+}
+foreach \$path (@del) {
+	\$seen{\$path} = 0;
+}
+	
+foreach \$path (@newPath) {
+	if (\$seen{\$path}) {push @path, \$path}
+}
+print join(\$delim, @path) . "\n";
+EOF

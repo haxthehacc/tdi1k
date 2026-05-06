@@ -1,0 +1,165 @@
+<HTML><HEAD>SBC18H2A Open Access Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+________________________
+Date: 04/27/2012
+
+Device Library Updates:
+Capacitors
+* Changed min W and L from 3um to 1.5um.
+MOSFETs
+* Added a Draw Contact Metal option.  It is now possible to remove metal around contacts in the source, drain, and
+  integrated tap. This was added as an option alongside the Draw S/D Contact instead of part of it, to avoid breaking
+  anyone's designs.
+Bipolars
+* Added support for W=0.5um NPNs. Modeling support is limited and is checked via Assert statements. Please see
+  violations display in ADE.
+* Added support for emitter length (L) up to 20.um NPNs. Modeling support is limited and checked via Assert statements.
+  Please see violations display in ADE.
+* PDK supports layout for a wide variety of NPN finger configurations (Emitter/Base/Collector). Models are not
+  available for all configurations. In such cases, the simulation will error-out.
+Resistors
+* Fixed a bug in the rtin device.
+
+Verification Updates:
+DRC
+* MC10 flags when only 1 via exists on a capacitor.  This is intended as the functionality to let capacitors go down to
+  1.5um W and L is risky and should only be used at your own risk.
+ESD_LUP
+* Fixed a few false errors in the LUP deck.
+
+Model Updates:
+NPN:
+- Added Hicum silicon based model for 2/3/2 EW=0.5um NPNs (Le=2.8um -> 20um) lm232_hicum
+  ### Note: No hicum0 model support for lm232_hicum; Hicum model used for Hicum0 option for lm232_hicum
+- Added geometry checks on NPNs to warn users when they exceed the model validity regime. 
+  Note: The p-cell limits are wider than the model extraction range to provide flexibility in the design w/ the use
+  of extrapolated models
+MOSVAR: 
+- Minor changes of temperature coefficients based on latest silicon
+- Minor changes to nwell resistance to better model small L (~0.18um) varactors
+- Chaned worst-case corner offset for well-resistance to align model with e-spec, to offset impact of above changes
+  (SLOW corner Q simulation should be the ~ same as v6.9a)
+CAP: 
+- Fixed bug in MiM cap subckt model related to parasitic capacitance to bulk. This was introduced in v6.9 models 
+- Added 'dx' geometry offset parameter for small stacked mim capacitors (csmim4, csmim6, csmimw4, csmimw6)
+  (PDK p-cell now allows WxL = 1.5 x 1.5 um)
+RES:
+- Poly resistors: Added small resistance to inductive element to improve simulation convergence and speed
+PNP:
+- Added predictive mismatch model for high-performance PNP, based on silicon 
+  measurements of similar device in previous generation of technology. 
+  (Note: This device is not currently offered in any SBC18H2 PDK - capability has been added for potential support in the
+future)
+FET:
+- Added capability to 5V rf pfets to accept source/drain area and perimeter dimensions (For post-layout simulations)
+  (Note: This device is not currently offered in any SBC18H2 PDK - capability has been added for potential support in the
+future)
+IND:
+- Added "rdm" and "kdm" to include resistively loaded transformer loops
+- Changed TCR from 4200 to 3800 ppm/deg C to correct an extraction error
+- removed "csbsig" corner modeling parameter since insignificant
+- Removed in ind unused parameter "lval=-1 rp=-1 rsub=-1 rs=-1 csub=-1 wf=-1"
+- Removed in inddiff unused parameter "cp12=-1 rp1=-1 rp2=-1 rs1=-1 rs2=-1"
+
+
+Date: 02/11/2012
+
+Device Library Updates:
+Capacitors
+* Add legacy option to poly caps to match older PDK footprint.
+* Fix some bugs in MIM cap callbacks.
+* Change maximum MIM cap size from 10,000um to 250um.
+* Change maximum stacked MIM cap size from 10,000um to 200um.
+Diodes
+* Maintain square aspect ratio of Schottky diodes in schematic.
+Inductors
+* Change maximum inductor size from 10,000um to 500um.
+MOSFETs
+* Enable Vgs operating point annotation.
+Resistors
+* Change rtin body to substrate tap spacing from 5um to 0.18um.
+* Fix via3 spacing when using 3x3 or larger via array in rtin.
+Varactors
+* Change minimum MOS varactor length from 0.5um to 0.18um.
+
+Verification Updates:
+Antenna
+* Disconnect metal3 from via3 on secondary MIM cap (topmm2).
+* Add stacked MIM cap rule checks.
+Density
+* Allow poly fill under customer-drawn metal1 fill.
+* Change minimum spacing between poly fill and metal1 to 2u.
+* Add secondary MIM cap (topmm2) to metal fill exclusion zone.
+DRC
+* Disconnect metal3 from via3 on secondary MIM cap (topmm2).
+* Modify 6.F.a and 6.F.b checks to avoid false errors on std. cells.
+* Update *.LD.* (large-die) rule checks.
+* Add 94.* (PWE layer) rule checks.
+* Relax MVAR_* (MOS varactor) rule checks.
+* Modify 11.A.a.1 check to avoid false errors on ROM cells.
+* Replace SMC* with SMH* rule checks for stacked MIM caps.
+* Make 2.F.1 check SRAM-specific to avoid false errors on I/O cells.
+* Modify 7.F.1 check to avoid false Assura errors on SRAM cells.
+* Modify B19 check to avoid false errors on Schottky diodes.
+* Modify 8.B check to flag metal1 notches in Assura.
+ERC
+* Disconnect metal3 from via3 on secondary MIM cap (topmm2).
+* Do not flag N-well resistor connection to ground as a violation.
+* Exclude p-diffusion over nwell2 from ptap definition.
+ESD/Latch-up
+* Disconnect metal3 from via3 on secondary MIM cap (topmm2).
+* Exclude p-diffusion over nwell2 from ptap definition.
+* Treat rtin metal resistor as a short.
+LVS
+* Remove substrate from Assura extraction of 2-terminal MIM cap.
+* Fix improper recognition of rtin resistor with RWS mode.
+* Fix issue of poly cap multiplier being ignored by Assura.
+* Swap extracted terminals of stacked MIM capacitors.
+* Modify poly cap extraction algorithm in Assura to match Calibre.
+* Extract each 3.3V RF FET finger as an individual device.
+* Enable poly fuse pin swapping in Assura.
+PEX
+* Fix resistor length/strip parameters in extracted views.
+* Extract ad, as, pd, and ps parameters for RF FETs.
+Stress
+* Do not exclude M2/M6 under/over MIM caps from stress checks.
+XOR
+* Include XOR deck for Assura.
+
+Model Updates:
+* Version v6.9 is included with this release.
+
+________________________
+Date: 05/12/2011
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 13
+* Electrical Spec: NPB-PS-0267, Rev. 17
+* Design Application Note for SBC18H2A: NPB-PS-0542, Rev. 7
+
+Process Synopsis:
+* The SBC18H2A process has 6 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - high speed and standard NPNs with deep trench,
+  - lateral PNP,
+  - TiN resistor (between metal3/metal4), poly resistors (silicided
+    and low or high value unsilicided), N-well resistor,
+  - 2.0fF/um2 MIM capacitors between metal4/metal5 and metal3/metal4,
+  - 4.0fF/um2 stacked MIM capacitors between metal3/metal5,
+  - square and octagonal inductors using 2.8um thick top metal6,
+  - Schottky diode,
+  - MOS and high performance junction varactors,
+  - triple well and deep trench isolation.
+
+Software versions tested with this release:
+* Cadence IC release 6.1.3.500.10
+* Cadence Spectre release 7.2.0.202.isr5
+* Synopsys Hspice release Z-2007.03-SP1
+* Mentor Calibre release v2008.1_32.21
+* Cadence Assura release 3.2_USR2_HF11
+
+This is the initial release of the Open Access SBC18H2A kit.  The SBC18H2A
+process differs from the standard SBC18H2 offering in the form of additional
+support for lateral PNPs, stacked MIM capacitors, Schottky diodes, and high
+performance junction varactors.
+
+</PLAINTEXT></BODY></HTML>

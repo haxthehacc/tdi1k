@@ -1,0 +1,37 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 'pfet_dg' implements the pMOS dual gate (stacked) transistor configuration, which consists of two thin oxide cascoded pfets. The layout is structured such that the drain of the second (top) device "s2" overlaps the source of the first (bottom) device "d1" to minimize source diffusion area, and hence reduce parasitics on that node.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Count:</b> Controls the number of device instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Style:</b> Controls if layout pcell interconnections are made, and if so, in what style of metal.</li>
+
+<li> <a href = "../images/pfet_dg_wl.html"><b>Width (finger):</b></a> Controls the width of a gate finger.</li> 
+
+<li> <a href = "../images/pfet_dg_wl.html"><b>Length1:</b></a> Controls the length of the first fet.</li>
+
+<li> <a href = "../images/pfet_dg_wl.html"><b>Length2:</b></a> Controls the length of the second fet.</li>
+
+<li><a href = "../images/pfet_dg_fingers_slices.html"><b>Number of Fingers:</b></a> Controls the number of gate fingers connected in parallel in the same active area.</li> 
+
+<li><a href = "../images/pfet_dg_fingers_slices.html"><b>Number of Slices:</b></a> Wide transistors can be split up into multiple sub-transistors ('slices') connected in parallel in the same pcell. 'Number of Slices' controls the number of parallel sub-transitors.</li>
+
+<li><b>Bulk:</b> Controls the presence/absence and location of substrate ties in the layout pcell.</li>
+
+<li><b>Current:</b> Specifies the current through the device. The width of the source/drain metal wires will be adjusted to carry this current.</li>
+
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: wf (finger width), l1 (Length1), l2 (Length2) and nf (number of fingers).</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+#! /tools/perl/bin/perl
+#
+# lib2tlf -  Translates a Synopsys source library to ASCII 
+#            TLF library for Cadence. Three output files are
+#            created in the current directory with the root
+#            file name of the Synopsys library. The .log file
+#            contains a log of the translation. The .tlf file
+#            contains the source TLF library.
+
+&getOptions(@ARGV);
+
+@synopsysPath = split(m;/;, $synopsysSrc);
+($libraryName = $synopsysPath[$#synopsysPath]) =~ s/\..*//;
+$tmpFile1 = "$libraryName.temp.lib";
+$tmpFile2 = "$libraryName.out";
+$tmpFile3 = "$libraryName.smo";
+if( $tlfFile eq "" ) {
+  $tlfFile = "$libraryName.tlf";
+}
+#$ctlfFile = "$libraryName.ctlf";
+$logFile = "$libraryName.log";
+
+#--------------------------------- Start of Main ------------------------------
+
+print "Removing PVT variations from Synopsys library.\n";
+#print "Removing three_state_enable models from Synopsys library.\n";
+print "Removing power models from Synopsys library.\n";
+fixSynopsys($synopsysSrc, $tmpFile1);
+
+print "Translating Synopsys library to TLF.\n";
+
+#
+# change default tlf format from TLF4.1 to TLF4.2
+# yuj - 04/10/01
+#system("syn2tlf -o $tmpFile2 -l $logFile -i .5 -d .5 -s .1 -t .9 $tmpFile1");
+system("syn2tlf -o $tmpFile2 -l $logFile -format 4.3 -ir 40 -if 60 -dr 40 -df 60 -sr 10 -sf 10 -tr 90 -tf 90 $tmpFile1");
+
+print "Smoothing out table models for continuously increasing load.\n";
+smoothTableModels($tmpFile2, $tmpFile3);
+
+print "Checking clock pins for a triggering edge.\n";
+addClockEdge($tmpFile3, $tlfFile);
+
+if( $newTlfLib ne "" ) {
+  replaceTlfLibName($tlfFile, $newTlfLib);
+}
+
+#print "Compiling the TLF.\n";
+#system("cp $tlfFile $ctlfFile");
+
+print "Cleaning up temporary files.\n";
+system("rm $tmpFile1 $tmpFile2 $tmpFile3");
+
+print "\nOutput TLF file name is: $tlfFile\n";
+
+#---------------------------------- End of Main -------------------------------
+
+sub Usage {
+    die "Usage: $0 synopsysSourceLibrary [-o outputTlfFileName] [-tlflib tlfLibraryName]\n";
+}
+
+sub getOptions {
+  $synopsysSrc = shift;
+  if (!defined($synopsysSrc)) {Usage;}
+  while (<@_> && ($_ = shift) ne "") {
+    options: {
+      /^-o/ && do {
+        $tlfFile = shift;
+        last options;
+      };
+      /^-tlflib/ && do {
+        $newTlfLib = shift;
+        last options;
+      };
+      Usage;
+    }
+  }
+}
+
+#
+# fixSynopsys - Removes the timing section for three_state_enable
+#               from the input Synopsys library and assumes the
+#               path is modeled by the combinational timing type.
+#               Having both three_state_enable and combinational
+#               timing types causes syn2tlf to produce redundant
+#               timing arcs.
+#
+sub fixSynopsys {
+    my $inFile = shift;
+    my $outFile = shift;
+
+    open(IN, "<$inFile") || die "$0: Can't open file $inFile\n";
+    open(OUT, ">$outFile") || die "$0: Can't open file $outFile\n";
+
+    while (<IN>) {
+#	if (/^(\s*)timing\(\)\{\s*$/) {
+#	    $leadingSp = $1;
+#	    @timing = ($_);
+#	    $flag = 0;
+#	    while (<IN>) {
+#		push(@timing, $_);
+#		if (/timing_type\s*\:\s*three_state_enable/) {
+#		    $flag = 1;
+#		}
+#		if (/^$leadingSp\}\s*$/) {last;}
+#	    }
+#	    if (!$flag) {
+#		foreach $line (@timing) {
+#		    print OUT $line;
+#		}
+#	    }
+#	}
+	if (/^(\s*)internal_power\s*\(\S*\)\s*\{\s*/) {
+	    $leadingSp = $1;
+	    while (<IN>) {
+		if (/^$leadingSp\}\s*$/) {last;}
+	    }
+	}
+	elsif (/^(\s*)power_lut_template/) {
+	    $leadingSp = $1;
+	    while (<IN>) {
+		if (/^$leadingSp\}\s*$/) {last;}
+	    }
+	}
+	elsif (/^(\s*)wire_load/) {
+	    $leadingSp = $1;
+	    while (<IN>) {
+		if (/^$leadingSp\}\s*$/) {last;}
+	    }
+	}
+	elsif (!/^\s*k_\S+\s*\:\s*\S+\s*;\s*$/ && !/wire_load/) {
+	    print OUT;
+	}
+    }
+
+    close(IN);
+    close(OUT);
+}
+
+#
+# smoothTableModels - Makes adjustments to data values to insure continuously
+#                     increasing values along axes whose flags ($fix_rows and/or
+#                     $fix_cols) are set to 1.
+#
+sub smoothTableModels {
+    my $inFile = shift;
+    my $outFile = shift;
+
+    $fix_rows = 1;
+    $fix_cols = 0;
+
+    open(IN, "<$inFile") || die "$0: Can't open file $inFile\n";
+    open(OUT, ">$outFile") || die "$0: Can't open file $outFile\n";
+
+    # Process Path Statements
+    while ($line = <IN>) {
+        # check for end of nets section
+	if ($line =~ /[ \t]*data\([ \t]*$/ ) {
+	    $paren_count = 1;
+	    $row_index = -1;
+	    @data = ();
+	    while ($paren_count != 0) {
+		$line = <IN>;
+		$line =~ s/\(/\( /g;
+		$line =~ s/\)/ \)/g;
+	        @linetokens = split(' ', $line);
+		$numtoks = @linetokens;
+		for ($i = 0; $i < $numtoks; $i++ ) {
+		    if (@linetokens[$i] eq "(") {
+			$paren_count++;
+			$row_index++;
+			@row = ();
+		    }
+		    elsif (@linetokens[$i] eq ")") {
+			$paren_count--;
+			if ($paren_count != 0) {
+			    push(@data, [ @row ]); 
+			}
+		    }
+		    else {
+			push(@row, @linetokens[$i]);
+		    }
+                }
+            }
+	    $num_rows = $#data;
+	    $num_cols = $#{$data[0]};
+	    if ($fix_rows == 1) {
+		for ($row = 0; $row <= $num_rows; $row++) {
+		    for ($col = 1; $col <= $num_cols; $col++) {
+			if ($data[$row][$col] <= $data[$row][$col-1]) {
+			    $data[$row][$col] = $data[$row][$col-1] + 0.000001;
+			}
+		    }
+		}
+	    }
+	    if ($fix_cols == 1) {
+		for ($col = 0; $col <= $num_cols; $col++) {
+		    for ($row = 1; $row <= $num_rows; $row++) {
+			if ($data[$row][$col] <= $data[$row-1][$col]) {
+			    $data[$row][$col] = $data[$row-1][$col] + 0.000001;
+			}
+		    }
+		}
+	    }
+	    print OUT "            data(\n";
+	    for $aref ( @data ) {
+		print OUT "                (@$aref)\n";	    
+	    }
+	    print OUT "            )\n";
+	}
+	else {
+	    print OUT "$line";
+	}
+    }
+
+    close(IN);
+    close(OUT);
+}
+
+#
+# addClockEdge - Checks for a trigger edge on clock pins and adds
+#                a default "Posedge" field if no edge is defined.
+#                Without the trigger edge defined, CTGEN does not
+#                recognize the pin as a clock pin.
+#
+sub addClockEdge {
+    my $inFile = shift;
+    my $outFile = shift;
+
+    open(IN, "<$inFile") || die "$0: Can't open file $inFile\n";
+    open(OUT, ">$outFile") || die "$0: Can't open file $outFile\n";
+
+    while (<IN>) {
+	if (/Pintype\(Clock\)/) {
+	    print "WARNING: Clock pin has no edge spec. Assuming Posedge.\n";
+	    print "--> " . $_;
+	    s/Pintype\(Clock\)/Pintype\(Clock Posedge\)/;
+	}
+	print OUT;
+    }
+
+    close(IN);
+    close(OUT);
+}
+
+#
+# replaceTlfLibName($tlfFile, $newTlfLib)
+# -- replace the tlf lib name in $tlfFile with $newTlfLib
+#
+sub replaceTlfLibName {
+  local($tlfFile, $newTlfLib) = @_;
+  local($tmpFile) = "$tlfFile.switch";
+  open(INFILE, "$tlfFile") || die "$0: cannot open $tlfFile for reading.\n";
+  open(OUTFILE, ">$tmpFile") || die "$0: cannot open $tmpFile for writing.\n";
+  while(<INFILE>) {
+    if( /(^\s*LIBRARY)/) {
+      printf(OUTFILE "$1\(\"$newTlfLib\"\)\n");
+    } else {
+      printf(OUTFILE "$_");
+    }
+  }
+  close(INFILE);
+  close(OUTFILE);
+  system("/bin/mv $tmpFile $tlfFile");
+}

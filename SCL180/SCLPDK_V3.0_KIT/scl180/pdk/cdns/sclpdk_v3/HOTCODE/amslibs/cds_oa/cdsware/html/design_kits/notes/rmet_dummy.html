@@ -1,0 +1,121 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; U; HP-UX B.11.00 9000/785) [Netscape]">
+</head>
+<body>
+
+<h1>
+DESCRIPTION:</h1>
+r_dummy implements the Metal resistor (dummy resistor) formed in the metal
+layer 1,2, ..., N. The r_dummy library cell provides only schematic/simulation
+components, it does not provide a layout cell.
+<p>The resistor simulation model is a simple ideal resistor element. Nominal
+sheet resistance models are included in the model files, so the device
+can be placed with either an "r" resistance value or an length and width.
+<p>The resistor layout is defined by the resistor block layer-purpose pair.
+This is the LPP with the metal layer, but with purpose "rr" rather than
+purpose "dg". For example, the resistor block would be drawn using ("met1"
+"rr") over an existing metal1 drawing on ("met1" "dg").
+<br>&nbsp;
+<h1>
+ATTRIBUTES:</h1>
+
+<ul>
+<li>
+<b>Model:</b> Controls the metal layer of the resistor. Valid choices are
+rmet1, rmet2, .... The metal layer chosen here MUST match the metal
+layer used in the layout. If it does not match, an LVS device mismatch
+error will occur.</li>
+
+<li>
+<b>Resistance:</b> Controls the resistance of the resistor. If specified,
+this value will be used in simulation instead of a length/width calculation.</li>
+
+<li>
+<b>Width:</b> Controls the width of the resistor. This value is ignored
+during simulation if the resistance value is specified.</li>
+
+<li>
+<b>Length:</b> Controls the length of the resistor. This value is ignored
+during simulation if the resistance vlaue is specified.</li>
+
+<li>
+<b>Other Attributes:</b> Other attributes shown are those used during simulation
+by the standard ideal resistor component. Most attributes are simulator-specific.</li>
+</ul>
+
+<h1>
+USAGE NOTES:</h1>
+
+<ul>
+
+<li>
+The r_dummy device library cell does not provide a layout cell. Only simulation/LVS
+views are available.</li>
+
+<li>
+The layout must EXACTLY cover existing metal drawing shapes. The dummy
+resistor device is treated as regular drawing metal during mask preparation.
+If the resistor is larger than the existing metal drawing, it can create
+slivers of metal on the masks. Complex shapes should be created by copy/paste
+of an existing shape to ensure proper covering prevent accidental metal
+sliver creation.</li>
+
+<li>
+The layout must be created manually using the metal layer, but purpose
+"rr". For example, use "met1" "rr" instead of "met1" "dg".</li>
+
+<li>
+The marking layer in the layout must exactly cover the metal shape (coincident
+with two or more edges) to cause a break in connectivity.</li>
+
+<li>
+The model name used in the schematic must match the actualmetal layer used
+in the layout. For example, model name "rmet1" must be used if the layout
+uses a metal 1 dummy metal resistor device.</li>
+
+<li>
+The r_dummy symbol allows specification of the r (resistance) or the length/width.</li>
+
+<li>
+LVS does NOT compare the r, l, or w values. These parameters are extracted,
+but they are not compared. The assumption is that the schematic resistance
+value will be updated during layout review to more closely match the extracted
+value when a post-layout extracted resimulation is not performed.</li>
+
+<li>
+An extracted netlist will always contain the correct r, l, and w, so resimulation
+with an extracted netlist will also provide the correct values.</li>
+
+<li>
+The total resistance extracted from point a to point b will always be the
+same regardless of the presence of the dummy metal resistor. The resistor
+only serves to break up the path into differently sized pieces of metal
+for parasitic calculation.</li>
+
+<li>
+The layout size of the resistor should be as small as possible since it
+affects the accuracy of the extraction tool. The resistor is excluded from
+other parasitic calculations like parasitic C.</li>
+</ul>
+
+<h1>
+LVS:</h1>
+
+<ul>
+<li>
+The following attributes are checked during LVS: Model</li>
+
+<br>The model name MUST match between the schematic r_dummy instance and
+the actual layer used for the metal dummy resistor in the layout. For example,
+if the schematic model name is set to "rmet1", but the layout is drawn
+on metal 2, an LVS device mismatch error will occur.
+<li>
+R, L, and W are not checked during LVS, but the extracted values are copied
+into the extracted netlist.</li>
+</ul>
+
+</body>
+</html>

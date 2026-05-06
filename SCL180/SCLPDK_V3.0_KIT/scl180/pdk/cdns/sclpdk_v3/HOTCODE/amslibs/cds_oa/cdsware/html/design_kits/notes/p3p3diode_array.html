@@ -1,0 +1,31 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'p3p3diode_array' implements an array of ptype junction diodes.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+
+<li><b>Count:</b> Controls the number of arrayed instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n arrayed instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Style:</b> Controls whether the interconnect scheme in the layout pcell is performed using metal 1 or metal 2 layer.
+
+<li><b>Columns in X:</b> Controls number of columns of diodes to use in the x direction in the layout pcell. Note that this affects the Total Area and Perimeter of the structure.
+
+<li><b>Rows in Y:</b> Controls number of rows of diodes to use in the y direction in the layout pcell. Note that this affects the Total Area and Perimeter of the structure.
+
+<li><b>Unit Width:</b> Controls the width of an individual p3p3diode structure in the array. Note that this affects the Total Area and Perimeter of the structure.
+
+<li><b>Unit Length:</b> Controls the length of an individual p3p3diode structure in the array. Note that this affects the Total Area and Perimeter of the structure.
+
+</ul>
+<h1>NOTES:</h1>
+<ul>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS : area, perimeter. </li>
+</ul>
+</body>
+</html>

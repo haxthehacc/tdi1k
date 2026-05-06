@@ -1,0 +1,187 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date 2008/01/10
+Design Kit: cp05j
+Electrical Specification: NPB-PS-0713, Rev.1
+Design Rules Document: NPB-PS-0714, Rev.1
+Process Variants Supported: cp05mb, cp05mb_SOI
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2, IC51.41USR3
+* Mentor Calibre releases 2006.01_19.19
+  - Version 2006.01_19.19 required for XRC and CalibreView
+  - Jazz CBR flow no longer supported. Use the Mentor Calibre Interactive instead.
+
+Highlights
+* IC5.1USR3 is minimum required IC tools version
+* Calibre 2006.01_19.19 required for Calibre Interactive/XRC
+* Jazz CBR flow no longer supported
+* Addition of development level SOI design kit support
+
+Kit and environment changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in using a super-set and customizing layers
+  and devices.  This utility is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+* Trigger Callbacks:
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Add warning message if alternate views named layout* or schematic* are found
+    when running in hierarchic or library mode.
+  - Fix issue where non-writable cell would not generate error message.
+  - Fix issue where incorrect lib name could be used in schematic lib mode.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* MakeProjectTree: remove call to set umask to 002 on project directory creation.
+  Current umask will be used instead.
+* Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+* Remove Discrete_Components design library. This was a legacy library with several
+  unsupported discrete elements. If you use this library, you will need to reference
+  a copy of the library provided in a previous kit release.
+* Corrected issue with Jazz custom tool that saves Artist save states as
+  cellviews. Addressed issue where state names that required escaped
+  characters would not be saved as cellviews properly.
+* Removed unused/legacy application notes from JAZZ menu item in all windows.
+  Removed unused/legacy documents from cdsware/appnotes directory.
+* Changed behavior of HTML based application notes to try to use existing
+  browser instead of opening a new one. Browser to be launched is still
+  hard-coded as "netscape" - this will be addressed in a future release.
+* Remove bin/asicbin/run_cal.pl script. Use the run_cal.pl program located
+  in bin/amsbin or in $RDS_CDSWARE/bin
+* Remove $RDS_ETC/system.cdsplotinit file. See Cadence Plotter setup guide
+  for information on setting up printers/plotters for your site.
+
+Device Library:
+* New devices for SOI: capsoi*, mom_cap, nwSOIdiode, pfet4_35vhv, pfet4_45vhv, pnwSOIdiode,
+  res_polyHR
+* Added layout view for r_dummy
+* Updated Nwell resistor and poly cap (rw3t, pc) to support bulk and SOI parameter values
+  and models.
+* Update OP data for diodes
+* inductor: Fix issue with change to exit property not being saved
+* passgate: Resolve potential issue with N nf > 1 in CDL netlist
+* Add LVS dummy resistor r_dummy
+
+
+Model Updates:
+* v2.4 * 2007/10/05
+FET:
+- Add SOI version of nwell resistor and PC
+Statistical:
+- Update to match corner model changes
+
+* v2.3a * 2007/04/02
+Statistical:
+- Added mismatch model for parasitic vpnp. Due to the use of inline subckts,
+  the region parameter is not supported.
+
+* v2.3 * 2006/05/15
+FET:
++ Initial Rev-0 5V native NFET model nfet_vt0 and subckt nfets_vt0
+  - Extracted from IV measurements only
+  - CV parameters copied from CP05 nfets
+  - Cj parameters copied from CA18 3.3v Native NFETs
+  - Flicker noise parameters copied from CP05 nfets
+CAP:
+- Update mim via2 resistance to match latest Espec
+Statistical:
+- Spectre version MMSIM6.0USR2 or later required for statistical simulation
+- Add Rev-0 5V native NFET model nfet_vt0 and subckt nfets_vt0
+- Update to match corner model changes
+- Add mismatch support for rps and rnp3t resistors
+
+
+Verification Updates
+Only Calibre is supported in cp05.
+* The Jazz Calibre flow is now obsolete. Use the Mentor Graphics Calibre Interactive flow.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+* Calibre Interactive requires Calibre version 2006.01_19.19 or later.
+  Jazz has tested with 2006.01_19.19
+* This kit supports the process variants cp05mb and cp05mb_SOI. You must set you
+  RDS_CDS_VERIFY_TECH to one of the supported process variants for the Calibre Interactive
+  customizations to automatically load the ruledeck.
+
+General:
+* Add support for SOI process variants.
+
+
+___________________________________
+Date 11/28/2005
+Design Kit: cp05j
+Electrical Specification: NPB-PS-0713, Rev.1
+Design Rules Document: NPB-PS-0714, Rev.1
+
+Software versions tested with this release
+* Cadence IC releases IC50.33USR2
+* Mentor Calibre releases 9.1_5, 2004.02
+  - XCalibre is not supported for this design kit. You must use Calibre XRC for PEX.
+  - Version v2004.04_11 required for XRC and CalibreView
+
+Highlights
+* Initial public release of cp05j design kit
+* IC50.33USR2 is minimum required IC tools version
+* Calibre 2004.4_11 required for Calibre Interactive/XRC
+* Jazz Calibre flow supported for DRC and LVS, but not PEX
+
+CP05j design kit supports the following process variants:
+* cp05mb - 0.5um 5V CMOS, 3 metal 0.25um metal interconnect, 2fF MIM cap
+
+Kit and environment changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit.
+  To set this variable, modify your project-specific .cshrc file
+  and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or 
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+
+Device Library, Limitations:
+* Inductors: Inductors use the Jazz Inductor Toolbox version 2.0 for simulation.
+  The inductor layout cell does not yet support drawing the ground shield.
+
+Verification Updates
+Only Calibre is supported in cp05j kit.
+* The Jazz Calibre flow can be used for DRC and LVS, but not PEX.
+* The Calibre Interactive flow can be used for DRC, LVS, and PEX.
+
+DRC Checks supported:
+
+ANTENNA:
+DENSITY:
+DRC:
+ERC:
+LUP:
+LVS:
+STRESS:
+XRC:
+
+</PLAINTEXT></BODY></HTML>

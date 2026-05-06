@@ -1,0 +1,16 @@
+*MODIFIED BY SCL - Saahil Singla- saahil@scl.gov.in on 28 Dec 2022
+* library bjtlib
+
+.LIB NOM
+.LIB 'ts18sl_scl_2019.lib' tt_bjt
+.ENDL NOM
+
+.LIB FAST
+.LIB 'ts18sl_scl_2019.lib' ff_bjt
+.ENDL FAST
+
+.LIB SLOW
+.LIB 'ts18sl_scl_2019.lib' ss_bjt
+.ENDL SLOW
+
+* end library bjtlib

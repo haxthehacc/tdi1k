@@ -1,0 +1,260 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 03/23/05 
+Library: ca18 (ca18pf)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0176, rev.9
+* Electrical Spec: NPB-PS-0173, rev.7
+* Design Application Note for CA18PF: NPB-PS-0671, rev.1
+
+Highlights:
+* Implemented pcells
+* Created ca18pf techfile
+* New simulation parameters and layout requirements for rf fets 
+* Additional documentation found on technology component web pages
+  CIW->Jazz->Technology Component Info (VCSD Web)
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+
+Process Synopsis:
+* The ca18pf process has 5 layers of aluminum metal.  It supports the following:
+  - 1.8V and 3.3V fets
+  - very low VT native fets
+  - low value unsalicided, high value unsalicided, salicided poly, and
+    nwell resistors
+  - p+/nwell varactor
+  - 2fF/um2 mim capacitors between metal 4 and metal 5
+  - inductors using 3um thick top metal 5
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre, spectreS, and hspiceS simulators are supported.
+
+Environment Changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+General Updates:
+* Updated ca18pf technology component web pages.
+* Created new release notes function to show kit or variant specific release notes
+* Removed unused/legacy JAZZ menu item application notes
+* Changed behavior of HTML based application notes to try to use existing
+  browser instead of opening a new one
+* Fixed issue with Artist State loading to resolve spurious "Artist states
+  directory contents are different" message
+
+Design Library:
+New devices:
+* Added pcells for existing devices
+* Added 4 terminal mimcap (cmimw2_4)
+  - The sub and well connections can now be set using inherited connections
+* Removed cmimw2 mimcap.  Please use the cmimw2_4 device in its place.
+
+Modified devices:
+* RF fet simulation changes:
+  - Breakdown of new simulation parameter support in rf fets:
+                              Parameters
+              ngcon               hf_noise             ring_sub
+nfet_rf       all simulators      Spectre only         all simulators
+pfet_rf       all simulators      not supported        Spectre only
+nfet3p3_rf    all simulators      not supported        not supported
+pfet3p3_rf    all simulators      not supported        not supported
+
+  - With the introduction of the ring_sub netlist parameter, the layout of this 
+    device is expected to have a 2 or 4 sided substrate.  If neither case exists,
+    then pre-layout simulations may not be accurate.
+  - Added "Simulation Parameters" button on rf fets.  This displays a
+    dialog box with a short description of ngcon, hf_noise, and ring_sub
+    parameters.  For a complete description of these parameters, please
+    consult the C18 Design Manual.
+  - Reworked gm and ft operating point calculations and added them to the
+    opPointLabelSet list for schematic annotation.  gm is the transconductance
+    of the core FET in the rf fet subcircuit, while ft = gm/(2*pi*(cgs+cgd+cgb))
+  - rd and rs are not available as operating point parameters.  They were
+    available in older versions of the pdk because they were modeled as
+    bias independent resistors.  This calculation was a rough estimation
+    of the drain and source resistance.  Currently, they are intrinsic
+    to the core FET model, allowing them to be bias dependent.  Also
+    the dc model of the rf fets is now consistent with the mixed-signal
+    model.  rd and rs operating point values can still be accessed for
+    the 3.3v rf fets, but these are not useful values and will be removed in
+    the next kit release.
+* Modified cmax/cmin calcumations on var_mos to improve accuracy.
+* Added met2_con parameter to var_mos for lvs and simulation.  This parameter tracks the
+  style used for interconnect routing.
+
+Style                     met2_con
+2MET_Connected                1
+2MET                          1
+1MET                          0
+
+* Updated diodes to better handle scaling.  Previous calculations may have
+  resulted in w,l, or area being scaled up by 0.005u.  If area=25p and w=5u,
+  l may have been calculated to be 5.005u instead of 5u.  If you are using the
+  default settings of w=5u, l=5u, and area=25p, the l value may appear as
+  5.005u.  Toggle w or area to fix this.
+* Revised terminal/op point mapping in rnwell
+* Updated min width/length of mimcaps to 2.7u to accomodate metal5
+* Changed min width of nfet3p3_vt0 to 420n to pass drc rule 52.C
+* Added "Connect S/D" and "Use ablb" options on poly caps (cpoly/cpoly3p3)
+
+Techfile Updates:
+* Created ca18pf techfile
+
+Model Updates: Model version v3.3
+Fets
+* Remove support for specifying l/w with DNW diode device. Only area/perim
+  are supported. The Design Kit integration uses only area/perim.
+* Modify mos varactor to add met2_con parameter. met2_con=1 adds metal2
+  interconnect parasitics from Pcell into model behavior.
+* Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+* Revise nwell resistor in PC to use simplified resistor model.
+* Change model default for pfet_rf to use ngcon=2 to be consistent with stat
+  model. Only the model file default was changed, not the symbol default.
+
+Caps
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Change default cap dimensions to 10um. No change in Design Kit default,
+  only model file default.
+
+Pnp
+* Update vpnp TC model using [-40 25 75 125] measurements
+* Update vpnp bf to be aligned to Espec
+* Adjust vpnp min early voltage (va=100) to match Espec
+* Update lpnpfeta bf from 5.5 to 7.2 to be aligned to Espec and match corner model
+
+Statistical model: Changes in addition to corner model changes
+* Add nom-only hp vpnp and rph3t
+* Add 4 terminal caps over well (c4t_mimw, c4t_mimw2, c4t_smimw4)
+* Fix 3.3v native fet stat model so that tox variation is now
+  consistent w/ 3.3v NFET and PFET tox variation
+* Update varactor_ni to leverage existing nwell-related process parameters
+
+___________________________________
+Date: 12/06/2004
+Library: ca18 (ca18pf, ca18pvp)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0176, rev.8
+* Electrical Spec: NPB-PS-0173, rev.6
+* Design Application Note for CA18PF: NPB-PS-0671, rev.1
+* Design Application Note for CA18PVP: NPB-PS-0666, rev.1
+
+Highlights:
+* Implemented ca18pf and ca18pvp variants
+* Frontend kit release ONLY
+* Added cells: vpnp_hp, rppoly_hi, 5V CMOS, etc...
+* Additional documentation found on technology component web pages
+  CIW->Jazz->Technology Component Info (VCSD Web)
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+
+Process Synopsis:
+* The ca18pf process has 5 layers of aluminum metal.  It supports the following:
+  - 1.8V and 3.3V fets
+  - very low VT native fets
+  - low value unsalicided, high value unsalicided, salicided poly, and
+    nwell resistors
+  - p+/nwell varactor
+  - 2fF/um2 mim capacitors between metal 4 and metal 5
+  - inductors using 3um thick top metal 5
+* The ca18pvp process has 5 layers of aluminum metal.  It supports the following:
+  - 1.8V fets
+  - 5V n-type fets and n-type diode
+  - excludes 3.3V fets
+  - low value unsalicided, high value unsalicided, salicided poly, and
+    nwell resistors
+  - p+/nwell varactor
+  - 1fF/um2 mim capacitors between metal 2 and metal 3
+  - high Ft vertical pnp
+  - inductors using 3um thick top metal5
+* These design kits are in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre, spectreS, and hspiceS simulators are supported
+
+Process Variant Support:
+* This kit supports ca18pf and ca18pvp
+* Importing designs from non-gte kits may cause the layers to be mapped
+  incorrectly.  This will be fixed in a future release.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and Environment Changes:
+* Added check for RDS_CDS_VERIFY_TECH variable
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* Updated technology component web pages with ca18pf/ca18pvp variants
+
+New devices, Design Library
+* Implemented frontends for ca18pf/pvp libraries
+* vpnp_hp allows the user to scale the emitter length in the schematic.  Be
+  aware that the layout is not scalable and consists of the following fixed
+  layouts: 0p8x5 (0.8ux5u), 0p8x10 (0.8ux10u), 0p8x20 (0.8ux20u), and
+  2p5x5 (2.5ux5u)
+
+Techfile Updates:
+* The current techfile loaded into each library is from ca18hr.  The ca18pf/ca18pvp
+  techfiles will be added in the next release.
+
+Model Updates:
+Fet:
+* New LV (1.8v) RF models (nfet_rf and pfet_rf) based on double sided gate
+  contacts and ringed substrate. Includes modified internal topology
+  from previous kit releases.
+  - The ring_substrate option has not been implemented on the symbols.  This
+         will be added in the next kit release.
+* Updated thermal noise model to noimod=1 (instead of the old noimod=2)
+  for all FETs (nfet, nfet_rf, pfet, pfet_rf, p3p3fet, p3p3fet_rf,
+  n3p3fet, n3p3fet_rf) to give reasonable prediction of thermal noise
+  at Vgs=0. A factor of 1-3x change in thermal noise can be expected
+  for Vgs > Vt. Noimod=1 uses the Spice thermal noise model as opposed
+  to Noimod=2 which uses the BSIM3 Qinv based thermal noise model.
+* Added hdif parameter to allow an approximate calculation of
+  ad, as, pd, ps in the primitive FETs.
+* New 5v NFET and PFET mixed-signal nominal, corner, statistical and
+  mismatch models based on recent silicon. 5V PC model is still
+  extrapolated from other technologies
+* Add acm=12, calcacm=1 for all FET models for Hspice compatibility
+
+Cap:
+* Added M4/M5 MIM cap models c3t_mim2_m4, c3t_mimw2_m4 and c4t_mimw2_m4
+* Update rsh_bp from 6.6e-2 to 8.2e-2
+
+Res:
+* Add 1Kohm resistor rph3t
+
+Pnp:
+* update vpnp TC for -40, 25, 75 and 125C
+* update vpnp model (bf) to be aligned with the Espec value
+* adjust vpnp minimum Early Voltage (va = 100)
+* update lpnpfeta model (bf) to be aligned with the Espec value
+</PLAINTEXT></BODY></HTML>

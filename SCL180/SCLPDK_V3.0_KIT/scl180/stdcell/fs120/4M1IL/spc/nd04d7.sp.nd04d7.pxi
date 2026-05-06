@@ -1,0 +1,32 @@
+* File: nd04d7.sp.nd04d7.pxi
+* Created: Sun Feb 14 19:48:40 2010
+* 
+cc_1 U7_drain VDD 0.138211f
+cc_2 U7_drain A2 0.100885f
+cc_3 U7_drain A3 0.18095f
+cc_4 U7_drain VSS 0.190012f
+cc_5 U7_drain A1 0.206868f
+cc_6 U7_drain A4 0.466163f
+cc_7 U7_drain U33_out 0.501507f
+cc_8 U7_drain ZN 9.43608e-19
+cc_9 U7_drain U4_source 0.017123f
+cc_10 U7_drain U6_drain 0.0166393f
+cc_11 U7_drain U6_source 0.0145244f
+cc_12 VDD A2 0.00871514f
+cc_13 VDD A3 0.0125525f
+cc_14 VDD A1 0.00718913f
+cc_15 VDD A4 0.00792141f
+cc_16 VDD U33_out 0.339211f
+cc_17 VDD ZN 0.362247f
+cc_18 A2 A3 0.202739f
+cc_19 A2 VSS 0.00798584f
+cc_20 A2 A1 0.00115517f
+cc_21 A3 VSS 0.00798584f
+cc_22 A3 A1 0.201572f
+cc_23 VSS A1 0.00834396f
+cc_24 VSS A4 0.0127835f
+cc_25 VSS U33_out 0.268598f
+cc_26 VSS ZN 0.419532f
+cc_27 A1 A4 0.199506f
+cc_28 A4 U33_out 0.00226185f
+cc_29 U33_out ZN 0.809895f

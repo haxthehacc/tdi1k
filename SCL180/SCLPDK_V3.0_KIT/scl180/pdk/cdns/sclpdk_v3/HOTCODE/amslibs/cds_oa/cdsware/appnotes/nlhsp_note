@@ -1,0 +1,130 @@
+
+JAZZ userware  - Information on hsp netlister
+_______________________________________________________________
+
+_______________________________________
+Top level HSP netlister for import/synth blocks
+_______________________________________
+
+The HSP netlister allows reuse of previous design from other design systems.
+The global hsp file is generated using information available from Composer's 
+schematic sheets and from existing cbr/ckm/cdl files of blocks synthesized
+using digital behavioral language (like Verilog) and/or hsp files generated 
+by previously supported schematic capture tools (e.g. Logic Assist by Compass). 
+To allow the assembly of these different blocks, a top-level schematic 
+containing both regular schematic blocks and symbols pointing to hsp/ckm/cdl 
+netlists has to be created in Composer. Such symbols must have the following
+properties:
+
+  synth_to_hsp=cbr	if the referenced cbr/cdl/ckm file has been synthesized from
+			a Verilog description;
+  import_to_hsp=hsp/hspnoedit	
+			if the referenced hsp/ckm/cdl file comes from a LogicAssist 
+			schematic capture. This property and the previous one
+			are mutually exclusive;
+  order=P1 P2 ... Pn	List of pins ordered according to the ".subckt" 
+			statement of the top-level cell in the hsp/ckm netlist.
+			This property is optional;
+
+
+When specifying synth_to_hsp=ckm/import_to_hsp=hsp, the hsp netlister reads in the netlist
+and substitutes the global nodes with local nodes (i.e. vdd>p, vss>n, vsub>sub),
+which are then added to the ".subckt" I/O statement. Every Composer's symbol
+is expected to have its supply, substrate and ground nodes defined as pins.
+
+When specifying Import=hspnoedit/ckmnoedit/cdlnoedit, the hsp netlister reads in 
+the netlist generated from Logic Assist. The netlist has already its power supply, 
+substrate and ground nodes defined locally, hence the hsp netlist is not edited 
+but just included in the top level hsp netlist. For the ckm/cdl netlists, there
+are minor changes for model name, parameter unit, etc.
+
+The netlist file locations are defined using the following environment variables:
+
+setenv  RDS_COMPOSER_SYNTH	your_ckm_dir1:your_ckm_dir2:...
+setenv  RDS_COMPOSER_IMPORT	your_hsp_dir1:your_hsp_dir2:...
+
+_______________________________________
+CDS mode and Compass mode
+_______________________________________
+CDS mode	allow the use of the Cadence model files for simulation.
+Compass mode	allow the use of the Compass model files for simulation.
+
+_______________________________________
+Making the top level a "subcircuit"
+_______________________________________
+If you want to have the definition of the top level of the circuit enclosed within a ".subckt" definition line and a ".ends" termination
+line, set the environment variable RDS_NL_COMMAND to "forcetopsub" before invoking Cadence tool:
+
+setenv RDS_NL_COMMAND forcetopsub
+
+_______________________________________
+Long name mapping
+_______________________________________
+By default, HSP netlister maps all the node/instance names which are
+longer than 16 characters.
+
+You may turn off the name mapping by setting the environment variable RDS_COMPOSER_HSP_NAME_LENGTH to "off" 
+before invoking Cadence tool:
+
+setenv RDS_COMPOSER_HSP_NAME_LENGTH off
+
+Or specify a longer name length upto 72:
+
+setenv RDS_COMPOSER_HSP_NAME_LENGTH  60 
+_______________________________________
+hsp.ini file for configuration
+_______________________________________
+
+If ./hsp.ini file exists, use ./hsp.ini file. 
+If no ./hsp.ini, but the file specified by environment variable RDS_CDS_HSP_INI exists, use the file.
+Otherwise, no file is used for hsp netlist configuration at user level.
+
+In the hsp.ini file, you may specify: 
+1. [expandcount] : If you want to expand multi-instance devices to multiple lines, put "y" under [expandcount]. By default, you get one line with m=count.
+2. [ignore] : A list of cells to be ignored.
+3. [busformat] : If you want to use <> for busses, put "<" under [busformat]. if you want to use [] for busses, put "[" under [busformat].
+4. [header] : header statements to be added to the beginning of the cell.hsp file to be generated.
+5. [tailer] : tailer statements to be added to the end of the cell.hsp file to be generated. It replaces "${cellname}" with real cellname.
+6. [noaif] : If you want to delete .aif file, put "y" under [noaif]. By default, you get .hsp file as well as .aif file.
+7. [cfgfile] : If you want to create cell.cfg file, put "y" under [cfgfile].
+
+Note: "#" at the beginning of lines is used as comment sign.
+
+Example hsp.ini file:
+=======================
+[expandcount]
+y
+[noaif]
+y
+[ignore]
+asheet
+bsheet
+[busformat]
+<
+[header]
+.GLOBAL vss vdd
+[tailer]
+.include ${cellname}.hcf
+.end
+[cfgfile]
+y
+=======================
+_______________________________________
+The batch mode netlisters:
+_______________________________________
+usage: nlhsp cellname libname        #for HSPICE  (Compass)
+usage: nlhspc cellname libname       #for HSPICE  (CDS)
+
+Note: The nelisters need to be invoked from the directory in which you invoke Cadence system.
+      libname can be ignored if your libname is ${PROJ_ID}_${LOGNAME}
+      eg: ch25akit_test5 when login as test5 for ch25akit project.
+      No Composer license is needed for using batch mode netlisters.
+
+_______________________________________
+output directory
+_______________________________________
+If environment variable HSP_DIR is set, the netlist is generated in the directory specified by HSP_DIR. Otherwise, the netlist is generated in the current directory.
+ 
+_______________________________________
+WARNING: all the simulation sources are NOT supported!!!
+_______________________________________

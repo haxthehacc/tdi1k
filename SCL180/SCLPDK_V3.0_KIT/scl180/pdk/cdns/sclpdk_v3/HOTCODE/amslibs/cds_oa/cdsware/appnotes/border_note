@@ -1,0 +1,19 @@
+
+Use sheet border in your cellview:
+
+A new system library called "sheetBorder" is added to our system library
+set.  It is used by Cadence's software for sheet border.
+
+The old US_8th sheet border is for backward compatibility only, it will
+not be used in the future.
+
+To add sheet border to your current schematic in Composer, you may
+use the Sheet->Edit Size menu item to add a specific sheet border
+size and type to your schematic.
+
+You can always changed the size later by Sheet->Edit Size menu item.
+
+The title block can be edit using Sheet->Edit Title command.
+
+More information can be obtained from the Cadence Virtuoso Schematic
+Editor User's Guide.

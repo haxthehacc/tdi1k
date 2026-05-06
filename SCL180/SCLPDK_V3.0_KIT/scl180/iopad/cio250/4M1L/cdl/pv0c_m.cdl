@@ -1,0 +1,35 @@
+* In this cdl low voltage mos transistor are replaced by high voltage mos to make pvoc compatible with 3.3 V 
+
+.SUBCKT pv0c_m VSSC VDD VSS VDDO VSSO 
+C8_1    VDD U33_U29_c2     L= 15.13U W=15.13U $[CH]
+M3      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M4      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M5      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M6      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M7      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M8      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M9      VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M10     VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M11     VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M12     VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M13     VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M14     VSSC    U34_U31_r2 VDD     VDD    PH   L=.4000U  W=40.0000U  
+M18     VDD     U33_U29_c2 VSSC    VSSC   NH   L=.4000U  W=30.0000U  
+M19     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M20     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M21     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M22     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M23     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M24     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M25     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M26     VDD     U33_U29_c2 VSSC    VSSC   NH L=.400U  W=30.0000U  
+M27     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M28     VDD     U33_U29_c2 VSSC    VSSC   NH L=.4000U  W=30.0000U  
+M29     VDD     U33_U29_c2 VSSC    VSSC   NH   L=.4000U  W=30.0000U  
+D30     VSSC    VSS     P3  119.7900P 257.5800U 
+D31     VSS     VSSC    P3  119.7900P 257.5800U 
+R1      VDD     U34_U18_r2 8.2500K $[RW]  W=2.1U L=14.6U
+R2      U34_U18_r2 U34_U31_r2 8.2500K $[RW]  W=2.1U L=14.6U
+R16     U33_U29_c2 U33_U18_r2 8.2500K $[RW]  W=2.1U L=14.6U
+R17     U33_U18_r2 VSSC    8.2500K $[RW]  W=2.1U L=14.6U
+.ENDS  pv0c_m

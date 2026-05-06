@@ -1,0 +1,35 @@
+* File: ora31d2.sp.ora31d2.pxi
+* Created: Sun Feb 14 19:32:39 2010
+* 
+cc_1 2 VDD 0.223924f
+cc_2 2 VSS 0.0974824f
+cc_3 2 A 0.193813f
+cc_4 2 noxref_5 0.0196538f
+cc_5 2 B1 0.0726171f
+cc_6 2 B2 0.0934606f
+cc_7 2 B3 0.171652f
+cc_8 2 Z 0.329433f
+cc_9 2 noxref_10 0.0276064f
+cc_10 2 noxref_11 0.0319006f
+cc_11 VDD A 0.0349008f
+cc_12 VDD B1 0.0356222f
+cc_13 VDD B2 0.0273506f
+cc_14 VDD B3 0.0391822f
+cc_15 VDD Z 0.0272339f
+cc_16 VDD noxref_10 0.0148858f
+cc_17 VDD noxref_11 0.0259129f
+cc_18 VSS A 0.0107722f
+cc_19 VSS noxref_5 0.220578f
+cc_20 VSS B1 0.0264218f
+cc_21 VSS B2 0.0210845f
+cc_22 VSS B3 0.0661475f
+cc_23 VSS Z 0.0344518f
+cc_24 A noxref_5 0.010965f
+cc_25 A B1 0.0976225f
+cc_26 A B2 6.47859e-19
+cc_27 noxref_5 B1 0.0757356f
+cc_28 noxref_5 B2 0.073927f
+cc_29 noxref_5 B3 0.046243f
+cc_30 B1 B2 0.220403f
+cc_31 B2 B3 0.149075f
+cc_32 B3 Z 0.050188f

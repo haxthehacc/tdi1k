@@ -1,0 +1,393 @@
+
+JAZZ CUSTOMIZED VIRTUOSO FUNCTIONS
+
+The following Jazz customized layout functions are available under
+JAZZ->Misc, JAZZ->Labels & Pins, or CIW:
+
+     Function Name		Bindkey
+
+  1.  Object Size		Alt+A
+  2.  Zoom To XY		Alt+Z
+  3.  Rel Copy			Alt+C
+  4.  Rel Move			Alt+M
+  5.  Rel Stretch		Alt+S
+  6.  Rel Move Origin		Alt+O
+  7.  Copy To Layers 
+  8.  Align Instances 	
+  9.  Sel By Intersection	Cltr+S
+  10. Snap
+  11. Create Bus
+  12. Create Bus Label
+  13. Gen Characters
+  14. Gen Pins On Boundary
+  15. Gen Pins From Labels
+  16. Gen Pins From Pin Labels
+  17. Center Routing Labels
+  18. von & voff
+  19. son & soff
+  20. gdsNum & layerName
+  21. Rotate In Place
+  22. Save All
+  23. Find Ref Cells
+  24. Change Labels
+  25. Gen Cond From Inst Pin
+  26. Gen Pin From Inst Pin
+  27. Gen Label For Pins
+  28. Gen Label For Selected Shapes 
+  29. Output Pin/Label Location
+  30. Stretch Fet
+  31. Convert Global Pin Labels
+  32. Line Contact
+  33. Search Pins
+  34. Copy Cell
+  35. Map LVS Clean Layout to LayoutXL Compatible Layout
+  36. Replace Instances
+  37. Map ROSE Instances
+  38. Modify Path Points 	Shift+g
+
+
+How the functions work?
+
+1.  Object Size
+
+    This function will report the xsize, ysize, perimeter, and area of 
+    selected objects in CIW.
+
+
+2.  Zoom To XY
+
+    This function will put the xy location you specifies in the center of 
+    the viewing window.
+
+    A form pops up, enter the coordinate in the following format: 5, 10
+
+    Note: Zoom to xy doesn't change the current scale. You may want to use
+          the right mouse button to zoom to the area size you want to view. 
+
+
+3.  Rel Copy
+
+    This function will copy selected objects to a relative xy location.
+
+    A form pops up, enter the relative x, y, number of copies, and the
+    direction if multiple copies are desired.
+
+
+4.  Rel Move
+
+    This function will move selected objects to a relative xy location.
+
+    A form pops up, enter the relative x, y location.
+
+
+5.  Rel Stretch
+
+    This function will stretch selected objects to a relative xy location.
+
+    A form pops up, enter the relative x, y location.
+
+
+6.  Rel Move Origin
+
+    This function will move the cell origin to specified xy location.
+
+    A form pops up, enter the x, y location.
+
+
+7.  Copy To Layers 
+
+    This function will copy selected shapes to specified layers at same 
+    location.
+
+    A form pops up, select the layers you want to copy.
+
+
+8.  Align Instances
+
+    This function will align a group of instances according to aligning
+    edge. Instances can be aligned at left edge, right edge , bottom edge, 
+    top edge, center and origin of instance.
+
+    A form pops up, select the align edge, align direction, spacing.
+    If you select not to apply spacing, the instances will keep the original
+    spacing. After you click OK or Apply, you will be prompted to click on 
+    the instance to be aligned with.
+   
+
+9.  Sel By Intersection
+
+    This function will select every selectable objects if they are intersected
+    with the specified drawing area. 
+
+
+10. Snap
+
+    This function will snap objects in the cell(s) on specified snap size
+
+    A form pops up, enter snap size, default is the minimum manufacture resolution.
+    User can choose different modes to snap the desired objects.
+    User can choose to run the current cell or through hierarchy by turn off/on
+    "Through Hierarchy".
+    User can choose to save or not after snap by turn on/off "Save After Snap".
+
+
+11. Create Bus
+
+    This function will create bus on entry layer using specified width,
+    spacing, and number of wires.
+
+    A form pops up, enter the wire width, wire spacing, and number of wires.
+    After you click OK or Apply, you will be prompted to enter the path.
+
+    Note: the path you entered is the lower or left one. Other wires will be
+          added to the top or right.
+
+
+12. Create Bus Label
+
+    This function will create an array of labels on text layer.
+
+    A form pops up, enter key label, start index, end index, index step,
+    and select the bracket. After you click OK or Apply, you will be prompted
+    to enter a line to specify the locations of first and second labels.
+
+
+13. Gen Characters
+
+    This function will generate specified text on the layers you specified.
+    It can be used to generate part number, revision letters and so on.
+   
+    A form pops up, enter the text, magnification, and select the layers you
+    want to put the text. After you click OK or Apply, you will be prompted
+    to click at a point to place the text.
+
+    Note: 1. You may need to add a marking layer to skip DRC checking on 
+             those text. you may use "artifacts" or "maskout" in LSW as 
+             this marking layer.
+
+          2. Don't generate text on contact or via layers directly. Normally
+             contact and via need to be in array with a specified size and
+             spacing. You can generate text on metal layer, then create 
+             symbolic contact in that area, flat the symbolic contact, and 
+             cut unnecessary contacts to make it look like characters. 
+
+
+14. Gen Pins On Boundary
+
+    This function will create a pin wherever a shape which has connectivity
+    information intersects with cell boundary and the net name is a pin in 
+    schematic. A cell boundary can be defined by "outline", "prBoundary". 
+    If no boundary has benn defined, the cell extension will be used. 
+    To check if a shape has connectivity information, query (Q) the shape, 
+    see if you can click on "Connectivity". Normally, if the data has been 
+    saved in DLE/VXL environment, a connected shape should have connectivity 
+    information. The pin has same size as the intersecting edge. 
+
+
+15. Gen Pins From Labels
+
+    This function will create a pin wherever a label origin overlaps a polygon 
+    on same layer and the label name is a pin in the schematic if schematic exists. 
+    This function will generate pins through hierarchy.  This function is useful 
+    to create pins for layout data created in non-Virtuoso environment.
+
+
+16. Gen Pins From Pin Labels
+
+    This function will create a pin wherever a label on pin purpose layer 
+    overlaps a polygon on same layer and the label is a pin in schematic if 
+    schematic exists. This function will generate pins through hierarchy.  
+    This function is useful to create pins for layout data created 
+    in non-Virtuoso environment, and the connector information is created on 
+    special layers, e.g. layer 88, 89, 90, 91, 92...
+
+
+17. Center Routing Labels
+
+    This function will center all the metal labels on the current cell to 
+    the center of each routing path. This will help routing tool to recognize
+    the connecting points.
+
+
+18. von & voff
+
+    User can use these two CIW commands to turn on or off layers' visibility.
+
+    von -> turn all layers on,  voff -> turn all layers off
+    von(8 18 28 ...) -> turn on layer 8, 18, 28 ...
+    voff(8 18 28 ...) -> turn off layer 8, 18, 28 ...
+
+
+19. son & soff
+
+    User can use these two CIW commands to turn on or off layers' selectable.
+
+    son -> turn all layers selectable,  soff -> turn all layers unselectable
+    son(8 18 28 ...) -> turn layer 8, 18, 28 ... selectable
+    soff(8 18 28 ...) -> turn layer 8, 18, 28 ... unselectable
+
+
+20. gdsNum & layerName
+
+    User can use these two CIW commands to see the mapping between GDS number
+    and Virtuoso layer name.
+
+    gdsNum -> list the mapping of all layers.
+    gdsNum("met1 met2 met3 ...") -> list the gds number for met1, met2, met3
+    layerName -> list the mapping of all layers.
+    layerName(8 18 28 ...) -> list the Vituoso layer name for layer 8, 18, 28.
+
+ 
+21. Rotate In Place
+
+    This command will rotate the selected objects in the same place, i.e. each
+    object rotates based on its own center.
+
+
+22. Save All
+
+    This command will save all the modified cells in the hierarchy. And the
+    saved cells are printed in CIW.
+
+
+23. Find Ref Cells
+
+    This command will find referenced cells in place and routing block from
+    search path.  User will be prompted to enter the search order of libraries.
+    Highest priority should be put at the begining.  The function will also
+    report missing cells.
+
+
+24. Change Labels
+
+    This command will replace existing labels based on user input.  User will be
+    prompted to enter the current label, new label, match whole word, beginning or
+    any. Bus labels are treated as they don't index.
+
+    If match whole word, the tool will replace the labels matching exactly with 
+    the searching pattern.
+    If match beginning, the tool will replace the labels starting with the searching 
+    pattern.
+    If match any, the tool will replace any labels partiallly matching the searching 
+    pattern.
+
+25. Gen Cond From Inst Pin
+
+    This command will generate conductors from instance pins. The generated conductor 
+    has the same shape as instance pin.  If the instance has net name(s) associated 
+    with (in layoutXL situation), then proper label will be generated on the created 
+    conductor using same instance pin layer. If the instance doesn't has net name 
+    associated with, then instance pin name will be generated using "text" layer.
+
+
+26. Gen Pin From Inst Pin
+
+    This command will generate pins from instance pins. The generated pin
+    has the same shape as instance pin.  New pin name is coming from the current 
+    level.  If the instance pin doesn't have connectivity information, no pin is
+    generated, only conductor is genereated.
+
+
+27. Gen Label For Pins
+
+    This command will generate labels for pins where no label is present.
+
+
+28. Gen Label For Selected Shapes
+
+    This command will generate labels for the selected shapes if the selected shape
+    has connectivity information. The label will be generated at the center of a 
+    rectangle, at one end of a path, or one corner of a polygon. If a label is found
+    at those locations, no label will be generated.
+
+
+29. Output Pin/Label Location
+
+    This command will generate a report on the location and layer of existing pins
+    or labels, also report missing labels in layout if the corresponding schematic
+    exists.
+
+
+30. Stretch Fet
+
+    This command will stretch the source/drain metal and contact of selected fet(s)
+    if the fet(s) has parameters sourceTopStretch, sourceBotStretch, drainTopStretch,
+    drainBotStretch.  The command pops up a form with following fields:
+
+    Stretch Left (Right): on/off, 
+    No. of Left (Right) Cts: integer (negative number means full contacts), 
+    Start From: bottom, center or top
+
+
+31. Convert Global Pin Labels
+
+    This command will put global pin name like "vss!" on "text" layer, so it is not
+    output to gds (as Calibre doesn't like "!"). And add a metal label like "vss" on 
+    top of the pin so in gds the label name is "vss", and Calibre recognizes it as
+    global name.
+
+
+32. Line Contact
+
+    This command will create ROD contacts. User may change the line width using 
+    option form (popup by F3)
+
+
+33. Search Pin
+
+    This command will find the pins matched with entered pin name, and add them to 
+    select list.
+
+
+34. Copy Cell
+
+    This command allows user to copy routing from a souce cell, and put 
+    placements at the same location if they have the same instance name.
+
+
+35. Map LVS Clean Layout to layoutXL compatible layout
+
+    This command allows user to copy routing from a source cell, and put
+    corresponding placements at the same location even though they may
+    not have the same names. Routing and placement source cells don't 
+    have to be the same, i.e. you can move the placements according to 
+    one source cell, copy the routings from another source cell.
+    This command can be used to build a layoutXL compatible cell from 
+    a layoutXL incompatible but LVS clean cell.
+
+    The procedure for using this command is:
+
+    (1) Run LVS on source layout using option "-ixf"
+        Calibre LVS will generate spice file for the layout, and 
+        *.ixf file for schematic and layout instance mapping.
+
+    (2) Create a new layout, which has placements (no pins, no boundary)
+        generated from layoutXL.
+
+    (3) JAZZ -> Porting -> Map LVS Clean Cell
+        enter the correct source cell, spi file, and ixf file
+
+        If only placements are needed, turn off "copy routings & pins",
+        You may copy routings from another cell.
+
+
+36. Replace Instances
+
+    This command allows user to search instance matching input search
+    libName/cellName/viewName, replace with new libName/cellName/viewName.
+
+
+37. Map ROSE Instances
+
+    This command allows user to recover the instance names from ROSE data 
+    (*.rsf).  User needs to input the path for rsf library, the rsf cell
+    name and gridsize information. This command has hierarchial option.
+
+38. Modify Path Points 	(Shift+g)
+    This command allows the user to edit layout paths. First select the 
+    desired path to edit and then execute the command (Shift+g) to perform
+    one of three operations, delete point, undelete point, or modify path. The user 
+    can also specify the starting path direction, either forward or backward.
+
+If you have any questions concerning the above functions, please contact 
+Jazz Technical Support

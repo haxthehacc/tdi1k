@@ -1,0 +1,37 @@
+* File: nr04da.sp.nr04da.pxi
+* Created: Sun Feb 14 19:49:34 2010
+* 
+cc_1 A1 VSS 0.0426988f
+cc_2 A1 U40_drain 0.0614933f
+cc_3 A1 A2 0.217768f
+cc_4 A1 A3 8.54138e-19
+cc_5 A1 VDD 0.0296038f
+cc_6 VSS U40_drain 0.337117f
+cc_7 VSS A2 0.005828f
+cc_8 VSS A3 0.0115269f
+cc_9 VSS A4 0.0185137f
+cc_10 VSS U43_in 0.317305f
+cc_11 VSS ZN 0.429479f
+cc_12 U40_drain A2 0.119128f
+cc_13 U40_drain A3 0.118042f
+cc_14 U40_drain VDD 0.194066f
+cc_15 U40_drain A4 0.350144f
+cc_16 U40_drain U43_in 0.544445f
+cc_17 U40_drain ZN 5.76056e-19
+cc_18 U40_drain u1_source 0.0169544f
+cc_19 U40_drain U42_drain 0.0203575f
+cc_20 U40_drain U42_source 0.023864f
+cc_21 A2 A3 0.207443f
+cc_22 A2 VDD 0.0311604f
+cc_23 A2 A4 7.00157e-19
+cc_24 A3 VDD 0.00888241f
+cc_25 A3 A4 0.239468f
+cc_26 A3 U42_drain 0.0114769f
+cc_27 A3 U42_source 0.0082704f
+cc_28 VDD A4 0.0523168f
+cc_29 VDD U43_in 0.505609f
+cc_30 VDD ZN 0.506232f
+cc_31 VDD u1_source 0.00566289f
+cc_32 VDD U42_drain 0.0126718f
+cc_33 A4 U43_in 0.00536683f
+cc_34 U43_in ZN 1.51025f

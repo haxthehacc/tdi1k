@@ -1,0 +1,25 @@
+
+Jazz Semiconductor userware  - Information on batch mode netlisters
+_______________________________________________________________
+
+_______________________________________
+The Cadence batch mode netlisters:
+_______________________________________
+
+usage: nltsp cellname libname        #for TSP (ROSE)
+
+usage: nlcbr cellname libname        #for Calibre (sub)
+usage: nlcbr -n cellname libname     #for Calibre (nosub)
+
+usage: nlhsp cellname libname        #for HSPICE  (Compass)
+usage: nlhspc [-lib libname] -f file | cellname ... #for HSPICE  (CDS)
+usage: nlhspm [-lib libname] -f file | cellname ... #for HSPICE  (primitive mapping)
+
+usage: cd2vhd cellname libname       #for VHDL
+
+usage: nlsv cellname libname         #for Verilog
+
+Note: The nelisters need to be invoked from the directory in which you invoke Cadence system.
+      -lib libname can be ignored if your libname is ${PROJ_ID}_work
+         eg: ch25akit_work for ch25akit project.
+      -f file: the input file containing one cell per line.

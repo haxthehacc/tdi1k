@@ -1,0 +1,33 @@
+;; This file becomes a users $HOME/.simrc file via a link
+
+;; Verilog settings
+let( (verilogModelFile verilogBinary)
+   ;; Verilog model file setting
+   when( getShellEnvVar("RDS_CDSLIBS") && getShellEnvVar("RDS_CDS_TECH")
+      verilogModelFile = strcat(
+         getShellEnvVar("RDS_CDSLIBS") "/"
+         getShellEnvVar("RDS_CDS_TECH") "/models/verilog/models.v"
+      )
+   )
+   when( verilogModelFile && isFile(verilogModelFile)
+      simVerilogLibraryFile = verilogModelFile
+      simNCVerilogLibFile = verilogModelFile
+   )
+
+   ;; Verilog executable
+   when( getShellEnvVar("LDV_INST_DIR")
+      verilogBinary = strcat(
+         getShellEnvVar("LDV_INST_DIR")
+         "/tools/bin/verilog"
+      )
+   )
+   when( verilogBinary && isFile(verilogBinary)
+      verilogSimBinary = verilogBinary
+   )
+
+   ;; Define signalscan version
+   setShellEnvVar("RDS_SIGNALSCAN_VER=dfII")
+
+   ;; Define ncsim version
+   setShellEnvVar("RDS_NCSIM_VER=dfII")
+)

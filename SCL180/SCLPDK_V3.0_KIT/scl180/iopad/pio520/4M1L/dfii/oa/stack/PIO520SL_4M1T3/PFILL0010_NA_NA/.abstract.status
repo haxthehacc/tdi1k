@@ -1,0 +1,8 @@
+cUiMoveCellToBin {PFILL0010_NA_NA} {IO}
+cUiSelectCellP {PFILL0010_NA_NA}
+cUiSetViewStatus {PFILL0010_NA_NA} {layout} {1}
+cUiSetViewStatus {PFILL0010_NA_NA} {logical} {1}
+cUiSetViewStatus {PFILL0010_NA_NA} {abstract.pin} {3}
+cUiSetViewStatus {PFILL0010_NA_NA} {abstract.ext} {1}
+cUiSetViewStatus {PFILL0010_NA_NA} {abstract} {1}
+cUiSetViewStatus {PFILL0010_NA_NA} {abstract.ver} {0}

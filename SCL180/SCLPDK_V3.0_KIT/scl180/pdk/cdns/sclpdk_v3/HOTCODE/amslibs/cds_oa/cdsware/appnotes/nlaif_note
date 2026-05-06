@@ -1,0 +1,20 @@
+
+Jazz Semiconductor userware  - Information on AIF netlister dumper
+_______________________________________________________________
+
+_______________________________________
+rdsNLUser.ini file for configuration
+_______________________________________
+
+If rdsNLUser.ini file exists in the directory you start Cadence tool, the AIF 
+netlister dumper will load the file for user level configuration.
+In the rdsNLUser.ini file, you may specify:
+
+1. The level you want to netlist.
+
+
+Example rdsNLUser.ini file:
+;=== netlist top level only ======
+rdsNLNumLevels = 1
+;=======================
+

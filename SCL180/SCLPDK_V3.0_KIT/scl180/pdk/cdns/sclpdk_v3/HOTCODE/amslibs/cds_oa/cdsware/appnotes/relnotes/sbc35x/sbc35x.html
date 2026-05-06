@@ -1,0 +1,2280 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 2006/12/20
+Library: sbc35x
+Relevant Specification Documents:
+SBC35x:
+  Design Rules: NPB-PS-0109, Rev.13
+  Electrical Spec: NPB-PS-0178, Rev.13
+SBC35MTD:
+	Design Application Note: NPB-PS-0769, Rev.2
+SBC35QTD:
+	Design Application Note: NPB-PS-0700, Rev.3
+SBC35QTP:
+  Design Application Note: NPB-PS-0618, Rev.2
+
+
+Highlights:
+* Inductors updated to new Inductor Toolbox version 4
+* Octagonal inductors added. Shield available for single-ended inductors.
+* Inductor updates are not backward compatible. Once you trigger
+  callbacks to update the design library, you will no longer be able to use the
+  design with an older design kit release due to the parameter changes needed
+  to use the new devices.
+* New LVS mechanism for verification of Deep NWell using new diso and ddnw
+  diode devices. Designs that were previously LVS clean will require modification
+  to be LVS clean in this design kit release.
+* Support added for dummy metal fill generation and checking in Verification decks.
+* IC5.1USR3 is minimum recommended Cadence IC tools version
+* Assura requires version 3.1.5USR1 A new menu item CIW->Jazz->Assura
+  Verification Flow for Assura 3.1 has been added to describe the
+  updated Assura flow.
+* Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+* Device callback changes require use of trigger callbacks function.
+  See Ebizz document "Jazz Cadence Design Kit Installation Instructions"
+  (NPB-PS-0419) for instructions on how to migrate from one kit version to another.
+
+Software versions tested with this release)
+* Cadence IC releases IC5.1.41USR3 with IUS5.8
+* Cadence Spectre release MMSIM6.1
+* Mentor Calibre releases 9.1_5, 2003.04, and 2006.01_19
+  - XCalibre is not supported in v2003.04 or later releases
+  - XRC and Calibre Interactive require version 2006.01_19.19
+* Cadence Assura releases 3.1.5USR1
+* ADS release 2005A.MSR1
+* Synopsys Hspice release 2005.09
+* Eldo version 2006.1 (v6.7) or later is required. Note that only Eldo models
+  are provided, and that there is no support for Eldo in the Cadence ADE.
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  sbc35mf sbc35mx sbc35mtd sbc35qx sbc35qta sbc35qtb sbc35qtc sbc35qtd
+  sbc35qtf sbc35qtl sbc35qtn sbc35qts sbc35qtx sbc35qtp
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbc35qtp, and is strongly
+  recommended for all other processes. The sbc35x technology library does
+  not include any new layers, like those needed for dummy metal fill.
+* The Jazz makeProjectTree script automatically supports the new
+  tech library attachment needed by the sbc35x design kit.
+  If you use the makeProjectTree script, your library will automatically be
+  attached to the correct sbc35x_techlibs technology library.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function.
+
+Kit and environment Limitations:
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+
+Kit and environment changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* Trigger Callbacks:
+  - Added capability to generate a detailed change report in either dry run or
+    normal operation. Detail report includes details of every parameter value
+    that is changed on any instance in any cellview.
+  - Add warning message if alternate views starting with layout* or schematic*
+    are found when running in hierarchic or library mode.
+  - Fix issue where non-writable cell would not generate error message.
+  - Fix issue where incorrect lib name could be used in schematic lib mode.
+  - Fix issue in library mode where the run would fail to complete if a large
+    number of cells (>250) were in the library.
+  - Fix issue with hierarchic or library mode where layout changes may not be
+    reverted in dry run mode.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* MakeProjectTree: remove call to set umask to 002 on project directory creation.
+  Your current umask will be used instead.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+* Update ADE simulation window Jazz Model Library Selection form so it will support
+  PCMT-based corner definitions and allows for model libraries stored outside of
+  the Jazz Design Kit install hierarchy. Use this SKILL command to add additional
+  directories to the model library list in the Model Library Selection form:
+     jazzModelAddDir("/full/path/to/PCMT_Models")
+  The directory provided must contain the simulator directory, for example:
+    /full/path/to/PCMT_models/spectre
+* Update Save State functions:
+  - Fix issue with Jazz saved states and escaped characters
+  - Update code to coexist with IC51.41USR3 save state as cellview mode
+  - Prompt for checkout if Jazz saved state is DM managed
+* Add support for hspiceD simulator in Jazz Model Library Selection form.
+* Change schematic Jazz->Netlist->CBR netlist generator use the current window's
+  instead of forcing it to "schematic".
+* Fix issue with Jazz Calibre LVS forms where the view would always be
+  "schematic".
+
+Technology Library:
+* Added dummy metal fill/block layers. This is the metal layer with purpose
+  "fill" or "block". These layers are used to identify drawn dummy fill,
+  or to block placement of fill during fill generation, respectively.
+* Change metal pin layer to stream out to datatype 2.
+* The sbc35x library does not provide these new layers. You must re-attach
+  all design libraries to the sbc35x_techlib library to see these new layers.
+* Fixed issue with manufacturing grid default not being set correctly by
+  technology library.
+
+ESD Library:
+* bignpn* - Update NPN model names to new scalable models and address
+  compatibility with Calibre Interactive
+
+Device Library, general:
+* Device callback changes require use of trigger callbacks function.
+  See Ebizz document "Jazz Cadence Design Kit Installation Instructions"
+  for instructions on how to migrate from one kit version to another.
+* Updated cds_generic reference library to support HspiceD
+* Added support for ADE netlisting with AMS Designer and HspiceD
+  Note that the Digital ASIC libraries may not yet support AMS Designer
+  or HspiceD at this time.
+* Updated sbc35x_rcx library to match changes in devices as noted.
+
+Device Library, limitations:
+* Metal Fuse schematic, layout, and DRC is provided. However LVS support
+  may not work in some configurations. This will be addressed in an
+  update deck release.
+* PWE (Pwell Exclusion) is suppported in this kit release, but only for the
+  shielding under the new single-ended inductor. Use of the PWE layer under
+  any other devices is not directly supported by the models or extraction.
+
+Device Library, New Devices: 
+* diso and ddnw: New diodes representing the Deep Nwell isolation region and
+  the nwell ring, respectively, in the DNW-enabled process variants. These devices
+  must now be used in order to pass LVS. Designs that were previously LVS clean
+  will require addition of these devices in order to be LVS clean again.
+  Additional information is also provided in the Modeling Design Manual.
+* ldiff*_oct, l3t*_oct: New cells for differential and single-ended octagonal
+  inductors.
+* Fuse: The "fuse" cell has been updated to reflect the metal fuse. The poly
+  fuse is considered obsolete. You should migrate to the fuse_m2 cell for your
+  device layout.
+
+Device Library, Updated devices:
+* MIM - Correct DRC issue when use with metal 3 process variants
+* Inductors. Inductor models have been updated to use the new Jazz
+  Inductor Toolbox v4.0. You will need to update your design libraries
+  using both the Trigger Callbacks comand and also the Update Inductor
+  command to take advantage of the new inductor.
+  + Benefits of the update inductors include:
+	 - Octagonal inductors provided.
+    - Single-ended inductor now supports shields drawn in active
+    - Better model accuracy in roll-off above peak frequency
+    - Updated Inductor Search tool results to match new model and include
+      additional data points. Search tables have been normalized across
+      the physical design space (x, y, n s, w). The tables contain more
+      data points, but may not contain some data points that were previously
+      present.
+  + Important notes:
+    - You can update all inductors in your design using the Update Inductor
+      command, or you can individually update inductors by editing the instance
+      and clicking on the button titled "Update to latest inductor model".
+    - This update is one-way only. Once you trigger callbacks to update
+      the design library, you will no longer be able to use the design with
+      an older design kit release due to the parameter changes needed to
+      use the inductor model.
+    - See the document "Jazz Cadence Design Kit Installation Instructions"
+      available on Ebizz for details on how to install new design kit
+      versions as well as general procedures to follow when switching kit
+      versions.
+    - The major change affects the component model and parameters. The
+      inductor layout will change if you selected an "exit" path other
+      than "straight" or "perpendicular", or if you enable the shield
+      (single-ended inductor only).
+    - Inductors are now required to have xsize=ysize
+* nfet_esd: Updated schematic and CDF to support Assura when
+  nf>1. This update includes changes to the Jazz CBR netlister and auCDL
+  simInfo to retain backwards compatibility. In Assura, you MUST list
+  the nfet_esd cells in the expandCellToParent LVS avParameters option.
+* npn:
+  - Fix LVS model name issues
+  - Provide warning if model is used in non-verified regions (see Modeling
+    Manual for details on regions).
+  - Update no-deep-trench processes to support sbc35mtd
+  - Copy additional non-simulation parameters to CBR PEX extracted view
+  - Fix B7 and B3 DRC violations that appear in certain EL configurations.
+    This may cause NPN layout cells to change slightly.
+* pnpv_hp - Multiple device updates to provide scalable pcell layout.
+  Because the layout was changed to be scalable, the device layout may vary
+  slightly from the previous fixed cells
+* RF Fets - Add support for model ngcon parameter (gate contacts), update
+  max W to 20um to match model range.
+* rnp3t - Changed CDL device netlist model name to rp3 to resolve conflict
+  with Cadence-provided presistor model name "rp".
+* Resistors - Fix issues with RWS support for Calibre Interactive, Assura,
+  and Jazz CBR flow.
+* varactor_mos - Fix callbacks so design variables can be used without preventing
+  other parameter calculations. Update met2_con support
+
+Model changes
+- Spectre version MMSIM6.0 USR2 or later is required or you will receive error
+  messages like "undefined parameter m"
+- Hspice version 2005.9 or later is required
+- ADS version 2005a or later is required
+- Eldo version 2006.1 (v6.7) or later is required. Note that only Eldo models
+  are provided, and that there is no support for Eldo in the Cadence ADE.
+
+v5.1 * 2006/12/11
+- General: Spectre version MMSIM6.0 USR2 or later is required for
+  statistical simulation.
+FET:
+- DNW: split model so diso and ddnw diodes can be called separately.
+  Also added corner scaling factors for DNW.
+- MOSVAR: Update active-active spacing to better match pcell
+- Fixed partitioning of area and perimeter components of source/drain to bulk
+  junction capacitance in RF FETs. Depending on size of RF FET expected
+  change is 0-25% for effective junction capacitance
+- Changed substrate resistor network from PI to T
+IND:
+- Update to Inductor Toolbox (JIT) version 4. This version includes
+  minor changes versus the previous version 2. Inductors must be updated
+  in the schematic to take advantage of the new JIT4 models.
+- Swap P1 and P2 again on single-ended inductor model l3t, l3t4, and l3tqtx
+  cox components. This resolves a discrepancy between the layout P1 and
+  model P1. Simulation results will change slightly because of the
+  changed capacitance.
+- Updated fixed-cell (balun1/5/10) corner multipliers with new Inductor
+  Toolkit model v4.0. The fast and slow corner cases change because of this.
+Statistical:
+- Fix mismatch when m>1 by using MMSIM6 Spectre release features.
+  This affects MOSFET, MIM cap, and poly resistors
+- Add photodiode models (NOM only)
+- Separate DNW diodes to match corner model. NOM support only.
+- Update stacked mim perimeter capacitance mismatch to match latest
+  Espec (8.811e-04 -> 2.400e-03)
+- Update inductor to JIT4. Swap P1 and P2 for single-ended inductor to match
+  layout and toolbox.
+- Unify nwell stat factor using nw_rend_factor in place of nw_re_factor
+
+v5.0d * 2006/07/13
+FET:
+- Add new device pd_sq_basic, pd_qdiv_basic for photodiode
+
+v5.0c * 2006/04/05
+NPN:
+Updates were made to v5.0 sbc35x l-scalable models:
+- Reduction in saturation current (Is) or increase in Vbe
+  from 0.73 to 0.736 for long devices.
+  Version v5.0 was centered to E-spec of 0.73 based on SPC plots for vbe
+  This update is centered to recent measurements of Ic, which corresponds
+  to a vbe of 0.736.
+- Increase in saturation current (Is) or decrease in Vbe
+  from 0.74 to 0.73 for the short devices (l=0.5u). 
+  Version v5.0 was centered to E-spec of 0.73 based on SPC plots for vbe.
+  This update is centered to recent measurements of Ic, which corresponds
+  to a vbe of 0.73
+- Increased Re (Emitter Resistance) based on multi-wafer bench measurements
+  to better capture high Vbe regime
+- Improved scaling equation to better capture the length dependence of Re
+- Improved scaling equation for Cbc, change in Cbci and Cbcx partitioning
+  to provide more accurate gain/fmax simulation
+- Change in Rsub to fix unphysical 2nd pole behavior in power gain vs.
+  freq simulations for small Le
+- Addition of emitter resistance in mismatch models to improve MM
+  simulation at high current
+- Removed emitter width dependence of mismatch, to be consistent with
+  measured data
+- Correction of hicum temperature coefficients for resistances
+- Addition of Tnom=25 for HSPICE and ADS translation to set default temp
+- Addition of Dcap=1 for HSPICE GP model to improve match with Spectre
+- Low-temp simulation with HSPICE requires setting simulator
+  option epsmin=1e-40
+- Model file npn_v4_v5_map.scs is provided for Spectre to allow netlists
+  using model names from model release v4.1 and earlier to be used with the
+  new v5.0c model files. This file must be manually added to the simulation
+  netlist.
+RES:
+- Fix issue with rmet1-rmet4 where default model r would override L/W 
+  model calculation when instance R is not specified. Rsh is now used instead.
+Statistical: 
+- Align with corner model changes and updates.
+
+v5.0b * 2006/01/20
+NPN: 
+- Partial fix for narrow devices (we=0.3um) only. Full fix will follow for all devices.
+- Improved RE scaling and centering to process
+- Improved CBC modeling leading to more accurate Fmax/gain simulation
+- Fix to Rsub scaling which eliminates funny gain rolloff for short devices < ~ 4um
+- Inclusion of RE in mismatch models to improve mismatch at high currents
+- Improved mismatch modeling of wide devices
+
+
+
+Verification
+Calibre:
+- Tested with versions 2003.01 and 2006.01_19.19.
+- To use Jazz PEX flow with XCalibre, you must use a Mentor Graphics
+  release earlier than 2003.05. Later releases no longer ship the
+  XCalibre extraction software needed for the PEX flow, although the
+  releases can be used with the Jazz Calibre flow for DRC and LVS.
+  The Jazz Calibre flow is launched from the layout window JAZZ->Verification
+  menu item.
+- To use the Mentor Calibre Interactive flow, you must use Calibre
+  release 2006.01_19.19. We recommend the 2006.01_19
+  release as it is generally available from Mentor Graphics.
+  The Calibre interactive flow is now supported for all variants.
+  The Mentor Graphics Calibre Interactive flow is launched from the layout
+  window Calibre menu.
+- Calibre Interactive flow now provides GUI fields for power and ground nets.
+- Changed Calibre Interactive startup behavior to allow for a user-specified
+  value for the MGC_CALIBRE_*_RUNSET_FILE environment variable. Previously,
+  the variable would always be reset to the Jazz ruledeck runsets.
+- Fixed problem with CIW->Jazz->Verification menu where the Calibre Interactive
+  XRC documentation menu item would be disabled when it should not have been.
+- New and updated information is provided in the Jazz Calibre Interactive document.
+  To view this document, select the CIW->Jazz->Verification->Calibre Interactive
+  w/XRC menu item.
+- If you use the Mentor Graphics Calibre Interactive flow and receive an error
+  message like "unknown command SEPARATOR" when the CI window first opens,
+  this indicates your version of Calibre is not recent enough. Obtain one of the
+  recommended Calibre versions from Mentor Graphics.
+
+Calibre Deck Changes:
+General:
+- Updated to common directory t014. This adds support for several new devices.
+- Add support for metal fill, block, and also pin datatype 2
+- To enable polyimide support, you must set a Unix environment variable before
+  using the design kit:
+  setenv polyimide y
+
+Calibre t014 deck history:
+Antenna: General updates from above
+Density: Initial release of density decks
+DRC:
+- Update DRC deck to provide entry point for Calibre Interactive for other DRC decks
+- Remove BMP.8, MC/SMC 6/7 16/17
+- Add 5.I, *.FILL,
+- Fix 38.A from 0.45 to 0.60
+- Update via checks 7/17/27/37.* to check vias internal to devices like MIM
+- Update VAR.3/4, MVAR.* to better match pcell implementation
+- Revise pad extraction to remove false flags
+- Revise inductor/PWE/active rules to allow for new inductor and shields
+- Revise DNW.3/4/17/19
+- Remove MC/SMC 6/7 16/17
+- Fix 37/38.* for sbc35qx (thin 4 metal) process
+ERC:
+- Calibre Interactive flow now provides GUI fields for power and ground nets.
+- Update connectivity checks to account for pnpv_hp
+LUP:
+- Calibre Interactive flow now provides GUI fields for power and ground nets.
+LVS:
+- New DNW LVS methodology requires presence of diso and ddnw diodes in schematic
+  to match new extracted devices in layout. Diso represents the isolated pwell
+  region, and ddnw represents the nwell ring and DNW region. Designs that used DNW
+  and were previously LVS clean WILL FAIL LVS with this new deck.
+- Update inductor, pnpv_hp, and mosvar extraction with new algorithm to address
+  layout extraction issues.
+- Address issues with resistor RWS mode extraction.
+- Remove push operation to reduce memory footprint
+PEX/XRC:
+- Add LOOP option to all extraction decks
+Stress: General updates from above
+
+Assura:
+General:
+- Update code to use explicit path for bptree files
+- Assura version 3.1.5 USR1 is required for this release. All of the RCX data files
+  have been recompiled to use this version of software.
+- Assura RCX 2D, 3D, and field solver data files are now provided.
+- Update decks to use more general feature selection with avHiddenSwitch.
+  Previous decks used process variant names as feature selection switch.
+  This has no effect on deck behavior, but may require changes to saved Assura states
+- Add support for several new devices (oct inductor, pnpv_hp, DNW diodes)
+- Add support for metal fill, block, and also pin datatype 2
+- Decks now use *_switch.rsf file. Existing RSF run decks may cause runtime errors
+  if they are not re-created with the Assura GUI to reference the switch file.
+
+Deck change history:
+Antenna: General updates from above
+Density: Initial release of density decks
+DRC:
+- Add acute angle check on all layers. This works around Assura limitation that
+  checks unmerged shapes only.
+- Add new DRC rules FILL.*, VP.R1
+- Update multiple rules with CornerTouch or remove parallel option to better
+  catch corner cases: 2.*, 59.A/B, 5.*, 6.*, 11.*, 8/18/28/38.*, MC/SMC*,
+  15.*, 40.*, 29.*, DNW.*, 19.*
+- Update dummy resistor connectivity extraction
+- Update via checks 7/17/27/37.* to check vias internal to devices like MIM
+- Update VAR.3/4, MVAR.* to better match pcell implementation
+- Revise pad extraction to remove false flags
+- Revise inductor/PWE/active rules to allow for new inductor and shields
+- Revise DNW.3/4/17/19
+- Fix 37/38.* for sbc35qx (thin 4 metal) process
+- Remove MC/SMC 6/7 16/17
+ERC:
+- Use avGetVariable and Assura GUI to enter power/ground net names.
+- Add support for pnpv_hp
+LUP:
+- Use avGetVariable and Assura GUI to enter power/ground net names.
+LVS:
+- New DNW LVS methodology requires presence of diso and ddnw diodes in schematic
+  to match new extracted devices in layout. Diso represents the isolated pwell
+  region, and ddnw represents the nwell ring and DNW region. Designs that used DNW
+  and were previously LVS clean WILL FAIL LVS with this new deck.
+- Disable pin swap on diff inductors
+- Use Assura TransferProperties functionality instead of bptree for fuse,
+  inductor, and varactor
+- Update inductor, pnpv_hp, and mosvar extraction with new algorithm to address
+  layout extraction issues.
+- Address issues with resistor RWS mode extraction.
+RCX:
+- Fix sbc35qx resistances for via3 from 2 to 2.2, metal4 from 0.042 to 0.01
+Stress:
+- Fix issue with SMC43 (released in patch)
+XOR: Initial release XOR deck
+
+
+___________________________________
+Date: 2005/10/19
+Library: sbc35x
+Relevant Specification Documents:
+SBC35x:
+  Design Rules: NPB-PS-0109, Rev.11
+  Electrical Spec: NPB-PS-0178, Rev.13
+SBC35QTP:
+  Design Application Note: NPB-PS-0618, Rev.2
+
+Software versions tested with this release)
+* Cadence IC releases IC50.33USR2, IC5.1.41USR1, IC5.10.41.500.2.24
+* Mentor Calibre releases 9.1_5, 2003.04, and 2004.04_11.22
+  - XCalibre is not supported in v2003.04 or later releases
+* Cadence Assura releases 3.1.2USR1, 3.1.3USR1
+* ADS release 2003C, 2004A
+
+Highlights:
+* NPN updated to support scalable emitter length.
+* Inductors updated to new Inductor Toolbox.
+* Single-ended inductors now support drawing active shields.
+* NPN and Inductor updates are not backward compatible. Once you trigger
+  callbacks to update the design library, you will no longer be able to use the
+  design with an older design kit release due to the parameter changes needed
+  to use the new devices.
+* IC50.33USR2 is minimum recommended Cadence IC tools version
+* IC5.1.41USR2 is not supported. Use a different IC5.1.41 software release instead.
+* Assura requires version 3.1.2USR1. A new menu item CIW->Jazz->Assura
+  Verification Flow for Assura 3.1 has been added to describe the
+  updated Assura flow.
+* Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+* Device callback changes require use of trigger callbacks function.
+  See Ebizz document "Jazz Cadence Design Kit Installation Instructions"
+  for instructions on how to migrate from one kit version to another.
+
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  sbc35mx sbc35mf sbc35qx sbc35qtx sbc35qta sbc35qtb sbc35qtc sbc35qtd
+  sbc35qtf sbc35qtl sbc35qtn sbc35qts sbc35qtp
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbc35qtp, and is strongly
+  recommended for all other processes.
+* The Jazz makeProjectTree script automatically supports the new
+  tech library attachment needed by the sbc35x design kit.
+  If you use the makeProjectTree script, your library will automatically be
+  attached to the correct sbc35x_techlibs technology library.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment changes:
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+* Update JAZZ->FAQ pages with revised wording for kit migration. Corrected
+  several menu name references.
+* Fix issue with running Inductor Toolkit on HPUX platform
+* Fix issue in Jazz automated streamin procedures to prevent GDS import failures
+  when using a technology library as a reference.
+* Fix issue where pcell drawing would fail when the SKILL path did not include the
+  "." directory.
+* Change schematic Jazz->Netlist->CBR netlist generator use the current window's
+  instead of forcing it to "schematic".
+* Update ADE simulation window Jazz Model selection form so it will support
+  PCMT-based corner definitions.
+* Added hooks to load Xpedion GoldenGate context file when XPEDION environment
+  variable is set.
+
+
+Technology Library:
+* Changed disk directory name of sbc35qtp technology library. This change has
+  no effect inside the Cadence environment when the library is defined using
+  the Jazz technology.lib file.
+* Add PWE (Pwell Exclusion) layer to technology file.
+* Change layer/purpose text/drawing to stream out on layer 230/0. Previous kit
+  releases did not stream out the text layer.
+
+Device Library, general:
+* Device callback changes require use of trigger callbacks function.
+  See Ebizz document "Jazz Cadence Design Kit Installation Instructions"
+  for instructions on how to migrate from one kit version to another.
+* Added sbc35x_misc library to contain pcell used for single-ended inductor
+  shield. This pcell is not meant to be directly used in the kit. The inductor
+  pcell will call the shield pcell when needed.
+* Added code to support the sbc35x_misc library as needed. You may see some
+  additional information messages during Kit startup, netlisting, or streamout.
+* Updated cds_generic reference library to support AMS Designer. Note that the
+  sbc35x Design Kit does not support AMS Designer at this time.
+* Updated sbc35x_rcx library to match changes in devices as noted below.
+* Remove Discrete_Components library from Cadence Library Manager. This library
+  contained discrete passives that were not supported by Jazz. The library
+  itself is shipped with the kit, but will be removed from the next release.
+  If you still need this library, you can add it to your cds.lib file by
+  adding this line to your local or project cds.lib file:
+  DEFINE Discrete_Components $RDS_CDSLIBS/Discrete_Components/devices
+* Updated documentation in CIW->Jazz->Technology Component Info for NPN, 
+
+Device Library, limitations:
+* Metal Fuse is not supported in this kit release. It will be added in the
+  next release.
+* PWE (Pwell Exclusion) is suppported in this kit release, but only for the
+  shielding under the new single-ended inductor. Use of the PWE layer under
+  any other devices is not directly supported by the models or extraction.
+
+Device Library, Updated devices:
+* NPN device updated to support scalable emitter length. You will need
+  to update your design libraries using the Trigger Callbacks command to
+  use the updated NPN.
+  + Benefits of the updated NPN device include:
+    - Optimization and sweeping of the emitter length during simulation
+    - Emitter area can be defined with precise resolution versus the limited
+      list of lengths in previous kit releases
+    - Tighter correlation to measured data with a more robust statistical infrastructure
+    - Support for PCMT model extraction (PCM-specific model files)
+  + Important notes:
+    - This update is one-way only. Once you trigger callbacks to update the
+      design library, you will no longer be able to use the design with an older
+      design kit release due to the parameter changes needed to use the new
+      scalable models.
+    - See the document "Jazz Cadence Design Kit Installation Instructions"
+      available on Ebizz for details on how to install new design kit
+      versions as well as general procedures to follow when switching kit
+      versions. Keep in mind that the NPN update is one-way only and is
+      not supported in the older design kits.
+    - We strongly recommend you create a backup of ALL of your design
+      libraries before you trigger callbacks. This will allow you to revert
+      back to the old design library if you encounter issues.
+    - If you do not want to update your libraries, you can still use the
+      latest kit.  However, if you modify any NPN instances or place new
+      instances, the NPN will be updated to the new version and will not
+      be compatible with previous kit releases. Also, if you do not update
+      your libraries, you must continue to use the older model release v4.9.
+    - This new kit release contains model version v5.0. A special
+      "compatibility" model file has been added to the v4.9 model directory
+      so that you can still use the v4.9 models when you update your NPNs.
+    - The change affects the component model and parameters only. The
+      NPN layout does not change.
+* NPN change, sbc35qtn variant only: Correct support for M1_UC option to work
+  with the sbc35qtn variant.
+* Inductors. Inductor models have been updated to use the new Jazz
+  Inductor Toolbox v2.0. You will need to update your design libraries
+  using both the Trigger Callbacks comand and also the Update Inductor
+  command to take advantage of the new inductor.
+  + Benefits of the update inductors include:
+    - Single-ended inductor now supports shields drawn in active
+    - Support for Polyimide topcoat in inductor simulation model. Not
+      all Jazz process variants support Polyimide. Check with your Jazz
+      support representative before designing with this option.
+    - Better model accuracy in roll-off above peak frequency
+    - Updated Inductor Search tool results to match new model and include
+      additional data points.
+  + Important notes:
+    - You can update all inductors in your design using the Update Inductor
+      command, or you can individually update inductors by editing the instance
+      and clicking on the button titled "Update to latest inductor model".
+    - This update is one-way only. Once you trigger callbacks to update
+      the design library, you will no longer be able to use the design with
+      an older design kit release due to the parameter changes needed to
+      use the inductor model.
+    - See the document "Jazz Cadence Design Kit Installation Instructions"
+      available on Ebizz for details on how to install new design kit
+      versions as well as general procedures to follow when switching kit
+      versions. Keep in mind that the Inductor update is one-way only and
+      is not supported in older design kits.
+    - If you do not want to update your libraries, you can still use the
+      latest kit.  However, if you modify any inductor instances or place
+      new instances, the inductor will be updated to the new and will not
+      be compatible with previous kit releases. Also, if you do not update
+      your libraries, you must continue to use the older model release v4.9.
+    - The change affects the component model and parameters. The
+      inductor layout will change if you selected an "exit" path other
+      than "straight" or "perpindicular", or if you enable the shield
+      (single-ended inductor only).
+* balun and balun_xfmr: Fix problem with Calibre Interactive LVS netlist.
+* PC: Fix problem with off-grid shapes in bulk ring
+* VPNP_HP - Fix problem with CBR netlist generation; fix simulation OP display;
+  add Assura LVS support.
+* Varactor_bl: Add support for sbc35qtn (no-DT) variant:
+  - Update deep trench parameter to reset to the proper setting when using
+    sbc35qtn variant.
+  - Update layout to remove DT layer when using sbc35qtn variant.
+* Varactor_mos: Updated layouts to use gate-centered contacts when possible.
+
+Model changes, version 5.0
+2005/10/10
+FET:
+- Change noimod to 1 for all fets to better predict off-state thermal noise.
+  Change is from 4->1 for 3.3V FET, and from 2->1 for 5V FET.
+NPN:
+- Updated NPN with new L-scalable model. This model is not directly
+  compatible with previous design kits. To use the L-scalable model
+  in previous design kits, you must also include a legacy support model file.
+PNP:
+- Add four more lpnp device models (no Deep Tranch structure) as:
+   pl1g_nodt, pl2g_nodt, pl4g_nodt and pl8g_nodt
+- Update the parasitic base-to-substrate capacitance   
+   based on the latest Cbs measurement data from K35883 varactor 
+   (same wafer used for lpnp DT and noDT devices). 
+- Add 1/f noise parameters kf/af for lpnp device models
+- Update pnpv_hp to align the model with k31194 and add the 1/f noise
+  parameters based upon the measurement
+CAP:
+- Add voltage coefficient (vc1, vc2) to c3t_mis model
+  based on Espec value: vc1=-1030e-6, vc2=-120e-6.
+IND:
+- Swap P1 and P2 on single-ended inductor model l3t, l3t4, and l3tqtx
+  cox components. This resolves a discrepancy between the layout P1 and
+  model P1. Simulation results will change slightly because of the
+  changed capacitance.
+- Updated Inductor Toolkit model v2.0 with latest version. This model is
+  not directly compatible with Inductor Toolkit model v1.4. Devices will
+  need to be updated to use the latest model from within the design kit.
+- Updated fixed-cell (balun1/5/10) corner multipliers with new Inductor
+  Toolkit model v2.0. The fast and slow corner cases change because of this.
+Statistical:
+- Fix compatibility issues with MMSIM6 Spectre release
+- Resolve warnings on global/local parameter name conflicts
++ Update devices to match changes to corner model. Major changes include
+  - Convert NPN to scalable model
+  - Add Inductor Toolbox 2.0 models
+  - See Corner model for additional changes
+
+Model changes, version v4.9
+2005/10/10
+NPN:
+- Added backward-compatibility file npnmap.scs to allow model v4.9 NPN's to
+  be used when NPN components are upgraded.
+
+Verification
+
+Calibre:
+- Tested with versions 9.1_1, 9.1_5, 2003.04, and 2004.04_11.22
+- To use Jazz PEX flow with XCalibre, you must use a Mentor Graphics
+  release earlier than 2003.05. Later releases no longer ship the
+  XCalibre extraction software needed for the PEX flow, although the
+  releases can be used for DRC and LVS.
+- To use the Mentor Calibre Interactive flow, you must use Mentor
+  Graphics release 2004.04_11.22. This version is only available by
+  request from Mentor Graphics. This flow is only supported for
+  process variants sbc35qtx sbc35qtc sbc35qtf sbc35qtl and sbc35qts.
+- Changed Calibre Interactive startup behavior to allow for a user-specified
+  value for the MGC_CALIBRE_*_RUNSET_FILE environment variable. Previously,
+  the variable would always be reset to the Jazz ruledeck runsets.
+- Fixed problem with CIW->Jazz->Verification menu where the Calibre Interactive
+  XRC menu item would be disabled when it should not have been.
+
+
+Calibre Deck changes:
+- Metal Resistor rules MF.* are not supported in this release.
+- Updated Calibre common directory to version t013
+- To enable PI, you must set an environment variable before using the deck:
+    setenv polyimide=y
+
+ANT: No change
+DRC:
+- 5V process only: Change 6/11.A, 6/11.AA enclosure from 0.30 to 0.25
+- noDT process only: Change B6.A to 0.95 outside varactor_bl, 0.25um inside varactor_bl
+- VP.B/I: Fix problem with flagging non-PNPV_HP shapes
+- Update 19.C/D to allow active/M1 under inductor when part of generated shield
+- Add VP.W, 94.* (PWE)
+ERC: No change
+LVS: No change
+LUP: No change
+LVS: No change
+PEX: No change
+Stress:
+- Change to rule description in STC.B/C/D/E from 250mils to 6350um
+- Change to SBC42/43/45/46 rules to flag only if greater-than 200um. Previously,
+  these rules flagged greater-than or equal-to.
+
+Assura Deck changes:
+- Tested with version 3.1.2_USR1, 3.1.3_USR1
+- You must define the Jazz verification decks using the "technology library"
+  method in Assura. DRC, LVS, and RCX runs will not function correctly
+  if you directly reference the ruledeck files. See Cadence's documentation
+  for more information on defining the Assura ruledecks in this manner.
+
+Known issues:
+* DRC:
+  - Certain standard cell metal layout styles can create a false
+  8/18/28/38.C.a violation.
+* LVS:
+  - nfet_esd/n5p0fet_esd will not pass LVS when fingers > 1.
+* sbc35qtd: Support for DRC and LVS provided. RCX support is not provided in
+  this release.
+
+
+ANT:
+- Add PWE layer support
+- Add support for PNPV_HP device
+DRC:
+- 5V process only: Change 6/11.A, 6/11.AA enclosure from 0.30 to 0.25
+- noDT process only: Change B6.A to 0.95 outside varactor_bl, 0.25um inside varactor_bl
+- Update 19.C/D to allow active/M1 under inductor when part of generated shield
+- Add PWE layer support
+- Update 6_11.X, 15.C/E, 23.A, DNW.6/9 to support PNPV_HP
+- Fix BD.K,OBD.Ah nwell extension to flag <2um. Previously flagged <=2um.
+ERC:
+- Update chip-wide checks to filter DNW. This includes floating substrate checks
+  and soft-ptap checks.
+- Add Deep Nwell shorting Nwells check
+- Add PWE layer support
+- Add PNPV_HP device support
+- Add Nwell without ntap check to be consistent with Calibre deck
+LUP:
+- Add PWE layer support
+- Add support for PNPV_HP device
+LVS:
+- Add pnpv_hp device support
+- Update inductor compare to print list of mismatched parameters
+- Update under-inductor support to allow taps
+- Update DNW derivation to separate from analog
+- Update PNPV_HP device support to allow for butting devices
+- Fix mosfet connectivity to allow for pin over device terminal
+- Fix RCX extraction disconnect caused by met3 derivation
+RCX:
+- Fix mosfet connectivity to allow for pin over device terminal
+- Fix RCX extraction disconnect caused by met3 derivation
+- Update schematic parameter copying to work with NPN and inductor component
+  changes. Also add initial support for pnpv_hp component copying.
+Stress:
+- Add PWE layer support
+- Add support for PNPV_HP device
+- Remove unneeded texting/label functions
+- Change stress area check to use dataextent or 10mm
+- Update MIM metal exclusions to include TM2. 
+- Update STC.B/C/D/E using downUp instead of geomWidth to improve speed
+- Update ST.A,B,I derivation to better handle slits, slit spacing, and big metal
+- Update SMC42/43 using downUp instead of geomWidth to improve speed
+
+
+___________________________________
+Date: 2005/05/31
+Library: sbc35x
+Relevant Specification Documents:
+SBC35QTP:
+  Design Application Note: NPB-PS-0618, Rev.5
+All Other SBC35x:
+  Design Rules: NPB-PS-0109, Rev.9
+  Electrical Spec: NPB-PS-0178, Rev.11
+
+Software versions tested with this release)
+* Cadence IC releases IC50.33USR2, IC5.1.41
+* Mentor Calibre releases 9.1_5, 2003.04, and 2004.04_11.22
+  - XCalibre is not supported in v2003.04 or later releases
+* Cadence Assura releases 3.1.2
+* ADS release 2003C
+
+Highlights:
+* IC50.33USR2 is minimum recommended IC tools version
+* Assura requires version 3.1.2. A new menu item CIW->Jazz->Assura
+  Verification Flow for Assura 3.1 has been added to describe the
+  updated Assura flow.
+* Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+* Process variant sbc35qtn varactor_bl support added
+* Changed/update spectre Operating Point to work with latest models
+* Calibre Interactive / XRC Calibre View Initial Public Release
+* Device callback changes require use of trigger callbacks function.
+  See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another.
+
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  sbc35mx sbc35mf sbc35qx sbc35qtx sbc35qta sbc35qtb sbc35qtc sbc35qtd
+  sbc35qtf sbc35qtl sbc35qtn sbc35qts sbc35qtp
+* The sbcp35q process variant has been renamed to sbc35qtp. The old name
+  sbcp35q is no longer supported. You must migrate all existing projects to
+  the sbc35qtp process variant following the instructions below for
+  changing the variable RDS_CDS_VERIFY_TECH.
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbc35qtp, and is strongly
+  recommended for all other processes.
+* The Jazz makeProjectTree script now automatically supports the new
+  tech library attachment needed by the sbc35x design kit.
+  If you use the sbc35x design kit, your library will automatically be
+  attached to the correct sbc35x_techlibs technology library. All other
+  kits remain unaffected by this change.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment changes:
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor
+  or hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these
+  violations before cleaning up violations.
+* Corrected issue with Jazz custom tool that saves Artist save states as
+  cellviews. Addressed issue where state names that required escaped
+  characters would not be saved as cellviews properly.
+* Cleaned up CIW->Jazz menu to remove older documents that were not
+  applicable.
+* Moved Inductor Toolkit "cdsio" environment variables to script file.
+  If you use the Jazz-provided RDS.cshrc file, this will not require any
+  changes in your setup.
+* Correct Jazz Calibre verification (DRC, LVS, PEX) to properly use
+  a view other than "layout" and "schematic"
+* Rename Layout->Jazz menu Map Hard Cell to Layout Migration Tool.
+* Fix problem with Inductor Search tool in certain cases where the
+  CDF Property form would not be updated when an inductor was chosen from 
+  search list.
+
+Device Library, general:
+* Device callback changes require use of trigger callbacks function.
+  See CIW->Jazz->Application Notes->FAQ for info on how to migrate
+  from one kit version to another.
+* Addressed an off-grid issue with guard-ring and area/line contact creation.
+  Affects many devices, but not all, that have integrated guard rings.
+  Affects Jazz area and line contact creation utilities.
+
+Device Library, limitations:
+* Metal Fuse is not supported in this kit release. It will be added in the
+  next release.
+* PWE (Pwell Exclusion) is not suppported in this kit release. It will be
+  added in the next release.
+
+Device Library, new devices:
+* r_dummy - Dummy LVS resistor. Used to logically separate a physical net
+  in a layout. See CIW->Jazz->Tech Components Web for more info.
+* pnpv_hp - High performance Vertical PNP for sbc35qtd process variant
+
+Device Library, Updated devices:
+* balun, balun_xfmr: Updated model to new, silicon-validated models. You must
+  trigger callbacks to use the new model.
+* NPN: Add M1_UC metal1 unconnected emitter option
+* varactor_bl: Update model/callback/LVS to allow for DT vs noDT model
+  for sbc35qtn.
+* varactor_mos: Update layout metal interconnect to provide uniform spacing
+  on metal1-metal2. Add support for using model M2 interconnect estimation
+  vs using M2 post-layout extraction.
+* Split sbc35x_techlib into 3metal, 4metal, 4thickmetal, and 5V techlibs.
+  Default via now uses correct spacing for process node in order to make
+  LEF/DEF flow work. For example, in sbc35qt* v34 and v34qtx are now
+  the same size, and in sbc35m* v23 and v23m are the same size. Previously
+  the v23 and v34 would match sbc35qx. You must use the new sbc35x_techlib
+  and properly set your RDS_CDS_VERIFY_TECH as described above to see this
+  improvement.
+* Updated design kit to support
+  Mentor Graphics Calibre Interactive / XRC CalibreView verification flow.
+  - See the Calibre Interactive menu item in the CIW->Jazz->Verification menu.
+  - Most devices have had netlisting updated to support this.
+  - Process variants sbc18pt and sbc18pth only
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or CalibreView extracted views.
+  All devices in rcxlib have parameters set to read-only and callbacks disabled
+  to prevent accidental use in circuits.
+
+ESD Library changes:
+- Updated schematics to better match diode area/perimeter in layout
+
+Model changes, version 4.1
+- Operating point or current probing in old kit may not work on new model,
+  and new OP or current probing may not work when using older model.
+  Use Results Browser or Results Display to review OP data from older
+  model files if it is not visible in the schematic.
+FET:
+- Updated FET model to allow for PCM-compatible model file building.
+- Update fastslow and slowfast 3.3V and 5V FET parameters for the
+  following params:
+  tox, dlc, lint, wint.
+- Update nwell resistor Spectre subckt structure by moving nwdiode out of
+  verilog-a block.
+- Fix nwell resistor issue with sign of corner model parameter rnw_dw_delta
+- Revise nwell resistor in PC to use simplified resistor model.
+- Mos varactor: add metal-2 connection as option in model
+  met2_con=1: use both metal-1 and metal-2 connection for mosvar layout
+  met2_con=0: use metal-1 connection only for mosvar layout
+PNP:
+- LPNP: update model based on new device structure (no EP)    
+  and aligned with modified Espec for BF = [4, 15, 26]. 
+= Varactor_BL:
+  - Add new model for sbc35qtn
+  - Update models based on the latest measurement data (K35883) from
+    wafer#3 (rfvar_bl) and wafer#1 (rfvar_bl_nodt). 
+- Update pnpv_hp (vpnpn, vpnpw) model with latest measured data
+CAP:
+- Updated MIM cap model default l/w  to 10u/10u. No change in design kit.
+- Add R_via, R_tp and L_tp (top plate), L_bp (bottom plate)
+  into all mim cap models
+- Revised subckt for 3-terminal MIM over well to leverage 4-terminal
+  subckt.
+- Add c3t_mim_mx, c3t_mimw_mx, c4t_mimw_mx, c3t_mim2_mx, c3t_mimw2_mx,
+    c4t_mimw2_mx for SBC35MX, SBC35MF process.  
+- Update the via size step equation in mim cap model to match rules
+  MC9 vs MC9.a
+IND:
+- Update balun models with new fitted models. Model names change:
+  E.g., balun1 -> balun1_sbc35m4_3u, balun1_m3 ->balun1_sbc35m3_3u
+- Integrate Inductor Toolkit 2.0 models into kit. New models require
+  design kit updates in order to use.
+RES:
+- Add r_dummy LVS resistor schematic model. Layout uses extracted resistance value.
+Statistical:
+- Update devices to match changes to corner model
+- Add process support for baluns
+- Integrate new Inductor Toolkit v2.0 inductors and new balun model
+- Revise nwell resistor to move diode out of Verilog-A code
+- Update statistical factors used across devices to improve correlation
+
+Verification:
+
+Calibre:
+- Tested with versions 9.1_1, 9.1_5, 2003.04, and 2004.04_11.22
+- To use Jazz PEX flow with XCalibre, you must use a Mentor Graphics
+  release earlier than 2003.05. Later releases no longer ship the
+  XCalibre extraction software needed for the PEX flow, although the
+  releases can be used for DRC and LVS.
+- To use the Mentor Calibre Interactive flow, you must use Mentor
+  Graphics release 2004.04_11.22. This version is only available by
+  request from Mentor Graphics. This flow is only supported for
+  process variants sbc35qtx sbc35qtc sbc35qtf sbc35qtl and sbc35qts.
+
+Calibre Deck changes:
+- Metal Resistor rules MF.* and PWE rules 94.* are not supported in this release.
+- Updated Calibre common directory to version t012
+- Add polyimide support. To enable PI, you must set an environment variable
+  before using the deck:
+    setenv polyimide=y
+
+Antenna
+- No change
+DRC
+- Add polyimide topcoat checks
+- Add 9.A/9.B topcoat width/spacing checks
+- Add BMP.* bump-pad checks by also using existing BD.* checks
+- Add PNPV_HP support rules VP.*
+- Add rules 4.B, 4.B.artifact, 4.B.a, 4.B.a.1 for Buried Layer
+- Added new rules 23.D*
+- Revise 34.A* from 0.5um -> 0.6um
+- Add/revise rule C.5X to rule C.12
+- Revise 8/18/28.C to better check vias inside MIM/SMIM
+- Revise 5.C to allow for circular fet "nfetswitch"
+- Revise 5/8/18/28/38.grid to flag oly if width < min*1.5
+- Revise BD.5 to add BD.5.artifact check
+- Rename NPN/PNP DETACHED checks to new rules B26/P.20
+ERC
+- Add Shorting_thru_deepnwell soft connection check
+LUP
+- Restore LUP.B.C.c.1 rules for 5V process variants
+LVS
+- Enable dummy resistor without custom switch
+- Add PNPV_HP support
+- Add top plate MIM metal filtering to match proposed model change.
+- Add preliminary support for 4-terminal caps. Not supported yet in library.
+- Update mos varactor to extract fingers/segments and match new
+  model interconnect parasitics.
+PEX
+- Add top plate MIM metal filtering to match model change.
+- Update mos varactor to extract fingers/segments and match new model
+  parasitics.
+- Add polyimide overcoat support option to PEX deck
+Stress
+- No changes
+
+Assura:
+- Tested with versions 3.1.2_USR1 and 3.1.3USR1
+- You must define the Jazz verification decks using the "technology library"
+  method in Assura. Verification, LVS, and RCX runs will not function correctly
+  if you directly reference the ruledeck files. See Cadence's documentation
+  for more information on defining the Assura ruledecks in this manner.
+- Assura decks provide a GUI update to allow user to enter
+  power and ground names on Assura DRC GUI for ESD/Latchup and ERC checks.
+  The new Assura 3.1 Verification Guide explains how to use these new fields.
+- Assura HRCX has not been tested and is not currently supported. 
+- Main_All switch automatically set for DRC checks by default
+- Assura support provided for the following process variants only:
+  sbc35 sbc35mf sbc35mx sbc35qx
+  sbc35qta sbc35qtf sbc35qtl sbc35qtn sbc35qtp sbc35qts sbc35qtx
+
+Assura Deck changes:
+- Metal Resistor rules MF.* and PWE rules 94.* are not supported in this release.
+- Add polyimide support. To enable PI, you must select the switch PolyimideChecks
+  in the GUI.
+
+Antenna
+- No change
+DRC
+- Add polyimide topcoat checks
+- Add 9.A/9.B topcoat width/spacing checks
+- Add BMP.* bump-pad checks by also using existing BD.* checks
+- Add off-grid checks for non-routing layers
+- Add 5/8/18/28/38.grid to flag oly if width < min*1.5
+- Add new rules B26, P.20, C12, 15.C, 23.D
+- Add rules 4.B, 4.B.artifact, 4.B.a, 4.B.a.1 for Buried Layer
+- Revise 34.A* from 1.2um -> 0.6um
+- Revise MC7/SMC7 with better implementation
+- Revise 19.B with better implementation
+ERC
+- Update n-active derivation
+LUP
+- Update n-active derivation
+- Restore LUP.B.C.c.1 rules for 5V process variants
+LVS
+- Update balun/balun_xfmr with new model names and fixed sizes.
+- Update MOS varactor to extract fingers/segments and match new model
+  interconnect parastitics
+- Add dummy LVS resistor support
+- Add top plate MIM metal filtering to match model change
+RCX
+- Rebuilt RCX GUI template file. Corrects issue where new features like RCLK
+  extraction were not visible.
+- Update parameter copying to include balun model and
+  varactor_bl model/DT value.
+Stress
+- Revise large/small die derivations to check side length instead of area.
+
+___________________________________
+Date: 10/11/2004
+Library: sbc35x (sbc35mx, sbc35mf, sbc35qx, sbc35qta, sbc35qtb,
+         sbc35qtf, sbc35qtl, sbc35qtn, sbc35qtp, sbc35qts, sbc35qtx)
+Relevant Specification Documents:
+SBC35QTP:
+  Design Application Note: NPB-PS-0618, Rev.5
+All Other SBC35x:
+  Design Rules: NPB-PS-0109, Rev.8
+  Electrical Spec: NPB-PS-0178, Rev.10
+
+Software versions tested with this release)
+* Cadence IC releases IC50.33USR3, IC446MSR10
+* Mentor Calibre releases 9.1_5, 2003.04, and 2003.06
+  - XCalibre is not supported in v2003.04 or later releases
+* Cadence Assura releases 3.1.2 (IC446MSR7, IC50.33)
+* ADS releases 2003A and 2003C
+
+Highlights:
+* IC50.33USR2 is minimum recommended IC tools version
+* Assura 3.1.2 or higher required. 3.0.7 no longer supported.
+* Removed sbc35px and sbcp35q support
+* Reverted sbc35x techfile.cds to sbc35x 3.3V overplots
+* New process sbc35qtn support added
+* 3.3V MOS models use new scalable models
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  sbc35mx, sbc35mf, sbc35qx, sbc35qta, sbc35qtb, sbc35qtf, sbc35qtl,
+  sbc35qtn, sbc35qtp, sbc35qts, sbc35qtx
+* The sbcp35q process variant has been renamed to sbc35qtp. This is the last kit
+  to support the sbcp35q process variant. You should migrate all existing
+  projects to the sbc35qtp process variant following the instructions below for
+  changing the variable RDS_CDS_VERIFY_TECH.
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbc35qtp, and is strongly
+  recommended for all other processes.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment changes:
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+* Updated artifact generator to NOT generate implant layer artifacts
+
+ESD Library:
+* New no-deep-trench esd library provided. When using sbc35qtn process variant, this
+  new library will automatically be used.
+* 5V ESD lib is now named "sbc35x_5v_esdlib". If you need to use the old library
+  name of "sbcp35q_esdlib", you can change the definition in your project by
+  adding this line to the cds_master/project.lib file:
+	 DEFINE sbcp35q_esdlib $RDS_CDSLIBS/sbc35x/esdlib_sbcp35_v1
+
+New devices, Design Library:
+* Mos varactor "varactor_mos". Supported in 3.3V processes only.
+
+Modified devices, Design Library:
+* Updated CDF for all devices to properly support IC50.33 OP annotation
+* Updated current probing for Spectre and SpectreS
+* RF Fet current and OP annotation updated to work with latest model file. This may
+  prevent OP annotation from working with older model files.
+* passgate: Updated implant generation to fix DRC error that could occur in
+  horizontal mode. Also altered length/width to use 2X grid spacing.
+  Your cell may grow or shrink by 1 grid point because of this change.
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or CalibreView extracted views.
+  Additionally, all devices in sbc35x_rcx library have parameters set to
+  non-editable to reflect its use for extracted view construction.
+
+
+Model Updates * Model v4.0
+FET:
+- Updated 3.3V fet model with BPV-based scalable model.
+- Added 3.3V MOS Varactor
+- Update nwell resistor tc model based on measurement data at
+  T=-40,0,25,40,80 and 125C
+- Added preliminary model for deep-nwell ring
+PNP:
+- Updated BL varactor cv model to be aligned with the Espec value
+- Updated BL varactor nominal and T-related parameter for leakage current
+- Updated model using OPEN-THRU method to properly de-embed all pad and feedline
+  related parasitic resistance, capacitance and inductance for f up to 20GHz.
+- Update lpnp bf parameter to be consistant with E-spec
+RES:
+- update resistor tc model based on the latest measurement
+  with T=-40, 0, 25,40,80 125
+- add 1/f noise model parameter for rnp and rph model (for spectre only)
+  based on the latest measurement data
+- Update rhosub from 8.0e-2 to 1.0e-3
+- Update rsub equation to include ns factor to address parallel device
+  scaling issue
+
+
+Verification:
+DRC Rules 4.B.a and 4.B.a.1 are not supported in this release.
+Dummy LVS resistors are not fully supported in this release.
+
+Calibre:
+
+DRC:
+- See Design Rule document for full list of rule changes.
+- Add mos varactor, *.pin rules. 
+- Revise *.Bad to match new Design Rule document rules.
+- Revise *.artifact to catch straddling data.
+- Update *.artifact to be consistent with other changes. Added *.artifact
+  for each rule.
+- Add 2.Bad, 59.B, 5.Bad, 5.D, 6_11.X, 611.A.*, 6/11.E.a, 7.B, 7.C, 7.E/F,
+  RH13/14, DNW.9/16, 19.C/D, width/spacing rules for all layers
+- Add sbc35qtn rules
+- Remove MC8/SMC8
+- Remove Inductor integrity checks as they create too many false violations
+
+ESD/LUP:
+- Revised LUP.B.C.c, LUP.D, LUP.D.c, LUP.E, LUP.G.a
+- Added LUP.Q, device periphery display
+- Removed LUP.B.C.c.1, LUP.D,b,d, LUP.E.b,d, LUP.I.c
+
+ERC:
+- Exclude ngate to gnd or pgate to pwr
+
+LVS:
+- Add mos varactor
+- Update device model as needed for CI / XRC
+
+STRESS:
+- Revised rule names to match latest document. Implemented at all design sizes
+
+PEX:
+- Revised cond_poly sheet resistance
+
+
+Assura
+- Assura version 3.12 or later is required.
+- Assura 3.12 (IC446/IC5033USR2) has been tested for this release.
+- If you use the Jazz ASIC libraries, see the latest Digital Design Manual
+  for instructions.
+- Process variants supported in Assura:
+  mf, mx, qta, qtf, qtl, qtn, qtp, qts, qtx, qx
+  Initial release for qtn and qtp variants
+
+Antenna:
+- Add mos varactor, 5V devices support.
+
+DRC:
+- See Design Rule document for full list of rule changes.
+- Default switch "Main_All" now enabled as Assura GUI form default.
+- Add mos varactor, 5V devices support, *.pin rules. 
+- Revise rpp resistor definition.
+- Revise *.Bad to match new Design Rule document rules.
+- Revise *.artifact to catch straddling data.
+- Update *.artifact to be consistent with other changes. Added *.artifact
+  for each rule.
+- Add 2.Bad, 59.B, 5.Bad, 5.D, 6_11.X, 611.A.*, 6/11.E.a, 7.B, 7.C, 7.E/F,
+  RH13/14, DNW.9/16, 19.C/D, width/spacing rules for all layers
+- Update *.Bad for better consistency with Calibre
+- Add sbc35qtn rules
+- Revise BD.6* for better coverage
+- Remove MC8/SMC8
+- Remove Inductor integrity checks as they create too many false violations
+
+ERC:
+- Add mos varactor, 5V devices support.
+- Exclude ngate to gnd or pgate to pwr
+
+ESD/LUP:
+- Add mos varactor, 5V devices support.
+
+Stress:
+- Add mos varactor, 5V devices support.
+- Revised rule names to match latest document. Implemented at all design sizes
+
+LVS:
+- Corrected an issue with butting diffusion where connectivity may not be established.
+  This fix may reveal new LVS violations in your design where the butting diffusion
+  creates an unintended connectivity path.
+- Updated pin names to work with new 3.1.2 pin naming convention. Fixed permute issues
+  caused by Assura tool behavior change in 3.1.2
+- Add mos varactor, 5V devices support.
+- Add *.pin rules. Updated metal4 inductor recognition and MIM cap bottom plate.
+
+RCX:
+-No support for HRCX (Hierarchical RCX) in current release
+-Extraction (LVS/RCX) for M3 version of balun and balun_xfmr devices are
+ not supported in current release
+-RCX decks are recompiled using Assura 3.1.2
+-Utility to examine and fix extracted device parameters of existing extracted views.
+-Copy fuse and npn parameters from schematic to extracted view
+- Assura callback code (callProc) is updated:
+  - Correct issue with NPN, inductor and MOS devices parameters copied correctly to
+    extracted devices. Updated code also supports Assura 3.1 RCX.
+  - New callProc code fixes problem in previous patch where as/ad/ps/pd
+    were scaled incorrectly (as/ad scaled by 1e-6 instead of 1e-12; ps/pd scaled by
+    1e-12 instead of 1e-6)
+  - Updated callback code to also copy NPN non-simulation parameters to extracted view.
+  - Updated callback code to handle iterated instances across hierarchy.
+- Problems with previous callProc code have been fixed, but you may have existing
+  extracted views that were extracted with previous design kits which contain
+  the wrong parameters. A new Utility to examine and fix extracted device
+  parameters in existing extracted views has been created.
+  - This utility will allow you to run a comparison to see if parameters were
+    not copied properly from the schematic to the extracted view.
+  - This utility will also allow you to examine your extracted views
+    to see if they have an Assura 3.1 MOS W parameter scaling problem. The utility
+    compensates for an Assura 3.1 tool issue that is under investigation where
+    the MOS W parameter is in micron units instead of meter units.
+  - This utility will also allow you to examine your extracted views to
+    see if they have incorrect as/ad/ps/pd scaling from the previous patch.
+  - Instructions for using this tool:
+    * In the CIW->Jazz->Verification menu, select the new menu item
+      Assura Extracted View parameter check/fix Tool
+    * A new form appears with instructions at the bottom. Here is a copy of the instructions:
+    - Select the library to examine in the 'Lib Name' menu.
+    - Enter the name of the 'Extracted View' using grep syntax. The default
+      is "av_extracted.*", meaning all views containing with the words "av_extracted".
+    - Select the cells you wish to check in the cell list.
+    - Click on the button 'Run Comparison and View Report'
+    - Review the report file. A summary at the bottom indicates which cells
+      have parameter discrepancies.
+    - Select the cells in the cell list that have parameter discrepancies and
+      need to be fixed.
+    - Click on the button 'Run Updater to Fix Parameters'
+    - Another report file appears showing all of the changes made. The count
+      of instances change will be different this time. It show ALL instances
+      that had parameters copied, not just the instances that required a change.
+    - Change the 'Extracted View' to "av_analog_extracted.*" to check/fix all
+      analog_extracted views used for simulation. Repeat the comparison,
+      review, and fix steps.
+___________________________________
+Date: 05/22/2004
+Library: sbc35x (sbc35mx, sbc35mf, sbc35qx, sbc35qta, sbc35qtb,
+         sbc35qtf, sbc35qtl, sbc35qtn, sbc35qtp, sbc35qts, sbc35qtx,
+         sbc35px)
+Relevant Specification Documents:
+SBC35QTP:
+  Design Rules: NPB-PS-0410, Rev.5
+  Electrical Spec: NPB-PS-0270, Rev.4
+All Other SBC35x:
+  Design Rules: NPB-PS-0109, Rev.7
+  Electrical Spec: NPB-PS-0178, Rev.9
+
+Software versions tested with this release)
+* Cadence IC releases IC446MSR7, IC50MSR3, IC50.32, IC50.33USR1
+* Mentor Calibre releases 9.1_1, 9.1_5, 2003.04, and 2003.06
+  - XCalibre is not supported in v2003.04 or later releases
+* Cadence Assura releases 3.07 (IC446MSR7) and 3.1.2 (IC446MSR7, IC50.33)
+* ADS releases 2003A and 2003C
+
+Process variant support:
+* This kit supports the following process variants and verification decks:
+  sbc35mx, sbc35mf, sbc35qx, sbc35qta, sbc35qtb, sbc35qtf, sbc35qtl,
+  sbc35qtn, sbc35qtp, sbc35qts, sbc35qtx, sbc35px
+* The sbcp35q process variant has been renamed to sbc35qtp. This is the last kit
+  to support the sbcp35q process variant. You should migrate all existing
+  projects to the sbc35qtp process variant following the instructions below for
+  changing the variable RDS_CDS_VERIFY_TECH.
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbc35qtp, and is strongly
+  recommended for all other processes.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to a supported
+  process variant in order to use this design kit. If this variable is
+  not set, the kit will refuse to function. To set this variable, modify
+  your project-specific .cshrc file and change the setting of
+  RDS_CDS_VERIFY_TECH to the process variant you are using.
+  Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Kit and environment changes:
+* Removed setting of VersionSync variables VSFILEPERMS and VSDIRPERMS to allow
+  end-user customization. If you use VersionSync, you must now set these
+  variables as needed on a site or project basis.
+* Updated "Trigger Callbacks" function to allow a "dry run" where callbacks
+  are run, but the schematic or layout is not saved. Added "Trigger Callbacks"
+  to the CIW that can be run on schematic or layout. Merged Trigger Callbacks
+  for cellview, hierarchy, and library into one form.
+* Updated Schematic Jazz->Utility->Update Inductor... to address an occasional
+  failure to run.
+* For Assura, added new utility in CIW->Jazz->Verification->Assura Extracted
+  view parameter check/fix tool. See the Assura notes below for more
+  information on this utility. Current Assura users MUST use this utility.
+* Updated Calibre Integration loading with better error checking at load time.
+* Moved script default locations for prependPath, prependLib, Inductor.cshrc,
+  and run_cal from $RDS_ROOT/bin/rfbin to $RDS_CDSWARE/bin.
+* Removed legacy file loading.  If you use these files, you must move the
+  commands to your own site-specific init files:
+  - Removed sourcing of $RDS_ROOT/etc/rds_*_config files.
+  - Removed setting of RDS_STDSIM_* environment variables.
+  - Removed sourcing of $RDS_CUSTOM/cadence/cdsSite* files.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+Modified devices, ESD Library:
+* esdlib_sbcp35_v1/hv_bigfet
+  - Corrected schematic/layout design flaw that could cause high leakage
+    current. Disconnected PFET M0 gate from source and connect to vss.
+    Corresponding layout change required changes to the contact, metal1,
+    and via1 layers.
+  - metal2 layer was slotted to remove metal2 slotting violations.
+    The via1's under the slotted metal2 needed to be removed.
+
+New Device, Design Library:
+* balun_xfmr: This is a 4-terminal version of the balun fixed-size cell.
+  The center taps have been removed from the schematic and layout. Supported
+  sizes are 1nH, 5nH, and 10nH. This is supported in the 4-metal thick (sbc35qt*)
+  and 3-metal (sbc35m*) processes only.
+* c3t_smimw4: Stacked mim over well. Supported in sbc35qtp abd sbc35qts.
+
+Modified devices, Design Library:
+* Added thickline display packets to general $RDS_ETC/display.drf for use
+  with metal dummy fill block layers
+* Updated sbc35x_techlib to include additional layers for Cadence SNA tool.
+  SNA tool support is not included in this release.
+* Updated sbc35qtp_techlib to better support LEF/DEF flow by updating metal
+  spacing/width rules and changing v4 to represent thick (sbc35qtp) v4
+* Updated inductor parameters for all single and differential inductors
+  - Default CDF values updated to match Inductor Toolkit output. No change will occur
+    to existing inductors, only new inductors placed with default geometry.
+  - Increased max underpass / max width from 30u to 35u for all
+    single and differential inductors.
+* Updated inductor search tool
+  - Remove unsupportable geometries from search list
+  - Speed startup by loading search tables when first search is performed
+* Update differential inductor layout to prevent excessive vias in center tap
+* c3t_smim4: Modified min W and L from 1.45u to 1.5u to match min overplots allowed
+* passgate: Changed lower schematic inst value for nrd, nrs, ld, and ls from "none"
+  to "" for better Calibre Interactive compatibility.
+* pfet_esd: Changed lower schematic inst value for nrd, nrs, ld, and ls from "none"
+  to "" for better Calibre Interactive compatibility.
+* pc - Fixed floating point negative zero error in PC layout routines.
+* varactor_bl: Corrected default layout param string. No effect on existing devices, only
+  newly placed instances with default geometry will be affected.
+* ADS simulator support:
+  - Added ads simulator views to all cds_generic pex_* extracted view parasitic
+    devices for Jazz PEX flow with Calibre/XCalibre.
+  - Added ads views for pcapacitor, pinductor, pmind, and presistor for
+    support of ADS simulations with Calibre or Assura extracted views.
+* Rebuilt rcxlib with latest parameter changes for use with Assura RCX
+  or Calibre Interactive CalibreView creation. ADS views added where needed for
+  all devices to enable ADS simulation of Assura or CalibreView extracted views.
+
+Model v3.8 changes:
+FET:
+ + Unified model translation across process families. Changes to RF Fet
+   subcircuit resistor names may affect current probing in older kits.
+Inductor:
+ + Added balun_xfmr subcircuits with ct1/ct2 unconnected.
+
+Model v3.7a changes:
+FET:
+ + Updated wmin in some 3.3V fets to match process min (0.5u->0.4u)
+ + Updated lmin in some 5V fets to match process min (0.65u->0.6u)
+ + Updated 1/f noise model for 5V fets.
+NPN:
+ + Added NPN no-deep-trench sbc35x models (*_nodt)
+PNP:
+ + Updated prototype device pnp_hp models vpnpn and vpnpw
+Updated statistical models:
+ - Corrected nwell resistor in statistical PC model to use r_nwpc instead
+   of rnw (resistance decreases)
+ - Corrected nwell resistor in statistical pc5p0 (5V) model to eliminate
+   simulator warning
+ - Updated lmin in some 5V fets to match process min (0.65u->0.6u)
+ - Updated 1/f noise model for 5V fets.
+ - Added NPN no-deep-trench sbc35x models (*_nodt)
+ - Updated prototype device pnp_hp models vpnpn and vpnpw to match NOM
+   corner model updates
+
+Verification:
+DRC Rule RH14 is not supported in this release.
+
+Calibre:
+DRC:
+- Added support for sbc35qtp and sbc35qtb process variants
+- Added noloc switches, artifact version of 5.B,D;
+- Revised MC7, C10, LUP.G.a, 23.A.artifact, metal5 poly fuse layer derivation
+- Splitted BA D_cap into multiple sections
+
+ESD/LUP:
+- Revised LUP.G.a
+
+LVS:
+- Revised moscap switching between run_cal and ci
+
+STRESS:
+- Revised ST.A to accomodate ldiff with wide metal body, ST.A,B,C,I to check for all levels
+- Added smim filter
+
+PEX:
+- sbc35m, sbc35qt: Revised cond_poly sheet resistance
+
+
+Assura DRC:
+-Added bad 4fF cap check to flag topmm and tm2 not covered by cap2fF marking layer
+-Deleted device integrity check of inductors
+-Added artifact checks
+-Update RDL.D, BD.1, PF.AE, PF.AA, MC7, 19.C,D, 15.I
+-Updated 6.B and 11.B to flag implants with corners touching
+-Exclude c_cell from gate layer to correct miscap being flagged as floating gate
+-Changed stress region layer composition to only include extent of area with physical
+ data, marking layers are not included
+-Updated antenna checks SA.0, SA.1 and SA.2
+-Added hs npn emitter to floating metal net filters
+
+Assura LVS:
+-Added c3t_smimw4 and balun_xfmr device extraction
+-Updated l3t and ldiff parameter extraction code due to layout change
+-Redefined rps terminal layers and established connectivity of rps terminal layer
+-Updated lvs compare rule for NPNs to work around Assura LVS 3.1.2 ISR tool issue.
+
+Assura RCX:
+-No support for HRCX (Hierarchical RCX) in current release
+-Extraction (LVS/RCX) for M3 version of balun and balun_xfmr devices are
+ not supported in current release
+-RCX decks are recompiled using Assura 3.07
+-New Utility allows you to correct the Assura RCX 3.1 W parameter of MOS devices
+ scaling problem for existing extracted views. This fix is put in place to compensate Assura 3.1 tool issue.
+-New Utility to examine and fix extracted device parameters of existing extracted views.
+-Copy fuse and npn parameters from schematic to extracted view
+- Assura callback code (callProc) is updated to make sure the NPN, inductor and
+  MOS devices parameters are copied correctly to extracted devices. Updated
+  code also supports Assura 3.1 RCX.
+- Additionally, new callProc code fixes problem in previous patch where as/ad/ps/pd
+  were scaled incorrectly (as/ad scaled by 1e-6 instead of 1e-12; ps/pd scaled by
+  1e-12 instead of 1e-6)
+- Updated callback code to also copy NPN non-simulation parameters to extracted view
+- Problems with previous callProc code have been fixed, but you may have existing
+  extracted views that were extracted with previous design kits which contain
+  the wrong parameters. A new Utility to examine and fix extracted device
+  parameters in existing extracted views has been created.
+  - This utility will allow you to run a comparison to see if parameters were
+    not copied properly from the schematic to the extracted view.
+  - This utility will also allow you to examine your extracted views
+    to see if they have an Assura 3.1 MOS W parameter scaling problem. The utility
+    compensates for an Assura 3.1 tool issue that is under investigation where
+    the MOS W parameter is in micron units instead of meter units.
+  - This utility will also allow you to examine your extracted views to
+    see if they have incorrect as/ad/ps/pd scaling from the previous patch.
+  - Instructions for using this tool:
+    * In the CIW->Jazz->Verification menu, select the new menu item
+      Assura Extracted View parameter check/fix Tool
+    * A new form appears with instructions at the bottom. Here is a copy of the instructions:
+    - Select the library to examine in the 'Lib Name' menu.
+    - Enter the name of the 'Extracted View' using grep syntax. The default
+      is "av_extracted.*", meaning all views containing with the words "av_extracted".
+    - Select the cells you wish to check in the cell list.
+    - Click on the button 'Run Comparison and View Report'
+    - Review the report file. A summary at the bottom indicates which cells
+      have parameter discrepancies.
+    - Select the cells in the cell list that have parameter discrepancies and
+      need to be fixed.
+    - Click on the button 'Run Updater to Fix Parameters'
+    - Another report file appears showing all of the changes made. The count
+      of instances change will be different this time. It show ALL instances
+      that had parameters copied, not just the instances that required a change.
+    - Change the 'Extracted View' to "av_analog_extracted.*" to check/fix all
+      analog_extracted views used for simulation. Repeat the comparison,
+      review, and fix steps.
+___________________________________
+Date: 02/23/2004
+Library: sbc35x design kit for sbc35mx process
+Relevant Specification Documents:
+sbc35*:
+  Design Rules: NPB-PS-0109, rev.6
+  Electrical Spec: NPB-PS-0178, rev.8
+sbcp35*:
+  Design Rules: NPB-PS-0270, rev.4
+  Electrical Spec: NPB-PS-0410, rev.2
+
+General kit changes
+* This design kit supports both the sbc35* (3.3V) and sbcp35* (5V)  process
+  technologies.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbcp35q, and is strongly
+  recommended for all other processes.
+  The sbc35x_techlib library will appear ONLY if you properly set the
+  RDS_CDS_VERIFY_TECH variable to a supported process variant:
+* The Jazz makeProjectTree script now automatically supports the new
+  tech library attachment needed by the sbc35x design kit.
+  If you use the sbc35x design kit, your library will automatically be
+  attached to the correct sbc35x_techlibs technology library. All other
+  kits remain unaffected by this change.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or
+  5.0.0.500.29. Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.  Off-grid errors may still
+  occur. Use Snap-To-Grid to correct these violations.
+* Replaced menu item "Jazz->What's New" with "Jazz->Release Notes"
+
+Verification
+Calibre
+* added initial beta support for sbc35mx calibre interactive (DRC/LVS/xRC) flow
+* do not use this kit until you have agreed to the terms specified in the
+  Calibre Interactive Beta document
+
+PEX
+* added support for metal 3 baluns in run_cal flow
+
+xRC
+* please see calibre interactive setup document for more details.
+_______________________________________________________________________________
+Date: 12/22/2003
+Library: sbc35x design kit for sbc35* and sbcp35* processes
+Relevant Specification Documents:
+sbc35*:
+  Design Rules: NPB-PS-0109, rev.6
+  Electrical Spec: NPB-PS-0178, rev.8
+sbcp35*:
+  Design Rules: NPB-PS-0270, rev.2
+  Electrical Spec: NPB-PS-0410, rev.4
+
+
+General kit changes
+* This design kit supports both the sbc35* (3.3V) and sbcp35* (5V)  process
+  technologies.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* The techfile and techlibrary have changed
+  from the "sbc35x" library to the "sbc35x_techlibs" library.
+  You should re-attach ALL design libraries from the sbc35x library to
+  the sbc35x_techlib library before using this design kit.
+  The techfile re-attach is required for sbcp35q, and is strongly
+  recommended for all other processes.
+  The sbc35x_techlib library will appear ONLY if you properly set the
+  RDS_CDS_VERIFY_TECH variable to a supported process variant:
+* The Jazz makeProjectTree script now automatically supports the new
+  tech library attachment needed by the sbc35x design kit.
+  If you use the sbc35x design kit, your library will automatically be
+  attached to the correct sbc35x_techlibs technology library. All other
+  kits remain unaffected by this change.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or
+  5.0.0.500.29. Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.  Off-grid errors may still
+  occur. Use Snap-To-Grid to correct these violations.
+* Replaced menu item "Jazz->What's New" with "Jazz->Release Notes"
+
+Modified Devices
+* balun (balun1/5/10). The B2 and T2 terminal labels in the layout were swapped
+  when the layout was initially created. The result is that the simulation
+  performance of the balun will not match the layout performance even though
+  the device is LVS clean.
+  In this new kit, these devices will appear to have an LVS error as the B2 and T2
+  terminals in the layout are now swapped from where they were in previous kits.
+
+  You have two choices about how to incorporate this change into your design:
+  1) Modify the schematic to swap the B2 and T2 terminal wires as they connect
+     to the balun in the schematic. If the circuit is not sensitive to the phase
+     of the outputs, this is the best solution as it requires no layout change.
+     The output of these terminals will be 180 degrees out of phase from
+     previously simulated results. This will generally require a re-simulation
+     of the schematic to ensure the phase shift does not affect the circuit
+     performance, but it doesn't require a layout change.
+  2) Modify the layout to swap the B2 and T2 interconnects. This will require
+     changing the metal interconnect in the layout to resolve the LVS error,
+     but the end result is a layout that matches the previously simulated performance.
+
+* c3t_mim/c3t_mim2/c3t_mimw/c3t_mimw2 - Updated nwell size and metal3 size
+   The nwell size was accidentally increased in the last kit release.
+   It will revert back to the size drawn prior to Sept 2003.
+   The metal3 size shrinks slightly from previous kits. This known problem
+   will be addressed by a patch.
+
+ESD Library:
+* bignpn_5v_sb layout: fixed to point to proper reference cells; fixed self-intersecting paths
+* pad_w_esd_diodes_1x8_4 symbol: updated to properly show plus/minus terminal orientation
+* bignpn_drv_5v layout: Updated M3 to support either mx or qtx processes; fixed self-intersecting paths
+
+
+Model updates: Version v3.6
+FET: Updated junction parameters in 5V fet models based on new sbcp35 5V
+  measurements. Following changes made for 5V devices only:
+- Re-extraction of all junction capacitance model parameters for
+  the N+Psub and P+Nwell juncitons
+- Re-extraction of small bin model to match with the sbcp35 process
+- Align the corner model with the new bin model parameters.
+- Updated diode parameters to align with junction parameters of the fets.
+
+Updated statistical models:
+- Updated 3.3V FET statistical model to improve cj* match to NOM model
+- Updated 3.3V PC statistical model to improve match with NOM model
+- Revised NOM only 5V support to match latest 5V FET updates
+
+Verification:
+Calibre
+DRC
+* Revised for 5V variants: 1.B; 6/11.B.a/E.a/F.a,b; 7.C
+* Revised nwel_hole definition for deep nwell variants
+* Revised MC7
+* Added C.Bad, Bad_diode and 5.gate to check misuse of hvgate marking layer
+
+ESD/LUP
+* Removed LUP.Q and LUP.Z
+* Filtered out inductor metal from regular metal for checks
+
+LVS
+* Add lvs/pex switch to share lvs and pex decks better
+
+
+Assura
+Support for the following process variants only:
+  mf, mx, px, qta, qtf, qtl, qts, qtx, qx
+DRC
+* Updated MC7 implementation
+* Adjusted definition of polypin to fix fuse LVS problem using GDS layout format
+* Changed inwell definition to fix LVS issue when rph3tw is used with two ntaps
+* Added nwel2 inside c_cell to pwell and pchip layer definitions to allow stacking smim and miscap
+* Updated bad_mos checks for stacking mis and mim caps
+
+ERC
+* Fix problem with soft_pc and incorrect top pad metal usage
+
+ESD/LUP
+* Fix problem with incorrect top pat metal usage
+* Change signal from p+/n- source/drain to p+/n- active
+
+LVS
+* Changed inwell definition to fix LVS issue when rph3tw is used with two ntaps
+
+Stres
+* Exclude MIM metal, pad metal, and metal <22um of pad from stress
+
+RCX
+* Rebuilt sbc35x_rcxlib to add ads simulation views for all devices
+
+_______________________________________________________________________________
+Date: 10/31/2003
+Library: sbc35x design kit
+Relevant Specification Documents:
+Design Rules: NPB-PS-0109, rev.6
+Electrical Spec: NPB-PS-0178, rev.8
+
+General kit changes
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or
+  5.0.0.500.29. Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are
+  not DRC correct. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.  Off-grid errors may still
+  occur. Use Snap-To-Grid to correct these violations.
+
+New Devices
+* Added balun for 3-metal process. Cell balun allows for selection of 1nH,
+  5nH, or 10nH inductance. Preliminary estimated models provided.
+
+Modified Devices
+* Stacked PC/MIM cap cell (c3t_pc_mimw2) symbol and schematic had the PLUS and
+  MINUS pins placed incorrectly. If the device was wired according to the
+  symbol's picture with the PC cap correctly connected, LVS will be correct
+  and the changes made in this kit will have no effect. If the connection was
+  made according to the location of the PLUS and MINUS terminals, the
+  changes made will correct the LVS mismatch. Users of Virtuoso-XL will need
+  to verify the device is properly connected when using this new kit.
+
+* Next kit release will require you to change technology library attachment
+  you use.  In the next release, the technology library will change from
+  "sbc35" to "sbc35_techlib" to allow for better control of process variant
+  technology options. You will be forced to re-attach ALL design libraries
+  to the new sbc35_techlibs technology library.  There is no change in
+  technology library attachment in this current kit release.
+
+
+ESD Libraries
+No change
+
+Model Changes: Model version v3.4
+* Release notes apply to v3.4 and v3.3 model files
+* Update to varactor to provide frequency data up to 10GHz
+* Added preliminary models for metal3 baluns
+* Corrected pfet statistical model vs NOM model mismatch
+* Statistical model also updated to match corner model changes
+* No update to Nwell resistor Spectre model, v3.3 added changes
+  that were removed in v3.4
+
+Verification
+* Calibre
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - Ruledeck changes:
+    = ANT: Revised rules for clearer reporting with RDB output printing
+    = DRC: Provide separate .artifact rule for artifact violations;
+      Added manufacturing rejection notice on select manufacturing rules;
+      Added 3.3V/5V cross-check and error for most rules;
+      Added 2.E.a, 6/11.D.c,d to 5V variant; revised 5.E, 5.E.a, 15.I, MC7
+    = ESD: Added LUP.Q and LUP.Z; revised LUP.B.C.c/c1, LUP.D, LUP.E.d, LUP.F.a
+      and various derivation layers
+    = LVS: Unified LVS and PEX decks; added lvs/pex switching for fets and caps,
+      new m3 balun, 5V PC, smim over pc support
+    = PEX: Unified LVS and PEX decks, unified PEX decks by metallization
+    = STRESS: Revised ST.A,B,C,I
+* Assura
+  - Assura 3.04 or later is required.
+  - Added support for hierarchic RCX run. LVS can now be hierarcic
+    New assura runsets allow for hierarchic LVS and RCX. This can ONLY be
+    done with the Assura UI inside DFII. The RCX run will generate bad
+    information for NPN's and inductors if the LVS or RCX is run from outside
+    the Assura DFII GUI.
+  - Deck changes:
+    = Support for the following process variants ONLY:
+      mx mf qtx qtl qtf qta qts qx px
+    = DRC
+      - Flag use of unsupported device for process variant
+      - Corrected support for MC9.a (increased via2 density on smaller MIM cap)
+      - Updated MC7/SMC7 rules
+      - Updated connectivity checks used during DRC
+    = ESD/Latchup
+      - Rewritten rules provide better match with Calibre results
+    = LVS
+      - Corrected recognition of MIS cap and stacked mims
+      - Added *_esd_t diode recognition
+    = RCX:
+      - New RCX deck allows for hierarchic LVS and RCX extraction.
+        + Previous LVS results directories will NOT work with the new RCX deck.
+          You must re-run LVS with this new deck release before running RCX.
+        + REQUIRES that RCX be run from GUI and not from command line. You
+          cannot run RCX from a command line. Schematic properties for npn
+          and inductors will not be correct in the extracted view.
+        + Uses Assura user defined function to generate schematic parameter
+          file.
+        + New callProc.il to read schematic parameter file and reset
+          extracted device parameters
+    = STRESS
+      - Rewritten STRESS rules provide better match with Calibre results
+
+_______________________________________________________________________________
+Date: 10/27/2003
+Library: sbc35x design kit for sbcp35q process ONLY
+Relevant Specification Documents:
+Design Rules: NPB-PS-0270, rev.2
+Electrical Spec: NPB-PS-0410, rev.2
+
+General kit changes
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. The Artifact Generator may generate shapes that are not DRC
+  correct. If this happens, you can either increase the scale factor or hand-edit
+  the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+New Devices
+* Added 5V PC cap cell (pc_5p0) with symbol and layout
+* Completed layout cells for 5V fets and diodes
+
+Modified Devices
+* Updated technology information to match latest Specification documents. Please
+  see Specification documents for more details on changes. Many changes were made
+  in the transition from sbc35qtb to sbcp35q.
+
+* Next kit release will require you to change technology library attachment you use.
+  In the next release, the technology library will change from "sbc35" to "sbc35_techlib"
+  to allow for better control of process variant technology options. You will be forced
+  to re-attach ALL design libraries to the new sbc35_techlibs technology library.
+  There is no change in technology library attachment in this current kit release.
+
+
+ESD Libraries
+No change. No 5V ESD library is provided.
+
+Model Changes: Model version v3.3
+* Update to varactor to provide frequency data up to 10GHz
+* Added 5V FET 1/f noise data
+* Statistical model support for sbcp35q includes process and mismatch
+  for bipolar and passives, but NOM ONLY for 5V CMOS devices.
+
+Verification
+* Calibre
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - Ruledeck changes:
+    = Renamed deck from sbc35qtb to sbcp35q
+    = Added support for 4fF stacked MIM cap
+
+* Assura
+  - No Assura support for sbcp35q.
+
+_______________________________________________________________________________
+Date: 08/25/2003
+Library: sbc35x design kit
+Relevant Specification Documents:
+Design Rules: NPB-PS-0109, rev.6
+Electrical Spec: NPB-PS-0178, rev.7
+
+General kit changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* First release to support IC50. Requires IC50 MSR3 or better.
+* First kit to support Linux. Requires IC50 for Linux. Full Jazz Kit
+  support is provided, including inductor toolkit and layout cells.
+* First release of new Set Active Library model corner selection utility.
+  Allows independent corner speed selection.
+* If you use the spectre or spectreS simulator, you may encounter problems
+  with certain schematic designs. You will receive an error like the following:
+    "The value of the subcircuit parameter 'l' has an unexpected type..."
+  This is fixed in Cadence software version 4.4.6.100.103 or later, or 5.0.0.500.29
+  Please see Cadence Solution #11073308 for more information.
+* Artifact Generator. Default scale factor has change to make artifacts DRC clean.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations.
+
+
+New Devices
+* 3-terminal pdiode devices (pdiode_3t) are now provided.
+  - Layout footprint is identical to 2-terminal pdiode (pdiode).
+    A small text label distinguishes the 2 and 3 terminal layouts.
+  - Symbol views have an added pin for the well connection.
+  - LVS will verify all three terminals.
+  - Existing designs should be updated to use these new devices. New designs should
+    always use these devices instead of the 2 terminal pdiodes.
+* nwdiode device is now provided. It is a component used in the 3-terminal pdiodes
+  and is not meant for use outside the 3-terminal diode. There is no layout view
+  for this cell.
+* Stacked PC/MIM cap cell (c3t_pc_mimw2) allows for layout of a PC and c3t_mimw2
+  with one cell. The layout is still extracted as two separate devices. Can be used
+  in any process variant that supports both the PC and the c3t_mimw2 cells.
+* Stacked MIM cap (c3t_smim4) provides a 4Ff/um^2 stacked mim cap. Supported only
+  in the sbc35qts process variant.
+
+Removed Devices
+* Removed all "example" / AMS Design Kit standard cell libraries.
+  Customers should use the separate ASIC design kit for all standard cells.
+
+Modified Devices
+* MIM caps (c3t_mim* devices) have an increased via density at smaller size (below 400um^2).
+  Now uses 1um via space at smaller sizes. Uses original 3.5u via space at larger sizes.
+* Added differential inductor search tool to sbc35qtx differential inductor (ldiffqtx).
+  Some search results may appear with dimensions larger than the inductor cell can
+  currently handle. For example, search results may sho an entry with line width > 25u
+  but the maximum allowed value is 25u.
+* Fixed ADS netlisting info for rps.
+* Updated Jazz Inductor Toolbox to v1.4
+  - Inductor dimension limits are now checked by toolbox, not by forms.
+  - Toolbox will report actual dimensions used in calculations, which may
+    be different from the values entered by the user.
+
+
+Model Changes: Model version v3.2
+* NPN:
+  - Updated ADS NPN translation to better match predicted Beta.
+    No change to other simulators.
+* Fets:
+  - corrected DG devices to use subckt instead of model to more accurately
+    calculate source/drain size
+  - Revised PC model to use simplified rnwell for more accurate
+    high-frequency performance
+  - Revised rnwell to correct scale factor error on rnws_delta_deltaw
+* Caps:
+  - Added statistical + mismatch data for smim cap.
+
+ESD Libraries:
+* Changes to library:
+  - sbc35x version 3 is now provided as the Cadence library "sbc35x_esdlib"
+    It is in the esdlib_v3 directory in the design kit.
+  - Added three terminal diode LVS functionality for all esd diodes.
+  - Added Assura LVS functionality for all esd diodes and bignpns.
+  - Added new five volt tolerant bignpn clamp circuit. This circuit passes all
+    the drc rules except for the latch-up rule, LUP.D. The nature of the design
+    is not to connect the nwell to a supply voltage, therefore this flag can be ignored.
+    In a future release, this problem will be corrected.
+  - The existing three volt tolerant bignpn was only changed to provide Assura LVS
+    capability. This layout was changed in esdlib_v2 by adding full nwell and
+    p-substrate ties to satisfy the latch-up rules for internal, non-periphery layout placement.
+    The original foot-print dimensions were maintained; however, the internal metal1 and 2
+    layers needed to be altered. Therefore, use of this layout will require LVS of a legacy
+    design to ensure proper connection.
+* By default the new esdlib_v3 library will automatically be used in all
+  your existing projects.
+  If you wish to use the old library, you will need to modify your project
+  library file. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file project.lib that is in this directory
+  - Add these two lines to the END of the file, below all existing lines:
+    UNDEFINE sbc35x_esdlib
+    DEFINE sbc35x_esdlib $RDS_CDSLIBS/sbc35x/esdlib_v2
+  - If you need to go back to an even older ESD library, change the
+    DEFINE statement in the previous instruction.
+  - Save your changes
+  - Quit and restart your Cadence session
+
+Verification:
+* Many ESD rules have moved from mandatory to recommended but unchecked.
+  Please see the latest design rule manual for details.
+
+* Calibre:
+  - Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+    if you must continue using an older version.
+  - Creation of process-variant specific run files. Setting the RDS_CDS_VERIFY_TECH
+    will correctly set the Calibre forms to use the process-specific run files.
+  - Deck Changes:
+    = DRC: revised 5.C, 5.G, 7.D, 23.A,B, BAD_MOS, MC7, SMC17, DNW.9
+    = ERC: filtered out inductor metal
+    = LVS: One substrate construct; added nwdiode for 3t-diode recognition,
+         revised l3t recognition; added CI version of PC
+
+
+* Assura 3.02 or later is required, v3.04 or later is strongly recommended.
+  - Version 3.06 is NOT currently recommended.
+  - The "rcx" library (sbc35x_rcx) elements have callbacks
+    disabled to prevent incorrect display of data when examining extracted view.
+    rcx libraries cannot be used for schematic entry or layout. They are
+    automatically used for extracted view creation.
+  - Deck Changes:
+    = Support for the following process variants ONLY:
+      mf, px, qta, qtf, qtl, qts, qtx
+      Initial Beta release for qtf, qtl, qts, and mf processes.
+    = DRC: revised 5.C, 5.G, 6.F.a, 7.D, 11.F.a, 23.A,B, BAD_MOS, MC7, SMC17, DNW.9
+    = LVS: One substrate construct; added nwdiode for 3t-diode recognition,
+         revised l3t recognition; revised npn to remove open label warning
+    = RCX: Updated extraction for MIM caps.
+
+_______________________________________________________________________________
+Date 6/19/2003
+Library: sbc35x design kit
+
+General kit changes:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+	 and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+	 for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+- If you use the spectreS socketed simulator interface, you must use
+  Cadence software version 4.4.6.100.103 or later, otherwise you will
+  see errors at simulation time. Please see Cadence Solution #11073308.
+  If you use the "spectre" (Spectre Direct) interface, this problem does
+  not exist.
+- All "RDS" banner menus are now "JAZZ" menus. Documentation has
+  been updated to reflect this change.
+- Updated technology files to correct spacing/overplot discrepancy
+  with process documentation.
+- Fixed problem where design kit would fail to load when using icms.
+- Fixed calculation of resistor rtotal display parameter - would show
+  the previous value. No effect on simulation or LVS
+
+New and Updated Devices:
+* Addition of c3t_pc_mimw2 device. This is simply a schematic and layout view
+  to stack the pc and mimw2 devices in parallel. Extraction and LVS will
+  treat the devices as separate pc and mimw2 instances.
+* Addition of max current limit display on rnp, rph, and rps resistors
+
+Model Changes: Model version v3.1
+* Updated Cap models:
+  - c3t_mis uses diode
+  - Update tc on 2fF mim
+* Preliminary no-DT NPN models for sbc35qtn process variant
+  - To migrate npn's between sbc35* and sbc35qtn, users will need to trigger
+	 the callbacks to update the model name.
+  - Newly placed devices in sbc35qtn or other sbc35* processes will have the
+	 correct model names.
+* Revised statistical models version statistical_v3.1 to match new
+  corner models
+  - Stat models support process + mismatch for all devices except PNP, nwell
+	 resistor, fuse, varactor, and pc. PNP, nwell resistor, varactor,
+	 and pc support only process variation.
+
+ESD Libraries:
+* Updated bignpn cell with better latchup prevention
+* A new ESD library is provided. By default the new library will automatically
+  be used in all your existing projects.
+  If you wish to use the old library, you will need to update your project
+  library file. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+	 and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file project.lib that is in this directory
+  - Add these two lines to the END of the file, below all existing lines:
+	 UNDEFINE sbc35x_esdlib
+	 DEFINE sbc35x_esdlib $RDS_CDSLIBS/sbc35x/esdlib_v1
+  - Save your changes
+  - Quit and restart your Cadence session
+
+Verification:
+* Framework:
+- Fixed problem with the schematic lib/cell/view names on the
+  Calibre LVS/PEX forms.
+- Fixed problem where extremely long instance names (>80 chars) would break
+  LVS and PEX schematic netlists.
+
+* Calibre:
+- Calibre version 9.1 or later is required.  Contact your Jazz support rep.
+  if you must continue using an older version.
+- Creation of process-variant specific run files. Setting the
+  RDS_CDS_VERIFY_TECH will correctly set the Calibre forms to use the
+  process-specific run files.
+
+* Assura 3.02 or later is required, v3.04 or later is strongly recommended.
+- The "rcx" library (sbc35x_rcx) elements have callbacks
+  disabled to prevent incorrect display of data when examining extracted view.
+  rcx libraries cannot be used for schematic entry or layout. They are
+  automatically used for extracted view creation.
+
+_______________________________________________________________________________
+Date 4/16/2003
+Library sbc35x
+- Addition of process variant device checking (thru RDS_CDS_VERIFY_TECH
+  environment variable)
+- Revised simulation models v3.0: varactor cjc param, lpnp vaf param, TC
+  for inductors and caps, and pfet_rf clc param
+- Revised Jazz Calibre DRC, LVS and PEX forms to show lib/cell/view to be run
+- Additional of sbc35mf and sbc35qtf Calibre ruledecks.  A separate ruledeck
+  is now available for every process variant; certain devices (MIM cap,
+  inductors) will be flagged if it is not available for the selected process
+- Revised sbc35qtx Assura ruledecks.  Details in the README file under the
+  Assura rule files directory
+_______________________________________________________________________________
+Date: 2/18/2003
+Library sbc35x:
+  - Based on the following specification documents:
+	 NPB PS-0178 rev 05
+	 NPB PS-0109 rev 03
+  - Change sbc35qtx top metal thickness
+  - Renaming of AMS standard cell libraries. All cells in the sbc35x_stdcells
+	 library now start with "ex_". See FAQ entry "Are standard cells available
+	 in the Jazz design kit?" for details.
+  - Addition of sbc35px fuse cell "fuse_px"
+  - Addition of 2fF MIM cap, MIS cap and rps as standard devices. 2fF MIM cap
+	 MUST NOT be used in the same design as the standard MIM cap.
+  - Addition of underpass to inductor layouts,
+	 and addition of inductor search tool for l3t and l3tqtx. Inductor search tool
+	 can be accessed from the Edit Inductor parameters form when editing an inductor.
+  - Revised Inductor toolkit (version Jazz1.2) to fix out-of-bounds
+	 size message, add underpass support, and address top metal thickness change.
+  - Revised simulation model libraries, v2.8 for corner models and
+	 statistical_v2.3 for statistical models. Statistical model file header.scs contains
+	 information on which devices support mismatch or process variation.
+  - Removal of Library mananger RDS menu which contained TDM items. 'tdmui' can be
+	 used to access the same functions.
+  - Remove RDS schematic menu items for generating netlist other than CBR. Only CBR
+	 netlister is supported.
+  - Artist Save state menu item no longer creates cellview if you cancel form
+Assura changes:
+  - Initial release of Assura deck for sbc35px, and revised verification decks for other
+	 processes
+  - Assura 3.0 usage documentation now available under RDS->Verification menu
+  - Added MIS cap checks, RPS salicide poly resistor checks
+  - Added extra checks to flag ntap/ptap with no contacts and mixing 1fF and 2fF mimcaps
+  - Deleted field implant checks and B24 rule check
+  - Added RH13, MC9.a, BD5.a rule checks
+  - Changed 15.H, 15.I, MC6, MC7, MC8, MC9, B25, BD.5, BD.12, BD.F, BD.L, BD.K/OBD.Ah, OBD.Ag, OBD.Aa/Ae
+  - Fixed ptap with path to ground and source/drain of same transistor connected to power/ground ERC checks
+  - Fixed ST.A stress rule to eliminate false report of metal width = 35um
+  - Use raw drawn layers when checking spacing and width of metals and vias
+  - Enhanced LVS deck to recognize L and W parameters for MOSFET in addition to l and w parameters
+  - Added pnpl/pl4g device extraction
+  - Updated l3tqtx device extraction due to changes in inductor pcell
+Calibre changes:
+  - See README file in each technology directory for specific technology changes.
+  - Addition of Schematic Include file to Calibre CBR, LVS, and PEX forms.
+	 Default value of include file can be set using functions listed in
+	 RDS->Application Notes->Public Skill Functions. Also added menu item
+	 in schematic RDS menu to allow specifying include files at netlist time.
+  - Improvements to CBR netlister to better handle inherited connections
+  - Improvements to pex2skill to correctly generate extracted views for
+	 instances with very long names
+  - Added SA.* checks; removed AN.E mim checks; adjusted connectivity
+  - Revised 15H, 15I & inductor bad material checks for device nwel2only
+  - revised 6/11A, MC6-10, DNW.21, B25, R6, RH6, BD.5, BD.12, BD.13, BD.N, 15.A
+  - removed field checks, B24, DNW.10; added SR, MIS, ind checks, RH13, MC9.a, BD.5.a
+Model Changes:
+  - Addition of salicide resistor (rps)
+  - Update of nwell end resistance
+  - Update of metal height for sbc35qtx process inductor
+  - Add underpass to inductors
+</PLAINTEXT></BODY></HTML>

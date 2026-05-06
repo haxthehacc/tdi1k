@@ -1,0 +1,37 @@
+* File: ora211d1.sp.ora211d1.pxi
+* Created: Sun Feb 14 19:31:24 2010
+* 
+cc_1 3 VDD 0.300456f
+cc_2 3 A 0.171342f
+cc_3 3 B 0.111183f
+cc_4 3 noxref_5 0.0118912f
+cc_5 3 C1 0.0267303f
+cc_6 3 VSS 0.0797057f
+cc_7 3 C2 0.264862f
+cc_8 3 Z 0.179731f
+cc_9 3 noxref_11 0.00967964f
+cc_10 VDD A 0.013244f
+cc_11 VDD B 0.0196343f
+cc_12 VDD C1 0.033018f
+cc_13 VDD C2 0.0324547f
+cc_14 VDD Z 0.0311803f
+cc_15 VDD noxref_11 0.00652883f
+cc_16 A B 0.153594f
+cc_17 A noxref_5 4.81542e-19
+cc_18 A C1 0.026757f
+cc_19 A VSS 0.0321376f
+cc_20 B noxref_5 0.00768305f
+cc_21 B C1 0.116f
+cc_22 B VSS 0.0320493f
+cc_23 B C2 0.0306659f
+cc_24 noxref_5 C1 0.0836823f
+cc_25 noxref_5 VSS 0.154688f
+cc_26 noxref_5 C2 0.0681826f
+cc_27 noxref_5 Z 0.0300889f
+cc_28 C1 VSS 0.0407683f
+cc_29 C1 C2 0.176032f
+cc_30 VSS C2 0.00845495f
+cc_31 VSS Z 0.0534406f
+cc_32 VSS noxref_10 0.0148858f
+cc_33 C2 Z 0.0200627f
+cc_34 C2 noxref_11 0.00314721f

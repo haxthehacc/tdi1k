@@ -1,0 +1,33 @@
+<html>
+<body><h1>DESCRIPTION:</h1>
+
+'cpoly' implements the thin oxide 1.8V MOS capacitor (poly cap). The device is implemented as an nfet in nwell. The top plate of the capacitor is formed by the gate, the bottom plate by the n+diffusion. The gate oxide is used as dielectric for the capacitor. The layout of the device is similar to a MOSFET with the source and drain shorted. The capacitance value can be modified by changing the gate width and gate length.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+
+<li><b>Multiplier:</b> Controls the number of cpoly instances connected in parallel. Specifying a 'Multiplier' of n is equivalent to drawing n cpoly instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Length (x):</b> Controls the size of the capacitor fingers in the X direction.</li>
+
+<li><b>Width (y):</b> Controls the size of the capacitor fingers in the Y direction.</li>
+
+<li><b>Gate Connection Style:</b> Specifies the desired gate connection: 'Both', 'Top', 'Bottom', or 'None'.  The 'Both' option is compatible with legacy layouts as of the April 2005 design kit release.
+
+<li><b>Connect Source/Drain:</b> Option to have the source and drain connected.
+
+<li><b>Use ABLB overplots:</b> Controls whether ABLB overplots are used.
+
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: length and width.</li>
+</ul>
+
+</body>
+</html>

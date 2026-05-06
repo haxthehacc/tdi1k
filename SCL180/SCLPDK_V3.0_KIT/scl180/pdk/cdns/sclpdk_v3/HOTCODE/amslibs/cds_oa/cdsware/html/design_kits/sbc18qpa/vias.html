@@ -1,0 +1,37 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<h1 align=center>sbc18 Contacts & Vias</h1>
+<table border align=center>
+<tr><td>component name</th><th>component type</th></tr>
+<tr><td>NTAP</td><td>NTAP connects metal1 to nwell using N+ Implant and active (nwell layer is included)</td><tr>
+<tr><td>NTAPn</td><td>NTAP connects metal1 to nwell using N+ Implant and active (nwell layer is included). Contacts are non-array-capable and use a smaller pitch</td><tr>
+<tr><td>PTAP</td><td>PTAP connects metal1 to p-substrate using P+ Implant and active</td><tr>
+<tr><td>PTAPn</td><td>PTAP connects metal1 to p-substrate using P+ Implant and active. Contacts are non-array-capable and use a smaller pitch</td><tr>
+<tr><td>cont</td><td>cont provide metal1 connection to poly1</td><tr>
+<tr><td>contn</td><td>cont provide metal1 connection to poly1. Contacts are non-array-capable and use a smaller pitch</td><tr>
+<tr><td>v12</td><td>v12 provide connection between metal1 and metal2 using the via1 layer</td><tr>
+<tr><td>v12_g</td><td>v12 provide connection between metal1 and metal2 using the via1 layer. Meets minimum metal area checks and are array capable</td><tr>
+<tr><td>v23</td><td>v23 provide connection between metal2 and metal3 using the via2 layer</td><tr>
+<tr><td>v34</td><td>v34 provide connection between metal3 and metal4 using the via3 layer</td><tr>
+<tr><td>v34_g</td><td>v34 provide connection between metal3 and metal4 using the via3 layer. Meets minimum metal area checks and are array capable</td><tr>
+</table>
+<br> <br><br> <br>
+
+<h1>DESCRIPTION:</h1>
+<p><li>Contacts (PTAP, NTAP, cont) can be used for single or an array of contacts.  They have the wider contact to contact spacing in a contact array larger than a 3x3.</li></p>
+<p><li>The Contacts that end in "n" have a smaller contact to contact spacing rule. Use this if you need a 3x3 contact array or smaller to use the minimum space.
+</li></p>
+
+<p><li><b>Multi Part Paths</b>
+<br> &nbsp;&nbsp;&nbsp;A path that consists of more than one part is called a multipart path.
+<br> &nbsp;&nbsp;&nbsp;The MPP command can be found under the "Create" pulldown in Layout Window.
+<br>
+<br> &nbsp;&nbsp;&nbsp;MPP names end with "_mpp" and can be used to create PTAP and NTAP guard rings.
+<br>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If an incomplete ring is needed, be sure to edit MPP subparts and extend implant layer to minimum enclosure.
+<br>
+<br> &nbsp;&nbsp;&nbsp;MPPs can be used to create NTAP, PTAP, cont, v12, v23, and v34 line contacts as well as a ring.
+<br> &nbsp;&nbsp;&nbsp;At this time, you must bring up the MPP form to set the contact or via you desire. (double click middle mouse button to bring up menu)
+<br>
+<br> &nbsp;&nbsp;&nbsp;If you have access to "Layout Turbo" from your Tools pulldown menu, you can use Create->Guard Ring to easily ring your circuitry.
+<br>
+<br> &nbsp;&nbsp;&nbsp;All MPP vias and contacts will be choppable.
+</li></p>

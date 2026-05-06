@@ -1,0 +1,34 @@
+* File: aor211d2.sp.aor211d2.pxi
+* Created: Sun Feb 14 19:01:13 2010
+* 
+cc_1 3 A 0.304912f
+cc_2 3 VDD 0.0607881f
+cc_3 3 VSS 0.315422f
+cc_4 3 B 0.204721f
+cc_5 3 noxref_6 0.00237456f
+cc_6 3 C1 0.135676f
+cc_7 3 C2 0.196516f
+cc_8 3 Z 0.204767f
+cc_9 3 noxref_10 0.00527207f
+cc_10 3 noxref_11 0.0203028f
+cc_11 A VDD 0.0106268f
+cc_12 A VSS 0.0294769f
+cc_13 A B 0.186692f
+cc_14 A noxref_6 4.50525e-19
+cc_15 A C1 0.00107017f
+cc_16 VDD B 0.039729f
+cc_17 VDD noxref_6 0.140198f
+cc_18 VDD C1 0.0198742f
+cc_19 VDD C2 0.0981284f
+cc_20 VSS B 0.0270058f
+cc_21 VSS C1 0.0162899f
+cc_22 VSS C2 0.0335023f
+cc_23 VSS Z 0.0448482f
+cc_24 B noxref_6 0.104223f
+cc_25 B C1 0.139313f
+cc_26 B C2 0.0198659f
+cc_27 B noxref_10 0.0160597f
+cc_28 noxref_6 C1 0.046252f
+cc_29 noxref_6 C2 0.126485f
+cc_30 C1 C2 0.158149f
+cc_31 C2 Z 0.0515341f

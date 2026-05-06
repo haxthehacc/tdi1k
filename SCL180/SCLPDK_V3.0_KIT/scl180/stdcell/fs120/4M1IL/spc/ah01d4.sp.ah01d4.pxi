@@ -1,0 +1,29 @@
+* File: ah01d4.sp.ah01d4.pxi
+* Created: Sun Feb 14 19:38:02 2010
+* 
+cc_1 VSS S 0.0633013f
+cc_2 VSS U5_in 0.146555f
+cc_3 VSS U1_in 0.459242f
+cc_4 VSS B 0.0120025f
+cc_5 VSS A 0.329646f
+cc_6 VSS CO 0.198449f
+cc_7 VSS noxref_11 0.0417739f
+cc_8 VDD S 0.145498f
+cc_9 VDD U5_in 0.310271f
+cc_10 VDD U1_in 0.393376f
+cc_11 VDD B 0.0597194f
+cc_12 VDD A 0.223375f
+cc_13 VDD CO 0.254998f
+cc_14 S U5_in 0.628135f
+cc_15 S U1_in 5.181e-19
+cc_16 U5_in U1_in 0.626515f
+cc_17 U5_in B 0.170211f
+cc_18 U5_in A 0.0441595f
+cc_19 U5_in noxref_10 0.0111809f
+cc_20 U1_in B 0.307067f
+cc_21 U1_in A 0.476131f
+cc_22 U1_in CO 0.417996f
+cc_23 U1_in U75_drain 0.0125721f
+cc_24 U1_in noxref_11 0.0354418f
+cc_25 B A 0.222195f
+cc_26 A CO 0.00851483f

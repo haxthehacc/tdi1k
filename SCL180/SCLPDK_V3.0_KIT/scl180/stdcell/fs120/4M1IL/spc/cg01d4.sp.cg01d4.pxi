@@ -1,0 +1,34 @@
+* File: cg01d4.sp.cg01d4.pxi
+* Created: Sun Feb 14 19:39:40 2010
+* 
+cc_1 VDD CO 0.329415f
+cc_2 VDD U68_in 0.276545f
+cc_3 VDD A 0.0900162f
+cc_4 VDD U32_source 0.216595f
+cc_5 VDD B 0.0746173f
+cc_6 VDD CI 0.0261377f
+cc_7 VDD U42_source 0.00657865f
+cc_8 VSS CO 0.188274f
+cc_9 VSS U68_in 0.0947189f
+cc_10 VSS A 0.213114f
+cc_11 VSS U46_drain 0.392125f
+cc_12 VSS B 0.00675858f
+cc_13 VSS CI 0.00279088f
+cc_14 CO U68_in 0.528516f
+cc_15 CO A 5.60537e-19
+cc_16 U68_in A 0.400286f
+cc_17 U68_in U46_drain 0.0651673f
+cc_18 U68_in U32_source 0.248231f
+cc_19 U68_in B 0.200863f
+cc_20 U68_in CI 0.111828f
+cc_21 U68_in U42_source 0.0147823f
+cc_22 A U46_drain 0.0569324f
+cc_23 A U32_source 0.0228895f
+cc_24 A B 0.358743f
+cc_25 A CI 0.0814662f
+cc_26 U46_drain B 0.0798986f
+cc_27 U46_drain CI 0.0734925f
+cc_28 U46_drain U49_source 0.0139642f
+cc_29 U32_source B 0.0392841f
+cc_30 U32_source CI 0.0442049f
+cc_31 U32_source U42_source 0.0107507f

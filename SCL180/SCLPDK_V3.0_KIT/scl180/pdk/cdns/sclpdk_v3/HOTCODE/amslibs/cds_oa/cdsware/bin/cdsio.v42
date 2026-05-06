@@ -1,0 +1,107 @@
+#!/bin/csh -f
+#
+# Script to set up needed env vars for inductor toolkit
+# Requires $RDS_ROOT, $RDS_PT, and $RDS_CDSWARE to be set
+#
+# $Id: cdsio.v42 1 2019/07/01 11:02:24 GMT ronenha Exp $
+# $Log: Revision 1 2019/07/01 11:02:24 GMT ronenha $
+#   Initial revision.
+# 
+#  Revision 1 2019/07/01 11:02:09 GMT ronenha
+#   Initial revision.
+# 
+#  Revision: 1.1 Thu Sep  4 16:13:14 2008 bani
+#  ic6.1 cdsware
+# 
+#  Revision: 1.2 Mon Jun 20 16:56:59 2005 milkovr
+#  Fixed issue with setenv and HPUX
+# 
+#  Revision: 1.1 Tue Mar  8 21:18:08 2005 milkovr
+#  Initial checkin. Wrapper script to run cdsio.
+#
+#  
+#
+
+# Get my name
+	set myname=`basename $0`
+if ($?RDS_CDSIO_IS_RUNNING) then
+	echo "ERROR: Cannot find proper location of cdsio executable."
+	echo "Please check kit installation"
+	exit 1
+endif
+setenv RDS_CDSIO_IS_RUNNING 1
+
+# RDS_ROOT set?
+if ( ! $?RDS_ROOT ) then
+# set RDS_ROOT before continuing
+   echo " "
+   echo "ERROR: RDS_ROOT not set"
+   echo "Please set RDS_ROOT before executing $myname"
+   echo " "
+	exit 1
+
+else
+if ( ! $?RDS_PT ) then
+# set RDS_PR before continuing
+   echo " "
+   echo "ERROR: RDS_PT not set"
+   echo "Please set RDS_PT before executing $myname"
+   echo " "
+	exit 1
+else
+
+# routine for prepending lib directories
+	set prependLib="$RDS_CDSWARE/bin/prependLib"
+
+# environment variables needed by cdsio
+if (! $?RDS_INDUCTOR_DATA) then
+   setenv RDS_INDUCTOR_DATA "$RDS_ROOT/InductorLib/data"
+   setenv RDS_INDUCTOR_BIN  "$RDS_ROOT/InductorLib/bin.$RDS_PT"
+   setenv RDS_INDUCTOR_LIB  "$RDS_ROOT/InductorLib/lib.$RDS_PT"
+endif
+
+# Find library path for Matlab compiler libraries
+	set libpath="$RDS_INDUCTOR_LIB"
+	switch ("$RDS_PT")
+		case HP11X:
+			set defaultlibpath=/usr/lib
+			set libpathvar=SHLIB_PATH
+			breaksw
+		case lnx86:
+			set defaultlibpath=/lib:/usr/lib
+			set libpathvar=LD_LIBRARY_PATH
+			breaksw
+		case sun5:
+			set defaultlibpath=/usr/lib
+			set libpathvar=LD_LIBRARY_PATH
+			breaksw
+		case win32:
+			set defaultlibpath=${SystemRoot}/win32:${SystemRoot}
+			set libpathvar=PATH
+			breaksw
+		default:
+			echo "ERROR"
+			echo "Unsupported platform $RDS_PT"
+			echo "Error executing inductor toolbox $myname"
+			exit 1
+	endsw
+
+# set library path
+	eval set libpathval=\$\?$libpathvar
+	if ( $libpathval == 1 ) then
+		# lib path already set, prepend
+		eval set libpathval="\$$libpathvar"
+		setenv $libpathvar `$prependLib "$libpath" "$libpathval"`
+	else
+		# No lib path, use default value
+		setenv $libpathvar "${libpath}:${defaultlibpath}"
+	endif
+endif
+endif
+
+exec $RDS_INDUCTOR_BIN/$myname $*
+
+# Error out if exec failed
+echo "Cannot run cdsio executable:"
+echo "  $RDS_INDUCTOR_BIN/$myname"
+exit 1

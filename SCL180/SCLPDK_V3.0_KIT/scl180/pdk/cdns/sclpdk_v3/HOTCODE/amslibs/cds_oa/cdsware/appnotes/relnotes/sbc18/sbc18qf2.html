@@ -1,0 +1,79 @@
+<HTML><HEAD>SBC18QF Design Kit Release Notes</HEAD><BODY><PRE>
+________________
+Date: 08/18/2015
+Design Kit Version: v1.0.1
+Library: sbc18
+
+Prerequisites:
+* sbc18qf2 v1.0
+
+Versions tested:
+* Virtuoso: ic5.1usr6, ic6.1.6.080
+* Spectre:  mmsim13.11.252
+* Assura:   v4.14.124_5141, v4.14.124_616
+* Calibre:  v2014.1_36
+
+Device Library:
+* Added solenoid
+* Modified cmim pcell construction to match SBC18QC2 for identical parameters.
+  Bridging straps widened from 2.0um (QC2) to 2.5um (QF2).  
+  (This change is to support migration from SBC18QC2 to SBC18QF2.
+  Note that the design rule differences between copper and aluminium
+  required that the metal3 connection to the bottom plate become 
+  larger than in SBC18QC2. Due to this width change, the underlying
+  metal2 and nwell, if present, also draw larger to match.)
+
+Verification:
+DRC:
+* Fixed false errors related to slot via3 (Assura only)
+LVS: 
+* Added soleniod device comparison code (Assura only)
+
+________________
+Date: 08/14/2015
+Design Kit Version: v1.0
+Library: sbc18
+
+Prerequisites:
+* None (this is a full hotcode release)
+
+Versions tested:
+* Virtuoso: ic5.1usr6, ic6.1.6.080
+* Spectre:  mmsim13.11.252
+* Assura:   v4.14.124_5141, v4.14.124_616
+* Calibre:  v2014.1_36
+
+General:
+* This is the initial release of the SBC18QF2 Design Kit.  
+
+Process Summary:
+* The SBC18QF2 process is built on the backbone of the SBC18 family
+  of processes which is TowerJazz' standard 0.18um SiGe BiCMOS platform. Details
+  concerning this process can be found in the following document:
+  PS-1090 rev. 3 - Design Application Note for the SBC18QE Family of Processes
+* The SBC18QF2 processes has four layers of aluminum metal including
+  dual, thick metals for M3 and M4. This process is built on high resistivity 
+  substrate with nominal resistivity of 1000  ohms-sqcm. It supports
+   (a) 1.8 and 5V CMOS 
+   (b) 6V and 8V SiGe HBTs 
+   (c) unsilicided poly resistors 
+   (d) a 2 fF/um2 MIM capacitor on M2
+   (e) inductors using the thick aluminum top metal layers.
+* There are four unique features in this process:
+   (1) The two SiGe HBTs designed for operation at higher voltages as 
+       compared with those available in other SBC18 processes
+   (2) The use of dual thick metal layers on the top two metal layers. 
+       M3 is 2.8um thick Aluminum in all cases and M4 is 5.2um (QF2) thick Aluminum.
+   (3) The use of slotted via3s to connect the thick top metal layers.
+   (4) The use of high resistivity starting material
+
+Applicable documents:
+* PS-1090 rev. 3 - Design Application Note for the SBC18QE Family of Processes
+
+Device Library:
+* Note that the JIT version used for calculating inductor model parameters
+  is currently calculating based on 3um thick metal4 used in sbc18qe1.  The 
+  update to use the correct 5um calculations will be updated in the near future.
+
+
+</PRE></BODY></HTML>

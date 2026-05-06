@@ -1,0 +1,36 @@
+#!/bin/csh -f
+# Script to set the RDS_PT correctly.
+# $Header: ./HOTCODE/etc/RDS.platform 1 2019/07/01 11:07:32 GMT ronenha Exp $
+# $Log: Revision 1 2019/07/01 11:07:32 GMT ronenha $
+#   Initial revision.
+# 
+#  Revision: 1.2 Thu Oct  2 09:56:54 2014 milkovr
+#  Update platform switches to remove version checking. Allows for SUSE or other Linux releases.
+# 
+#  Revision: 1.1 Tue Oct 21 12:58:40 2003 syncmgr
+#  first checkin from /rds/devel/R/HOTCODE/etc dir
+#
+# Get the OS type
+set os_info = `uname -sr`
+set os_type = $os_info[1]
+set os_version = $os_info[2]
+
+# Unset the variable so we're sure errors will be reported.
+unset RDS_PT
+unsetenv RDS_PT
+
+switch ($os_type)
+	case "HP-UX":
+		setenv RDS_PT HP11X
+		breaksw
+	case "Linux":
+		setenv RDS_PT lnx86
+		breaksw
+	case "SunOS":
+		setenv RDS_PT sun5
+		breaksw
+	default:
+		echo "RDS is currently only available for HP, Linux, or Solaris operating systems."
+		exit 1
+		breaksw
+	endsw

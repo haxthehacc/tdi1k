@@ -1,0 +1,176 @@
+<HTML><HEAD>CA18ME/MF/MK/MKL/QE/QK/QKL Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+_________________________________________________________________________________________________________
+Date: 04/16/2015
+Version: 3.0.4
+
+Verification:
+DRC:
+* Added DRC rule 12.E. This rule checks that if a 1.8v nwell resistor is used, 
+  dgate must abutt but not overlap the resistor.
+
+_________________________________________________________________________________________________________
+Date: 02/21/2014
+Version: 3.0.3
+
+Highlights:
+* Add support for CA18MF variant
+
+Device Library Updates:
+Bipolars
+* Disable vertical PNP (vpnp5p0) in CA18MKL/QKL
+* Enable 5V vertical PNP (vpnp5v) in CA18ME/MK/QE/QK
+Resistors
+* Enable 5V N-well resistor (rnwell5v) in CA18ME/MK/MKL/QE/QK/QKL
+
+Verification Updates:
+DRC
+* Add "automatic data rejection" message to min. active spacing (2.C.a) check
+
+
+_________________________________________________________________________________________________________
+Date: 09/25/2013
+Version: 3.0.2
+
+Device Library Updates:
+* Add marking layer mrklyr:stdCMrk to dfII techfile
+* Disable high-voltage vertical NPN (vnpn40p0) in CA18ME/QE
+* Disable P-drift diode (dpdrift) in CA18ME/QE
+
+Model Updates:
+Release v5.4 models (see RELEASE_NOTES file in model directory)
+* Add option to enable Spectre "assert" checks for max. operating voltage
+* Update 5V N-well resistor model to align with latest E-spec
+* Re-configure stacked MiM subckt to better account for coupling to substrate
+* Add DC corner, statistical (process and mismatch) models for 3.3V P+ diode
+* Add breakdown voltage parameter to all N+ and P+ diode models
+* Change deep N-well to psub diode breakdown voltage from 50V to 16.3V
+
+Verification Updates:
+DRC
+* Fix minimum width/spacing checks for top metal fill shapes 
+* Fix bug that could prevent rules 2.H (min. N-well overplot of N+ diffusion), 
+  12.E (min. dgate5 to N-well spacing), and 12.H (min. dgate5 overplot of N-well) 
+  from being checked 
+* Fix bug that could mis-identify regular N-wells as N-well resistors, thus
+  requiring larger spacing
+* Add missing 5V N+ implant check (6.C.a)
+* Add missing 5V P+ implant checks (11.B.a, 11.C.a, 11.C.b, 11.D.c, 11.D.d,
+  11.E.a, 11.F.a, 11.F.b)
+* Add new 2.D, 2.E, and 2.F N-well checks valid only under the stdCMrk marking
+  layer, applicable to the new 5V compact std. cell library (fs510)
+
+
+_________________________________________________________________________________________________________
+Date: 06/18/2013
+Version: 3.0.1
+
+Device Library Updates:
+* Fix improperly translated symbolic vias in ESD library
+
+
+_________________________________________________________________________________________________________
+Date: 06/07/2013
+Version: 3.0
+Library: ca18 release for ca18me/ca18mk/ca18mkl/ca18qe/ca18qk/ca18qkl
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.16 (CA18 Family)
+Electrical Spec: NPB-PS-0173, rev.14 (CA18 Family)
+Design Application Note: NPB-PS-0711, rev.08 (5V/HV CMOS)
+Design Application Note: NPB-PS-1041, Rev.01 (Pad Over Logic)
+Design Application Note: NPB-PS-1108, Rev.01 (eFuse2)
+
+Highlights:
+* Add support for CA18MKL/QKL variants
+* Add 5V N-well resistor and vertical PNP devices
+* Remove support for HVF layer in CA18MK/QK variants
+
+Device Library Updates:
+Bipolars
+* Add 1.8V vertical PNP (vpnp) for CA18MKL/QKL
+* Add 5V vertical PNP (vpnp5v)
+* Disable high-voltage vertical NPN (vnpn40p0) in CA18MK/QK
+Capacitors
+* Add 1.8V poly capacitor (cpoly)
+Diodes
+* Add 1.8V diodes (dn, dp_3)
+* Disable P-drift diode (dpdrift) in CA18MK/QK
+Fuses
+* Add new poly fuse (efuse2)
+MOSFETs
+* Add 1.8V FETs (nfet, nfet_4, nfet_esd, nfet_rf, pfet, pfet_4, pfet_rf)
+* Change minimum channel length of nfet_esd to 0.18um
+Resistors
+* Add 5V N-well resistor (rnwell5v)
+* Update high-value poly resistor (rppoly_hi) Rend and dw parameters
+
+Verification Updates:
+DRC
+* Add check for active spacing outside of SRAM (2.C)
+* Revise metal fill checks to make them more robust (8/18/28/38/48/58.fill)
+* Update ptap definition to exclude P+ active in Nwell5 or PWE
+* Revise PWE enclosure of Nwell check (DGRHV.3)
+* Revise PWE to unrelated active spacing check (DGRHV.4)
+* Restore 1.8V active to tap maximum spacing checks (LUP.I.a & LUP.I.b)
+* Add check to flag dnwell40 drawn outside of PWE (BAD.dnw40)
+* Update 36.46.V check to allow dnwell40 enclosed by analog layer
+* Flag HVF layer as an unsupported layer in CA18MK/QK
+ERC
+* Update ptap definition to exclude P+ active in PWE
+ESD/Latchup
+* Restore 1.8V active to tap maximum spacing checks (LUP.I.a & LUP.I.b)
+* Ignore LUP.F.a, LUP.F.a.S, and LUP.F.b violations in ESD diodes
+LVS
+* Change bottom plate of 2-term MIMs to enable parasitic extraction to ground
+* Prevent duplicate extraction of caps/resistors placed over NW and DNW
+* Add support for 5V N-well resistor and vertical PNP devices
+
+_________________________________________________________________________________________________________
+Date: 05/06/2012
+
+Library: ca18 release for ca18me/ca18mk/ca18qe/ca18qk
+Relevant Specification Documents:
+Design Rules: NPB-PS-0176, rev.15 (CA18 Family)
+Electrical Spec: NPB-PS-0173, rev.13 (CA18 Family)
+Design Application Note: NPB-PS-0711, rev.07 (5V/HV CMOS)
+Design Application Note: NPB-PS-1026, Rev.02 (eFuse)
+Design Application Note: NPB-PS-1041, Rev.01 (Pad Over Logic)
+
+Highlights:
+* Initial development-level kit release for ca18me process
+* Initial development-level kit release for ca18mk process
+* Initial development-level kit release for ca18qe process
+* Initial development-level kit release for ca18qk process
+* Reduced mask count version of ca18ha with:
+  - 1.8V MOSFETs removed
+  - drain-extended 20-40V MOSFETs removed
+  - 40V N-drift diode removed
+  - minimum 5V PFET channel length reduced to 0.52u
+  - three level metal backend with 2.8um thick top metal (ca18me/mk)
+  - four level metal backend with 2.8um thick metal4 and metal3 (ca18qe/qk)
+  - Low Ron 5V NFET (ca18mk/qk)
+
+Software versions tested with this release:
+* Cadence IC release IC6.1.3.500.10
+* Cadence Spectre release MMSIM10.1
+* Synopsys Hspice release Z-2010.12_SP2
+* ADS release v2009a Update 1
+* Mentor Calibre release 2010.2_38.23
+* Cadence Assura not supported in this release
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps in customizing layers and devices.  This utility
+  is found in:
+  CIW->Jazz->Application Notes->Process Variant and Layer Setup
+
+Kit Installation and Environment:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits.  This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+
+</PLAINTEXT></BODY></HTML>

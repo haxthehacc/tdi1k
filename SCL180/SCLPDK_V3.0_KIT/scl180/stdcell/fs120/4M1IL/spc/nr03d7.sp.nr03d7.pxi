@@ -1,0 +1,26 @@
+* File: nr03d7.sp.nr03d7.pxi
+* Created: Sun Feb 14 19:49:11 2010
+* 
+cc_1 U38_drain VSS 0.342798f
+cc_2 U38_drain A1 0.24344f
+cc_3 U38_drain A2 0.133334f
+cc_4 U38_drain A3 0.250159f
+cc_5 U38_drain VDD 0.076218f
+cc_6 U38_drain U62_out 0.198879f
+cc_7 VSS A1 0.0198176f
+cc_8 VSS A2 0.0185675f
+cc_9 VSS A3 0.023099f
+cc_10 VSS U62_out 0.246148f
+cc_11 VSS ZN 0.238831f
+cc_12 A1 A2 0.184921f
+cc_13 A1 VDD 0.0409419f
+cc_14 A2 A3 0.295124f
+cc_15 A2 VDD 0.049421f
+cc_16 A2 u1_source 0.0362995f
+cc_17 A3 VDD 0.0885751f
+cc_18 A3 U62_out 0.0990818f
+cc_19 VDD U62_out 0.501565f
+cc_20 VDD ZN 0.447692f
+cc_21 VDD u1_source 0.0205018f
+cc_22 VDD U36_drain 0.00904837f
+cc_23 U62_out ZN 0.730751f

@@ -1,0 +1,25 @@
+/*
+#       File:           tsl18l4_30_ApII.tf
+#       Author:         Yu Chen
+#       @(#) ApolloII tech file For VISA TSL 0.18U DRM REV. 2.6 4LM Process
+#       @(#) Revision 2.8.1.0
+#       @(#) Date     04-Sep-03
+###############################################################################
+# Copyright (c) 2003 Synopsys, Inc.  All Rights Reserved
+# This information is provided pursuant to a license agreement that grants
+# limited rights of access/use and requires that the information be treated as
+# confidential.
+###############################################################################
+# Technology: tsl18l4_30
+# drawing grid: 0.005 microns
+#
+# Revision history:
+# rev            date     who  what
+# ------------  --------- ---- ------------------------------------------------
+# Rev. 2.8.1.0  04-Sep-03 YC   Add new layers of dummy ACTIVE and modify metal thickness.
+# Rev. 2.6.1.1  05-Jun-03 YC   Add the new dummy layers of GC and metals.
+# Rev. 2.6.1.0  15-Feb-03 YC   Initial VISA TSL 0.18U tf.
+#
+# -----------------------------------------------------------------------------
+#
+*/

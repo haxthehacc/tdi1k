@@ -1,0 +1,103 @@
+<HTML><HEAD>SBC18PT Design Kit Release Notes</HEAD><BODY><PLAINTEXT>
+________________
+Date: 04/14/2015
+Library: sbc18
+Version: 1.0.5
+
+Device Library:
+* Fixed NPN pcell to correctly generate Medimum voltage layout
+  (was generating high voltage layout [missing lcoll layer])
+
+________________
+Date: 04/10/2015
+Library: sbc18
+Version: 1.0.4
+
+Device Library:
+* Fixed NPN minimum width limit
+
+________________
+Date: 04/06/2015
+Library: sbc18
+Version: 1.0.3
+
+Overview:
+* Modified vpnp_hp bulk pin name for LVS/PEX
+* Fixed DRC errors in NPN
+* Added ESD devices to allow direct access to PSUB
+* Updated InductorLib
+* Updated SKILL (menu items)
+
+General:
+* Added Windows support to InductorLib
+* Added rfline support to InductorLib
+* Updated Inductor SKILL code to support rfline, improve inductor
+  handling
+
+Verification:
+LVS/PEX:
+* Changed the vpnp_hp bulk pin name from "S" to "well", to match 
+  the name on the actual device
+
+Device Library:
+* Modified NPN pcell to eliminate a minor DRC error at certain sizes.
+
+ESD Library:
+* Added PSUB terminal to esd_sub_1x8_* for 1.8V/3.3V CMOS, creating new cells
+  esd_sub_1x8_*_iso. Each device includes schematic, symbol, and layout. 
+  All are DRC and LVS clean, including DNW sizes. The symbols are identical 
+  in footprint to the existing symbols, with the addition of the psub terminal. 
+  This allows simple swapping of symbols in schematics.
+
+________________
+Date: 10/30/2014
+Library: sbc18
+Version: 1.0.2
+
+Device Library Updates:
+* Added missing ddnw, diso cells (not valid in SBC18PT/PTC).
+
+________________
+Date: 10/22/2014
+Library: sbc18
+Version: 1.0.1
+
+Device Library Updates:
+* A packaging error resulted in an incorrect version of the sbc18pth 
+  verification decks being included in the original download. This 
+  patch contains the correct decks. This patch applies to both CDBA 
+  and OA installations. (SBC18PTH)
+
+________________
+Date: 10/06/2014
+Library: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev. 15
+* Design Rules: NPB-PS-0635, Rev. 6 (SBC18PTH)
+* Design Rules: NPB-PS-0888, Rev. 0 (SBC18PTD)
+* Electrical Spec: NPB-PS-0267, Rev. 17
+
+Process Synopsis:
+* The SBC18PT process has 5 layers of aluminum metal and supports:
+  - 1.8V and 3.3V MOSFETs,
+  - standard, high speed (SBC18PTH/PTD) and high voltage NPNs without deep trench,
+  - poly resistors (silicided and low value and high value unsilicided), 
+    N-well resistor,
+  - 2.0fF/um2 MIM capacitors between metal2/metal3,
+    4.0fF/um2 MIM stacked capacitors between metal2/metal3/metal4,
+  - square and octagonal inductors using 5.2um thick top metal5,
+  - MOS and high performance junction varactors (SBC18PTH/PTD)
+
+Software versions tested with this release:
+* Cadence IC release 6.1.6.080
+* Cadence Spectre release 7.2.0.202.isr5
+* Synopsys HSPICE release E-2010.12-ENG2
+* Mentor Calibre release v2014.1_36
+* Cadence Assura release v4.14.116_616
+
+This is the initial release of the next-generation SBC18PT kit intended
+to replace the legacy kit last released in 2006.  A Generic Design
+Conversion tool is available from the TowerJazz pull-down menu to aid
+in the process of migrating legacy designs.
+
+</PLAINTEXT></BODY></HTML>

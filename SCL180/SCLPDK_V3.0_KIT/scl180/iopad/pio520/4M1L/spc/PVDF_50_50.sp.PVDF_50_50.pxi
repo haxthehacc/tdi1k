@@ -1,0 +1,14 @@
+* File: PVDF_50_50.sp.PVDF_50_50.pxi
+* Created: Sun Feb 12 14:27:00 2023
+* 
+cc_1 VDDO VSSO 361.517f
+cc_2 VDDO VSS 898.238f
+cc_3 VDDO 6 91.2967f
+cc_4 VDDO 7 93.2116f
+cc_5 VDDO X4/noxref_5 0.0280952f
+cc_6 VSSO VSS 90.9503f
+cc_7 VSSO 6 96.9381f
+cc_8 VSSO X3/noxref_5 1.65013f
+cc_9 VSSO 7 2.99705f
+cc_10 VSS 7 90.297f
+cc_11 VSS X4/noxref_5 1.63216f

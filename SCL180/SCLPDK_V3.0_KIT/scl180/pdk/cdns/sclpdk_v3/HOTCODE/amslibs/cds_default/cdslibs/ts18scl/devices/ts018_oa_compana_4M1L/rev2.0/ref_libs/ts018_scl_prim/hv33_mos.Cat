@@ -1,0 +1,5 @@
+TDMCHECKPOINT="1.0"
+ts018_scl_prim/nmos_33 type="cell"
+ts018_scl_prim/pmos_33 type="cell"
+ts018_scl_prim/nmos_native_33 type="cell"
+ts018_scl_prim/nmos_33_iso type="cell"

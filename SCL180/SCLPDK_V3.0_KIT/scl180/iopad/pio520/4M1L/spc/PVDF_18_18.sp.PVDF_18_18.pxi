@@ -1,0 +1,14 @@
+* File: PVDF_18_18.sp.PVDF_18_18.pxi
+* Created: Sun Feb 12 14:26:32 2023
+* 
+cc_1 VDDO VSSO 366.166f
+cc_2 VDDO VSS 902.882f
+cc_3 VDDO 6 77.8609f
+cc_4 VDDO 7 79.7725f
+cc_5 VDDO X4/noxref_5 0.0280952f
+cc_6 VSSO VSS 90.9503f
+cc_7 VSSO 6 79.4295f
+cc_8 VSSO X3/noxref_5 1.65013f
+cc_9 VSSO 7 2.99705f
+cc_10 VSS 7 72.7872f
+cc_11 VSS X4/noxref_5 1.63216f

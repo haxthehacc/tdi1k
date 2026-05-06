@@ -1,0 +1,3094 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>SMC Datasheet</title>
+  </head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#006699" vlink="#999966" alink="#CCCC99"
+      topmargin="0" marginheight="0">
+   <basefont face="Arial" size="10pt"</font>
+<!-- Standard page header. Puts the company logo to the left with a blue -->
+    <!-- bar extending right.  The title appears right, bottom justified in the bar. -->
+  <table border="1" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top" align="right">
+          <img src="images/title_left.gif" width="8" height="83" border="0">
+      </td>
+      <td width="40%" background="images/title_bg.gif" valign="top" align="left">
+  	<img src="images/towerjazz.gif" width="260" height="94" alt="Magma Design Automation">
+      </td>
+      <td width="58%" background="images/title_bg.gif" valign="bottom" align="right">
+          <font face="Arial, Helvetica" size="6" color="#ffffff">SiliconSmart<SUP>TM</SUP></font>
+          <br><font size="5" color="#ffffff">Characterization Datasheet</font><br> </br>
+      </td>
+      <td width="2%" background="images/title_bg.gif" valign="bottom" align="right">
+      </td>
+    </tr>
+  </table>
+  <br><br>
+<table border=1 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;
+         border-collapse:collapse;border:none;mso-border-top-alt:1.5pt;mso-border-left-alt:
+        .5pt;mso-border-bottom-alt:1.5pt;mso-border-right-alt:.5pt;mso-border-color-alt:
+        windowtext;mso-border-style-alt:solid;mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+   <tr>
+     <td valign=top align=left style='width:65%;border-top:solid windowtext 1.5pt;
+        border-left:none;border-bottom:solid windowtext .5pt;border-right:none;
+        padding:5.75pt 5.75pt 5.75pt 5.75pt'>
+        <font size="+3">mx04d1 </font>
+        <br><font size="+2">TOWER SEMICONDUCTOR LTD</font>
+     </td>
+     <td valign=top align=right style='width:35%;border-top:solid windowtext 1.5pt;
+        border-left:none;border-bottom:solid windowtext .5pt;border-right:none;
+        padding:5.75pt 5.75pt 5.75pt 5.75pt'>
+        <font size="+3">&nbsp</font><br>
+        <font size="+2">&nbsp</font>
+     </td>
+   </tr>
+   <tr>
+     <td valign=top align=left style='width:65%;border:none;border-bottom:
+         solid windowtext 1.5pt;padding:.05in 5.75pt 0in 5.75pt'>
+         <p class=MsoNormal>Fri Feb 19 14:19:12 2010</p>
+     </td>
+     <td valign=top align=right style='width:35%;border:none;border-bottom:
+         solid windowtext 1.5pt;padding:.05in 5.75pt 0in 5.75pt'>
+         <p class=MsoNormal>SiliconSmart Software Version: 2008.02-SP1p1 (Production)</p>
+     </td>
+   </tr>
+  </table>
+  <br><br>
+<font size="+1">OUTPUT FUNCTIONS</font>
+<table border=1 width=34% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Output Pin</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Function</b>  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>Z  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>((I0&(!S1)&(!S0))|(I1&(!S1)&S0)|(I3&S1&S0)|(I2&S1&(!S0)))  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size="+1">PIN CAPACITANCE (pf)</font>
+<table border=1 width=51% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Pin</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=17%
+  align=middle valign=middle>
+<p><b>Type</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Capacitance (pf)</b>  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>I0  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0051  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>I1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0046  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>I2  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0048  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>I3  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0049  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>S0  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0162  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>S1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=17%
+  align=left valign=middle>
+<p>input  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0145  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size="+1">DELAY AND OUTPUT TRANSITION TIME</font>
+<table border=1 width=100% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=14%
+  align=middle valign=middle>
+<p><b>Input Pin</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=middle valign=middle>
+<p><b>Output</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=middle valign=middle>
+<p><b>Condition</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=middle valign=middle>
+<p><b>Tin (ns)</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=middle valign=middle>
+<p><b>Out Load (pf)</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt; ' width=14%
+  align=middle valign=middle>
+<p><b>Delay (ns)</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=middle valign=middle>
+<p><b>Tout (ns)</b>  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2011  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0810  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3888  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0809  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2080  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0813  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3812  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0798  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I2(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3890  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0808  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I2(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2060  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0813  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I3(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2085  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0810  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>I3(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3839  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0798  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2860  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0806  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2857  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0807  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2861  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0806  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2857  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0807  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2886  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0809  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2883  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0809  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2886  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0809  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2883  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0809  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3459  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0798  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3480  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0796  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3459  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0798  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3480  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0796  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3462  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0799  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3479  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0800  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3462  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0799  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3479  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0800  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2098  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2098  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2094  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2094  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2095  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2095  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0824  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2091  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0825  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2091  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0825  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3839  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3'*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3839  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3856  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0787  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1'*I3*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3856  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0787  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3841  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3841  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3859  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0787  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S1*I3'*I2*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3859  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0787  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4192  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0803  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4157  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0799  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4161  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0803  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4131  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0800  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4132  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4088  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0787  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4107  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0790  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.4062  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0785  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2108  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0810  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2120  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0813  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2108  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0810  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2120  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0813  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2'*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2118  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0808  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2124  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0811  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2117  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0808  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.2123  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0811  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3134  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0803  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3175  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0805  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3121  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0806  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3161  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0806  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2'*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3185  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0805  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2'*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3231  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0805  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3168  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0807  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3'*I2*I1*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3212  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0808  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3746  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0803  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3'*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3748  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0803  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3695  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0796  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0'*I3*I2*I1*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3696  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0795  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2'*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3703  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0791  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2'*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3702  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0789  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2*I1'*I0')  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3648  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0783  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=14%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>(S0*I3*I2*I1'*I0)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=14%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt; ' width=14%
+  align=right valign=middle>
+<p>0.3648  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=14%
+  align=right valign=middle>
+<p>0.0783  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size="+1">DYNAMIC ENERGY</font>
+<table border=1 width=100% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=16%
+  align=middle valign=middle>
+<p><b>Input Pin</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=middle valign=middle>
+<p><b>Condition</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=middle valign=middle>
+<p><b>Tin (ns)</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=middle valign=middle>
+<p><b>Output</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=middle valign=middle>
+<p><b>Out Load (pf)</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=middle valign=middle>
+<p><b>Energy (pJ)</b>  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S0  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.1031  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I3(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0086  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S0  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0517  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I3  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0412  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I2(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>-0.0075  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>-0.0068  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I0  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0983  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0481  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0639  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0080  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I2  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0572  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0148  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I3(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>-0.0084  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I0(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0081  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I2  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.1026  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S1(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0542  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I0(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>-0.0077  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0937  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.1086  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S1  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.1157  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I2(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0075  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I0  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0631  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>I3  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>Z(HL)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.0390  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.1146  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=16%
+  align=left valign=middle>
+<p>S1(LH)  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>0.1600  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=left valign=middle>
+<p>n/a  
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; ' width=16%
+  align=right valign=middle>
+<p>&nbsp   
+ </td>
+ <td style='border-top:solid windowtext 1pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt; border-right:solid windowtext 2pt;' width=16%
+  align=right valign=middle>
+<p>0.0061  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size="+1">LEAKAGE POWER</font>
+<table border=1 width=34% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Condition</b>  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=middle valign=middle>
+<p><b>Power (nW)</b>  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;' width=17%
+  align=left valign=middle>
+<p>none  
+ </td>
+ <td style='border-top:solid windowtext 2pt; border-bottom:solid windowtext 2pt; border-left:solid windowtext 1pt; border-right:solid windowtext 2pt;' width=17%
+  align=right valign=middle>
+<p>0.0916  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size="+1">SETUP AND CONDITIONS</font>
+<table border=1 width=80% cellspacing=0pt cellpadding=5pt>
+ <tr>
+ <td style='border-top:solid windowtext 2pt; border-left:solid windowtext 2pt;border-right:solid windowtext 2pt;' width=80%
+  align=left valign=middle>
+<p><b>&nbsp;PVT:</b>&nbsp;ff  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:none; border-left:solid windowtext 2pt;border-right:solid windowtext 2pt;' width=80%
+  align=left valign=middle>
+<p><b>&nbsp;Voltage:</b>&nbsp;1.9800  
+ </td>
+ </tr>
+ <tr>
+ <td style='border-top:none; border-bottom:solid windowtext 2pt; border-left:solid windowtext 2pt;border-right:solid windowtext 2pt;' width=80%
+  align=left valign=middle>
+<p><b>&nbsp;Temperature:</b>&nbsp;-40  
+ </td>
+ </tr>
+
+</table>
+  <br><br>
+
+<font size = "+1">LEGEND:<br>
+&nbsp; n/a = not applicable<br> </font>
+</body>
+</html>

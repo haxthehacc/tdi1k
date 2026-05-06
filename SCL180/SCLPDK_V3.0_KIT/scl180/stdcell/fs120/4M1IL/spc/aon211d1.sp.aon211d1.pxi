@@ -1,0 +1,32 @@
+* File: aon211d1.sp.aon211d1.pxi
+* Created: Sun Feb 14 19:00:44 2010
+* 
+cc_1 C1 noxref_2 0.0693253f
+cc_2 C1 6 0.0488583f
+cc_3 C1 VDD 0.0313053f
+cc_4 C1 C2 0.196303f
+cc_5 C1 VSS 0.00652359f
+cc_6 noxref_2 C2 0.0336338f
+cc_7 noxref_2 VSS 0.193851f
+cc_8 noxref_2 B 0.0614806f
+cc_9 noxref_2 ZN 0.00333203f
+cc_10 noxref_2 A 0.0110518f
+cc_11 noxref_2 noxref_10 0.0149368f
+cc_12 6 VDD 0.113577f
+cc_13 6 C2 0.194016f
+cc_14 6 B 0.035897f
+cc_15 6 ZN 0.0188396f
+cc_16 6 A 0.0020059f
+cc_17 VDD C2 0.0334994f
+cc_18 VDD B 0.0121977f
+cc_19 VDD ZN 0.0355249f
+cc_20 VDD A 0.0381781f
+cc_21 C2 VSS 0.00655479f
+cc_22 C2 B 0.155139f
+cc_23 C2 A 4.10353e-19
+cc_24 VSS B 0.0137255f
+cc_25 VSS ZN 0.0205017f
+cc_26 VSS A 0.0129493f
+cc_27 B ZN 0.0261407f
+cc_28 B A 0.164231f
+cc_29 ZN A 0.216314f

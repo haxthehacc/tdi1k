@@ -1,0 +1,4 @@
+#!/bin/csh -f
+
+$PERL5 $RDS_CDSWARE/bin/create_write_vgh_cscr.pl $*
+

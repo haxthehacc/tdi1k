@@ -1,0 +1,3 @@
+-- RDS technology Libraries for technology ts18scl
+
+DEFINE ts018_scl_prim ./devices/devices_oa_${RDS_CDS_VERIFY_TECH}

@@ -1,0 +1,29 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 
+'balun3' implements the rectangular spiral transformer. It consists of an interdigitated primary and secondary winding. A center tap splits the secondary winding in two.
+<h1>ATTRIBUTES:</h1>
+<UL>
+<li><a href="../images/balun_w.html"><b>Width of Segment:</b></a> Controls the width of one balun segment.</li>
+<li><a href="../images/balun_s.html"><b>Space Between Segments:</b></a> Controls the space between balun segments.</li>
+<li><a href="../images/balun_nt.html"><b>Number of Turns:</b></a> Controls the total number of turns (primary + secondary) in the balun.</li>
+<li><a href="../images/balun_xy.html"><b>Xsize:</b></a> The total width of the structure in the X direction.  Xsize and Ysize are constrained to be equal</li>
+<li><a href="../images/balun_xy.html"><b>Ysize:</b></a> The total height of the structure in the Y direction. Xsize and Ysize are constrained to be equal</li>.
+</ul>
+
+<h1>NOTES:</h1> 
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>For LVS to recognize the balun, the marking layer must be intersected by 5 metal3 wires that connect to the 5 metal3 pins of the balun. It is not allowed to connect the pins in any layer other than metal3.</li>
+
+<li>The following attributes are checked during LVS: </li>
+<br> Width, Spacing, Number of Turns, XSize and YSize </br>
+for sbc35mx, sbc35qx, sbc35px, bc35, bc35qx, bc35px technology runsets</br>
+</ul>
+
+</body>
+</html>
+

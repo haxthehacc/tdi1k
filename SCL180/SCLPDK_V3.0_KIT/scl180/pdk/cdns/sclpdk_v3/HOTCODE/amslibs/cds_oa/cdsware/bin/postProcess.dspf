@@ -1,0 +1,455 @@
+#!/bin/env python
+
+import sys,os
+from shutil import copyfile
+import re
+
+
+params_no_lc = ['$X','$Y','$SUB','VARIANTselect']
+parasitic_params_to_remove = ['r','c']
+all_params_to_remove = ['r','c','dspfsim','model','macro','$sub']
+
+def process_dspf(ifp,ofp,orig_fp,tool):
+	
+	# in order to workaround some QRC isues, we need to process the instance section multiple times
+	# to do this we will process up to the instance section, then read the remander of the 
+	# file and start the instance section processing.
+	
+	# curline is the current line to process
+	# nextline is our look ahead line
+	# line will be constructed by unraveling line continuations
+
+	# initialize the look ahead buffer
+	try:
+		curline = ifp.next().strip()
+		if orig_fp: orig_fp.write(curline+'\n')
+	except:
+		return
+
+	# loop over the input file until the instance section
+	in_layermap = False
+	for nextline in ifp:
+		line = curline
+		nextline = nextline.strip()
+		if orig_fp: orig_fp.write(nextline+'\n')
+		
+		# here we unwrap the line continuations, keeping track of where the line breaks are
+		# so that we can rewrap the lines on output
+		cr_positions = []
+		while nextline.startswith('+'):
+			curline = nextline
+			cr_positions.append(len(line.split())-1)
+			line += ' '+curline[1:]
+			try:
+				nextline = ifp.next().strip()
+				if orig_fp: orig_fp.write(nextline+'\n')
+			except:
+				break
+		
+		# no processing needed for control or comment lines
+		if not line or line.startswith('*') or line.startswith('.'):
+			# check for layer map
+			if in_layermap and len(line.split()) <= 1:
+				in_layermap = False
+			if 'layer_map' in line.lower():
+				in_layermap = True
+			if in_layermap:
+				line = map_layer_names(line,in_layermap=in_layermap)
+				
+			# check for the start of the instance section
+			outline = line
+			write_line(ofp,line,cr_positions)
+			curline = nextline
+			if 'instance' in outline.lower() and 'section' in outline.lower():
+				break
+			continue
+		
+		# xRC uses a different naming convention than QRC for parasitic layer names.
+		# Since we could not get the mapping feature to work, we fix them here.
+		# this is not needed in the instance section
+		if '$layer=' in line:
+			line = map_layer_names(line)
+		
+		# output the line
+		write_line(ofp,line,cr_positions)
+		curline = nextline
+		
+	# process the instance section
+	
+	# read the remainder of the file
+	lines = []
+	cr_position_list = {}
+	curline = re.sub('=[ ]+','=',curline)  
+	
+	def get_cr_position(line,cr_positions):
+		tokens = line.split()
+		tokens = [x for x in tokens if not x.split('=')[0].lower() in all_params_to_remove]
+		cr_position = len(tokens)-1
+		if cr_positions and cr_position <= cr_positions[-1]:
+			return None
+		return cr_position
+	
+	for nextline in ifp:
+		nextline = nextline.strip()
+		if orig_fp: orig_fp.write(nextline+'\n')
+		# work around a vendor bug where spaces were added after some parameter names, e.g. w=   5
+		nextline = re.sub('=[ ]+','=',nextline)  
+		line = curline
+		
+		# here we unwrap the line continuations, keeping track of where the line breaks are
+		# so that we can rewrap the lines on output
+		cr_positions = []
+		while nextline.startswith('+'):
+			curline = nextline
+			cr_position = get_cr_position(line, cr_positions)
+			if cr_position != None:
+				cr_positions.append(cr_position)
+			line += ' '+curline[1:]
+			try:
+				nextline = ifp.next().strip()
+				if orig_fp: orig_fp.write(nextline+'\n')
+				# work around a vendor bug where spaces were added after some parameter names, e.g. w=   5
+				nextline = re.sub('=[ ]+','=',nextline)  
+			except:
+				break
+
+		# save the line and CR positions		
+		lines.append(line)
+		cr_position_list[len(lines)-1] = cr_positions
+		curline = nextline
+	lines.append(curline)
+	cr_position_list[len(lines)-1] = []
+		
+	# pass 1: find the instances that have been expanded into multiple instances
+	multiple_insts = []
+	for line in lines:
+		if not line or line.startswith('*') or line.startswith('.'): continue
+		
+		# tokenize the line
+		tokens = line.split()
+		
+		# get the instname
+		inst = tokens[0].strip()
+		if '@' in inst: 
+			tokens = inst.split('@')
+			multiple_insts.append(tokens[0])
+	multiple_insts = list(set(multiple_insts))
+	
+	# pass 2: get the multi-instance root parameters
+	saved_params = {}
+	t2_primitives = ['c','r','d']
+	t4_primitives = ['m','q']
+	t4_exceptions = ['pnpa','pnpb','pnpc','pnpd']
+	for line_index in range(len(lines)):
+		line = lines[line_index]
+		if not line or line.startswith('*') or line.startswith('.'): continue
+		
+		# tokenize the line
+		tokens = line.split()
+		nets = []
+		model = ''
+		
+		# get the instname
+		inst = tokens[0].strip()
+		if not inst in multiple_insts: continue
+		tokens = tokens[1:]
+		
+		# get the nets
+		j=0
+		for token in tokens:
+			is_net = False
+			if token.isdigit() and j<2 and inst[0].lower() in t2_primitives:
+				is_net = True
+			elif token.isdigit() and j<4 and inst[0].lower() in t4_primitives:
+				is_net = True
+			elif token[0].isalpha() and not '=' in token:
+				is_net = True
+			if is_net:
+				nets.append(token)
+				j += 1
+		tokens = tokens[j:]
+		
+		# get the parameters
+		params = tokens
+		
+		# Save the root parameters
+		saved_params[inst] = {}
+		for param in params:
+			tokens = param.split('=')
+			saved_params[inst][tokens[0]] = param
+
+	# pass 3 - process the dspf
+	parallel_insts = {}
+	parallel_models = {}
+	def gen_key(nets):
+		key = '-'.join(nets)
+		return key
+	for line_index in range(len(lines)):
+		line = lines[line_index]
+		cr_positions = cr_position_list[line_index]
+		
+		# no processing needed for control or comment lines
+		if line.startswith('*') or line.startswith('.'):
+			# check for the start of the instance section
+			write_line(ofp,line)
+			continue
+	
+		if 'rpp3t' in line or 'c3t_smim6' in line or 'rph3t' in line:
+			pass
+		# tokenize the line
+		tokens = line.split()
+		nets = []
+		model = ''
+		t2_primitives = ['c','r','d']
+		t4_primitives = ['m','q']
+		t4_exceptions = ['pnpa','pnpb','pnpc','pnpd']
+		
+		# get the instname
+		inst = tokens[0].strip()
+		tokens = tokens[1:]
+		
+		# get the nets
+		j=0
+		for token in tokens:
+			is_net = False
+			if token.isdigit() and j<2 and inst[0].lower() in t2_primitives:
+				is_net = True
+			elif token.isdigit() and j<4 and inst[0].lower() in t4_primitives:
+				is_net = True
+			elif token[0].isalpha() and not '=' in token:
+				is_net = True
+			if is_net:
+				nets.append(token)
+				j += 1
+		tokens = tokens[j:]
+		
+		# get the parameters
+		params = tokens
+		
+		# replace sim_ parameters with base parameter
+		nosim_params = []
+		for param in params:
+			if param.startswith('sim_'):
+				param = param.replace('sim_','')
+			if param.strip():
+				nosim_params.append(param)
+		params = nosim_params
+		
+		# lowercase dspfsim
+		lcparams = []
+		for param in params:
+			if param.startswith('dspfsim='):
+				param = param.lower()
+			lcparams.append(param)
+		params = lcparams
+		
+		# get the model
+		steal_model = False
+		if inst[0].lower() == 'x':
+			steal_model = True
+		elif inst[0].lower() in t2_primitives and len(nets) == 3:
+			steal_model = True
+		elif inst[0].lower() in t4_primitives and len(nets) == 5:
+			steal_model = True
+		elif inst[0].lower() in t4_primitives and len(nets) == 4 and nets[-1] in t4_exceptions and nets[-1] == get_param_value('dspfsim',params):
+			steal_model = True
+		if steal_model:
+			model = nets[-1]
+			nets = nets[:-1]
+		
+		# qrc dspf does not carry parameters to strips/slice instances, so we need to
+		tokens = inst.split('@')
+		if len(tokens) > 1:
+			curparams = [x.split('=')[0] for x in params]
+			masterparams = saved_params[tokens[0]].keys()
+			missingparams = list(set(masterparams).difference(curparams))
+			for missingparam in missingparams:
+				params.append(saved_params[tokens[0]][missingparam])
+						
+		# lowercase and trim the parameters
+		lcparams = []
+		for param in params:
+			if '=' in param:
+				tokens = param.split('=')
+				if tokens[0].lower() in parasitic_params_to_remove: continue
+				if tokens[0] in params_no_lc:
+					lcparams.append(param)
+				else:
+					lcparams.append(tokens[0].lower()+'='+'='.join(tokens[1:]))
+			else:
+				lcparams.append(param)
+		params = lcparams
+					
+		# update model if needed
+		model_name = get_param_value('model',params)
+		if not model_name:
+			model_name = get_param_value('macro',params)
+		if not model_name:
+			model_name = get_param_value('dspfsim',params)
+		if not model_name:
+			model_name = find_model(params)
+			if model_name:
+				params.remove(model_name)
+		make_macro = False
+		if model_name:
+			model = model_name.strip('"')
+			make_macro = True
+			
+		# add substrate terminal if needed
+		sub_net = get_param_value('$SUB',params)
+		if sub_net:
+			nets.append(sub_net)
+			make_macro = True
+		if make_macro and not inst[0].lower() == 'x':
+			inst = 'X'+inst
+		
+		# remove macro, model and SUB parameters
+		params = [x for x in params if not (x.startswith('dspfsim=') or x.startswith('model=') or x.startswith('macro=') or x.startswith('$SUB='))]
+		
+		# put $ params after other params
+		dparams = [x for x in params if x[0] == '$']
+		oparams = [x for x in params if x[0] != '$']
+		params = oparams + dparams
+		
+		# check for nameless parameters.  Add name is needed.
+		if params and not '=' in params[0]:
+			params[0] = name_param(inst,params[0])
+		
+		# write updated line
+		if model:
+			try:
+				parallel_insts[gen_key(nets)].append(inst)
+			except:
+				parallel_insts[gen_key(nets)] = [inst]
+			parallel_models[inst] = model
+			write_line(ofp,inst+' '+' '.join(nets)+' '+model+' '+' '.join(params),cr_positions)
+		else:
+			write_line(ofp,inst+' '+' '.join(nets)+' '+' '.join(params),cr_positions)
+	# the PVS/QRC flow has a problem with parallel instances.  This script is unable to fix the issue - 
+	# it must be fixed in the LVS deck.  The following just identifies the problem and adds comments
+	# and syntax errors to the output DSPF.
+	# Fixed by Cadence
+	#if tool == 'qrc':
+		#found_parallel = False
+		#for key in parallel_insts.keys():
+			#if len(parallel_insts[key]) > 1:
+				#insts = parallel_insts[key]
+				#model = parallel_models[insts[0]]
+				#for inst in insts:
+					#if parallel_models[inst] != model:
+						#found_parallel = True
+						#inst_models = [x+'('+parallel_models[x]+')' for x in insts]
+						#ofp.write('? The following instances are in parallel and should have the same models:\n')
+						#ofp.write('?    '+' '.join(inst_models)+'\n')
+						#break
+		#if found_parallel:
+			#ofp.write('? This is an indication of a failure of the property transfer from CDL to DSPF.')
+			#ofp.write('? Try setting "reduce" to "off" in the LVS deck for the offending device(s).')
+		
+def map_layer_names(line,in_layermap=False):
+	tokens = line.split()
+	for i in range(len(tokens)):
+		if (tokens[i].startswith('$layer=metal') or (in_layermap and tokens[i].startswith('metal')) or
+		    tokens[i].startswith('$layer=poly') or (in_layermap and tokens[i].startswith('poly')) or
+		    tokens[i].startswith('$layer=gate') or (in_layermap and tokens[i].startswith('gate'))):
+			#tokens[i] = tokens[i].replace('layer=','')
+			tokens[i] = tokens[i].replace('_net','')
+			tokens[i] = tokens[i].replace('_mult','')
+		elif tokens[i].startswith('$layer=cont') or tokens[i].startswith('$cont'):
+			tokens[i] = tokens[i].replace('cont_ndiff','cont_diff').replace('cont_pdiff','cont_diff')
+	line = ' '.join(tokens)
+	return line
+
+def name_param(inst,param):
+	if not inst: return param
+	if inst[0] in ['x','X']:
+		if inst[1] in ['c','C']:
+			return 'C='+param
+		elif inst[1] in ['r','R']:
+			return 'R='+param
+		else:
+			return param
+	return param
+
+	
+def no_equals(tokens):
+	no_eq = [x for x in tokens if not '=' in x]
+	return len(no_eq)
+
+def parasitic(inst,tokens):
+	if inst[0] == 'C' or inst[0] == 'c' or inst[0] == 'R' or inst[0] == 'r':
+		if len(tokens) == 4:
+			return True
+	return False
+	
+def get_param_value(param_name,params):
+	for param in params:
+		if not '=' in param:
+			continue
+		name,value = param.split('=')
+		if param_name.lower() == name.lower():
+			return value
+	return None
+		
+def find_model(params):
+	for param in params:
+		if not '=' in param and param[0].isalpha():
+			return param
+	return None
+		
+def find_dspf_param_value(param_name,dspf_params):
+	for dspf_param in dspf_params:
+		dspf_param_name = dspf_param.split('=')[0]
+		if dspf_param_name == param_name:
+			return dspf_param.split('=')[1]
+	return None
+		
+def write_line(fp,line,cr_positions=[]):
+	if cr_positions:
+		pass
+	pos = 0
+	tokens = line.split()
+	for cr_position in cr_positions:
+		try:
+			tokens[cr_position] += '\n+'
+		except:
+			pass
+	line = ' '.join(tokens)
+	fp.write(line+'\n')
+
+
+
+# main
+
+source = 'stdin'
+orig_fp = None
+tool = ''
+if len(sys.argv) == 1: 
+	fp = sys.stdin
+	orig_file = os.path.join(os.getcwd(),'tj.dspf.orig')
+	orig_fp = open(orig_file,'w')
+	ofp = sys.stdout
+	tool = 'qrc'
+elif len(sys.argv) == 2:
+	orig_file = sys.argv[1]+'.orig'
+	copyfile(sys.argv[1], orig_file)
+	fp = open(orig_file,'r')
+	ofp = open(sys.argv[1],'w')
+	source = 'file'
+	tool = 'xrc'
+elif len(sys.argv) == 3:
+	orig_file = sys.argv[1]
+	fp = open(sys.argv[1],'r')
+	ofp = open(sys.argv[1]+'.pp','w')
+	source = 'file'
+	tool == 'debug'
+else:
+	raise Exception('Invalid call to dspf post-processor')
+process_dspf(fp,ofp,orig_fp,tool)
+ofp.write('\n*Original DSPF netlist written to '+os.path.join(os.getcwd(),'tj.dspf.orig')+'\n')
+if source == 'file':
+	fp.close()
+	ofp.close()
+if orig_fp:
+	orig_fp.close()
+

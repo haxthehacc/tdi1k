@@ -1,0 +1,3 @@
+\i load("attachLib.il")
+\a ciwHiExit()
+\a hiDBoxOK(ciwDBox)

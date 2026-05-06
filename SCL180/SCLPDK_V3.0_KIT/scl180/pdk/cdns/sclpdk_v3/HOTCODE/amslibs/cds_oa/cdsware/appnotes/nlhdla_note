@@ -1,0 +1,78 @@
+
+Jazz Semiconductor userware  - Information on Hdla netlister
+_______________________________________________________________
+
+The Hdla netlister generates .cir file which contains 'y' instances only.
+When running Hdla netlister in 'template' mode, the Hdla netlister generates
+both .cir file and .mtemp files.
+
+______________________________________________________
+instantiating hdla models in Eldo netlists (.cir file)
+______________________________________________________
+
+'hdla_' attributes are defined to control hdla model instantiations
+
+When running Hdla netlister, attributes which begin with the prefix 'hdla_'
+are used to control the instantiation of externally compiled hdla models. 
+
+the 'hdla_model' attribute
+
+If an attribute with the name 'hdla_model' is assigned to a cell instantiation 
+with a value which begins with a letter, that instantiation is included in the 
+Eldo netlist as an instantiation of a hdla model. If the value of hdla_model 
+starts with any non alphabetic character, the value is assumed to be commented 
+and it is ignored. A null or ignored value causes the instance to be ignored. 
+The value should be of the form 'entity(architecture).' 
+
+the 'hdla_coupling' attribute
+
+The value of the attribute named 'hdla_coupling' is copied to an Eldo netlist 
+hdla model instantiation as the contents of the "coupling:" list in the instantiation. 
+It should be of the format of that list: instance_name_1->variable1 
+instance_name_2->variable2.... 
+
+other 'hdla_' attributes
+
+Any other attribute which is given a name beginning with 'hdla_' is output in 
+the hdla model instantiation's 'generic' list as a name=value pair. The 'hdla_' 
+prefix is stripped from the name before output. 
+
+controlling pin and port lists from Composer
+
+Separation of Composer Connectors into Hdla pin and port lists and controlling the 
+order of pins and ports at hdla model instantiation is done through the Composer 
+'pin attribute' command. Pin attributes are assigned within the schematic of a
+subcircuit for which an hdla model is to be substituted. If there is no schematic, 
+a dummy schematic needs to be created with connectors for the block's signal i/o 
+and its icon to be used at the parent level. A pin attribute with the name 'eldo' 
+and the value 'pin N' or 'port N' needs to be defined on each pin. 'N' in the 
+attribute value is the position in the pin or port map of each signal in the 
+hdla model's pin or port definition statements. For instance, the signal which 
+is to appear first in the pin connection list at instantiation should be given 
+a pin attribute with the name 'eldo' and the value 'pin 1.' This mechanism allows
+independent control of port and pin order irregardless of the state of the model source.
+ 
+_______________________________________
+hdla attributes at cell level
+_______________________________________
+The cell level attributes can be specified in CDF file in BASE mode.
+ 
+_______________________________________
+The Cadence batch mode netlisters:
+_______________________________________
+
+usage: nlhdla cellname libname       #for HDLA
+usage: nlhdlat cellname libname      #for HDLA  (template)
+
+
+Note: The nelisters need to be invoked from the directory in which you invoke Cadence system.
+      libname can be ignored if your libname is ${PROJ_ID}_${LOGNAME}
+      eg: ch25akit_test5 when login as test5 for ch25akit project.
+      No Composer license is needed for using batch mode netlisters.
+
+_______________________________________
+output directory
+_______________________________________
+If environment variable HDLA_DIR is set, the .cir and .mtemp files are 
+generated in the directory specified by HDLA_DIR. Otherwise, the .cir and 
+.mtemp files are generated in the current directory.

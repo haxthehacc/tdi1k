@@ -1,0 +1,47 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1>
+<p>'pfet_pass' implements the high density, massively parallel pMOS pass gate 
+  transistor. <br>
+  The cell is created as a configurable array of parallel fet base cells. Each 
+  base cell consists of a specified number of fingers on a specified number of 
+  Active slices. </p>
+<h1>USAGE NOTES:</h1>
+Number of Fingers must be even.<br>
+Total Gate Width = (Base Cell Rows X Base Cell Columns X Number of Slices X Number 
+of Fingers X Finger Width).<br>
+We suggest using about 2 for the &quot;Number of Slices&quot; parameter because 
+the generator must draw each sliced individually. Specifying more than that drastically 
+increases generator execution time, but will still work. 
+<h1>ATTRIBUTES:</h1>
+<ul>
+  <li><b>Count:</b> Controls the number of fet instances connected in parallel. 
+    Specifying a 'Count' of X is equivalent to drawing X pfet_pass instances in 
+    the schematic and connecting them in parallel. In VirtuosoXL the device will 
+    be generated as X separate layout cells during a &quot;gen from source&quot; 
+    command. This attribute is only meaningful in the schematic. </li>
+  <li><b><a href="../images/pfet_passrc.html">Rows of Base Cell</a>:</b> Controls the number of rows in the Array of the Base Cell.</li>
+  <li><b><a href="../images/pfet_passrc.html">Columns of Base Cell</a>:</b> Controls 
+    the number of columns in the Array of the Base Cell.</li>
+  <li><a href="../images/pfet_passwl.html"><b>Width (finger):</b></a> Controls 
+    the width of a single gate finger. </li>
+  <li><a href="../images/pfet_passwl.html"><b>Length:</b></a> Controls the gate 
+    length.</li>
+  <li><a href = "../images/pfet_pass_fingers_slices.html"><b>Number of Fingers:</b></a> 
+    Controls the number of gate fingers connected in parallel in the same active 
+    area ( a slice ).</li>
+  <li><a href = "../images/pfet_pass_fingers_slices.html"><b>Number of Slices:</b></a> 
+    Number of Active islands with shorted gates in the Base Cell.</li>
+  <li><b>Draw Via Placeholder:</b> If selected, the generator will draw via place 
+    holders on the layout view for use with the Diva code to Generate any combination 
+    of Source Vias, Drain Vias, and Metal 2 you specify through the Diva switches.</li>
+</ul>
+<h1></h1>
+<h1>NOTES:</h1>
+<h1>LVS:</h1>
+<ul>
+  <li>The following attributes are checked during LVS: width, length.</li>
+</ul>
+</body>
+</html>
+

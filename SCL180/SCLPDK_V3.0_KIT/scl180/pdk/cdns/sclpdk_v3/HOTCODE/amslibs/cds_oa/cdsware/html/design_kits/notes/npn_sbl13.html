@@ -1,0 +1,37 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1>
+
+'npn'</a> implements the vertical NPN bipolar transistor. The emitter width, emitter length and number of emitter/base/collector fingers can be controlled. Low, medium, and high  breakdown voltage devices are available.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Model Type:</b> Controls the model used to simulate the device. 'hicum' selects a hicum model.</li>
+
+<li><b>Multiplier:</b> Controls the number of transistor instances connected in parallel. Specifying a 'Multiplier' of n is equivalent to drawing n fet instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Voltage Type:</b> Controls the npn voltage type.</li>
+
+<li><b>Emitter Width:</b> Controls the emitter finger width.</li>
+
+<li><b>Emitter Length:</b> Controls the emitter finger length.</li>
+
+<li><b>EmBaseColl Fingers:</b> Controls the number of emitter, base and collector fingers.  A device with EBCf='122' will have 1 emitter, 2 base, and 2 collector fingers .</li>
+
+<li><b>Emitter Metal:</b> Controls the type of metal that is used to connect the emitter and collector fingers. M1 uses only metal1. M2 uses a stack of metal1/metal2 for emitter and collector. </li>
+<li><b>Left Sub Contact</b> Controls contact placement on the left side of the ring.</li>
+<li><b>Right Sub Contact</b> Controls contact placement on the right side of the ring.</li>
+<li><b>Top Sub Contact</b> Controls contact placement on the top side of the ring.</li>
+<li><b>Bottom Sub Contact</b> Controls contact placement on the bottom side of the ring.</li>
+</ul>
+
+<h1>NOTES:</h1>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: Emitter Width, Emitter Length, Emitter Fingers, Base Fingers, Collector fingers, and Device voltage type </li> 
+</ul>
+
+</body>
+</html>
+

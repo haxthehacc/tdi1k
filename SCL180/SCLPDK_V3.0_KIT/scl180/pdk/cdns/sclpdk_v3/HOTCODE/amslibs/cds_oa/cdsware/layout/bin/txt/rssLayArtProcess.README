@@ -1,0 +1,74 @@
+Background
+
+*	Each letter is created from a simple "stencil" polygon. You can use the Misc->Programmable Text Generator to see the lettering at standard scale. Standard scale has a nominal width of 0.4um for the outline. The stencil polygons are hard-coded in the file cdsPgText.il
+
+*	The Artifacts sub-menu items apply a Scale (magnification) to the stencil size. In these forms, a scale of 1.0 returns a nominal width of 7um for the features of the stencil, meaning a Scale=1 is an absolute scaling of 17.5 on the stencil shape.
+
+
+Layer commands
+
+*	For basic layers, you specify the layer. It is sized according to the Scale (magnification) setting on the forms.
+LAYER 8
+
+*	If the techfile layer number is different from the GDS layer number for the layer, then the ",gds#" option can be used. For example, in the BCD05/BCD35  kit, we use GDS/CADENCE layer 54, but it is written to mask number 1 (nwell mask). This line states that the mask title text "1" will be generated using polygons of Techfile layer 54. This is also required for VIA6 and METAL7 because the Cadence layer numbers are +100 (via6=layer 167=mask 67; metal7=layer 168=mask 68):
+LAYER 1,gds54
+LAYER 67,gds167
+
+*	You can use a forced width/spacing. This creates an array of rectangles instead of a solid fill to fill in the letter stencil. This sense for Contact or Via layers where all shapes on the layer must be a specific square size.
+LAYER 7  0.22 0.28
+Translates to:
+Layer 7 (contact) will use a pattern/grid fill of (w=0.22 and s=0.28) instead of a solid fill to fill in the letter stencil. Only whole shapes are kept. Shapes start at the lower-left of the stencil with no guarantee that there is a "space" at any edge.
+
+*	For contact layers, the values for the layer are width/spacing, and an additional rule CONTACT_RULE creates the enclosing shapes (the metal above/below the via).
+LAYER 7 0.22 0.28
+CONTACT_RULE 7  5  0.1 8  0.06
+Translates to:
+Layer 7 (Contact) is placed with square (via) fill pattern instead of solid polygon, w=0.22, s=0.28. Additional layers 5 and 8 are created, using AddLayer1=5 (poly), Addlayer1Enclosure=0.1um, AddLayer2=8 (metal1), AddLayer2Enclosure=0.06um
+
+*	Layers can show absolute size or a relative sizing:
+-	Absolute width: A positive value. Creates a shape centered in the path of each letter stencil with exact width. Would be used for slot contact, slot via, or GRATE/TRIM where an exact width is required.
+-	Relative width must be a negative number to trigger the additional included layers, and sizes down the shape by this absolute size on each edge, like a DRC SIZE BY command would do.
+
+*	Associated layers used for Revision tool. This does not cause any changes to the Part Number tool.  For example, this will create layer 33 (EW=ewin/drawing) with sizing -0.835, and then also create an enclosure rectangle in the subsequent layers with the enclosures specified (23@0.5, 29@0.5, and 31@0.5). That is, the EW is SIZE BY -0.835, and then a rectangle is placed +0.5 from the EW (which is really -0.335 from the "stencil" initial size). 
+  LAYER 33 -0.835 23 0.5 29 0.5 31 0.5
+Each  LAYER command must specify all required enclosure rectangles. There is no recursive lookup to determine additional enclosure rectangles.
+
+*	Marking or Artifact layer, and optional Cadence purpose name.
+MARKING 45
+MARKING 118 artifact
+
+
+*	Silox opening. Specifies the layer for SILOX (topcoat). Forces a minimum scale of 1 (mag of 17.5) for this layer, regardless of actual scale specified.
+SILOX 9
+
+*	Specifies the lowest, last-1 and last metals, which define the minimum set of layers to use. The layer number is the layer used in the LAYER command for mapped layers.
+BOTMETAL 8
+NEXTTOPMETAL 48
+TOPMETAL 58
+
+Example for 7LM, showing TOPMETAL that references "LAYER 68,gds168"
+BOTMETAL 8
+TOPMETAL 68
+NEXTTOTOPMETAL 58
+
+
+
+EXAMPLES
+------------------------------------------------------------------------------
+Revision letters
+----------------
+Add rectanglar block of layer 38 over layer 22 with 0.5um/edge oversize:
+LAYER 22 0 38 0.5
+Note: You can have as many overplot layers as possible:
+LAYER 33 -0.835 23 0.5 29 0.5 31 0.5
+
+Part Numbers
+------------
+Apply undersizing of layer 29
+LAYER 29 -0.5
+
+Define min width = 0.38 and spacing = 0.36 of layer 27
+LAYER 27 0.38 0.36
+
+cont_layer bot_layer bot_overplot top_layer top_overplot
+CONTACT_RULE 7  5  0.1 8  0.06

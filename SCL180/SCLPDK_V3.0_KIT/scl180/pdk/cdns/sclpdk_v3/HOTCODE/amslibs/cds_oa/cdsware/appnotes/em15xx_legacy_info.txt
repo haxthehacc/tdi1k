@@ -1,0 +1,4 @@
+The em151g, em151v, em152g, and em152v devices are no longer supported.  They are still included in the
+kit for compatibility with existing designs, but Jazz Semiconductor feels 
+it can no longer guarantee the performance of this device.  Contact your
+Jazz Semiconductor Marketing person to discuss alternate solutions.

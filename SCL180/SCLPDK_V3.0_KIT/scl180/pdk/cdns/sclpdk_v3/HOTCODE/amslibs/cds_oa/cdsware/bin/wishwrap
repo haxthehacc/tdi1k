@@ -1,0 +1,6 @@
+#!/bin/sh
+
+exec wish $0.wish "$@"
+
+echo "Error: 'wish' TK interpreter not found or failed to start"
+exit 1

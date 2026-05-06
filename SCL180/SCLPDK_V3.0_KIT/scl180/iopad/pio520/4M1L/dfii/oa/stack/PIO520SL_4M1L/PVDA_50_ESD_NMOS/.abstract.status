@@ -1,0 +1,7 @@
+cUiMoveCellToBin {PVDA_50_ESD_NMOS} {IO}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {layout} {1}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {logical} {0}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {abstract.pin} {0}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {abstract.ext} {0}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {abstract} {0}
+cUiSetViewStatus {PVDA_50_ESD_NMOS} {abstract.ver} {0}

@@ -1,0 +1,47 @@
+<html>
+<body>
+<h1>DESCRIPTION :</h1> 
+
+'dp40p0_3' implements the 3 terminal thick oxide 40.0V P+/5V Nwell junction diode.  This consists of a 40V pdiode and a 1.8V nwell diode to account for the p substrate.  The 5V nwell diode will be implemented in a future release.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Show Tap Properties:</b> Controls the visibility of the Tap choices for Left, Right, Top, and Bottom.
+
+<li>
+<b>Left Tap:</b> Builds a tap on the left side of the diode</li>
+
+<li>
+<b>Right Tap:</b> Builds a tap on the right side of the diode</li>
+
+<li>
+<b>Top Tap:</b> Builds a tap on the of top the diode</li>
+
+<li>
+<b>Bottom Tap:</b> Builds a tap on the bottom of the diode</li>
+
+<li><b>Tap Extension:</b> Increases the offset of the taps from the diode body.</li>
+
+<li><b>Calculate Parameter:</b> Controls which parameter the user wishes to calculate (area, width, length).  The parameter to be calculated is not editable and the remaining two can be modified.
+
+<li><b>Multiplier:</b> Controls the number of diode instances connected in parallel. Specifying a 'Multiplier' of n is equivalent to drawing n diode instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Device Area:</b> Area of the diode</li>
+
+<li><b>Width:</b> Width of diode</li>
+
+<li><b>Length:</b> Length of diode</li>
+
+<li><b>Periphery of Junction</b> Perimeter of diode</li>
+
+</ul>
+<h1>NOTES:</h1>
+<li>Only a fixed layout exists.  A scalable pcell will be available in a future release.
+<ul>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS : area, perimeter. </li>
+</ul>
+</body>
+</html>

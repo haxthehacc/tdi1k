@@ -1,0 +1,36 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 
+
+'c6m1lmim' implements the lateral MIM type capacitor fabricated using M2 through M5 with a M1 plate.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li>well Node : The node to which the substrate of the capacitor is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li>Count : Indicates the number of capacitors connected in parallel. Specifying a 'Count' of n is equivalent to drawing n capacitor instances and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute is available when 'ToUse' is set to 'multiplier'. This attribute can only be used in the schematic.</li>
+
+<li>Capacitor Calculation : This button brings up the capacitor calculation window</li>.
+
+<li>Calculate : Indicates the data entry mode of the capacitor calculator. A Capacitor is described by the attributes 'Capacitance', 'Unit Width', 'Unit Length' and 'Aspect Ratio'. Depending on the value of the 'Calculate' attribute, two of these attributes will be editable and the other two will be calculated : 'C' calculates 'Capacitance' and 'Aspect Ratio' based on 'Unit Width' and 'Unit Length'. 'L' calculates 'Unit Length' and 'Aspect Ratio' based on 'Capacitance' and 'Unit Width'. 'W' calculates 'Unit Width' and 'Aspect Ratio' based on 'Capacitance' and 'Unit Length'. 'WL' calculates 'Unit Width' and 'Unit Length' based on 'Capacitance' and 'Aspect Ratio'.</li> 
+
+<li><a href="../images/c6m1lmim_xy.html">Unit Width (X)</a> : Controls the width of a unit capacitor in the capacitor array.</li>
+
+<li><a href="../images/c6m1lmim_xy.html">Unit Length (Y)</a> : Controls the length of a unit capacitor in the capacitor array.</li>
+
+<li>Capacitance : Controls the total capacitance value of the capacitor array.</li>
+
+<li><a href="../images/c6m1lmim_wc.html">well contacts</a> :well contacts controls the location of contacts to the nWell regrion.
+</ul>
+
+<h1>NOTES:</h1>
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: 'Capacitance'</li>
+</ul>
+
+</body>
+</html>

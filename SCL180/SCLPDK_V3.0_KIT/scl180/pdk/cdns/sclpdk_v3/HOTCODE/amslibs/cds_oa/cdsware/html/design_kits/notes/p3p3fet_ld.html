@@ -1,0 +1,38 @@
+<html>
+<body>
+<h1>DESCRIPTION : </h1>
+
+'p3p3fet_ld' implements the high voltage pMOS transistor. The gate width can be modified and wide transistors can be generated as an array of parallel fets using the 'Number of Fingers' attributes. Multiple fets connected in parallel on the same active area are called 'fingers'.
+
+<h1>IMPLEMENTATION :</h1>
+In schematic entry, be sure to have the source and bulk connected together on the symbol.  This is already the case in the layout cell.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Count:</b> Controls the number of fet instances connected in parallel. Specifying a 'Count' of n is equivalent to drawing n fet instances in the schematic and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute can only be used in the schematic</li>
+
+<li><b>Width (finger):</b> Controls the width of a gate finger.</li> 
+
+<li><b>Length:</b> Controls the gate length.</li>
+
+<li><b>Number of Fingers:</b> Controls the number of gate fingers connected in parallel in the same active area.</li> 
+
+</ul>
+<h1>NOTES:</h1>
+<ul>
+<li>The total width of a transistor is given by : width =  COUNT * NF * WF</li>
+
+<li>The total number of gates of a transistor is given by : gates = COUNT * NF</li>
+</ul>
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS : width, length, number of fingers.</li> 
+
+</ul>
+</body>
+</html>
+
+
+
+
+

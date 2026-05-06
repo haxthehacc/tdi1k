@@ -1,0 +1,853 @@
+<HTML><HEAD>SBC18H3/H3A/H3C/H3D/S3/S3A/S3C/S3D/S3K/S3AK Design Kit Release Notes</HEAD><BODY><PRE>
+___________________________________
+Date: 06/15/2015
+Version: 3.3.5
+Libraries: sbc18
+
+Verification:
+DRC:
+* Corrected GDS layer for slot_via6. Added .BAD rule to check previous
+  GDS assignment.
+PEX:
+* Fixed PEX/LVS layer mismatch (via_topmm2).
+___________________________________
+Version: 3.3.4 
+Libraries: sbc18 
+Prerequsites: 
+* SBC18H3 Design Kit - v3.3 
+* SBC18H3 Design Kit Patch (OA only) - v3.3.1 
+* SBC18H3 Design Kit Patch - v3.3.2 
+* SBC18H3 Design Kit Patch - v3.3.2 
+* SBC18H3 Design Kit Patch - v3.3.3 
+
+General: 
+* Added Cadence EAD (Electrically Aware Design) support. (This is a beta 
+release of this capability.) 
+* Updated inductor skill code to correct parameter names. No change in 
+calculated values. 
+
+Device Library: 
+* Added missing ind_oct2 to device library (sbc18h3c/d only) 
+
+Verification: 
+DRC: 
+* Remove B41 check (NPN Collectors must be connected). This check produced 
+many false errors and is already being checked in LVS. 
+LVS: 
+* Fixed LVS to check for connection to stacked mimcap top and bottom plates. 
+* Fixed NPN LVS to correctly assign model name in extracted view (Assura only) 
+Density: 
+* Added a small shift in metal7 dummy fill pattern 
+
+Models: 
+General: 
+* Added monte-carlo support for Eldo & Hspice 
+* Fixed saturation current (c10) values in Eldo & Hspice DSV variants to align w/ Spectre (ln* devices only) 
+Schottky: 
+* Changed scaling equations to better fit larger geometry set data: 
+* Added modeling for transit time (tt) parameters to better model forward bias diffusion capacitance 
+and reverse recovery behavior 
+* Add parasitic metal resistance parameters 
+Varctor (Buried Layer): 
+* Reduced tuning range in BL (buried layer) varactor to match POR and p-cell. Previous model was based on 
+buried layer used in the high-speed device. The p-cell uses buried layer of the medium voltage NPN. 
+This increases the cathode doping and reduces tuning range 
+FET: 
+* Modified assert statements to allow for D/S swapping (limits are now symmetrical) 
+NPN: 
+* Added assert statements to for high-speed NPN collector voltage exceeding forward-beta degradation 
+defined SOA. This can be enabled by selecting section "YES" in the warnings row of the model selection 
+box. 
+___________________________________
+Date: 03/09/2015
+Version: 3.3.3
+Libraries: sbc18
+
+General:
+* Updated techfile min enclosure constraint per Cadence.  Cadence has modified the 
+  way constraints are defined.  (ic6.1 only) 
+
+Verification:
+DRC:
+* Revision in DNW.21 check.  Originally this rule required that a ptap
+  be placed between an nfet gate and nwell if the gate was withing 10um of the
+  nwell.  The new approach is to identify the region between the nfet active area
+  and nwell (when < 10um).  To pass DRC a ptap of at least 0.25um2 must be within 5um 
+  of the identified region.
+___________________________________
+Date: 02/27/2015
+Version: 3.3.2
+Libraries: sbc18
+
+Highlights:
+* New algorithm for poly proximity/density rules to emitter poly 
+* Added POL rules
+* Added Virtuoso Layout Suite EAD support (beta)
+* Released v7.7 models
+* Bug fixes
+
+General:
+* rfline device added to file manager categories (CDBA only - already there in OA)
+* Added Cadence EAD support.  Note that this release includes the required tech file
+  updates. Files for EAD setup and configuration will be added in a future update.
+* Add TowerJazz menu item to remove large parasitic resistors from extracted calibre view
+
+Device Library:
+* Added ind_oct2 to replace ind_oct.  Ind_oct will remain for backwards compatibility.
+* Added 3.3v mosvar
+* Fixed JIT parameter used in inductor parameter calculations.  This update has no impact
+  on incductor layout or simulation.  This is a spelling correction only.
+* Fixed Unknown Parameter error in rfline Cell
+
+ESD Library:
+* Added lvsIgnore to some ESD cells (cells pad_no_esd*)
+
+Verification:
+* Adding techfiles directory missing from v3.3 release (CDBA only)
+DRC:
+* Replaced existing algorithm for checking the density of the first-poly to emitter 
+  poly with a more robust algorithm to mainly prevent false errors. In some rare 
+  instances, the new algorithm may flag errors that were missed by the previous version
+* Rules 68.C and 68.D are intended to prevent situations where you could get leakage
+  between n-type regions of the wafer if you don't allow for sufficient pwell implantation
+  between them (the NWell2 layer serves to block the PWell). In this case the NWell2
+  region is inside the NPN pcell, surrounded by deep trench and a P+ active guard ring.
+  In this case there is no risk of any leakage or even parasitic NPN type behavior so you're safe.
+  Rules 68.C and 68.D were modified to recognize this condition and not flag it, thus 
+  reducing false errors.
+* Fixed DRC errors in dpin related to slot contacts
+* Added POL (pad over logic) rules
+* Revised implementation of rules 2.E and 2.J (ptap spacing to nwell) to flag previous missed 
+  errors in some unique instances.
+* Added DNW.20 and DNW.21 rules (ptap must be within 10um of nfet inside isolated pwell)
+* Modified DRC to flag dual collector NPNs if both collectors are not connected via metal
+LVS:
+* Modified LVS to fail dual collector NPNs if both collectors are not connected via metal
+RCX:
+* Modified Assura extraction to correctly copy NPN schematic parameters to extracted instance (OA)
+
+Models:
+MOSVAR:
+- Added 3.3v MOSVAR (mosvar_3p3) model
+NPN:
+- Modified "optical" emitter width (EW =0.2um) and short emitter length (EL < 1.1u)
+  high-speed NPN models (lo[121][122][232]_hicum) to align with fab-statistics.
+  Key change is reduced collector current by 30% and beta from ~700 to 550.
+  There is no change to the narrow (W=0.13um) high-speed or to the medium-voltage NPN models.
+
+___________________________________
+Date: 12/11/2014
+Version: 3.3.1
+Libraries: sbc18
+
+Device Library Updates:
+* Updated r_dummy with metal 7 option for all 7 metal variants (OA only)
+___________________________________
+Date: 12/02/2014
+Version: 3.3
+Libraries: sbc18
+
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev 15
+* Electrical Spec: NPB-PS-0267, Rev 17
+* Design Application Note for sbc18h3: NPB-PS-1017, Rev 8b
+
+Software versions tested with this release:
+* Cadence IC release ic5.1usr6, ic6.1.6.080
+* Cadence Assura release 4.14.116_5141, 4.14.116_616
+* Mentor Calibre release v2014.1_36
+* Cadence Spectre release 13.1.1.252.isr11 32bit
+* Synopsys HSPICE release H-2013.03-SP1
+* Eldo release 2012.2a
+
+Highlights:
+* Added sbc18s3c and sbc18s3d variants
+* Fixed DRC errors in dpin and var_mos
+
+New Variants:
+* sbc18s3c = sbc18s3a with DSV added
+* sbc18s3d = sbc18s3 with DSV added
+
+Verification Updates:
+* Add minimum nwell2 spacing check (68.B)
+* Add minimum ntap to ptap spacing check (6.C.a.1)
+* Disable minimum sblk to active spacing checks (HR.C, PR.C) under esddev marking layer
+* Disable minimum sblk to active spacing check (PR.C) in PIN diode
+* Remove error flag for 3.3V MOS varactor (MVAR.13)
+* Flag via6 and metal7 as unsupported layers (sbc18h*)
+* Allow slot contacts in PIN diode and varactor (B34)
+
+Model Updates:
+* RFLINE:
+  - Modified NPORT instance so it does not error out with the BDA tool. There is no
+    impact on Spectre simulations
+* RES:
+  - Deleted m=m statement from rw3t spectre model to fix PDK extraction issue with nfet3p3_esd device
+* NPN:
+  - Changed maximum emitter lengths in assert statements from 10.16um to 20um to align with model validity regime
+  - Fixed round-off error in rci equation to prevent Ib discontinuity for L ~ 1um device. This should have
+    insignificant impact on the simulated results
+  - Aligned x-sigma changes in fast/slow corners that were modified in v7.5_sbc18h3
+  - Minor change to mismatch model equations to prevent base current parameter from becoming negative
+* Known Issues:
+  Hspice:
+  - Diodes (all) forward and reverse currents could be offset from reference by as much
+    as 2x due to lack of side-wall emission coefficient parameter that is available in Spectre (ns)
+  - No monte-carlo simulation support
+  - Transmission line (rfline) models are not supported
+  Eldo:
+  - Diodes (all) forward currents in the deep-nwell diode model are different than in Spectre due
+    to the lack of side-wall series resistance model parameter
+  - Transmission line (rfline) models are not supported
+
+___________________________________
+Date: 09/30/2014
+Version: 3.2.4
+
+Verification Updates:
+* Update Assura XOR rules files for all variants
+
+___________________________________
+Date: 09/30/2014
+Version: 3.2.3
+
+Verification Updates:
+* Updated HV.2 
+* Updated PEX
+
+___________________________________
+Date: 09/30/2014
+Version: 3.2.2
+
+Device Library Updates:
+* Enable high-speed NPN option in sbc18s3k/s3ak variants
+
+
+___________________________________
+Date: 09/15/2014
+Version: 3.2.1
+
+Verification Updates:
+* Add Assura XOR rules files for sbc18s3* variants
+
+ 
+___________________________________
+Date: 08/27/2014
+Version: 3.2
+ 
+General:
+* Rename variants with high-resistivity substrate to SBC18S3K/S3AK
+* Change SBC18S3/S3A specification to have low-resitivity substrate
+* Add support for transmission line elements
+* Add support for LDMOS FETs
+ 
+Device Library Updates:
+* Bipolars
+  - fix NPN op-point annotation in extracted view simulation
+  - remove incorrect warnings about unsupported NPN models
+* FETs
+  - add LDMOS FETs (nfet3p3_ld and pfet3p3_ld)
+* Passives
+  - add transmission line device (rfline)
+ 
+Model Updates:
+* Release v7.5 models (see RELEASE_NOTES in model directory for details)
+  - add new transmission line models (Spectre only)
+  - re-center typical beta of high-speed NPN from ~850 to ~1050
+  - lower fast-corner beta of high-speed NPN from ~2200 to ~2000
+  - improve convergence of high-performance junction varactor (var_bl)
+  - lower slow-corner beta of lateral PNP from 15 to 10
+ 
+Verification Updates:
+* DRC
+  - fix false 1.C spacing violations between terminals of short N-well resistors
+  - fix false 2.F spacing violations on N-well resistors butting NFET drains
+  - fix false 8.B.b spacing violations on wide metal1
+  - flag metal fill covered by artifact layer
+  - revise B34 check to allow slot contacts/vias anywhere inside N_cell
+  - revise Assura BD.3 check for allowed bond pad angles, to match Calibre
+  - change min. deep-trench to active spacing check (41.X) from 0.7u to 0.5u
+  - add rule checks for LDMOS FETs
+  - add 10.E check to flag collector sinker not surrounded by buried layer
+* ERC
+  - enable deep-trench to break N-well connectivity
+  - flag N-well without ntap at block level also
+  - fix false floating metal violations in multi-strip poly resistors
+* LVS
+  - enable deep-trench to break N-well connectivity
+  - fix incorrect size extraction for rotated rectangular inductors
+  - add support for transmission line elements
+
+
+___________________________________
+Date: 06/23/2014
+Version: 3.1.2
+
+Verification Updates:
+* DRC
+  - added DT to Active spacing check 
+
+
+___________________________________
+Date: 06/11/2014
+Version: 3.1.1
+
+Verification Updates:
+* LVS
+  - improve extraction of width/spacing parameters for square inductors
+
+
+___________________________________
+Date: 05/16/2014
+Version: 3.1
+
+General:
+* Add support for SBC18S3/S3A variants (SBC18H3/H3A + metal7 + stacked
+  inductors + high-resistivity substrate)
+* Update Trigger Callbacks function to properly reset intrinsic device
+  parameters when needed
+
+Device Library Updates:
+* Bipolars
+  - add 0.2u width option for high-speed NPNs
+* FETs
+  - change minimum nfet_esd channel length from 0.36u to 0.18u
+* Inductors
+  - add deep trench mesh shield option to octagonal inductors (S3/S3A only)
+  - add option to stack M6 & M7 in octagonal inductors (S3/S3A only)
+* Varactors
+  - fix M1 spacing violations for small devices (L<0.5u)
+* ESD
+  - add diode elements over deep N-well to ESD library
+* General
+  - update capacitor, resistor, varactor callbacks to properly reset
+    intrinsic device parameters when needed
+
+Model Updates:
+* Release v7.4 models (see RELEASE_NOTES in model directory for details)
+  - update parasitic resistance/inductance in MIM caps
+  - add models for high-speed NPNs with 0.2u-wide emitters
+  - improve modelling of NPN base/collector hetero-barrier effect
+  - add support for the latest Inductor Toolbox version, JIT6.0
+
+Verification Updates:
+* Antenna
+  - treat metal resistor (rtin) as a short in all checks
+* Density
+  - add poly density check around high-speed NPNs
+  - move deep trench density check from DRC to density deck
+* DRC
+  - add check for minimum deep N-well to nbur2 spacing
+  - fix false violations on deep N-well ring
+* Latch-up
+  - fix false LUP.I.a and LUP.I.b violations in SRAMs
+  - account for deep N-well and deep trench in internal latch-up checks
+* LVS
+  - fix W/L extraction for Schottky diodes
+  - add support for stacked inductors
+
+
+___________________________________
+Date: 2013/07/15
+Version: 3.0.2
+
+Verification Updates:
+* Update Assura ESD/Latch-up deck to avoid compilation error
+
+
+___________________________________
+Date: 2013/06/26
+Version: 3.0.1
+
+Device Library Updates:
+* Update dx parameter in stacked MIM caps to match
+  simulation models
+
+Verification Updates:
+* DRC
+  - fix bug that could prevent rule 2.H (min. N-well
+    overplot of N+ diffusion) from being checked
+  - fix bug that could mis-identify regular N-wells
+    as N-well resistors, thus requiring larger spacing
+
+* LVS
+  - update dx parameter for stacked MIM cap extraction
+
+
+___________________________________
+Date: 2013/05/04
+Version: 3.0
+Libraries: sbc18 (sbc18h3, sbc18h3a, sbc18h3c, sbc18h3d)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev 14
+* Electrical Spec: NPB-PS-0267, Rev 17
+* Design Application Note for sbc18h3: NPB-PS-1017, Rev 6
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41 USR6
+* Cadence Spectre release 11.1.0.281.isr4
+* Cadence Assura release 4.1_USR2_HF8 for DRC/LVS
+* Cadence QRC release ext10.11.119
+* Mentor Calibre release 2012.1_37
+* Synopsys HSPICE release E-2010.12
+
+Device Library Updates:
+* Update perimeter coefficient of 2fF and 4fF MIM caps to match new E-spec
+* Add support for SBC18H3D variant (SBC18H3 + DSV)
+
+Model Updates:
+* Release v7.1 models (see RELEASE_NOTES in model directory for details)
+  - change min. resistance for buried layer varactor
+  - fix Monte-Carlo mismatch parameter for lateral PNP
+  - make statistical variables for TiN resistor independent of inductor
+  - fix modeling of width variation for small stacked MIM caps
+
+Verification Updates:
+* DRC
+  - allow deep trench outside of NPN/Schottky/PiN
+  - change deep trench width check from min. to min./max.
+  - add new deep trench rule checks
+  - relax 51.B rule for metal1 to avoid inductor shield violations
+  - fix bug that excludes N-well with TiN resistor from rule checks
+* LVS
+  - update perimeter coefficient of 2fF and 4fF MIM caps
+
+
+___________________________________
+Date: 2013/02/07
+
+Device Library Updates:
+* Add ntwv_pad device to support SBC18H3C variant (SBC18H3A + DSV).
+* Fix default values of tbp2, rvia2, wvia2 stacked MIM cap parameters.
+
+Model Updates:
+* Release v7.0 models (see RELEASE_NOTES in model directory for details)
+  - enable Monte-Carlo mis-match simulations at X-sigma corners
+  - correct emitter width in Monte-Carlo & corner models for 2V NPNs
+  - add model accuracy geometry limit checking via assert statements
+  - fix PiN diode temperature coefficient
+  - swap MIM cap row/column model parameters to match p-cell
+
+Verification Updates:
+* DRC
+  - fix issue of rules not checked for Nwell under poly resistors
+  - fix false deep-Nwell to Nwell resistor spacing (DNW.11) violations
+  - update 6.D.c/d, 11.D.c/d, 11.F.a/b checks to avoid false violations
+  - make emitter slot contact spacing check (B21) min./max. instead of min.
+  - update 11.BIP.1 check to flag P+ active in Nwell2 instead of PWE
+  - add NPN deep trench to outside active spacing check (B18.a)
+  - update 22.BIP.1, 30.BIP.1 checks to allow 2-term. MIM caps over NPNs
+  - relax minimum spacer clear spacing check (21.B) from 5u to 1.01u
+  - relax minimum base poly spacing check (23.B) from 5u to 1.21u
+  - add minimum Nwell2 to Nwell/N+ active spacing checks (68.C/68.D)
+  - delete extraneous Nwell overplot of emitter check (B5)
+  - update emitter spacing check (31.B) from 1.12u/1.32u to 1.19u
+  - exclude bigfet_5p5_sb_dnw cell from Nwell overplot of DNW check (DNW.4)
+* ERC
+  - include inductor via3's and via4's in connectivity operations
+* Latch-up
+  - apply LUP.H rule only to Nwells containing P+ active
+  - update LUP.I.a/b checks so the entire diffusion must meet the rule
+  - add run-time option to treat TiN metal resistor as short or open
+* LVS
+  - recognize pin labels drawn on metal*/pin layer/purpose
+  - revise inductor extraction code to avoid false mis-matches
+  - enable filtering of dummy RF FETs with shorted terminals in Calibre
+  - enable source/drain pin swapping for RF FETs in Assura
+  - fix 6fF stacked MIM cap connectivity (pins swapped in layout netlist)
+  - prevent stacked MIM cap recognition unless parallel connection is made
+  - prevent duplicate extraction of devices over Nwell in DNW
+  - enable Assura warning for multiple nets on same Nwell
+  - prevent false device recognition for metal resistor over poly
+  - fix substrate connection for salicided poly resistor in isolated ptub
+  - update perimeter coefficient for stacked MIM caps in SBC18H3A
+* PEX
+  - enable parasitic extraction for bottom plate of 2-terminal MIM cap
+* Stress
+  - use proper metals in max. MIM cap bottom plate width checks (MC13/MC14)
+
+
+___________________________________
+Date: 2012/06/15
+Libraries: sbc18 (sbc18h3, sbc18h3a)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev 14
+* Electrical Spec: NPB-PS-0267, Rev 17
+* Design Application Note for sbc18h3: NPB-PS-1017, Rev 4
+
+Highlights:
+* Update of models to support NPN Le >= 0.5um
+* Improved LVS extraction deck support for RF Fet
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41 USR6
+* Cadence Spectre release MMSIM 7.2.202
+* Cadence Assura release 4.1_USR2_HF8 for DRC/LVS
+* Cadence QRC release ext10.11.119
+* Mentor Calibre release 2008.1_32 and 2010.2_38
+* Synopsys HSPICE release E-2010.12
+* Agilent ADS 2011.u1
+
+Process Variant Support:
+* This design kit supports only the sbc18h3 and sbc18h3a process variants.
+* The environment variable RDS_CDS_VERIFY_TECH must be set properly
+  in order to use this design kit.  If this variable is not set, the
+  kit will refuse to function.
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions
+  of Design Kits.  This document is available on the Jazz Ebizz website.
+* Flow Changes
+- This design kit supports the Cadence inherited connections flow.
+  For more information, refer to the Cadence Inherited Connection Flow
+  Guide in cdsdoc or on sourcelink.cadence.com.
+* General Limitations
+- The Artifact Generator may generate shapes that are not DRC correct.
+  If this happens, either increase the scale factor or hand-edit the
+  artifact to clean up the errors.  Off-grid errors may still occur;
+  use Snap-To-Grid to correct these before cleaning up other violations.
+
+Devices:
+* CAP:
+  - Add dx offset for stacked capacitors.
+  - Allow smaller minimum WxL. However, a single via will be flagged as a DRC violation.
+* DPIN: Length and width must currently be set to the same value to pass LVS.
+* NPN: Change Le lower limit to allow 0.5um emitter width
+* Inductor: Updated inductor to use Inductor Toolbox (JIT) version 5.0.
+  - Improvements in silicon matching
+  - Support for modeling of alternate wafer substrate
+  - Existing inductors must be updated to use latest model file. To update
+    use the schematic menu item TowerJazz->Utilites->Update Inductor... Verify
+    that the box for "Update Inductor Model" is checked.
+* VPNP: Correct issue with hspiceD netlisting
+
+Models:
+**************************** v6.8_sbc18h3 contents *******************************
+2012/05/03
+NPN:
+- Extended low-voltage (high-speed) NPN model to emitter length = 0.5u (existing model was valid up to 0.76um)
+MOSVAR:
+- Minor changes of temperature coefficients based on latest silicon
+- Minor changes to nwell resistance to better model small L (~0.18um) varactors
+- Chaned worst-case corner offset for well-resistance to align model with e-spec, to offset impact of above changes
+  (SLOW corner Q simulation should be the ~ same as v6.9a)
+CAP:
+- Added 'dx' geometry offset parameter for small stacked mim capacitors (csmim4, csmim6, csmimw4, csmimw6)
+  (PDK p-cell now allows WxL = 1.5 x 1.5 um)
+- Added model for MiS (metal-insulator-semiconductor) capacitor (Note: This device is not currently offered in any
+  SBC18H3 PDK - capability has been added for potential support in the future)
+RES:
+- Poly resistors: Added small resistance to inductive element to improve simulation convergence and speed
+PNP:
+- Added predictive mismatch model for high-performance PNP, based on silicon
+  measurements of similar device in previous generation of technology.
+  (Note: This device is not currently offered in any SBC18H3 PDK - capability has been added for potential support in the future)
+FET:
+- Added capability to 5V rf pfets to accept source/drain area and perimeter dimensions (For post-layout simulations)
+  (Note: This device is not currently offered in any SBC18H3 PDK - capability has been added for potential support in the future)
+IND:
+- Added "rdm" and "kdm" to include resistively loaded transformer loops
+- Changed TCR from 4200 to 3800 ppm/deg C to correct an extraction error
+- removed "csbsig" corner modeling parameter since insignificant
+- Removed in ind unused parameter "lval=-1 rp=-1 rsub=-1 rs=-1 csub=-1 wf=-1"
+- Removed in inddiff unused parameter "cp12=-1 rp1=-1 rp2=-1 rs1=-1 rs2=-1"
+DSV:
+- Added model for deep-silicon-via (dsv)
+  (Note: This device is not currently offered in any SBC18H3 PDK - capability has been added for potential support in the future)
+
+**************************** v6.7_sbc18h3 contents *******************************
+2012/03/14
+NPN:
+- Reduced emitter resistance (Re) in the high-speed NPN models to align with improved
+  gm in POR silicon
+CAP:
+- Fixed bug in MiM cap subckt model related to parasitic capacitance to bulk. This
+  was introduced in v6.6_sbc18h3 models.
+
+
+Verification:
+* Calibre 2010.2_38 or later is recommended
+  - Use of other versions of Calibre can cause issues with CalibreView extracted view
+    creation. If you encounter issues with extracted view generation, rever to this
+    specific version of Calibre.
+  - Changes to Calibre 2010.4 cause dummy (shorted) device filtering behavior to
+    change. See the LVS Options form, Gate tab, to change the device filtering options.
+* Assura 4.1 or later is recommended
+
+Antenna:
+- Correct AN.J.c, SMA.2, SMA.3 to match thick-metal rule
+Density:
+- Adjust dummy poly to avoid artifact
+DRC:
+- Limitations: MC10, MCC10 will flag MIM caps with only a single via
+- Improve butting diffusion connectivity checks by allowing for uncontacted diffusion connections.
+- 8.B - Add notch check
+- PR.B - Constrain check to opposite side length check
+- MC10, MCC10 - Improve speed
+- BD.6 - Limit check to top metal interactions
+- Add *.Bad rules for new but unsupported layers
+ERC: - No change
+LUP:
+- Improve LUP.B.C.c to flag all categories of ptaps
+- Improve LUP.I.b to consider dtrench
+LVS:
+- Allow eFuse to swap terminals
+- Correct missing merge command when mergeDnwDio switch is enabled.
+- Add support for DSV in LVS deck. Note that the process variants do not support this element.
+- Correct inductor P1 port identification to allow multiple inductors to be connected together.
+PEX/RCX/QRC:
+- Add "qrc_nom_z" polyimide topcoat support
+- Work around QRC issue with techRuleSets that have spaces in name
+Stress:
+- Corner stress rules can be disabled on the Calibre Interactive customizations form.
+- Improve slot checking on IO pads
+- Improve error message for metal 4, 5, 6.
+
+
+___________________________________
+Date: 10/28/2011
+Libraries: sbc18 (sbc18h3, sbc18h3a)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev 14
+* Electrical Spec: NPB-PS-0267, Rev 17
+* Design Application Note for sbc18h3: NPB-PS-1017, Rev 2
+
+Highlights:
+* Release of sbc18h3a variant with 2fF/um^2 MIM
+* Addition of Schottky diode and PIN diode
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41 USR6
+* Cadence Spectre release MMSIM 7.2.202
+* Cadence Assura release 3.2.022
+* Mentor Calibre release 2008.1_32 and 2010.2_38
+* Synopsys HSPICE release E-2010.12
+* Agilent ADS 2011.u1
+
+Process Variant Support:
+* This design kit supports only the sbc18h3 and sbc18h3a process variants.
+* The environment variable RDS_CDS_VERIFY_TECH must be set properly
+  in order to use this design kit.  If this variable is not set, the
+  kit will refuse to function.
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions
+  of Design Kits.  This document is available on the Jazz Ebizz website.
+* Flow Changes
+- This design kit supports the Cadence inherited connections flow.
+  For more information, refer to the Cadence Inherited Connection Flow
+  Guide in cdsdoc or on sourcelink.cadence.com.
+- The run_cal or Jazz verification flow is not supported in this kit;
+  the Calibre Interactive Flow should be used.  Documentation can be
+  found in CIW->Jazz->Verification->Calibre Interactive w/xRC.
+* General Limitations
+- The Artifact Generator may generate shapes that are not DRC correct.
+  If this happens, either increase the scale factor or hand-edit the
+  artifact to clean up the errors.  Off-grid errors may still occur;
+  use Snap-To-Grid to correct these before cleaning up other violations.
+
+General Kit Updates:
+* Fix makeProjectTree to better handle sbc18h3 proces variant
+* Change banner menu from "Jazz" to "TowerJazz"
+* Improve Generic Design Migration tool to support non-standard view names. If
+  you are migrating from another process variant, please consult with TowerJazz
+  to see if a migration mapping file is available.
+* Trigger Callbacks: "Dry Run" option renamed to "Preview" option
+
+Technology Library and Cells:
+* Added NWTAP symbolic via
+* Capacitors: Add 2-terminal MIM caps. These caps have basic DC/AC models with
+  basic area and perimeter capacitance. No interconnect parasitics are included
+  in the model. The extraction deck will include all interconnect parasitics. A
+  special text label on the devices indicates it will be treated as the simple
+  2-terminal cap.
+  - sbc18h3: cmim3_2 (TM layer) / cmim3_m3_2 (TM2 layer)
+  - sbc18h3a: mim2_2 (TM layer) / cmim2_m3_2 (TM2 layer)
+* dpin PIN diode element added.
+* eFuse element "efuse" added. Consult with TowerJazz before using this device in
+  a production tapeout to review process readiness.
+* dschottky: Updated to be L and W scalable and reference correct model
+* NPN:
+  - Changed rule B11 (collector to base active) from 0.655 to 0.8. NPN cell
+  footprint WILL change because of this.
+  - Updated NPN to include MEDIUM voltage. Improve callback code to work better
+  with designs ported from other sbc18 variants. The NPN device will allow
+  selection of device features like Medium or Wide width that do not currently
+  have model support. If you encounter this case of unsupported models, please
+  contact your support engineer to discuss usage.
+* Resistors: Fix contact spacing error when contact rows > 2
+* MOSFETs: Fix contact spacing error on source/drain when contact rows > 2
+* var_bl: Updated to call out sbc18h3 specific varactor. Use nbur2 layer inside
+  the sbc18h3 varactor.
+* mos_varactor: Updated to support smaller L > 0.18u
+* Removed symbolic vias v45_g and v56_g since they were duplicates of v45 and v56
+
+
+Models:
+**************************** v6.6_sbc18h3 contents *******************************
+2011/06/29
+NPN:
+- Added silicon based models for the std. voltage NPN 
+  Note: It is recommended that this model not be used for Vbe > 0.8V if 
+  a high-degree of accuracy is needed. This is due to compact model limitations
+  in modeling the impact of large Ge concentrations at the Base-Collector
+  junction
+- NPN models are not offered for every possible combination of W and voltage.
+  If you encounter unsupported models during simulation, please contact your
+  support engineer to discuss support.
+LPNP:
+- Updated to silicon based model. Previous model was from SBC18H2
+HPVAR:
+- Updated to silicon based model. Previous model was from SBC18H2
+Schottky:
+HPVAR:
+- Updated to silicon based model. Previous model was from SBC18H2
+PiN:
+- Added new PiN diode model based on SBC18H3 silicon
+MOSVAR:
+- Extended model validity range from Lpoly 0.5um to 0.18um by increasing
+  delta_L. Expect minor shifts for Lpoly >= 0.5um.
+MiM:
+- Moved parasitic resistance into inductor component of top/bottom plate to
+  improve simulator speed
+RES:
+- Added 10mOhm resistance to poly resistors to improve convergence due to numerical noise
+**************************** v6.5_sbc18h3 contents *******************************
+2011/05/10
+NPN:
+- Fixed lower-gain issue seen in high-speed NPN in v6.5
+FUSE:
+- Added poly eFuse model
+**************************** v6.5_sbc18h3 contents *******************************
+2011/02/08
+NPN:
+- Modified high-speed NPN model to align with latest measurements
+**************************** v6.4_sbc18h3 contents *******************************
+2010/09/27
+NPN:
+- Modified high-speed NPN model to align with latest measurements
+- Deleted medium-voltage NPN model, pending finalization of process. Existing model from
+  sbc18h2 (in v6.3_sbc18h3) is n ot an accurate representation of expected device behavior.
+
+
+
+Verification:
+General:
+- Calibre: Improved compatibiity with future Mentor Calibre Interactive SKILL
+  code
+Antenna: No change. Removed unused code.
+Density:
+- Change poly fill keepout around inductor marking layer from 25um to 20um.
+- Removed unused code.
+DRC:
+- Fix 1.* rules to properly flag unconnected nwell. Previously, any resistor
+  in nwell would cause nwell spacing check to be skipped.
+- Revise 2.F* rules to better handle SRAM
+- Revise 4.* to match sbc18h3 rules
+- Revise 6.F.a and 6.F.b to remove false violations
+- Revise 7/17/27/37/47/57*.B to better flag uncovered via
+- Revise B* rules to match latest App Note for sbc18h3. B11 value change will
+  flag NPN from previous design kit releases.
+- Revise / Add *.BAD layer checks for invalid layer interactions
+- Revise BMP.7
+- Revise DNW.3/4 rules to reduce false violations
+- Revise MVAR.1* to allow smaller L varactor
+- Add basic polyimide DRC rules for SILOX (layer 9)
+- Add 94.* (PWE) checks
+ERC:
+- Backward compatibility for older IP blocks using layers 88-92 for pins
+- Add DNW ptap switch to flag DNW without connection to diffusion/poly. By
+  default, DNW ptaps will be flagged without conenction to ground pad.
+- Filter nwell2 and pwe from ptap definition to remove false identifications in PWE
+- Account for RTIN and MIM cap in calculating floating gate/metal
+- Do not flag nwell resistor connected to ground
+Extraction:
+- Assura: Add support for extraction of emitter/base/collector contacts for more accurate extraction.
+LVS:
+- Add support for 2-terminal MIM. Interconnect parasitics are provided only
+  during parasitic extraction.
+- Add support for new elements: eFuse, dpin
+- Add support for fixed-size balun device extraction
+- Add switch to support diso/ddnw diode merging
+- Add r_dummy device merging and pin swapping for Assura
+- Fix issues with parallel RF Fet merging
+- Fix issues with resistor length/strip calculation
+- Filter nwell2 and pwe from ptap definition to remove false identifications in PWE
+- Revise ptub extraction to exclude Nwell rings/shapes
+- Revise nfet to prevent confusion with native or LDMOS device
+- Revise poly cap extraction for Assura to work more like Calibre for certain IP blocks
+- Assura: Fix typo in Schottky deviceInfo.rul entries
+- Assura: Add support for reading CDL files with upper-case parameter names
+- Assura: More consistent use of M instead of count
+LUP:
+- Filter nwell2 and pwe from ptap definition to remove false identifications in PWE
+- Removed unused code
+Stress: Initial release
+
+
+
+___________________________________
+Date: 05/27/2010
+Libraries: sbc18
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0179, Rev 13
+* Electrical Spec: NPB-PS-0267, Rev 17
+* Design Application Note for sbc18h3: (in development)
+
+Highlights:
+* Development level design kit release for sbc18h3 process variant
+* Issues may arise which will be addressed in future kit releases
+* Jazz Inductor Toolbox (JIT) 4.0 support
+* X-Sigma model capability
+
+Software versions tested with this release:
+* Cadence IC release IC5.1.41 USR6
+* Cadence Spectre release MMSIM06.21.153
+* Cadence Assura release 3.1.7 USR1
+* Mentor Calibre release 2008.1_32
+* Synopsys HSPICE release Z-2007.03-SP1
+
+Process Synopsis:
+* This design kit library supports only the sbc18h3 process variant.
+* The sbc18h3 process has 6 layers of aluminum metal and supports
+  the following:
+  - triple well and deep trench isolation,
+  - 1.8V and 3.3V FETs,
+  - high speed and standard NPNs with deep trench,
+  - high gain lateral PNPs,
+  - TiN (between metal3/metal4), low and high value unsilicided poly,
+    silicided poly, and N-well resistors,
+  - junction and MOS varactors,
+  - Schottky diodes,
+  - 2.8fF/um2 MIM capacitors between metal3/metal4 and metal4/metal5,
+  - 5.6fF/um2 stacked MIM capacitors between metal3/metal5,
+  - inductors using 2.8um thick metal6 and 2um thick via5.
+
+Process Variant Support:
+* The environment variable RDS_CDS_VERIFY_TECH must be set to sbc18h3
+  in order to use this design kit.  If this variable is not set, the
+  kit will refuse to function.
+
+Kit and Environment:
+* Installation
+- Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions
+  of Design Kits.  This document is available on the Jazz Ebizz website.
+* Flow Changes
+- This design kit supports the Cadence inherited connections flow.
+  For more information, refer to the Cadence Inherited Connection Flow
+  Guide in cdsdoc or on sourcelink.cadence.com.
+- The run_cal or Jazz verification flow is not supported in this kit;
+  the Calibre Interactive Flow should be used.  Documentation can be
+  found in CIW->Jazz->Verification->Calibre Interactive w/xRC.
+* General Limitations
+- The Artifact Generator may generate shapes that are not DRC correct.
+  If this happens, either increase the scale factor or hand-edit the
+  artifact to clean up the errors.  Off-grid errors may still occur;
+  use Snap-To-Grid to correct these before cleaning up other violations.
+
+</PRE></BODY></HTML>

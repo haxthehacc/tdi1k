@@ -1,0 +1,65 @@
+
+Jazz Semiconductor userware  - Information on importing spice netlist as "black-box"
+______________________________________________________________________
+
+In order to allow reuse of previous designs from other (including Cadence)
+design systems, where only the subcircuit view (in spice subckt netlist 
+format) is available, you must create stopping views and the associated
+CDF SimInfo for each view. For example, to use Spectre, you'll need
+a "spectre" view and simInfo section in addition to the symbol view.
+For LVS using the Jazz Calibre CBR netlister, you need a spectreS view and simInfo.
+For LVS using Assura, you need an auLvs view and simInfo.
+For LVS using Calibre Interactive, you need an auCdl view and simInfo.
+
+To run simulation in "spectre" view:
+Please see Cadence Virtuoso Analog Design Environment
+User's Guide for more information.
+1. create symbol view of the imported subckt block with pins 
+   (number of pins must equal that of the subckt)
+2. create "spectre" view (use "library manager" to copy "symbol" 
+   view to "spectre" view)
+3. Add the following CDF parameters, using TOOLS->CDF->EDIT:
+   CDF Type -> Base
+   Library Name -> Library_Name
+   Cell Name -> Cell_Name
+   Simulation Information -> Edit 
+     Choose Simulator -> spectre
+     componentName       subckt_name
+     termOrder           block_pin_order (must match pin order of the subckt)
+   OK
+4. Define model path in Analog Artist as follows: 
+     Setup -> Model Libraries -> Model Library File-> model_file_path
+     -> Add -> OK
+5. Netlist format:
+   A. spectre format is recommended.
+   B. spice/hspice format file may be acceptable, but it will be read
+      and parsed by Spectre.
+
+To run simulation in "hspiceS" view or other Socketed simulator.
+Please see Cadence Sourcelink Solution 1835032 and the Virtuoso
+Analog Design Environment User's Guide for more information.
+1. create symbol view of the imported subckt block with pins 
+   (number of pins must equal that of the subckt)
+2. create "hspiceS" view (use "library manager" to copy "symbol" 
+   view to "hspiceS" view)
+3. Add the following CDF parameters, using TOOLS->CDF->EDIT:
+   CDF Type -> Base
+   Library Name -> Library_Name
+   Cell Name -> Cell_Name
+   Component Parameters ->
+     _____________________________________________________
+     Name                Prompt_Name         Default_Value
+     _____________________________________________________
+     macro               macro               subckt_name
+     macroArgumentStyle  macroArgumentStyle  includeFile
+     _____________________________________________________
+
+   Simulation Information -> Edit 
+     Choose Simulator -> hspiceS
+     netlistProcedure    ansSpiceSubcktCall
+     termOrder           block_pin_order (must match pin order of the subckt)
+     namePrefix          X
+   OK
+4. Define model path in Analog Artist as follows: 
+     Setup -> Model Path
+5. Netlist format in hspice/spice format is recommended.

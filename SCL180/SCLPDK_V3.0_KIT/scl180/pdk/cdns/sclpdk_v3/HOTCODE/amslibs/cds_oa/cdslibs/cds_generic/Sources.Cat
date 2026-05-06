@@ -1,0 +1,6 @@
+TDMCHECKPOINT="1.0"
+cds_generic/Dependent.Cat type="category"
+cds_generic/Globals.Cat type="category"
+cds_generic/Independent.Cat type="category"
+cds_generic/Ports.Cat type="category"
+cds_generic/Z_S_Domain.Cat type="category"

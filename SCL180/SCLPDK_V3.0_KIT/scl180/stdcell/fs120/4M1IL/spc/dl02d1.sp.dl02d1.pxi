@@ -1,0 +1,17 @@
+* File: dl02d1.sp.dl02d1.pxi
+* Created: Sun Feb 14 19:11:17 2010
+* 
+cc_1 2 I 0.327893f
+cc_2 2 VDD 0.0462949f
+cc_3 2 VSS 0.0778099f
+cc_4 2 5 0.0278616f
+cc_5 2 4 0.100552f
+cc_6 I VDD 0.0465288f
+cc_7 I VSS 0.00556004f
+cc_8 VDD 5 0.323257f
+cc_9 VDD 4 0.0350087f
+cc_10 VSS 5 0.214966f
+cc_11 VSS 4 0.0527514f
+cc_12 VSS Z 0.0281772f
+cc_13 5 4 0.358879f
+cc_14 5 Z 0.220456f

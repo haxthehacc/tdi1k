@@ -1,0 +1,639 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+
+___________________________________
+Date: 2/11/2014
+Library: sbl13 (sbl13hc)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, Rev.5
+* Electrical Spec: NPB-PS-0577, Rev.8
+* Design Application Note: NPB-PS-0826, Rev.1
+* Modeling Design Manual: NPB-PS-0577, Rev.8
+
+Highlights:
+* This design kit supports the sbl13hc process variant.
+* Initial release for IC6.1 (IC6.1.5) Open Access database format
+* Added high threshold fets, metal5/6 mimcaps, square inductors, a high
+  value resistor, and a vertical pnp 
+* DRC and LVS updates 
+* If you are using a sbl13ha design kit, you will need to transition to
+  this kit to see the latest changes.  This kit contains the updates mentioned
+  above and all the devices from sbl13ha. 
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes. Turn off the "Preview"
+  option and then re-run Trigger Callbacks after you have verified the
+  changes that will be made to your design.
+
+Software versions tested with this release:
+* Cadence IC releases IC6.1.5.517
+* Cadence AMS Designer requires use of IUS8.2 or later
+* Cadence Spectre release MMSIM7.2 (minimum)
+* Synopsys Hspice release D-2010.03-SP1
+* Cadence Assura 4.13.102 (4.1 USR3)
+* Mentor Calibre 2010.2_38
+
+Process Synopsis:
+* This sbl13 design kit library supports only the sbl13hc process variant.
+* The sbl13hc process has 6 layers of aluminum metal.  It supports the following:
+  - low, medium, and high breakdown npns
+  - 1.2V and 3.3V fets
+  - high threshold 1.2V fets
+  - low/high value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4/5 and metal 5/6
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - square and octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - vertical pnp
+  - triple well (deep nwell)
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to sbl13hc
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+
+
+Process and Design Kit General Updates:
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+
+Device Library and Technology File Updates:
+* Initial release of IC6.1 compatible design kit and technology files
+
+Model Updates: Model version v3.1
+*************************** v3.1 contents *******************************
+2010/08/12:
+RES:
+- Update rps model based on the latest measurement data on PCM devices. 
+  rsh: 6.5 -> 7.3, rend: 19e-6 -> 24e-6,  dw: 3e-8 -> 2e-7
+  tc1: 2.99e-3 -> 3.10e-3,  tc2: -1.83e-6 -> 3.00e-7 
+  sal_dw_1sigma: 1.00e-8/3 -> 6.667e-8/3 
+*************************** v3.0 contents *******************************
+2010/03/08:
+FET:
+New PSP models for LV regular and high Vt N and P FET.  Improved alignment to PCM
+statistics.  
+- Short regular Vt NFET (WxL = 10x0.12um)
+  - NOM Vt from 0.39V to 0.36V, Idsat from 5.35mA to 5.6mA
+- Small regular Vt NFET (WxL = 0.15x0.12um)
+  - NOM Vt from 0.31V to 0.29V, Idsat from 76uA to 79uA.
+- Short regular Vt PFET (WxL = 10x0.12um)
+  - No change in Vt, NOM Idsat from -2.35V to -2.5V.
+- Small regular Vt PFET (WxL = 0.15x0.12um)
+  - NOM Vt from -0.34V to -0.25V, Idsat from 35uA to 40uA. 
+- Short High Vt NFET (WxL = 10x0.12um)
+  - NOM Vt from 0.59V to 0.58V, Idsat from 3.2mA to 3.4mA.
+- Small High Vt NFET (WxL = 0.15x0.12um)
+  - NOM Vt from 0.50V to 0.48V, Idsat from 47uA to 46uA.
+- Short High Vt PFET (WxL = 10x0.12um)
+  - No change in NOM Vt, Idsat from -1.1mA to -1.4mA.
+- Small High Vt PFET (WxL = 0.15x0.12um)
+  - NOM Vt from -0.48 to -0.34V, Idsat from -21uA to -31uA.  
+
+MOSVAR:
+- Fix the bug for 'mosvar_3p3' device corner model with higher Q corresponding to the fast corner case.
+
+CAP:
+- Update model names. 
+*************************** v2.2 contents *******************************
+2009/03/24
+CAP:
+- Updated mim cap models for sbl13HD process from sbl13HA/C process: 
+  move c3t_mim3 & c4t_mimw3 from over m4 to m3,  
+  move c3t_mim3_m5 & c4t_mimw3_m5 from over m5 to m4 with new model
+  names as c3t_mim3_m4 & c4t_mimw3_m4,
+  similar change for c3t_smim6 and c4t_smimw6.  
+- Added two-terminal c2t_mim3 model to allow placement over standard cells.  
+- Switch caprows and capcols in all cap model equations to be consistent with 
+  the pcell layout structure. 
+SCHOTTKY: 
+- Copied schottky diode model from bcd25 as preliminary model 
+
+*************************** v2.1 contents *******************************
+2008/03/06
+PNP:
+- Copied high performance VPNP model from sbc18
+- Only NOM SLOW FAST supported. No x-sigma or stat simulation capability
+
+*************************** v2.0 contents *******************************
+2007/08/03
+General:
+- ADS version 2006a produces incorrect AC and RF performance results.
+  ADS version 2005a should be used.
+FET:
+Updated LV regular and high Vt N and P FET Models
+- Increased oxide thickness by ~3 ang. to support 1.5v operation
+- Regular Vt NFET (WxL = 10x0.12um)
+  - No change in Vt and Idsat E-specs
+  - Ioff increased by ~3x
+- Regular Vt NFET (WxL = 0.15x0.12um)
+  - Nominal Idsat increased from 65 to 76uA
+- Regular Vt PFET (Nominal Device; WxL = 10x0.12um)
+  - No change in Vt and Idsat E-specs
+  - Ioff increased by ~3x
+- Regular Vt PFET (WxL = 0.15x0.12um)
+  - Nominal Idsat increased from 30 to 35uA
+- High Vt NFET (Nominal Device WxL = 10x0.12um)
+  - No change in Vt
+  - NOM Idsat reduced from 3.35 to 3.2mA
+  - NOM Ioff reduced 1/5x
+- High Vt PFET (Nominal Device WxL = 10x0.12um)
+  - No change in Vt
+  - Idsat reduced from 1.55 to 1.1mA
+  - NOM Ioff reduced 1/10x
+
+
+Physical Verification:
+Calibre DRC:
+- Update rules for slotted contact to support additional NPN configurations
+
+___________________________________
+Date: 11/22/06
+Library: sbl13 (sbl13hc)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.4
+* Electrical Spec: NPB-PS-0577, rev.5
+* Design Application Note: For now, refer to sbl13hb dan
+
+Highlights:
+* This is a development-level kit release for the sbl13hc
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* Added high threshold fets, metal5/6 mimcaps, square inductors, a high
+  value resistor, and a vertical pnp 
+* DRC and LVS updates 
+* If you are using a sbl13ha design kit, you will need to transition to
+  this kit to see the latest changes.  This kit contains the updates mentioned
+  above and all the devices from sbl13ha. 
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR3 with IUS5.7 QSR2
+* Cadence AMS Designer requires use of IUS5.7 QSR2
+* Cadence Spectre release MMSIM6.0 USR2 (minimum)
+* Synopsys Hspice release 2005.9 (minimum)
+* Cadence Assura 3.1.5 USR1 (minimum)
+* Mentor Calibre 2006.1_19.19 (minimum)
+
+Process Synopsis:
+* This sbl13 design kit library supports only the sbl13hc process variant.
+* The sbl13hc process has 6 layers of aluminum metal.  It supports the following:
+  - low, medium, and high breakdown npns
+  - 1.2V and 3.3V fets
+  - high threshold 1.2V fets
+  - low/high value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4/5 and metal 5/6
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - square and octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - vertical pnp
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+
+Environment and Kit Updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* Updated Technology Library web pages to include sbl13hc. 
+* This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com 
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+
+General Device Updates:
+* Front-end (simulation) support available for spectre, hspiceD, ADSsim, and  ams-in-ade.
+
+New devices, Design Library:
+* Added high threshold fets (nfet_vth, pfet_vth)
+* Added metal 5/6 mimcaps (cmim3_m5, cmimw3_4_m5)
+* Added square inductors (ind, ind_diff) 
+* Added high value resistor (rppoly_hi)
+* Added vertical pnp (vpnp)
+* Added ddnw/diso diodes for deep nwell simulation/verification
+  - replaces 3 terminal ddnw diode
+
+Modified devices, Design Library:
+* Diodes
+  - fixed metal2 overplot of via1 to prevent vias from being dropped for minimum w/l
+* Mimcaps 
+  - changed the minimum w/l of metal 4/5 mimcaps to 2.44u
+  - changed the minimum w/l of the stacked mimcaps to 2.72u
+* Mixed-signal fets
+  - Modified source/drain metal width to handle new metal1 minimum area contact and via1
+    overplot values.  The gate contact will be addressed in a future release.
+  - the pcell footprint may change
+* Mos varactor    
+  - Changed allowable width range to 2u-8u
+  - Allowable gate length is dependent on the source/drain connection option.  When
+    style=2MET_connected or 2MET, the range is 0.36u-2u.  When style=1MET, the range
+    is 0.5u-2u.
+* NPN
+  - added high voltage breakdown option
+  - added wide emitter width option.  This is available for all voltage types, but
+    the model only supports this option when the voltage type is set to high. 
+  - added EBCf configurations of 232, 342, and 452 
+  - Modified emitter length range when EBCf = 122.  The supported range is 0.5u-20u
+* Poly Capacitors
+  - changed the minimum w/l of the poly caps to 0.57u 
+  - fixed gate to source/drain spacing on small poly caps
+  - fixed cni overplot at gate corners
+  - the pcell footprint may change
+* Octagonal inductors
+  - upgraded inductor toolbox version to 4.0
+  - modified the tap construction in the differential inductor to handle offgrid data
+  - fixed shield algorithm to limit corner gaps
+  - the pcell footprint may change 
+* Resistors
+  - Updated Rs, Rend, and dw to match latest electrical specification.
+  - Fixed contact spacing when cntCols > 2
+  - Added resdev around rppoly_lo
+  - the pcell footprint may change 
+* Rf fets
+  - removed 2met source/drain connection option.  Was the same as 2met(RF)
+  - added warning when the source/drain connection option is not set to 2met(RF).
+    The model was extracted with this connection option, so all other values used
+    may produce modeling inaccuracies.  See the CA13/SBL13 Design Manual for more
+    information.
+
+Techfile Updates:
+* Added necessary layers to support new devices
+* Initial support for Multi-part paths (MPP)
+  - Created MPP templates for: PTAP, NTAP, v12, v23, v34, v45, and v56
+  - To access MPP templates, manually load the vias_mpp.il file located in
+    $RDS_CDSLIBS/sbl13/techfiles into cadence
+  - Usage guidelines are available on the Technology Library web pages for sbl13.
+  
+Model Updates: Model version v1.8
+* FET
+- Predictive rev 0 models for 1.2v High-Vt FETs
+- Modified 3.3v N and PFET overlap capacitance parameters based on new
+  measurements. Model v1.7 parameters were causing isolation (s12, s21)
+  issues in high-frequency simulations)
+- No change to 3.3v I-V parameters and 1.2v I-V or C-V parameters
+- Correct mismatch effect on wf for multiplicity
+* RES
+- Add rph3t (rsh=1000 ohm/sq) and rps (rsh=6.5 ohm/sq) models based on the
+  updated Espec
+* CAP
+- Add c3t_mim3_m5 and c4t_mimw3_m5 models for 2.75fF mim cap between m5 and m6
+* MOSVAR
+- Update two layout-related parameters (aagap, dvia) based on the pcell layout
+
+***For completeness, the release notes for model patches 1.3-1.7a are provided
+Model version v1.7a
+* RES
+- Reduce Rsh 1-sigma for low-value poly resistor from 80e-3 to 50e-3
+* PNP
+- Add PNP model for vpnp. Models supported:
+ pnpa=25x25
+ pnpb=11x11
+ pnpc=5.4x5.4
+ pnpd=3x3
+***
+Model version v1.7
+* FET
+- Release of CA13 Mixed-Signal and RF 1.2v and 3.3v FET models from NPB silicon:
+  BSIM4 models for mixed-signal fets
+  BSIM4 RF models with holistic noise model
+  BSIM4 flicker noise model verified over geometry and bias
+  BPV statistical and mismatch models
+  X-sigma models
+  Removed parameter vtl from all BSIM4 FETs to allow consisten Ft across
+  simulators
+  Small change in FAST 1.2v NFET idsat -> crosses x-sigma boundary
+- Update mosvar model based on measurement data from lot K48320-w2
+  Extend device size range based on test devices as:
+    Option:   metal-1        metal-2
+    Lg[um]:   0.5-2.0        0.36-2.0
+    Wg[um]:   2.0-8.0        2.0-8.0
+- Update pc model (pc & pc3p3) based on measurement data from lot K48320-w2
+* CAP
+- Update cap model (mim3 / smim6) for cox to be consistant with Espec data
+* RES
+- Update res model (rpp3t) to remove 'ns' from 'lr_dw_mismatch' equation
+***
+Model version v1.6
+* NPN
+- Added Gummel-Poon model support including corner, statistical, and mismatch
+  models
+- Updated temperature parameters for hicum and gp to SBL13 silicon
+***
+Model version v1.5
+* NPNs
+- Added models for low voltage npns: ln232, ln342, ln452
+- Added models for medium voltage npns: mn232, mn342, mn452
+- Added models for high voltage npns: hn232, hn342, hn452, hw232, hw342
+- xx342 devices are estimated, silicon unavailable
+- Increased emitter width range down to 0.5um for ln122, mn122, and hn122,
+  models are predictive as only limited DC and CV data is available
+  scaling for 0.5<ew<1.0 is questionable
+- Decreased Ccs for lv and mv devices to match POR
+***
+Model version v1.4
+* NPN
+- Added models for high voltage npns: hn122, hw122, and hw452.
+  The hw devices have emitter width of 0.9.
+- Re-extracted Rsub in ln and mn devices to better reflect gain roll off at
+  high frequencies
+- Re-extracted corner and statiscal models for low and medium voltage npn (SC)
+- Added corner and statistical models for high-voltage npn (SC)
+- Copied mismatch model from sbc18 for all NPNs
+***
+Model version v1.3
+* NPN
+- Rename npn models to match Low/Med/High voltage types. Previously used
+  Dig/Low/High.
+* FET
+- Added native 3.3V nfet
+
+
+Verification:
+General:
+* Generated c13_ext library for parasitic extraction support
+  - Was previously called ca13_rcx
+
+Calibre:
+* For calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - The following npn rules have not been implemented: B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - xRC support will be available in a future release.
+DRC
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  high voltage type npns, and vertical pnp
+- Added B15 check
+* Modifications 
+- Revised 8.B.b to handle inductor shield
+- Modified mos varactor rules to support new design rules
+DENSITY
+* Revised metal dummy patterns, changed offset dimension, and added 10u fill 
+LVS
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  high voltage type npns, and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices 
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s 
+XRC
+* Not provided at this time. Will be available in a future release.
+
+Assura:
+* Limitations
+  - The following npn rules have not been implemented : B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - BD.H checks 10u for 60u and 80u pitch pads
+DRC
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  high voltage type npns, and vertical pnp
+- Added B15 check
+* Modifications 
+- Revised 8.B.b to handle inductor shield
+- Modified mos varactor rules to support new design rules
+DENSITY
+* Revised metal dummy patterns, changed offset dimension, and added 10u fill
+LVS
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  high voltage type npns, and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices 
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s
+RCX
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  high voltage type npns, and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices 
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s
+
+___________________________________
+Date: 05/14/06
+Library: sbl13 (sbl13ha)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.3
+* Electrical Spec: NPB-PS-0577, rev.3
+* Design Application Note: NPB-PS-0746, rev.1
+
+Highlights:
+* This is an initial development-level kit release for the sbl13ha
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+Software versions tested with this release:
+* Cadence IC releases IC51.41USR1 (minimum), IC51.41USR3
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+* Cadence Assura releases 3.1.5USR1 (minimum)
+
+Process Synopsis:
+* This sbl13 design kit library supports only the sbl13ha process variant.
+* The sbl13ha process has 6 layers of aluminum metal.  It supports the following:
+  - low and medium breakdown npns
+  - 1.2V and 3.3V fets
+  - low value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4 and metal 5
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre and ads simulators are supported.
+
+Process Variant Support:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+   - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+Environment and Kit Updates:
+* Changed the approach used to define the device library in cadence.  Based
+  on the value of $RDS_CDSLIBS and $RDS_CDS_TECH, the appropriate library
+  will be included.
+* Fixed library processing issues in trigger callbacks utility.
+* Updated Technology Library web pages to include sbl13 devices.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+
+General Device Updates:
+* Front-end (simulation) support available for spectre and ADSSim.
+* Pcells included for all devices.
+
+Device limitations, Design Library:
+* Ind/Res
+  - ca18hr octagonal inductors and resistors have been implemented in this
+    process.  When the sbl13 versions are integrated into the design kit, the
+    pcell footprint may change.  Additionally the electrical specifications for these
+    devices may change.
+* Var
+  - The sbc35qtx mos varactor has been implemented in this process.  When the
+    sbl13 version is integrated into the design kit, the pcell footprint may change.  
+
+Techfile Updates:
+* Initial release of techfile 
+  
+Model Updates: Model version v1.3
+* The following models are included in the model release. Models that are based on
+  predicted data or are copies of data from other process nodes are indicated.
+* Model cards may be provided that are not supported by the Cadence Design Kit
+  design library.
+
+All Devices:
+   - New x-sigma models that allow user to sweep process sigma from +x FAST to -x SLOW
+     ((FETs, NPNs, Diodes ; Resistors, PC, Mos Varactor)) 
+Fets:
+   - Changed flicker noise model in 3.3v FETs from gm-based to bsim3 (from CA13 v1.1) 
+     to better capture bias dependence.  No change in 1.2v Mixed-signal FETs.
+   - Removed offsets in gate resistance defintion in SLOWFAST and FASTSLOW corners for 
+     all RF FETs.
+   - Fixed area and perimeter junction capacitance partitioning bug for 3.3v RF FETs. 
+     Minimal change in total Cj.
+   - Fix in lint_nom definition for 1.2v pfet stat. and MM models.  Reduces offsets in 
+     Coverlap due to statistical process spreads.
+NPNs:
+   - Rename npn models to match Low/Med/High voltage types. Previously used
+     Dig/Low/High.
+   - New l-scalable standard and high-speed nom models from measured silicon
+   - Corner, Stat. models for above from E-specs
+   - MM model copied from sbc18 NPNs 
+IND:
+   - Predicted model from ca18: ind_1u, ind_3u, ind_6u
+     (inductor compact model for 1/3/6um MT)
+   - Predicted model from ca18: balun1_ca13m6_3u, balun5_ca13m6_3u, balun10_ca13m6_3u
+     (balun fixed compact model for 1/5/10nH fixed layout)
+RES:
+   - Unsalicided P-type resistor model (rpp3t), mainly copy from ca18 res.scs with
+     new x_sigma format
+RNW:
+   - Nwell resistor model (rw3t), mainly copy from ca18 rnw.scs with new x_sigma format
+CAP:
+   - Vertical mim capacitor models (c3t_mim3 and c4t_mimw3 for 2.8fF/um2 density) and
+     stacked mim capacitor models (c3t_smim6 and c4t_smimw6 for 5.6fF/um2 density) mainly
+      copy from ca13 cap.scs with new x_sigma format
+PC:
+   - Poly capacitor models (pc and pc3p3), with new pc model based on sbl13 fets model
+     and pc3p3 copy from sbc18 model. All have new x_sigma format.
+MOSVAR:
+   - MOS varactor model (mosvar_3p3), mainly copy from sbc35x mosvar.scs model with new
+     x_sigma format.
+
+Verification:
+General:
+* Generated c13_ext library for parasitic extraction support
+  - Was previously called ca13_rcx
+
+Calibre:
+* For calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - The following npn rules have not been implemented: B15, B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - BMP.2 does not completely check all cases
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - 51.B flags the terminals of the inductors
+  - xRC support will be available in a future release.
+
+DRC
+* Initial release of deck
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ERC
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+XRC
+* Not provided at this time. Will be available in a future release.
+
+Assura:
+* Limitations
+  - The following npn rules have not been implemented : B15, B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - Metal1 on single ended octagonal inductor shield violates 8.B.b
+  - BMP.2 does not completely check all cases
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - 51.B flags the terminals of the inductors
+DRC
+* Initial release of deck
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ERC
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+RCX
+* Initial release of deck
+</PLAINTEXT></BODY></HTML>

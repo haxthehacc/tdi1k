@@ -1,0 +1,46 @@
+Since hbt3_dg has a Cadence Composer front end library,
+I am putting a page for it in our web documents.
+I'd like to have some description of these devices
+in addition to just the model names.
+
+Could you send that info to me?
+Thanks a lot.
+
+Regards,
+
+- Bill
+
+
+schottkey diodes 
+
+ds4p0
+ds8p0
+ds32p0
+ds128p0
+
+base collector diodes
+
+db100p0
+db150p0
+db400p0
+
+transistors
+
+q4p5k
+q8p0k
+q12p0k
+q24p0k
+q4p5j
+q8p0j
+q12p0j
+q24p0m
+
+inductors
+
+ls2m0p4
+ls3m0p8
+ls4m1p1
+ls5m1p8
+ls6m3p0
+
+

@@ -1,0 +1,73 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; U; SunOS 5.7 sun4u) [Netscape]">
+</head>
+<body>
+
+<h1>
+DESCRIPTION:</h1>
+'rppoly_sal' implements a low value resistor formed by gate poly implanted with
+P+ implant layer (including contact regions) and using the standard silicidation
+process. Large resistors can be split up into a series connection of individual
+resistors ('strips') that are connected in series.
+<h1>
+ATTRIBUTES:</h1>
+
+<ul>
+
+<li><b>Calculated Parameter:</b> Indicates the data entry mode of the resistor calculation.
+A resistor is described by the attributes 'Total Resistance', 'Width',
+'Strip Length' and 'Number of Strips'. Depending on the value of this field,
+three of the above attributes will be editable and the other one will be calculated
+: 'Resistance' calculation is based on 'Width', 'Strip Length' and 'Number of Strips'.
+'Length' calculation is  based on 'Total Resistance', 'Width' and 'Number of Strips'.</li>
+
+<li><b>Width:</b> Controls the
+width of the resistor strips.</li>
+
+<li><b>Strip Length:</b> Controls the strip
+length of the resistor.</li>
+
+<li><b>Number of strips:</b> Allows the user to specify n resistor strips that
+that are connected in parallel or series. In the parallel case, the total resistance
+is equivalent to the resistance of an individual resistor.  In the series case,
+the total resistance is split evenly among n individual resistors.</li>
+
+<li><b>Strip Connection:</b> When this attribute is set to 'Parallel', the 
+'Number of Strips' field can be used to specify a parallel resistor. 
+When this attribute is set to 'Series', the 'Number of strips' field 
+can be used to specify a multi-strip series resistor.</li>
+
+<li>
+<b>Total Length (Read Only):</b> Displays the length of the combined  resistor strip.</li>
+
+<li>
+<b>Total Resistance:</b> Controls the total resistance of the resistor.</li>
+
+<li>
+<b>Bottom Dummy:</b> Creates a dummy resistor on the bottom of the current resistor.</li>
+
+<li>
+<b>Top Dummy:</b> Creates a dummy resistor on the top of the current resistor.</li>
+
+<li>
+<b>Contact on Dummy:</b> Viewable only when the dummy resistor option has been enabled.  Allows user to add contacts on dummy resistor.</li>
+
+<li>
+<b>Contact Columns:</b> Create multiple contact columns on resistor ends.</li>
+
+<h1>
+NOTES:</h1>
+
+<h1>
+LVS:</h1>
+
+<ul>
+<li>
+The following attributes are checked during LVS: Resistance, Width, Length,</li>
+</ul>
+
+</body>
+</html>

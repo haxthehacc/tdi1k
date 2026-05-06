@@ -1,0 +1,69 @@
+--------------------------------------------------------------
+--
+-- $Id: system.lib 1 2019/07/01 11:04:09 GMT ronenha Exp $
+-- $Log: Revision 1 2019/07/01 11:04:09 GMT ronenha $
+--   Initial revision.
+-- 
+--  Revision: 1.5 Sat Jun 13 23:19:55 2015 ronenha
+--  Added substrate lib
+-- 
+--  Revision: 1.4 Tue Nov 22 15:43:36 2011 milkovr
+--  Update to better check ADS install before including ADS library
+-- 
+--  Revision: 1.3 Wed Feb 23 12:50:44 2011 juliaya
+-- Replace icfb by virtuoso to support IC6.1.4 and up
+-- 
+--  Revision: 1.2 Sun Sep 21 12:50:44 2008 milkovr
+--  Remove _OA suffix for dir names since cds_oa/cdslibs dir now exists.
+-- 
+--  Revision: 1.1 Thu Sep  4 15:14:55 2008 bani
+--  ic6.1 etc dir
+-- 
+--  Revision: 1.7 Thu Aug 16 01:39:41 2007 milkovr
+--  Change Cadence provided libraries to use new Cadence
+--  Installation Root Expressions syntax.
+-- 
+--  Revision: 1.6 Thu Aug 18 08:53:20 2005 nasamrc
+--  Deleted Discrete_Components
+-- 
+--  Revision: 1.5 Thu Jan 22 15:18:29 2004 nasamrc
+--  remove package and PACK_MODELS
+-- 
+--  Revision: 1.4 Sat Oct 12 02:12:17 2002 knightm
+--  Added newline at end of file.
+--  
+-- Revision 1.3  2002/10/12 02:10:51  knightm
+-- Added softinclude for rfde.lib.
+--
+-- Revision 1.2  2002/10/11 17:05:34  knightm
+-- Remove Conexant references.
+--
+-- Revision 1.1  2002/05/29 17:31:06  nasamrc
+-- Initial Jazz revision
+--
+--------------------------------------------------------------
+
+-- library containing pins, extracted views, and other fundamental stuff
+DEFINE cds_generic 	$RDS_CDSLIBS/cds_generic
+
+-- Cadence provided libraries
+-- Include DFII default library set
+-- basic, US_8ths
+INCLUDE $(inst_root_with:tools/dfII/bin/virtuoso)/tools/dfII/etc/cdsDotLibs/composer/cds.lib
+-- analogLib, functional
+INCLUDE $(inst_root_with:tools/dfII/bin/virtuoso)/tools/dfII/etc/cdsDotLibs/artist/cds.lib
+-- rfLib, rfExamples, ahdlLib
+INCLUDE $(inst_root_with:tools/dfII/bin/virtuoso)/tools/dfII/etc/cdsDotLibs/spectre/cds.lib
+DEFINE sbaLib $(inst_root_with:tools/dfII/bin/virtuoso)/tools/dfII/etc/cdslib/artist/sbaLib
+
+-- Libaray for Jazz sheet Border
+DEFINE sheetBorder	$RDS_CDSLIBS/sheetBorder
+
+-- Jazz Libraries: technology libraries
+INCLUDE   $RDS_CDSLIBS/$RDS_CDS_TECH/technology.lib
+
+-- SNA
+SOFTDEFINE substrateLib $CDSHOME/share/sna/etc/cdslib/substrateLib
+
+-- ADS Libraries for RFDE
+SOFTINCLUDE $RFDE_CDS_VERSION/rfde.lib

@@ -1,0 +1,237 @@
+//                                         ********************************************
+//                                         *          RESTRICTED CIRCULATION          *
+//                                         *                                          *
+//                                         *   THIS SPEC IS PART OF A CUSTOMER DCB    *
+//                                         *                                          *
+//                                         ********************************************
+//     ----------------------------------------------------------------------------------------------------------------
+//     TITLE:  MINISPEC FOR TS18SL CALIBRE DRC RUNSET for AVANT! ( Synopsys ) DUAL PORT SRAM Bitcell
+//     ----------------------------------------------------------------------------------------------------------------
+//     SPEC NUMBER : DK2_DRC_TS18SLAD_CALIBRE
+//     ----------------------------------------------------------------------------------------------------------------
+//     REFERENCE SPEC : DR20018SLAD rev. 1.0
+//     ----------------------------------------------------------------------------------------------------------------
+//                   R E V I S I O N         H I S T O R Y
+//     ----------------------------------------------------------------------------------------------------------------
+//     REV |ECN #| ORIGINATOR |  DATE        |BY|PAGE/PARAGRAPH-CHANGED/DELETED
+//     ----------------------------------------------------------------------------------------------------------------
+//     1.0 |     |Alex Shahin | 21/01/03     |  | New Spec for FAB2. 
+//     2.0 |     |Alex Shahin | 05/02/03     |  | Bug Fix in 15AD/CU03AD/CU04AD.
+//     3.0 |     |Alex Shahin | 05/03/03     |  | Rulecheck CU04AD Enhanced. 
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//         |     |            |              |  |
+//     ------------------------------------------------------------------------------------------------------------
+// 
+//             ALL PAGES OF THIS SPECIFICATION ARE THE SAME REVISION AS PAGE 1
+// 
+//                              COMPANY PRIVATE
+// 
+//                    DO NOT REPRODUCE WITHOUT WRITTEN PERMISSION
+//                            TOWER  SEMICONDUCTOR  LIMITED
+//     ------------------------------------------------------------------------------------------------------------
+//
+//  
+// Author : Alexander Shahin - CAD Engineer.
+// Email : sandro@towersemi.com
+// 
+// 
+//  _____________________________________________________________ 
+//
+//  DISCLAIMER 
+//
+//  The information contained herein is provided by Tower on an "AS IS" basis without any warranty as to accuracy or
+//  completeness, and Tower has no obligation to support, update or otherwise maintain the information. Tower disclaims any
+//  representation that the information does not infringe any intellectual property rights or proprietary rights of any third parties.
+//  TOWER MAKES NO WARRANTIES OF THE INFORMATION HEREIN, WHETHER EXPRESS, IMPLIED, OR
+//  STATUTORY, INCLUDING WITHOUT LIMITATION, IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE AND ANY IMPLIED WARRANTY OF NONINFRINGEMENT.
+//
+//  STATEMENT OF USE 
+//
+//  This information contains confidential and proprietary information of Tower. No part of this information may be reproduced,
+//  transmitted, transcribed, stored in a retrieval system, or translated into any human or computer language, in any form or by any
+//  means, electronic, mechanical, magnetic, optical, chemical, manual, or otherwise, without the prior written permission of
+//  Tower. This information was prepared for informational purpose and is for use by Tower's customers only. Tower reserves the
+//  right to make changes in the information at any time and without notice.
+//
+//  _____________________________________________________________ 
+//
+//
+// TITLE:  MINISPEC FOR TS18SL CALIBRE DRC RUNSET for AVANT! ( Synopsys ) SRAM DUAL PORT Bitcell
+// 
+// 1.0 PURPOSE AND SCOPE
+// 
+// 1.1 Purpose
+//        This document defines the CALIBRE DRC runset 
+//        on SRAM layout designs for TS18SL process. 
+// 
+// 1.2 Scope
+//        All products to be manufactured in TSL in process TS18SL ,
+//        according to Design Rules DR20018SL/DR20018SLAD  must use this runset for DRC.
+// 
+// 
+// 2.0 TABLE OF CONTENTS
+// 
+//  Section Title                        Section Number
+//  -------------                        --------------
+//    2.1 Purpose and Scope                 1.0
+//    2.2 Table of Contents                 2.0
+//    2.3 Applicable Documents              3.0
+//    2.4 Definitions                       4.0
+//    2.5 Equipment                         5.0
+//    2.6 Safety                            6.0
+//    2.7 Supplies/Materials                7.0
+//    2.8 Updating this Spec                8.0
+//    2.8 Procedures                        9.0
+// 
+// 3.0 APPLICABLE DOCUMENTS
+// 
+// 3.1 Design Rules for TS18SL Process as mentioned on the title of the document.
+//                                                                
+// 
+// 4.0 DEFINITIONS
+// 
+// N/A
+// 
+// 
+// 5.0 EQUIPMENT AND S/W
+// 
+// 5.1 Equipment
+//     UNIX Computer terminal linked to TSL lan.
+// 
+// 5.2 S/W
+//     CALIBRE(r) by MENTOR Graphics ver. 8.7  
+// 
+// 6.0 SUPPLIES AND MATERIAL
+// 
+// N/A
+// 
+// 7.0 SAFETY
+// 
+// 7.1 All personnel must read and comply with Tower Safety procedures, in spec
+//        (TSL)SOP-9-008.
+// 
+// 
+// 8.0 UPDATING THIS SPEC
+// 
+// 8.1 Changes to Document
+//        An ECN should be submitted detailing all the changes to be made to
+//        the spec
+// 
+// 8.2 Marking Modifications
+// 
+// 
+// 9.0 PROCEDURE
+// 
+// 9.1 CALIBRE DRC runset inputs:
+//        The user should run the runset on a stream format (binary) file representing
+//        the graphic database.
+// 
+// 9.2 CALIBRE DRC runset
+//     
+//	In order to Run DRC According to this runset, It should be Included to the Main SL Runset ( According to DR20018SL Spec. ). 
+//
+// 
+
+LAYER DPAV 2666
+LAYER MAP 77 datatype 60 2666
+
+
+_01AD {
+    @01AD: DEV_AREA;a_bitcell layer should be drawn in input layout for Correct DRC Check.
+    bulk not interact DPAV
+}
+
+_09AD {
+    @09AD: DEV_AREA a_bitcell Shape Should be Rectangular .
+    X=rectangle (flatten DPAV)
+    DPAV not X	
+}
+
+_10AD {
+    @10AD: Enclosure of DEV_AREA;a_bitcell over N+ Gate,Min 0.60.
+    X=(GC not interact WN) and XN
+    Y=AA and X 
+    enclosure Y DPAV <0.60 region abut<90 proj >0 
+}
+
+_11AD {
+    @11AD: Enclosure of DEV_AREA;a_bitcell over N+ Active, Min 0.23.
+    X=(GC not interact WN) and (XN and DPAV)	
+    Y=NSDG interact X <2
+    enclosure Y DPAV <0.23 region singular abut<90  proj >0
+ 
+}
+
+_12AD {
+    @12AD: Enclosure of DEV_AREA;a_bitcell over P+ Active,Min 0.005. 
+       enclosure pdiff DPAV <0.005 region singular abut <90  proj >0 
+ 
+}
+
+_13AD {
+    @13AD: DEV_AREA;a_bitcell cannot cut Contact.
+    CS cut DPAV
+}
+
+_14AD {
+    @14AD: DEV_AREA;a_bitcell cannot cut Via2/Via3 .
+    V2 cut DPAV
+#ifndef 3LM
+    V3 cut DPAV
+#endif
+}
+
+_15AD {
+    @15AD: Internal Bitcell GC/M1 polygon, crossing or touchings DEV_AREA;a_bitcell , cannot form a 45 degrees shape with marking layer edge .
+enc GC DPAV >0< 0.05 abut region intersecting only angled ==1
+enc M1 DPAV >0< 0.05 abut region intersecting only angled ==1
+}
+
+DA02=(size ( flatten DPAV) by 0.2) not (flatten DPAV) 
+
+CU03AD {
+    @CU03AD: External Bitcell GC/M1 polygon, crossing or touchings DEV_AREA;a_bitcell , cannot form a 45 degrees shape with marking layer edge .
+ext GC DPAV >0< 0.05 abut region intersecting only angled ==1
+ext M1 DPAV >0< 0.05 abut region intersecting only angled ==1
+}
+
+CU04AD {
+    @CU04AD: Non Orthogonal corners, orthogonal inner corners, are not allowed for GC/M1 in distance of 0.18 from bitcell edge.
+   GCf=GC and ((size ( flatten DPAV) by 0.5) not (size ( flatten DPAV) by -0.5))
+   M1f=M1 and ((size ( flatten DPAV) by 0.5) not (size ( flatten DPAV) by -0.5))
+   X45=(ext GCf <0.005 abut == 45 region) or (int GCf <0.005 abut == 45 region)
+   X90= ext GCf <0.005 abut == 90 region
+   X135=(ext GCf <0.005 abut == 135 region) or (int GCf <0.005 abut == 135 region)
+   XX= (size (flatten DPAV) by 0.175) not (flatten DPAV)
+   (X90 or ( X45 or X135)) interact XX
+   ext  (X90 or ( X45 or X135)) DPAV < 0.175  abut region singular opposite proj>0
+   Y45=(ext M1f <0.005 abut == 45 region) or (int M1f <0.005 abut == 45 region)
+   Y90= ext M1f <0.005 abut == 90 region
+   Y135=(ext M1f <0.005 abut == 135 region) or (int M1f <0.005 abut == 135 region)
+   (Y90 or ( Y45 or Y135)) interact XX
+   ext  (Y90 or ( Y45 or Y135)) DPAV < 0.175  abut region singular opposite proj>0 
+   X1=GC and ((size (flatten DPAV) by 0.18) not (flatten DPAV))
+   X2=M1 and ((size (flatten DPAV) by 0.18) not (flatten DPAV))
+   (expand edge (angle X1 != 90) by 0.005) not (expand edge (angle X1 == 0) by 0.005)
+   (expand edge (angle X2 != 90) by 0.005) not (expand edge (angle X2 == 0) by 0.005)
+}
+
+CU05AD {
+    @CU05AD: min distance between Via2/Via3 and DEV_AREA;a_bitcell , is 0.2 micron .
+   DA02 and V2
+#ifndef 3LM
+   DA02 and V3
+#endif
+}
+
+CU06AD {
+    @CU06AD: min distance between contact and DEV_AREA;a_bitcell , is 0.2 micron.
+   DA02 and CS
+}

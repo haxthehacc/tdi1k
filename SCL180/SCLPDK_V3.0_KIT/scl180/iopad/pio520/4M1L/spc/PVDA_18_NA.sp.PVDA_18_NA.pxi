@@ -1,0 +1,16 @@
+* File: PVDA_18_NA.sp.PVDA_18_NA.pxi
+* Created: Sun Feb 12 14:24:39 2023
+* 
+cc_1 VDDO VSSO 347.484f
+cc_2 VDDO VSS 819.777f
+cc_3 VDDO VDD 65.2591f
+cc_4 VDDO 6 37.1901f
+cc_5 VDDO 7 37.1694f
+cc_6 VDDO X26/noxref_5 0.656792f
+cc_7 VDDO X27/noxref_5 0.513328f
+cc_8 VSSO VSS 195.197f
+cc_9 VSSO 7 119.209f
+cc_10 VSSO X27/noxref_5 1.55602f
+cc_11 VSS VDD 16.1038f
+cc_12 VSS 6 119.206f
+cc_13 VSS X26/noxref_5 1.43728f

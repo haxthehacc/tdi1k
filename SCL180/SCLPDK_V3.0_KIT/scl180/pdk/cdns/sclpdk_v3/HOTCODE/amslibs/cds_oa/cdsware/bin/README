@@ -1,0 +1,27 @@
+1) removed all run_cal associated files:
+eaif*
+cbr*
+aif*
+run_cal*
+pex2skill*
+2) removed all custom netlister files:
+nlhsp*
+nlvhd*
+nlhdl*
+nlexthsp
+enlhsp*
+enlvhd*
+enlhdl*
+enlexthsp
+ecd2vhd
+c2vhd
+erdsvhdstop
+rdsvhdstop
+exthsppp
+3) removed all internal dm scripts 
+ctdmupdate
+ctdmrelease
+ectdmupdate
+ectdmrelease
+clsco
+eclsco

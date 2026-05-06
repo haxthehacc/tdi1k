@@ -1,0 +1,14 @@
+Question: How can I pass LVS for stacked MIM_Cap over MOS_Cap ?
+
+Answer: The following must be done to pass lvs:
+
+1) on the layout, the tm/mim layer must sit completely inside of the
+nwell of the moscap.
+
+2) on the schematic, the mim cap to be used must be c3t_mimw (the well
+version); the substrate node of this c3t_mimw must be the same as the
+"bottom" plate of the moscap (i.e. the active terminal).
+
+However, the presence of the moscap will invalidate the substrate
+coupling model of c3t_mimw. In this case, we cannot guarantee the
+accuracy of the substrate coupling model.

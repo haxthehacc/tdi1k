@@ -1,0 +1,24 @@
+*
+* library globallib
+
+.LIB GLOBAL
+
+.OPTION XMULT_IN_EXP=YES  macmod=1 parhier=local
+
+.PARAM
+* Constants
++ tem='temper+273'
++ kboltz=1.38066e-23
++ q=1.60218e-19
++ vthermal='(kboltz*tem)/q'
++ eg0='1.16 - ((7.02e-4*tem*tem)/(tem+1108))'
++ tem_nom='tem/300.15'
++ ni='1e6 * 1.45e10 * (tem_nom**1.5) * exp(21.5565981 - (eg0/(2*vthermal)))'
++ e0=8.85418e-12
++ eox='3.9*e0'
++ esi='11.7*e0'
+
+
+.ENDL GLOBAL
+
+* end library globallib

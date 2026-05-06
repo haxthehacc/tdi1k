@@ -1,0 +1,34 @@
+* File: aor22d1.sp.aor22d1.pxi
+* Created: Sun Feb 14 19:02:36 2010
+* 
+cc_1 VSS B2 0.0458797f
+cc_2 VSS B1 0.0667204f
+cc_3 VSS 6 0.168758f
+cc_4 VSS A1 0.00923995f
+cc_5 VSS A2 0.0466426f
+cc_6 VSS Z 0.0222699f
+cc_7 VSS noxref_10 0.00706596f
+cc_8 noxref_2 B2 0.0993066f
+cc_9 noxref_2 VDD 0.175406f
+cc_10 noxref_2 B1 0.0379331f
+cc_11 noxref_2 6 0.174215f
+cc_12 noxref_2 A1 0.0855171f
+cc_13 noxref_2 A2 0.0377098f
+cc_14 noxref_2 Z 0.0216228f
+cc_15 B2 VDD 0.0264606f
+cc_16 B2 B1 0.171971f
+cc_17 B2 A1 0.0449019f
+cc_18 VDD B1 0.0198449f
+cc_19 VDD 6 0.0494555f
+cc_20 VDD A1 0.00759231f
+cc_21 VDD A2 0.00655296f
+cc_22 VDD Z 0.0325332f
+cc_23 B1 6 0.0270143f
+cc_24 B1 A1 0.168395f
+cc_25 B1 noxref_10 0.0119418f
+cc_26 6 A1 0.182759f
+cc_27 6 A2 0.283348f
+cc_28 6 Z 0.168392f
+cc_29 6 noxref_11 0.0427367f
+cc_30 A1 A2 0.101403f
+cc_31 A2 Z 0.0277383f

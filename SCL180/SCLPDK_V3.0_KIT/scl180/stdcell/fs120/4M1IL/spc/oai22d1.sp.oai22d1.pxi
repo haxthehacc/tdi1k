@@ -1,0 +1,28 @@
+* File: oai22d1.sp.oai22d1.pxi
+* Created: Sun Feb 14 19:24:56 2010
+* 
+cc_1 noxref_1 B2 0.0838542f
+cc_2 noxref_1 VSS 0.225534f
+cc_3 noxref_1 B1 0.0927296f
+cc_4 noxref_1 ZN 0.0738654f
+cc_5 noxref_1 A1 0.0535733f
+cc_6 noxref_1 A2 0.0585824f
+cc_7 VDD B2 0.00657761f
+cc_8 VDD B1 0.0566043f
+cc_9 VDD ZN 0.0477024f
+cc_10 VDD A1 0.00900478f
+cc_11 VDD A2 0.00657761f
+cc_12 B2 VSS 0.0287884f
+cc_13 B2 B1 0.260957f
+cc_14 B2 ZN 7.59367e-19
+cc_15 B2 A1 2.52081e-19
+cc_16 VSS B1 0.0207669f
+cc_17 VSS A1 0.00824297f
+cc_18 VSS A2 0.00715259f
+cc_19 B1 ZN 0.0497157f
+cc_20 B1 A1 0.184176f
+cc_21 B1 noxref_9 0.0221367f
+cc_22 ZN A1 0.177112f
+cc_23 ZN A2 0.201287f
+cc_24 ZN noxref_10 0.0449719f
+cc_25 A1 A2 0.101372f

@@ -1,0 +1,91 @@
+// In order to run as stand alone (Not using SCL customization) you must define metal combination,run type and voltage
+// For metal combination -
+// #define <one of the below metal combination>
+// STd top metal:
+//	4M1L,5M1L,6M1L
+// Thick 2um Aluminum top metal
+//	4M1T,5M1T,6M1T
+// Thick 2.8um Aluminum top metal
+//	4M1T3,5M1T3,6M1T3
+//
+// For run type one of the below
+// #define DRC_TYPE CHIP
+// #define DRC_TYPE BLOCK
+//
+// For voltage
+// #define DRC_VOLTAGE <one of the below voltage options
+// 1.8V/3V,1.8V/5V,3.3V_only,5V_only
+//
+// More options from SCL cutomization
+// For better select needed include runsets
+// #define DRC_TECH <ts18scl>
+//
+// To Add memory blocks special rules
+// #define BIT_CELL_SLA
+// #define BIT_CELL_SLAD
+//
+// More specific options
+// #define Recommended
+//
+// Control SR.D.1 value
+// #define SET_SR
+// variable SR_MIN <value to be checked>
+//
+#ifdef DRC_TYPE CHIP
+	#define CHIP
+	#define selected_type
+#endif
+#ifdef DRC_TYPE BLOCK
+	#define BLOCK
+	#define selected_type
+#endif
+#ifndef selected_type
+	#define CHIP
+#endif
+#ifdef DRC_VOLTAGE 1.8V/3V
+	#define 3V
+	#define selected_voltage
+#endif
+#ifdef DRC_VOLTAGE 1.8V/5V
+	#define 5V
+	#define selected_voltage
+#endif
+#ifdef DRC_VOLTAGE 3.3V_only
+	#define 3.3V_only
+	#define selected_voltage
+#endif
+#ifdef DRC_VOLTAGE 5V_only
+	#define 5V_only
+	#define selected_voltage
+#endif
+
+
+//#define BLOCK  //or CHIP
+
+LAYOUT PATH  "layout_path.gds"
+LAYOUT PRIMARY "layout_topcell"
+LAYOUT WINDOW CLIP YES
+LAYOUT SYSTEM GDSII
+
+DRC RESULTS DATABASE "layout_topcell.db" ASCII 
+DRC MAXIMUM RESULTS ALL
+DRC MAXIMUM VERTEX ALL
+
+DRC CELL NAME NO
+DRC SUMMARY REPORT "layout_topcell.report" REPLACE HIER
+
+VIRTUAL CONNECT COLON NO
+VIRTUAL CONNECT REPORT NO
+
+DRC ICSTATION YES
+
+
+INCLUDE "$RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/DRC_TS18SL_SCL_CALIBRE"
+
+#ifdef BIT_CELL_SLA // {
+   INCLUDE "$RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/DRC_TS18SLA_CALIBRE"
+#endif //}
+
+#ifdef BIT_CELL_SLAD // {
+   INCLUDE "$RDS_TECH/$RDS_CDS_TECH/calibre/default_scr/DRC_TS18SLAD_CALIBRE"
+#endif //}

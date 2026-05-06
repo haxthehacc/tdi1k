@@ -1,0 +1,27 @@
+* File: or03d7.sp.or03d7.pxi
+* Created: Sun Feb 14 19:49:57 2010
+* 
+cc_1 U39_drain A1 0.144681f
+cc_2 U39_drain VSS 0.407435f
+cc_3 U39_drain A2 0.185692f
+cc_4 U39_drain A3 0.316309f
+cc_5 U39_drain VDD 0.519474f
+cc_6 U39_drain Z 0.82718f
+cc_7 U39_drain U9_source 0.0116294f
+cc_8 U39_drain U35_source 0.0131473f
+cc_9 A1 VSS 0.00713182f
+cc_10 A1 A2 0.194866f
+cc_11 A1 A3 0.00938836f
+cc_12 A1 VDD 0.0270664f
+cc_13 VSS A2 0.00631387f
+cc_14 VSS A3 0.0105439f
+cc_15 VSS Z 0.347153f
+cc_16 A2 A3 0.229457f
+cc_17 A2 VDD 0.0229944f
+cc_18 A2 U9_source 0.0178456f
+cc_19 A2 U35_source 0.0178185f
+cc_20 A3 VDD 0.0379321f
+cc_21 A3 Z 6.12022e-19
+cc_22 VDD Z 0.244721f
+cc_23 VDD U9_source 0.00652883f
+cc_24 VDD U35_source 0.00652883f

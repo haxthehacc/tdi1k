@@ -1,0 +1,30 @@
+* File: oai21d4.sp.oai21d4.pxi
+* Created: Sun Feb 14 19:23:38 2010
+* 
+cc_1 noxref_1 B2 0.111611f
+cc_2 noxref_1 VSS 0.0402611f
+cc_3 noxref_1 B1 0.0558631f
+cc_4 noxref_1 2 0.0182042f
+cc_5 noxref_1 A 0.0195379f
+cc_6 VDD B2 0.00701363f
+cc_7 VDD B1 0.0712409f
+cc_8 VDD 2 0.0400816f
+cc_9 VDD A 0.0131207f
+cc_10 VDD 3 0.130196f
+cc_11 VDD ZN 0.0631407f
+cc_12 B2 VSS 0.0221748f
+cc_13 B2 B1 0.219383f
+cc_14 B2 A 0.0138409f
+cc_15 VSS B1 0.022256f
+cc_16 VSS 2 0.0465117f
+cc_17 VSS A 0.0129069f
+cc_18 VSS 3 0.124386f
+cc_19 VSS ZN 0.1092f
+cc_20 B1 2 0.0534976f
+cc_21 B1 A 0.15672f
+cc_22 B1 noxref_10 0.0254115f
+cc_23 2 A 0.235823f
+cc_24 2 3 0.484109f
+cc_25 2 ZN 0.00113143f
+cc_26 A 3 0.0033249f
+cc_27 3 ZN 0.298581f

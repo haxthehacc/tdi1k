@@ -1,0 +1,7 @@
+cUiMoveCellToBin {PIOL_18_ESD_PMOS} {IO}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {layout} {1}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {logical} {0}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {abstract.pin} {0}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {abstract.ext} {0}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {abstract} {0}
+cUiSetViewStatus {PIOL_18_ESD_PMOS} {abstract.ver} {0}

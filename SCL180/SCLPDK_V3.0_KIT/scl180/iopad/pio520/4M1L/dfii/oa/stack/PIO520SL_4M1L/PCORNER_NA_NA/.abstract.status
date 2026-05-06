@@ -1,0 +1,8 @@
+cUiMoveCellToBin {PCORNER_NA_NA} {IO}
+cUiSelectCellP {PCORNER_NA_NA}
+cUiSetViewStatus {PCORNER_NA_NA} {layout} {1}
+cUiSetViewStatus {PCORNER_NA_NA} {logical} {1}
+cUiSetViewStatus {PCORNER_NA_NA} {abstract.pin} {3}
+cUiSetViewStatus {PCORNER_NA_NA} {abstract.ext} {1}
+cUiSetViewStatus {PCORNER_NA_NA} {abstract} {1}
+cUiSetViewStatus {PCORNER_NA_NA} {abstract.ver} {0}

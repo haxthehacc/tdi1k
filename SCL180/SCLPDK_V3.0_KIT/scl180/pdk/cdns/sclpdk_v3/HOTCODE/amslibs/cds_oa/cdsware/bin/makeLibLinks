@@ -1,0 +1,146 @@
+#!/tools/perl/bin/perl
+# This program simply "clones" a Cadence library by making a library
+# directory structure with symbolic links to source library files.
+#
+# This program should be run from top level library directory (where
+# the devices directory is).
+#
+
+#$verbose = 1;
+$verbose = 0;
+#while (<@ARGV> && (($_ = shift) ne "") && ($_ =~ /^\-/)){
+#  option: {
+#      /^-v/ && do { $verbose = 1; last option; };
+#      print "Unknown option $_ specified.\n"; &useage; exit 1;
+#  }
+#}
+
+$sourceLibName = "devices";
+$processTableFile = "./processTable";
+$destLibName = shift;
+
+local %ignoreList;
+
+sub useage {
+   print "\n";
+   print "Program: $0 <processName>\n";
+   print "Example: $0 cl013lv7\n";
+   print "Command line options:\n";
+   print "  -v          => Verbose\n";
+}
+
+sub getIgnoreList {
+   open(ifp, "$processTableFile") || die "$0: Can't open file $processTableFile\n";
+   while (<ifp>) {
+      $line = "$_";
+      $line =~ /^(.)/;
+      $c = $1;
+      if ( $c ne "#" ) {
+         $line =~ s/\t/ /;
+         $line =~ s/\n//;
+         @fields = split(/ /,$line);
+         $component = $fields[0];
+         if ( $component ne "" ) {
+            $ignore = 1;
+            foreach $field (@fields) {
+               $field =~ s/\t//;
+               $field =~ s/ //;
+               if ( $field eq $destLibName ) {
+                  $ignore = 0;
+               }
+            }
+            if ( $ignore ) {
+               @ignoreList = (@ignoreList, $component);
+            }
+         }
+      }
+   }
+   close(ifp);
+}
+
+if ( $destLibName eq "" ) {
+  print "*Error: No destination library path given, bye...\n";
+  &useage;
+  exit 1;
+}
+
+if ( ! -d $destLibName ) {
+  print "*Error: Destination library ($destLibName) not found, bye..."
+  &useage;
+  exit 1;
+}
+
+if ( ! -d $sourceLibName ) {
+  print "*Error: Source library ($sourceLibName) directory not found\n";
+  print "*Error: Make sure you run this script in proper directory.\n";
+  exit 1;
+}
+
+if ( ! -f $processTableFile ) {
+   print "*Error: processTable file ($processTableFile) not found, bye...\n";
+   exit 1;
+}
+
+# Make list of file names in source library
+$result = `/bin/csh -f -c 'cd $sourceLibName; echo \*'`;
+$result =~ s/\n//;
+@sourceFiles = split(/ /,$result);
+
+# Make list of file names to ignore in source library
+$result = `/bin/csh -f -c 'cd $sourceLibName; echo \*%'`;
+$result =~ s/\n//;
+@ignoreList = split(/ /,$result);
+
+# Make list of file names in destination library
+$result = `/bin/csh -f -c 'cd $destLibName; echo \*'`;
+$result =~ s/\n//;
+@destFiles = split(/ /,$result);
+
+# Remove any existing links
+#system("cd $destLibName; /bin/rm -f *");
+
+# Get list of cells not valid for this process (@ignoreList)
+&getIgnoreList;
+
+#if ( $verbose ) {
+#   print "sourceFiles = @sourceFiles\n\n";
+#   print "ignoreList = @ignoreList\n\n";
+#}
+
+# Make appropriate links
+foreach $file (@sourceFiles) {
+   # Determine if this file should be ignored
+   $ignore = 0;
+   foreach $f (@ignoreList) {
+      if ( $file eq $f ) {
+         $ignore = 1;
+      }
+   }
+
+   # Make symbolic link if not ignored
+   if ( $ignore ) {
+      if ( $verbose ) {
+         print "Skipping $file\n";
+      }
+      if ( -l "$destLibName/$file" ) {
+         print "Removing link: $file\n";
+         system("cd $destLibName; /bin/rm $file");
+      }
+   } else {
+      if ( ! -l "$destLibName/$file" ) {
+         print "Making link: $file\n";
+         system("cd $destLibName; /bin/ln -s ../$sourceLibName/$file $file");
+      }
+   }
+}
+
+# Remove extra links to non-existent source files/dirs
+foreach $file (@destFiles) {
+   # Remove symbolic link if file/dir not in source
+   if ( ! -d "$sourceLibName/$file" && ! -f "$sourceLibName/$file" ) {
+      print "Removing link: $file\n";
+      system("cd $destLibName; /bin/rm $file");
+   }
+}
+
+exit 0

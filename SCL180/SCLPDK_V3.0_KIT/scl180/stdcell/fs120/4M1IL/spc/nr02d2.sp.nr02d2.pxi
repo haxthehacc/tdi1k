@@ -1,0 +1,13 @@
+* File: nr02d2.sp.nr02d2.pxi
+* Created: Sun Feb 14 19:20:59 2010
+* 
+cc_1 VSS A2 0.0781197f
+cc_2 VSS ZN 0.0913681f
+cc_3 VSS A1 0.0629256f
+cc_4 VDD A2 0.188029f
+cc_5 VDD A1 0.0151087f
+cc_6 A2 ZN 0.118932f
+cc_7 A2 A1 0.285043f
+cc_8 ZN A1 0.333683f
+cc_9 ZN 7 0.0301715f
+cc_10 A1 6 0.00130455f

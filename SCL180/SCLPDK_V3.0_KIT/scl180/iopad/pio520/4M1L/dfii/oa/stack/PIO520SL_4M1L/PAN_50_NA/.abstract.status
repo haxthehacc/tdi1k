@@ -1,0 +1,8 @@
+cUiMoveCellToBin {PAN_50_NA} {IO}
+cUiSelectCellP {PAN_50_NA}
+cUiSetViewStatus {PAN_50_NA} {layout} {1}
+cUiSetViewStatus {PAN_50_NA} {logical} {1}
+cUiSetViewStatus {PAN_50_NA} {abstract.pin} {1}
+cUiSetViewStatus {PAN_50_NA} {abstract.ext} {1}
+cUiSetViewStatus {PAN_50_NA} {abstract} {3}
+cUiSetViewStatus {PAN_50_NA} {abstract.ver} {0}

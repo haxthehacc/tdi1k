@@ -1,0 +1,54 @@
+<HTML><HEAD>CA18MR Design Kit Release Notes</HEAD><BODY><PRE>
+___________________________________________________________________________
+Date: 6/28/2014
+Version: 1.0.2
+
+Library Updates:
+* Fix model name issue with extracted library.
+- Correct model name of rcx_nfet6p0/rcx_pfet6p0 to use 6.0V device n6p0fet/p6p0fet
+
+___________________________________________________________________________
+Date: 6/12/2014
+Version: 1.0.1
+
+Verification Updates:
+DRC
+* Fix Calibre DRC wrapper to include ESD/Latch-up rules file
+
+
+___________________________________________________________________________
+Date: 10/09/2013
+Version: 1.0
+Library: ca18
+
+Relevant Specification Documents:
+Design Rules (CA18*): NPB-PS-0176, rev.16
+Electrical Spec. (CA18*): NPB-PS-0173, rev.14
+Design Application Note (CA18* 5V): NPB-PS-0711, rev.09
+Design Application Note (CA18MR): NPB-PS-1112, rev.01
+
+Process Synopsis:
+* This is an initial development-level kit release for the ca18mr
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* The ca18mr process has 3 layers of aluminum metal and supports:
+  - 6V FETs
+  - 6V gate oxide, drain-extended 12V FETs
+  - 6V low VT native NFET
+  - unsalicided poly, salicided poly, and N-well resistors
+  - 1fF/um2 MIM capacitor between metal2 and metal3
+  - high voltage vertical NPN
+  - vertical PNP
+  - triple well isolation using deep N-well
+  - inductors using 2.8um thick top metal3
+
+Limitations
+* Using the integrated tap option on NFETs causes DRC violations
+
+Software versions tested with this release:
+* Cadence IC release IC6.1.5.500.2
+* Cadence Spectre release MMSIM_10.11.092
+* Synopsys Hspice release D-2010.03-SP1-ENG1
+* Mentor Calibre release 2012.1_37.24
+* Assura not supported in this release
+</PRE></BODY></HTML>

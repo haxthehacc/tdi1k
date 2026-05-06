@@ -1,0 +1,544 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 11/22/06
+Library: ca13 (ca13hc)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.4
+* Electrical Spec: NPB-PS-0577, rev.5
+
+Highlights:
+* This is a development-level kit release for the ca13hc
+  process variant.  Issues may arise which will be addressed in
+  future kit releases.
+* Added high threshold fets, metal5/6 mimcaps, square inductors, a high
+  value resistor, and a vertical pnp
+* DRC and LVS updates
+* If you are using a ca13ha design kit, you will need to transition to
+  this kit to see the latest changes.  This kit contains the updates mentioned
+  above and all the devices from ca13ha.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes.
+
+Software versions tested with this release:
+* Cadence IC releases IC5.1.41 USR3 with IUS5.7 QSR2
+* Cadence AMS Designer requires use of IUS5.7 QSR2
+* Cadence Spectre release MMSIM6.0 USR2 (minimum)
+* Synopsys Hspice release 2005.9 (minimum)
+* Cadence Assura 3.1.5 USR1 (minimum)
+* Mentor Calibre 2006.1_19.19 (minimum)
+
+Process Synopsis:
+* This ca13 design kit library supports only the ca13hc process variant.
+* The ca13hc process has 6 layers of aluminum metal.  It supports the following:
+  - 1.2V and 3.3V fets
+  - high threshold 1.2V fets
+  - low/high value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4/5 and metal 5/6
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - square and octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - vertical pnp
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+
+Environment and Kit Updates:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for steps to follow in switching between different versions of
+  Design Kits. This document is available on the Jazz Ebizz website.
+* Updated CIW->Jazz->Application Notes->FAQ with latest design kit version
+  switching instructions.
+* Updated Technology Library web pages to include ca13hc.
+* This design kit supports the Cadence inherited connection flow.  For more
+  information, refer to the Cadence Inherited Connection Flow Guide in cdsdoc
+  or on sourcelink.cadence.com
+* The run_cal or Jazz verification flow is not supported in this kit.  You will
+  need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Artifact Generator. The Artifact Generator may generate shapes that are not
+  DRC clean. If this happens, you can either increase the scale factor or
+  hand-edit the artifact to clean up the errors.
+  Off-grid errors may still occur. Use Snap-To-Grid to correct these violations
+  before hand-editing the artifact to clean it up.
+* CIW Jazz menu: New utility JAZZ->Application Notes->Design Kit Environment and Kit
+  Setup Report. This utility generates a report of environment variable and other
+  kit-related information to aid in troubleshooting.
+* Add support for Cadence HTML documentation browser variable CDS_DEFAULT_BROWSER.
+  Default is to use Netscape.
+
+General Device Updates:
+* Front-end (simulation) support available for spectre, hspiceD, ADSsim, and  ams-in-ade.
+
+New devices, Design Library:
+* Added high threshold fets (nfet_vth, pfet_vth)
+* Added metal 5/6 mimcaps (cmim3_m5, cmimw3_4_m5)
+* Added square inductors (ind, ind_diff)
+* Added high value resistor (rppoly_hi)
+* Added vertical pnp (vpnp)
+* Added ddnw/diso diodes for deep nwell simulation/verification
+  - replaces 3 terminal ddnw diode
+
+Modified devices, Design Library:
+* Diodes
+  - fixed metal2 overplot of via1 to prevent vias from being dropped for minimum w/l
+* Mimcaps
+  - changed the minimum w/l of metal 4/5 mimcaps to 2.44u
+  - changed the minimum w/l of the stacked mimcaps to 2.72u
+* Mixed-signal fets
+  - Modified source/drain metal width to handle new metal1 minimum area contact and via1
+    overplot values.  The gate contact will be addressed in a future release.
+  - the pcell footprint may change
+* Mos varactor
+  - Changed allowable width range to 2u-8u
+  - Allowable gate length is dependent on the source/drain connection option.  When
+    style=2MET_connected or 2MET, the range is 0.36u-2u.  When style=1MET, the range
+    is 0.5u-2u.
+* Poly Capacitors
+  - changed the minimum w/l of the poly caps to 0.57u
+  - fixed gate to source/drain spacing on small poly caps
+  - fixed cni overplot at gate corners
+  - the pcell footprint may change
+* Octagonal inductors
+  - upgraded inductor toolbox version to 4.0
+  - modified the tap construction in the differential inductor to handle offgrid data
+  - fixed shield algorithm to limit corner gaps
+  - the pcell footprint may change
+* Resistors
+  - Updated Rs, Rend, and dw to match latest electrical specification.
+  - Fixed contact spacing when cntCols > 2
+  - Added resdev around rppoly_lo
+  - the pcell footprint may change
+* Rf fets
+  - removed 2met source/drain connection option.  Was the same as 2met(RF)
+  - added warning when the source/drain connection option is not set to 2met(RF).
+    The model was extracted with this connection option, so all other values used
+    may produce modeling inaccuracies.  See the CA13/SBL13 Design Manual for more
+    information.
+
+Techfile Updates:
+* Added necessary layers to support new devices
+* Initial support for Multi-part paths (MPP)
+  - Created MPP templates for: PTAP, NTAP, v12, v23, v34, v45, and v56
+  - To access MPP templates, manually load the vias_mpp.il file located in
+    $RDS_CDSLIBS/ca13/techfiles into cadence
+  - Usage guidelines are available on the Technology Library web pages for ca13.
+
+Model Updates: Model version v1.8
+* FET
+- Predictive rev 0 models for 1.2v High-Vt FETs
+- Modified 3.3v N and PFET overlap capacitance parameters based on new
+  measurements. Model v1.7 parameters were causing isolation (s12, s21)
+  issues in high-frequency simulations)
+- No change to 3.3v I-V parameters and 1.2v I-V or C-V parameters
+- Correct mismatch effect on wf for multiplicity
+* RES
+- Add rph3t (rsh=1000 ohm/sq) and rps (rsh=6.5 ohm/sq) models based on the
+  updated Espec
+* CAP
+- Add c3t_mim3_m5 and c4t_mimw3_m5 models for 2.75fF mim cap between m5 and m6
+* MOSVAR
+- Update two layout-related parameters (aagap, dvia) based on the pcell layout
+
+***For completeness, the release notes for model patches 1.3, 1.7, and 1.7a are provided
+***The remaining patches were focused on SBL13 devices
+
+Model version v1.7a
+* RES
+- Reduce Rsh 1-sigma for low-value poly resistor from 80e-3 to 50e-3
+* PNP
+- Add PNP model for vpnp. Models supported:
+ pnpa=25x25
+ pnpb=11x11
+ pnpc=5.4x5.4
+ pnpd=3x3
+***
+Model version v1.7
+* FET
+- Release of CA13 Mixed-Signal and RF 1.2v and 3.3v FET models from NPB silicon:
+  BSIM4 models for mixed-signal fets
+  BSIM4 RF models with holistic noise model
+  BSIM4 flicker noise model verified over geometry and bias
+  BPV statistical and mismatch models
+  X-sigma models
+  Removed parameter vtl from all BSIM4 FETs to allow consisten Ft across
+  simulators
+  Small change in FAST 1.2v NFET idsat -> crosses x-sigma boundary
+- Update mosvar model based on measurement data from lot K48320-w2
+  Extend device size range based on test devices as:
+    Option:   metal-1        metal-2
+    Lg[um]:   0.5-2.0        0.36-2.0
+    Wg[um]:   2.0-8.0        2.0-8.0
+- Update pc model (pc & pc3p3) based on measurement data from lot K48320-w2
+* CAP
+- Update cap model (mim3 / smim6) for cox to be consistant with Espec data
+* RES
+- Update res model (rpp3t) to remove 'ns' from 'lr_dw_mismatch' equation
+***
+Model version v1.3
+* FET
+- Added native 3.3V nfet
+
+Verification:
+General:
+* Generated c13_ext library for parasitic extraction support
+  - Was previously called ca13_rcx
+
+Calibre:
+* For calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - xRC support will be available in a future release.
+DRC
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  and vertical pnp
+* Modifications
+- Revised 8.B.b to handle inductor shield
+- Modified mos varactor rules to support new design rules
+DENSITY
+* Revised metal dummy patterns, changed offset dimension, and added 10u fill
+LVS
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s
+XRC
+* Not provided at this time. Will be available in a future release.
+
+Assura:
+* Limitations
+  - BD.H checks 10u for 60u and 80u pitch pads
+DRC
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  and vertical pnp
+* Modifications
+- Revised 8.B.b to handle inductor shield
+- Modified mos varactor rules to support new design rules
+DENSITY
+* Revised metal dummy patterns, changed offset dimension, and added 10u fill
+LVS
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s
+RCX
+* Additions
+- Support for high threshold voltage layer, high value resistor, metal 5/6 mimcaps,
+  and vertical pnp
+* Modifications
+- Updated deep nwell algorithm to support ddnw/diso devices
+- Revised resistor extraction to better handle RWS lvs option
+- Implemented new inductor extraction algorithm to compare xsize, ysize, n, w, s
+___________________________________
+Date: 09/17/05
+Library: ca13 (ca13ha)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.3
+* Electrical Spec: NPB-PS-0577, rev.3
+
+Highlights:
+* Added cells: csmim6, csmimw6_4, cpoly, cpoly3p3, and var_mos3p3 (frontend)
+* Initial release of lvs, esd_lup, softerc, stress, density, and antenna decks 
+* Included documentation for ca13 on Technology Component Info webpage
+* Run trigger callbacks before working with this design kit
+
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+
+Process Synopsis:
+* This ca13 design kit library supports only the ca13ha process variant.
+* The ca13ha process has 6 layers of aluminum metal.  It supports the following:
+  - 1.2V and 3.3V fets
+  - low value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4 and metal 5
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre, spectreS, and ads simulators are supported.
+
+Environment Changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for information regarding installing a Design Kit or switching
+  between different versions of Design Kits.
+  This document is available on the Jazz Ebizz website.
+* Review the CIW->Jazz->Application Notes->FAQ contains steps to perform
+  in the Cadence framework when switching between different versions of
+  Design Kits.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+
+General Updates:
+* The Calibre run_cal or Jazz Calibre verification flow is not supported in this kit.
+  You will need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Built new release notes function to show kit or variant specific release notes
+* Created ca13 device documentation on Technology Component Info webpage 
+
+New devices, Design Library:
+* Added poly (cpoly, cpoly3p3) and stacked capacitors (csmim6, csmimw6_4)
+* Implemented 3.3V mos varactor frontend (var_mos3p3).  Layout support will be
+  available in the next release. 
+* Keep in mind that devices are still being tested and may be modified in future
+  releases to correct issues.
+
+Modified devices, Device Library: 
+* Fets 
+  - Changed S/D metal width calculation to support Style options and current.  Using ablb
+    overplot values can produce incorrect as, ad, ps, and pd values. 
+  - Updated implant enclosure around poly head to handle minimum gate length
+
+Device limitations, Design Library:
+* Fets
+  - Modifying the current parameter or changing the gate connection to 'Alternate' can produce
+    DRC errors.
+* Ind
+  - Currently the ca18hr inductors have been implemented in this process.  When the ca13 versions
+    are integrated into the pdk, the pcell footprint may change.
+* Res
+  - Currently the ca18hr resistors have been implemented in this process.  When the ca13 versions
+    are integrated into the pdk, the pcell footprint may change. Additionally, the resistance
+	 specifications may change in the next release.
+
+Techfile Updates:
+* Changed purpose 'logical' to 'resistor', retaining the same purpose number.  The 'resistor'
+  purpose is used to implement dummy resistors. 
+  
+Model Updates: Model version v1.1
+* The following models are included in the model release. Models that are based on
+  predicted data or are copies of data from other process nodes are indicated.
+* Model cards may be provided that are not supported by the Cadence Design Kit
+  design library.
+FET
+* Changed noise mode for 1.2V fets to create consistent results across
+  simulators. Updated model to fnoimod=0, flkmod=0, and updated af, ef, and kf.
+* Fixed ADS implementation of 1.2V RF Fet to properly pass NF and Rbpb.
+* Added 3.3V MOS Varactor model. This model was derived from lot
+  K27632
+* Added 1.2V/3.3V poly capacitor models (pc, pc3p3)
+CAP
+* Added new 5.5fF stacked mim cap model (between m4-m5-m6) with
+  model name c3t_smim6, c4t_smimw6.
+Statistical
+* Based on corner model v1.1
+* Changes in addition to corner model changes:
+  - Added mismatch model to new 5.5fF stacked mim cap based on measurements
+  from testchip A0196
+
+Verification:
+Calibre
+* Minimum version required is 2004.4_11
+* Updated calibre interactive setup document.  Go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+
+Calibre Limitations:
+* xRC support will be available in a future release.
+
+DRC
+* Added MC and SMC mimcap rules
+* Added metal pin checks
+* Implemented internal latchup checks
+* Updated 6.D.d and 11.D.d to more accurately handle check 
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+
+Assura
+* Not provided in this release. Will be available in a future release.
+___________________________________
+Date: 07/29/05
+Library: ca13 (ca13ha)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, rev.2
+* Electrical Spec: NPB-PS-0577, rev.2
+
+Highlights:
+* Implemented development release ca13ha pdk
+* Added cells: cmim3 and cmimw3_4
+* Calibre Interactive support 
+
+
+Software versions tested with this release:
+* Cadence IC releases IC50.33USR2 (minimum)
+* Mentor Calibre releases 2004.4_11.22 (minimum)
+
+Process Synopsis:
+* This ca13 design kit library supports only the ca13ha process variant.
+* The ca13ha process has 6 layers of aluminum metal.  It supports the following:
+  - 1.2V and 3.3V fets
+  - low value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4 and metal 5
+  - inductors using 3um thick top metal 6
+  - triple well (deep nwell)
+* This design kit is in the development phase, so issues may arise which will be
+  addressed in future releases.
+* Currently, only the spectre, spectreS, and ads simulators are supported.
+
+Environment Changes:
+* Review the Jazz Cadence Design Kit Installation Instructions document
+  NPB-PS-0419 for information regarding installing a Design Kit or switching
+  between different versions of Design Kits.
+  This document is available on the Jazz Ebizz website.
+* Review the CIW->Jazz->Application Notes->FAQ contains steps to perform
+  in the Cadence framework when switching between different versions of
+  Design Kits.
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function. To set this variable, modify your project-specific
+  .cshrc file and change the setting of RDS_CDS_VERIFY_TECH to the process
+  variant you are using. Here are step-by-step instructions:
+  - Go to your project workarea as usual using the source
+    and cdsprj commands.
+  - Type the command "cd ../../../cds_master"
+  - Edit the file cdsPrj.cshrc that is in this directory
+  - Locate the line containing the words "setenv RDS_CDS_VERIFY_TECH"
+  - Change the line to the actual process variant you are using
+  - Save your changes
+  - Close your terminal. You must open a new terminal and start again
+    for the changes to take effect.
+  - source your RDS.cshrc and type the cdsprj command again.
+
+General Updates:
+* The Calibre run_cal or Jazz Calibre verification flow is not supported in this kit.
+  You will need to migrate to the Calibre Interactive Flow.  Documentation can be found
+  in CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Created new release notes function to show kit or variant specific release notes
+
+New devices, Design Library:
+* Initial support for ca13ha process.  Keep in mind that devices are still being
+  tested and may be modified in future releases to correct issues.
+
+Device limitations, Design Library:
+* Caps
+  - The mimcaps may have DRC errors.  The MC* rules have not been fully implemented in this
+    kit release. Only preliminary testing has been performed on the layouts and DRC rules.
+* Fets 
+  - The S/D metal width value is correct for only the default gate connection and style 
+    option.  All other values for these two parameters will generate S/D metal width values
+	 that differ from the actual layout.  This will affect the netlisted ad, as, pd, ps values
+	 used by the mixed-signal fets.
+  - Modifying the current parameter or changing the gate connection to 'Alternate' can produce
+    DRC errors.
+  - Depending on the w/l value used, the 3.3V fets may violate rule 18.C.b 
+* Ind
+  - Currently the ca18hr inductors have been implemented in this process.  When the ca13 versions
+    are integrated into the pdk, the pcell footprint may change.
+* Res
+  - Currently the ca18hr resistors have been implemented in this process.  When the ca13 versions
+    are integrated into the pdk, the pcell footprint may change. Additionally, the resistance
+	 specifications may change in the next release.
+  
+Model Release version v1.0
+* The following models are included in the model release. Models that are based on
+  predicted data or are copies of data from other process nodes are indicated.
+* Model cards may be provided that are not supported by the Cadence Design Kit
+  design library.
+FET:
+* 1.2V: nfets, pfets, nfet, pfet, nfet_rf, pfet_rf, pc, dn, dp, ndiode, pdiode
+* 3.3V: n3p3fets, p3p3fets, n3p3fet, p3p3fet, n3p3fet_rf, p3p3fet_rf,
+  pc3p3, dn3p3, dp3p3, n3p3diode, p3p3diode
+* rnw (nwell resistor)
+* nwdiode
+* d_dnw (deep nwell diodes)
+* Predicted model from ca18: n3p3fet_ld, p3p3fet_ld, n3p3fet_vt0
+* Predicted model from ca18: n5p0fets, n5p0fet, p5p0fets, p5p0fet, pc5p0,
+  n5p0diode, p5p0diode
+CAP:
+* c3t_mim, c3t_mimw, c4t_mimw (1fF mim: psub, well, well with explicit sub)
+* c3t_mim2, c3t_mimw2, c4t_mimw2 (2fF mim: psub, well, well with explicit sub)
+* c3t_smim4, c3t_smimw4, c4t_smimw4 (4fF stacked mim: psub, well, well with explicit sub)
+* c3t_mim2_m4, c3t_mimw2_m4, c4t_mimw2_m4 (2fF mim: psub, well, well with explicit sub)
+* c3t_mim3, c4t_mimw3 (3fF mim: psub, well with explicit sub)
+IND:
+* Predicted model from ca18: ind_1u, ind_3u, ind_6u (inductor compact model for 1/3/6um MT)
+* Predicted model from ca18: inddiff_1u, inddiff_3u, inddiff_6u (Differential inductor)
+* Predicted model from ca18: l3t_l, ldiff_l
+* Predicted model from ca18: balun1_ca13m6_3u, balun5_ca13m6_3u, balun10_ca13m6_3u
+  (balun fixed compact model for 1/5/10nH fixed layout)
+RES:
+* Predicted model from ca18: rpp3t (p+ poly low value), rps (salicided poly)
+* Predicted model from ca18: rph3t (p+ poly high value)
+* Predicted model from ca18: fuse (metal fuse)
+* Predicted model from ca18: rmet1-rmet6 (dummy LVS metal resistor)
+Statistical Model:
+* Based on corner model v1.0
+  - See corner model release notes for changes
+* Process + mismatch support:
+  - fets (1.2 and 3.3 M/S and RF)
+  - resistors (rpp3t)
+  - capacitors (c3t_mim*, c3t_smim*, c4t_mim*, c4t_smim*)
+  - inductors (l3t_l, ldiff_l, ind_*, inddiff_*)
+* Process only support:
+  - fet primitive models (nfet, pfet, n3p3fet, p3p3fet)
+  - fuse
+  - nwell resistor
+* Nominal only:
+  - d_dnw deep nwell diodes
+  - All others
+
+Verification:
+Calibre
+* Minimum version required is 2004.4_11
+* Updated calibre interactive setup document.  Go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+
+Limitations:
+* Only standard drc and antenna rules are offerred at this time.  Latchup, esd latchup, 
+  density, softerc, and stress rules will be available in a future release.
+* LVS and xRC support will be available in the next release.
+
+DRC
+* Initial drc rules are available. Limitations on DRC rule support:
+  - mimcap checks (MC*) are not available
+Antenna
+* Initial antenna rules
+
+Assura
+* Not provided in this release. Will be available in the next release.
+</PLAINTEXT></BODY></HTML>

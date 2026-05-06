@@ -1,0 +1,17 @@
+* File: gcnfnn7.sp.gcnfnn7.pxi
+* Created: Sun Feb 14 19:44:51 2010
+* 
+cc_1 VSS EN 0.0692838f
+cc_2 VSS U3_drain 0.213266f
+cc_3 VSS CLK 0.0374175f
+cc_4 VSS GCLK 0.267683f
+cc_5 VSS u2_drain 0.0148858f
+cc_6 VDD EN 0.0912718f
+cc_7 VDD U3_drain 0.382548f
+cc_8 VDD CLK 0.0390053f
+cc_9 VDD GCLK 0.337901f
+cc_10 EN U3_drain 0.0124845f
+cc_11 EN CLK 0.187388f
+cc_12 U3_drain CLK 0.278655f
+cc_13 U3_drain GCLK 0.898954f
+cc_14 CLK GCLK 5.19205e-19

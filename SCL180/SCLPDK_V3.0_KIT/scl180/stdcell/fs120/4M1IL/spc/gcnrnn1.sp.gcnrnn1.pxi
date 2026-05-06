@@ -1,0 +1,19 @@
+* File: gcnrnn1.sp.gcnrnn1.pxi
+* Created: Sun Feb 14 19:45:06 2010
+* 
+cc_1 U4_gate VSS 0.0868464f
+cc_2 U4_gate CLK 0.259742f
+cc_3 U4_gate VDD 0.0899293f
+cc_4 U4_gate EN 0.284462f
+cc_5 U4_gate GCLK 0.324411f
+cc_6 VSS CLK 0.0253766f
+cc_7 VSS EN 0.116883f
+cc_8 VSS GCLK 0.0337322f
+cc_9 VSS u2_drain 0.0102486f
+cc_10 CLK VDD 0.0657134f
+cc_11 CLK EN 0.132068f
+cc_12 CLK GCLK 5.48605e-19
+cc_13 VDD EN 0.0473963f
+cc_14 VDD GCLK 0.116655f
+cc_15 EN GCLK 0.0786018f
+cc_16 EN u2_drain 0.0109501f

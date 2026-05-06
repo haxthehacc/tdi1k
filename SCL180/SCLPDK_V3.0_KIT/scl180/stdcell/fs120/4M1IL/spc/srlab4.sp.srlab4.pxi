@@ -1,0 +1,29 @@
+* File: srlab4.sp.srlab4.pxi
+* Created: Sun Feb 14 19:59:09 2010
+* 
+cc_1 U6_in1 VDD 0.257202f
+cc_2 U6_in1 RN 0.199836f
+cc_3 U6_in1 U6_out 0.516424f
+cc_4 U6_in1 VSS 0.36806f
+cc_5 U6_in1 SN 0.152893f
+cc_6 U6_in1 QN 0.0981453f
+cc_7 U6_in1 Q 0.358419f
+cc_8 VDD RN 0.0402873f
+cc_9 VDD U6_out 0.171087f
+cc_10 VDD SN 0.0152355f
+cc_11 VDD QN 0.192772f
+cc_12 VDD Q 0.252396f
+cc_13 RN U6_out 0.149256f
+cc_14 RN VSS 0.0324255f
+cc_15 U6_out VSS 0.270299f
+cc_16 U6_out SN 0.302953f
+cc_17 U6_out QN 0.294702f
+cc_18 U6_out Q 0.00303918f
+cc_19 U6_out U6_u7_drain 0.00425642f
+cc_20 VSS SN 0.112242f
+cc_21 VSS QN 0.031139f
+cc_22 VSS Q 0.0471539f
+cc_23 VSS U7_u7_drain 0.0148858f
+cc_24 SN QN 5.83743e-19
+cc_25 SN U6_u7_drain 0.00333723f
+cc_26 QN Q 0.0331156f

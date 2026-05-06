@@ -1,0 +1,103 @@
+<HTML><HEAD></HEAD><BODY><PLAINTEXT>
+___________________________________
+Date: 2014/02/13
+Library: sbl13 (sbl13sa)
+Version: 1.0.1
+
+Verification:
+* Updated DRC Large Die (LD) checks to reflect Design Application Note updates.
+* Corrected DRC rules DT1.Bad and DT2.Bad.
+
+___________________________________
+Date: 7/7/2014
+Library: sbl13 (sbl13sa)
+Relevant Specification Documents:
+* Design Rules: NPB-PS-0663, Rev.5
+* Electrical Spec: NPB-PS-0577, Rev.8
+* Design Application Note: NPB-PS-0826, Rev.1
+* Design Application Note: NPB-PS-1156, Rev.0
+* Modeling Design Manual: NPB-PS-0577, Rev.8
+
+Highlights:
+* This design kit supports the sbl13sa process variant.
+* Initial release for IC6.1 (IC6.1.5) Open Access database format
+* Derived from sbl13hc
+* Added metal7
+* DRC and LVS updates for addded metal7
+* Be sure to run "Trigger Callbacks" before working with this design kit.
+  This will allow you to see the latest changes. Turn off the "Preview"
+  option and then re-run Trigger Callbacks after you have verified the
+  changes that will be made to your design.
+
+Software versions tested with this release:
+* Cadence IC releases IC6.1.5.517
+* Cadence AMS Designer requires use of IUS8.2 or later
+* Cadence Spectre release MMSIM7.2 (minimum)
+* Synopsys Hspice release D-2010.03-SP1
+* Cadence Assura 4.13.102 (4.1 USR3)
+* Mentor Calibre 2010.2_38
+
+Process Synopsis:
+* This sbl13 design kit library supports the sbl13hc and sbl13sa process variants.
+* The sbl13sa process has 7 layers of aluminum metal.  It supports the following:
+  - low, medium, and high breakdown npns
+  - 1.2V and 3.3V fets
+  - high threshold 1.2V fets
+  - low/high value unsalicided and nwell resistors
+  - 3fF/um2 mim capacitors between metal 4/5 and metal 5/6
+  - 6fF/um2 mim capacitors between metal 4, metal 5, and  metal 6
+  - square and octagonal inductors using 3um thick top metal 6
+  - 3.3V mos varactor
+  - vertical pnp
+  - triple well (deep nwell)
+
+Process Variant Support:
+* You MUST set the environment variable RDS_CDS_VERIFY_TECH to sbl13sa
+  in order to use this design kit. If this variable is not set, the kit will
+  refuse to function.
+
+Device Library and Technology File Updates:
+* Initial release of IC6.1 compatible design kit and technology files
+
+Model Updates: Model version v3.1
+*************************** v3.1 contents *******************************
+2014/07/07:
+- updated from sbc18hc kit to support GIT6.0q214.  No model change.
+
+Verification:
+
+Calibre:
+* For calibre interactive setup document, go to:
+  CIW->Jazz->Verification->Calibre Interactive w/xRC
+* Jazz Verification menu is disabled for technologies where
+  it is not supported
+* Limitations:
+  - The following npn rules have not been implemented: B15, B23, 94.BIP.1
+    They are still being finalized and will be included when ready.
+  - BMP.2 does not completely check all cases
+  - BD.H checks 10u for 60u and 80u pitch pads
+  - 51.B flags the terminals of the inductors
+  - xRC support will be available in a future release.
+
+DRC
+* Initial release of deck
+ANTENNA
+* Initial release of deck
+DENSITY
+* Initial release of deck
+ERC
+* Initial release of deck
+ESD_LUP
+* Initial release of deck
+SOFTERC
+* Initial release of deck
+STRESS
+* Initial release of deck
+LVS
+* Initial release of deck
+XRC
+* Not provided at this time. Will be available in a future release.
+
+Assura:
+* Not provided at this time.
+</PLAINTEXT></BODY></HTML>

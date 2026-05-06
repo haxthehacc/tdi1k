@@ -1,0 +1,7 @@
+cUiMoveCellToBin {PIO520SL_4M1L} {IO}
+cUiSetViewStatus {PIO520SL_4M1L} {layout} {1}
+cUiSetViewStatus {PIO520SL_4M1L} {logical} {0}
+cUiSetViewStatus {PIO520SL_4M1L} {abstract.pin} {0}
+cUiSetViewStatus {PIO520SL_4M1L} {abstract.ext} {0}
+cUiSetViewStatus {PIO520SL_4M1L} {abstract} {0}
+cUiSetViewStatus {PIO520SL_4M1L} {abstract.ver} {0}

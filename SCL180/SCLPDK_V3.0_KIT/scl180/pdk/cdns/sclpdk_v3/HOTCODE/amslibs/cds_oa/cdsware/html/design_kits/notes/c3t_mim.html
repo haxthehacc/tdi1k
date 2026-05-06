@@ -1,0 +1,49 @@
+<html>
+<body>
+<h1>DESCRIPTION:</h1> 
+
+'c3t_mim' implements the MIM capacitor over substrate.
+
+<h1>ATTRIBUTES:</h1>
+<ul>
+<li><b>Substrate Node:</b> The node to which the substrate of the capacitor is connected. This attribute provides an implicit substrate pin for the device.</li>
+
+<li><b>ToUse:</b> Controls the way multiple parallel capacitors are specified. When 'ToUse' is set to 'multiplier', the Count attribute will be editable and the 'Columns in X' and 'Rows in Y' attributes will disappear. When 'ToUse' is set to 'col/row' the opposite will happen. See below for the meaning of these attributes.</li>
+
+<li><b>Count:</b> Indicates the number of capacitors connected in parallel. Specifying a 'Count' of n is equivalent to drawing n capacitor instances and connecting them in parallel. In VirtuosoXL the device will be implemented as n separate layout cells. This attribute is available when 'ToUse' is set to 'multiplier'. This attribute can only be used in the schematic.</li>
+
+<li><a href ="../images/c3t_mim_rc.html"><b>Columns in X:</b></a> When 'ToUse' is set to 'col/row' the capacitor will be implemented as an array of unit capacitors. 'Columns in X' specifies the number of columns of unit capacitors in the array.</li>
+
+<li><a href ="../images/c3t_mim_rc.html"><b>Rows in Y:</b></a> When 'ToUse' is set to 'col/row' the capacitor will be implemented as an array of unit capacitors. 'Rows in Y' specifies the number of rows of unit capacitors in the array.</li>
+
+<li><b>Capacitor Calculation:</b> This button brings up the capacitor calculation window</li>.
+
+<li><b>Calculate:</b> Indicates the data entry mode of the capacitor calculator. A Capacitor is described by the attributes 'Capacitance', 'Unit Width', 'Unit Length' and 'Aspect Ratio'. Depending on the value of the 'Calculate' attribute, two of these attributes will be editable and the other two will be calculated : 'C' calculates 'Capacitance' and 'Aspect Ratio' based on 'Unit Width' and 'Unit Length'. 'L' calculates 'Unit Length' and 'Aspect Ratio' based on 'Capacitance' and 'Unit Width'. 'W' calculates 'Unit Width' and 'Aspect Ratio' based on 'Capacitance' and 'Unit Length'. 'WL' calculates 'Unit Width' and 'Unit Length' based on 'Capacitance' and 'Aspect Ratio'.</li> 
+
+<li><a href="../images/c3t_mim_xy.html"><b>Unit Width (X):</b></a> Controls the width of a unit capacitor in the capacitor array.</li>
+
+<li><a href="../images/c3t_mim_xy.html"><b>Unit Length (Y):</b></a> Controls the length of a unit capacitor in the capacitor array.</li>
+
+<li><b>Capacitance:</b> Controls the total capacitance value of the capacitor array.</li>
+
+<li><b>Unit ARatio = w/l:</b> Controls the aspect ratio of a unit capacitor in the capacitor array.</li>
+
+<li><a href="../images/c3t_mim_bc.html"><b>Bottom Contacts:</b></a> Controls the location of bottom plate contacts around each unit capacitor in the capacitor array. This location is specified with a string of characters indicating the sides where bottom plate contacts have to be added: 'l' means left, 'r' means right, 't' means top and 'b' means bottom. For instance, 'Bottom Contacts'=l will add a column of bottom plate contacts on the left side of the devices, 'Bottom Contacts'=lbrt will add a full ring of bottom plate contacts around the device. 'Bottom Contacts'=n generates a device without bottom plate contacts.</li>
+
+<li><a href="../images/c3t_mim_bulk.html"><b>Bulk:</b></a> The capacitor pcell support the use of a shield around the array. The shield is a stack of active, contact, metal1, via1, metal2, via2 and metal3. The 'Bulk' attribute controls the location of the shield around the capacitor array. This location is specified with a string of characters indicating the sides where shields have to be added: 'l' means left, 'r' means right, 't' means top and 'b' means bottom. For instance, Bulk=l will add a shield on the left side of the array, Bulk=lbrt will add a full shield ring around the array. Bulk=n generates a device without shield.</li> 
+
+<li><b>Cut Bulk:</b> The capacitor pcell support the use of a shield around the array. The shield is a stack of active, contact, metal1, via1, metal2, via2 and metal3. To make it easier to contact the plates of the capacitor, holes can be generated in the top layers of the shield. When 'Cut Bulk' is set to 'Center_M3', holes will be cut in the metal3, in the center of each side.  When 'Cut Bulk' is set to 'Center_M2M3', holes will be cut in metal2/via2/metal3, in the corners of each side.</li> 
+</ul>
+
+<h1>NOTES:</h1> 
+<ul>
+</ul>
+
+<h1>LVS:</h1>
+<ul>
+<li>The following attributes are checked during LVS: Capacitance </li>
+<li>LVS will not recognize a c3t_mim instance when it touches an nwell shape. If you want to draw mim capacitors over nwell, use 'c3t_mimw'</li>
+</ul>
+
+</body>
+</html>
