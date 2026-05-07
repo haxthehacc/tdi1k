@@ -1,0 +1,35 @@
+************************************************************************
+* auCdl Netlist:
+* 
+* Library Name:  tdi1k
+* Top Cell Name: column_isource
+* View Name:     schematic
+* Netlisted on:  May  7 11:45:32 2026
+************************************************************************
+
+.INCLUDE  /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_6M1L/rev2.0/ref_libs/ts018_scl_prim/cdlNetlist.header
+*.BIPOLAR
+*.RESI = 0 
+*.RESVAL
+*.CAPVAL
+*.DIOPERI
+*.DIOAREA
+*.EQUATION
+*.SCALE MICRON
+*.MEGA
+.PARAM
+
+
+
+************************************************************************
+* Library Name: tdi1k
+* Cell Name:    column_isource
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT column_isource GND IOUT VDD
+*.PININFO IOUT:O GND:B VDD:B
+MPOUT_0 IOUT net1 VDD VDD P W=4.0 L=1.0 m=1.0
+MPREF net1 net1 VDD VDD P W=4.0 L=1.0 m=1.0
+.ENDS
+

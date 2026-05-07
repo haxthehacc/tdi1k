@@ -1,0 +1,34 @@
+************************************************************************
+* auCdl Netlist:
+* 
+* Library Name:  tdi1k
+* Top Cell Name: pixel_array_1024x60
+* View Name:     layout
+* Netlisted on:  May  7 11:47:32 2026
+************************************************************************
+
+.INCLUDE  /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/HOTCODE/amslibs/cds_oa/cdslibs/ts18scl/devices/ts018_oa_compana_6M1L/rev2.0/ref_libs/ts018_scl_prim/cdlNetlist.header
+*.BIPOLAR
+*.RESI = 0 
+*.RESVAL
+*.CAPVAL
+*.DIOPERI
+*.DIOAREA
+*.EQUATION
+*.SCALE MICRON
+*.MEGA
+.PARAM
+
+
+
+************************************************************************
+* Library Name: tdi1k
+* Cell Name:    pixel_4T
+* View Name:    layout
+************************************************************************
+
+.SUBCKT pixel_4T GND RST_CTRL SEL_CTRL TX_CTRL VDD VOUT
+*.PININFO RST_CTRL:I SEL_CTRL:I TX_CTRL:I VOUT:O GND:B VDD:B
+DDP net2 GND DP 9 12 M=1
+MSEL MSF MRST MTX .ENDS
+

@@ -1,0 +1,36 @@
+Virtuoso Framework License (111) was checked out successfully. Total checkout time was 0.01s.
+MPS timeout is set to '60' seconds.
+*WARNING* '/home/cmos/projects/tdi1k/cds_master/project.lib', Line 3: path /home/cmos/projects/tdi1k/cds_master already belongs to LIB tdi1k.
+*WARNING* '/home/cmos/projects/tdi1k/cds_master/project.lib', Line 3: path /home/cmos/projects/tdi1k/cds_master already belongs to LIB tdi1k.
+Loading ts018_scl_prim/libInit.il ...
+	Loading ts018_scl_prim/globals.il ... done!
+	Loading ts018_scl_prim/loadCxt.ile ... done!
+	Loading context 'ts018_scl_prim' from library 'ts018_scl_prim' ... done!
+	Loading context 'pdkUtils' from library 'ts018_scl_prim' ... done!
+	Loading ts018_scl_prim/libInitCustomExit.il ... **
+	Attach user init procedure to Virtuoso CDL Out form**
+	Loading ts018_scl_prim/customFilter.il
+	Loading ts018_scl_prim/ciProspector.il
+done!
+Loaded ts018_scl_prim/libInit.il successfully!
+Loading hnlInit.cxt 
+Running Artist Hierarchical Netlisting ...
+Loading cdf.cxt 
+*Error* _emsGetMsg: argument #3 should be an integer (type template = "ooxtl") - "EMS_ERROR"
+ERROR (OSSHNL-411): Stopping netlisting due to SKILL error while formatting devices. To bypass this
+check, set the environment variable oss.core stopNetlistingOnFormatterError
+
+*Error* _emsGetMsg: argument #3 should be an integer (type template = "ooxtl") - "EMS_ERROR"
+ERROR (OSSHNL-411): Stopping netlisting due to SKILL error while formatting devices. To bypass this
+check, set the environment variable oss.core stopNetlistingOnFormatterError
+
+*Error* _emsGetMsg: argument #3 should be an integer (type template = "ooxtl") - "EMS_ERROR"
+ERROR (OSSHNL-411): Stopping netlisting due to SKILL error while formatting devices. To bypass this
+check, set the environment variable oss.core stopNetlistingOnFormatterError
+
+*Error* _emsGetMsg: argument #3 should be an integer (type template = "ooxtl") - "EMS_ERROR"
+ERROR (OSSHNL-411): Stopping netlisting due to SKILL error while formatting devices. To bypass this
+check, set the environment variable oss.core stopNetlistingOnFormatterError
+
+End netlisting May  7 11:47:32 2026
+ERROR (OSSHNL-514): Netlist generation failed because of the errors reported above. The netlist might not have been generated at all, or the generated netlist could be corrupt. Fix the reported errors and regenerate the netlist.
