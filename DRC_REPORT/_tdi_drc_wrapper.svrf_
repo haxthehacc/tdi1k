@@ -1,0 +1,40 @@
+//
+//  Rule file generated on Thu May 14 11:46:52 2026
+//  by Calibre Interactive v2022.4_37.20    Fri Dec 2 17:43:16 PST 2022
+//
+//      *** PLEASE DO NOT MODIFY THIS FILE ***
+//
+//
+
+
+// +++ CUSTOMIZATION SETTINGS START +++
+
+#define "DRC_OPT" DRC
+#define "DRC_TECH" ts18scl
+#define "4M1L" 
+#define "USG" 
+#define "DRC_TYPE" CHIP
+#undefine "DFM_CHECK"
+#define "DRC_VOLTAGE" 1.8V/3V
+#undefine "MORE_SWITCHES"
+#undefine "BIT_CELL_RUNSETS"
+
+// +++ CUSTOMIZATION SETTINGS END +++
+
+
+LAYOUT PATH "/home/cmos/projects/tdi1k/tdi_sensor_top.gds"
+LAYOUT SYSTEM GDSII
+LAYOUT PRIMARY "tdi_sensor_top"
+
+DRC RESULTS DATABASE "drc.results" ASCII
+DRC CELL NAME YES CELL SPACE XFORM
+
+DRC SUMMARY REPORT "drc.summary" REPLACE HIER
+
+DRC MAXIMUM RESULTS 1000
+
+DRC MAXIMUM VERTEX 4096
+
+DRC ICSTATION YES
+
+INCLUDE "/home/cmos/projects/tdi1k_repo/rules/calibre/tdi_drc_wrapper.svrf"

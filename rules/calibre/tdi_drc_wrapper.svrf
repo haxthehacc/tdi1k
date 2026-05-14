@@ -1,0 +1,4 @@
+#DEFINE 3.3V_only
+#DEFINE CHIP
+INCLUDE /home/cmos/projects/tdi1k_repo/rules/calibre/DRC_TS18SL_SCL_CALIBRE
+DRC MAXIMUM RESULTS ALL

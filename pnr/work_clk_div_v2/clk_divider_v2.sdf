@@ -1,0 +1,792 @@
+(DELAYFILE
+  (SDFVERSION "3.0")
+  (DESIGN "clk_divider_v2")
+  (DATE "Thu May 14 06:55:12 2026")
+  (VENDOR "Cadence Design Systems, Inc.")
+  (PROGRAM "Innovus")
+  (VERSION "v21.15-s110_1 ((64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64))")
+  (DIVIDER /)
+  (VOLTAGE 1.620000::1.620000)
+  (PROCESS "1.000000::1.000000")
+  (TEMPERATURE 125.000000::125.000000)
+  (TIMESCALE 1.0 ns)
+
+  (CELL
+    (CELLTYPE  "clk_divider_v2")
+    (INSTANCE)
+      (DELAY
+	(ABSOLUTE
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z cnt_reg\[10\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z clk_line_pulse_reg/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z cnt_reg\[9\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z clk_line_reg/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z cnt_reg\[7\]/CDN  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z cnt_reg\[11\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT FE_OFC0_rst_n_sync/Z cnt_reg\[8\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT clk_50m cnt_reg\[12\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[11\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[10\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[9\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[8\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[7\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[6\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[5\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m clk_line_reg/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[3\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[4\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m clk_line_pulse_reg/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[2\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[1\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m rst_n_sync_reg/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m rst_sync_meta_reg/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_50m cnt_reg\[0\]/CP  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT rst_n rst_n_sync_reg/CDN  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT rst_n rst_sync_meta_reg/CDN  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT clk_line_reg/Q g789__7098/S  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT clk_line_reg/Q clk_line  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT clk_line_pulse_reg/Q clk_line_pulse  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT cnt_reg\[12\]/Q g765__2398/C2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[12\]/Q g767__5107/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[12\]/Q g805__2346/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[11\]/Q g768__6260/B2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[11\]/Q g770__4319/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[11\]/Q g794__4733/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[10\]/Q g771__8428/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[10\]/Q g794__4733/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[9\]/Q g773__5526/C2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[9\]/Q g775__3680/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[9\]/Q g796__9315/A3  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[8\]/Q g776__6783/C2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[8\]/Q g778__2802/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[8\]/Q g796__9315/A4  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[7\]/Q g779__1617/C2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[7\]/Q g781__1705/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[7\]/Q g796__9315/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[6\]/Q g782__5122/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[6\]/Q g800__2883/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[5\]/Q g784__8246/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[5\]/Q g800__2883/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[4\]/Q g787__1881/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[4\]/Q g800__2883/A3  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[3\]/Q g791__6131/C2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[3\]/Q g797__7482/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[3\]/Q g805__2346/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[2\]/Q g798__6161/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[1\]/Q g801__9945/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[0\]/QN cnt_reg\[0\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT cnt_reg\[0\]/Q g801__9945/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g805__2346/ZN g800__2883/A4  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g800__2883/ZN g796__9315/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g801__9945/CO g798__6161/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g801__9945/S cnt_reg\[1\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g796__9315/ZN g794__4733/A3  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g798__6161/S cnt_reg\[2\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g794__4733/ZN g793__5115/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g798__6161/CO g791__6131/C1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g798__6161/CO g793__5115/A2  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g798__6161/CO g797__7482/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g792/ZN g789__7098/I1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g797__7482/Z g791__6131/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g797__7482/Z g787__1881/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g787__1881/CO g784__8246/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g787__1881/S cnt_reg\[4\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g791__6131/ZN cnt_reg\[3\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g789__7098/Z clk_line_reg/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g784__8246/CO g782__5122/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g784__8246/S cnt_reg\[5\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g782__5122/S cnt_reg\[6\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g782__5122/CO g779__1617/C1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g782__5122/CO g781__1705/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g781__1705/Z g776__6783/C1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g781__1705/Z g779__1617/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g781__1705/Z g778__2802/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g779__1617/ZN cnt_reg\[7\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g778__2802/Z g773__5526/C1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g778__2802/Z g776__6783/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g778__2802/Z g775__3680/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g776__6783/ZN cnt_reg\[8\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g793__5115/Z g765__2398/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g793__5115/Z g773__5526/B  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT g793__5115/Z g776__6783/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g793__5115/Z g779__1617/A  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT g793__5115/Z g789__7098/I0  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT g793__5115/Z g791__6131/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g793__5115/Z clk_line_pulse_reg/D  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT g793__5115/Z g792/I  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT g775__3680/Z g771__8428/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g775__3680/Z g773__5526/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g773__5526/ZN cnt_reg\[9\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g771__8428/S cnt_reg\[10\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g771__8428/CO g768__6260/B1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g771__8428/CO g770__4319/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g768__6260/Z cnt_reg\[11\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g770__4319/ZN g765__2398/C1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g770__4319/ZN g767__5107/A1  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g770__4319/ZN g768__6260/A  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g767__5107/ZN g765__2398/B  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT g765__2398/ZN cnt_reg\[12\]/D  (0.000::0.000) (0.000::0.000))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[12\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[6\]/CDN  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[5\]/CDN  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[3\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[4\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[2\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[1\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q cnt_reg\[0\]/CDN  (0.002::0.002) (0.002::0.002))
+	(INTERCONNECT rst_n_sync_reg/Q FE_OFC0_rst_n_sync/I  (0.001::0.001) (0.001::0.001))
+	(INTERCONNECT rst_sync_meta_reg/Q rst_n_sync_reg/D  (0.000::0.000) (0.000::0.000))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "buffd1")
+    (INSTANCE  FE_OFC0_rst_n_sync)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH I Z  (0.549::0.549) (0.476::0.476))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[12\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.299::0.299))
+	(IOPATH (posedge CP) Q  (0.500::0.500) (0.561::0.561))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.228::0.228) (-0.104::-0.104))
+	(SETUPHOLD (negedge D) (posedge CP) (0.187::0.187) (-0.071::-0.071))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "oan211d1")
+    (INSTANCE  g765__2398)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A ZN  (0.159::0.159) (0.077::0.077))
+	(IOPATH B ZN  (0.212::0.212) (0.089::0.089))
+	(IOPATH C1 ZN  (0.398::0.398) (0.115::0.115))
+	(IOPATH C2 ZN  (0.413::0.413) (0.107::0.107))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[11\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.287::0.287))
+	(IOPATH (posedge CP) Q  (0.504::0.504) (0.563::0.563))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.154::0.154) (-0.085::-0.085))
+	(SETUPHOLD (negedge D) (posedge CP) (0.177::0.177) (-0.065::-0.065))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nd02d1")
+    (INSTANCE  g767__5107)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.115::0.115) (0.102::0.102))
+	(IOPATH A2 ZN  (0.108::0.108) (0.094::0.094))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ora21d1")
+    (INSTANCE  g768__6260)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A Z  (0.169::0.169) (0.222::0.222))
+	(IOPATH B1 Z  (0.155::0.155) (0.264::0.264))
+	(IOPATH B2 Z  (0.170::0.170) (0.287::0.287))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nd02d1")
+    (INSTANCE  g770__4319)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.157::0.157) (0.132::0.132))
+	(IOPATH A2 ZN  (0.159::0.159) (0.140::0.140))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[10\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.282::0.282))
+	(IOPATH (posedge CP) Q  (0.494::0.494) (0.558::0.558))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.156::0.156) (-0.086::-0.086))
+	(SETUPHOLD (negedge D) (posedge CP) (0.183::0.183) (-0.067::-0.067))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[9\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.286::0.286))
+	(IOPATH (posedge CP) Q  (0.500::0.500) (0.562::0.562))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.194::0.194) (-0.124::-0.124))
+	(SETUPHOLD (negedge D) (posedge CP) (0.189::0.189) (-0.058::-0.058))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g771__8428)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.198::0.198) (0.361::0.361))
+	(IOPATH (negedge A) S  (0.430::0.430) (0.312::0.312))
+	(IOPATH A CO  (0.212::0.212) (0.328::0.328))
+	(IOPATH (posedge B) S  (0.190::0.190) (0.364::0.364))
+	(IOPATH (negedge B) S  (0.461::0.461) (0.345::0.345))
+	(IOPATH B CO  (0.214::0.214) (0.362::0.362))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "aoim211d1")
+    (INSTANCE  g773__5526)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A ZN  (0.161::0.161) (0.061::0.061))
+	(IOPATH B ZN  (0.245::0.245) (0.107::0.107))
+	(IOPATH C1 ZN  (0.298::0.298) (0.243::0.243))
+	(IOPATH C2 ZN  (0.307::0.307) (0.280::0.280))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[8\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.282::0.282))
+	(IOPATH (posedge CP) Q  (0.494::0.494) (0.558::0.558))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.193::0.193) (-0.123::-0.123))
+	(SETUPHOLD (negedge D) (posedge CP) (0.189::0.189) (-0.060::-0.060))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "aoim211d1")
+    (INSTANCE  g776__6783)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A ZN  (0.162::0.162) (0.065::0.065))
+	(IOPATH B ZN  (0.244::0.244) (0.107::0.107))
+	(IOPATH C1 ZN  (0.299::0.299) (0.243::0.243))
+	(IOPATH C2 ZN  (0.304::0.304) (0.278::0.278))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[7\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.285::0.285))
+	(IOPATH (posedge CP) Q  (0.497::0.497) (0.560::0.560))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.194::0.194) (-0.124::-0.124))
+	(SETUPHOLD (negedge D) (posedge CP) (0.186::0.186) (-0.063::-0.063))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "an02d1")
+    (INSTANCE  g775__3680)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 Z  (0.200::0.200) (0.220::0.220))
+	(IOPATH A2 Z  (0.202::0.202) (0.250::0.250))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "aoim211d1")
+    (INSTANCE  g779__1617)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A ZN  (0.188::0.188) (0.083::0.083))
+	(IOPATH B ZN  (0.227::0.227) (0.081::0.081))
+	(IOPATH C1 ZN  (0.289::0.289) (0.245::0.245))
+	(IOPATH C2 ZN  (0.307::0.307) (0.280::0.280))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "an02d1")
+    (INSTANCE  g778__2802)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 Z  (0.220::0.220) (0.229::0.229))
+	(IOPATH A2 Z  (0.218::0.218) (0.257::0.257))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "an02d1")
+    (INSTANCE  g781__1705)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 Z  (0.214::0.214) (0.233::0.233))
+	(IOPATH A2 Z  (0.228::0.228) (0.260::0.260))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[6\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.307::0.307))
+	(IOPATH (posedge CP) Q  (0.512::0.512) (0.568::0.568))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.157::0.157) (-0.087::-0.087))
+	(SETUPHOLD (negedge D) (posedge CP) (0.184::0.184) (-0.068::-0.068))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g782__5122)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.192::0.192) (0.354::0.354))
+	(IOPATH (negedge A) S  (0.436::0.436) (0.318::0.318))
+	(IOPATH A CO  (0.186::0.186) (0.319::0.319))
+	(IOPATH (posedge B) S  (0.196::0.196) (0.370::0.370))
+	(IOPATH (negedge B) S  (0.466::0.466) (0.350::0.350))
+	(IOPATH B CO  (0.202::0.202) (0.351::0.351))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[5\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.304::0.304))
+	(IOPATH (posedge CP) Q  (0.508::0.508) (0.565::0.565))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.157::0.157) (-0.087::-0.087))
+	(SETUPHOLD (negedge D) (posedge CP) (0.183::0.183) (-0.067::-0.067))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g784__8246)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.191::0.191) (0.353::0.353))
+	(IOPATH (negedge A) S  (0.435::0.435) (0.317::0.317))
+	(IOPATH A CO  (0.172::0.172) (0.308::0.308))
+	(IOPATH (posedge B) S  (0.193::0.193) (0.367::0.367))
+	(IOPATH (negedge B) S  (0.463::0.463) (0.347::0.347))
+	(IOPATH B CO  (0.185::0.185) (0.339::0.339))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  clk_line_reg)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.405::0.405))
+	(IOPATH (posedge CP) Q  (0.710::0.710) (0.678::0.678))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.159::0.159) (-0.089::-0.089))
+	(SETUPHOLD (negedge D) (posedge CP) (0.178::0.178) (-0.063::-0.063))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[3\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.295::0.295))
+	(IOPATH (posedge CP) Q  (0.491::0.491) (0.556::0.556))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.192::0.192) (-0.123::-0.123))
+	(SETUPHOLD (negedge D) (posedge CP) (0.186::0.186) (-0.062::-0.062))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[4\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.293::0.293))
+	(IOPATH (posedge CP) Q  (0.485::0.485) (0.554::0.554))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.159::0.159) (-0.088::-0.088))
+	(SETUPHOLD (negedge D) (posedge CP) (0.185::0.185) (-0.069::-0.069))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "mx02d1")
+    (INSTANCE  g789__7098)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH I0 Z  (0.227::0.227) (0.285::0.285))
+	(IOPATH I1 Z  (0.198::0.198) (0.306::0.306))
+	(IOPATH (posedge S) Z  (0.212::0.212) (0.362::0.362))
+	(IOPATH (negedge S) Z  (0.387::0.387) (0.230::0.230))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "aoim211d1")
+    (INSTANCE  g791__6131)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A ZN  (0.184::0.184) (0.081::0.081))
+	(IOPATH B ZN  (0.221::0.221) (0.075::0.075))
+	(IOPATH C1 ZN  (0.293::0.293) (0.250::0.250))
+	(IOPATH C2 ZN  (0.301::0.301) (0.277::0.277))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g787__1881)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.209::0.209) (0.373::0.373))
+	(IOPATH (negedge A) S  (0.439::0.439) (0.321::0.321))
+	(IOPATH A CO  (0.191::0.191) (0.310::0.310))
+	(IOPATH (posedge B) S  (0.195::0.195) (0.369::0.369))
+	(IOPATH (negedge B) S  (0.468::0.468) (0.352::0.352))
+	(IOPATH B CO  (0.186::0.186) (0.341::0.341))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  clk_line_pulse_reg)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.388::0.388))
+	(IOPATH (posedge CP) Q  (0.678::0.678) (0.661::0.661))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.227::0.227) (-0.156::-0.156))
+	(SETUPHOLD (negedge D) (posedge CP) (0.222::0.222) (-0.108::-0.108))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.309::0.309))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "inv0d0")
+    (INSTANCE  g792)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH I ZN  (0.221::0.221) (0.134::0.134))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "an02d1")
+    (INSTANCE  g793__5115)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 Z  (0.379::0.379) (0.290::0.290))
+	(IOPATH A2 Z  (0.357::0.357) (0.346::0.346))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "an02d1")
+    (INSTANCE  g797__7482)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 Z  (0.209::0.209) (0.234::0.234))
+	(IOPATH A2 Z  (0.211::0.211) (0.252::0.252))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[2\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.279::0.279))
+	(IOPATH (posedge CP) Q  (0.468::0.468) (0.540::0.540))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.157::0.157) (-0.087::-0.087))
+	(SETUPHOLD (negedge D) (posedge CP) (0.183::0.183) (-0.067::-0.067))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nr03d1")
+    (INSTANCE  g794__4733)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.295::0.295) (0.086::0.086))
+	(IOPATH A2 ZN  (0.276::0.276) (0.068::0.068))
+	(IOPATH A3 ZN  (0.247::0.247) (0.068::0.068))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g798__6161)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.192::0.192) (0.355::0.355))
+	(IOPATH (negedge A) S  (0.436::0.436) (0.318::0.318))
+	(IOPATH A CO  (0.218::0.218) (0.347::0.347))
+	(IOPATH (posedge B) S  (0.184::0.184) (0.358::0.358))
+	(IOPATH (negedge B) S  (0.457::0.457) (0.342::0.342))
+	(IOPATH B CO  (0.221::0.221) (0.371::0.371))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nd04d1")
+    (INSTANCE  g796__9315)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.155::0.155) (0.163::0.163))
+	(IOPATH A2 ZN  (0.129::0.129) (0.182::0.182))
+	(IOPATH A3 ZN  (0.140::0.140) (0.148::0.148))
+	(IOPATH A4 ZN  (0.193::0.193) (0.169::0.169))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  cnt_reg\[1\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.275::0.275))
+	(IOPATH (posedge CP) Q  (0.459::0.459) (0.536::0.536))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.158::0.158) (-0.088::-0.088))
+	(SETUPHOLD (negedge D) (posedge CP) (0.184::0.184) (-0.068::-0.068))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.215::-0.215) (0.314::0.314))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "ah01d1")
+    (INSTANCE  g801__9945)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH (posedge A) S  (0.194::0.194) (0.356::0.356))
+	(IOPATH (negedge A) S  (0.429::0.429) (0.313::0.313))
+	(IOPATH A CO  (0.181::0.181) (0.308::0.308))
+	(IOPATH (posedge B) S  (0.192::0.192) (0.366::0.366))
+	(IOPATH (negedge B) S  (0.464::0.464) (0.348::0.348))
+	(IOPATH B CO  (0.191::0.191) (0.345::0.345))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nr04d1")
+    (INSTANCE  g800__2883)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.455::0.455) (0.088::0.088))
+	(IOPATH A2 ZN  (0.427::0.427) (0.087::0.087))
+	(IOPATH A3 ZN  (0.362::0.362) (0.082::0.082))
+	(IOPATH A4 ZN  (0.266::0.266) (0.066::0.066))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  rst_n_sync_reg)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.378::0.378))
+	(IOPATH (posedge CP) Q  (0.828::0.828) (0.737::0.737))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.155::0.155) (-0.087::-0.087))
+	(SETUPHOLD (negedge D) (posedge CP) (0.173::0.173) (-0.062::-0.062))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.197::-0.197) (0.241::0.241))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "nd12d1")
+    (INSTANCE  g805__2346)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH A1 ZN  (0.164::0.164) (0.169::0.169))
+	(IOPATH A2 ZN  (0.085::0.085) (0.086::0.086))
+	)
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrq1")
+    (INSTANCE  rst_sync_meta_reg)
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN Q  () (0.162::0.162))
+	(IOPATH (posedge CP) Q  (0.447::0.447) (0.524::0.524))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.203::0.203))
+	(SETUPHOLD (posedge D) (posedge CP) (0.139::0.139) (-0.071::-0.071))
+	(SETUPHOLD (negedge D) (posedge CP) (0.154::0.154) (-0.043::-0.043))
+	(WIDTH (posedge CP) (0.238::0.238))
+	(WIDTH (negedge CP) (0.361::0.361))
+	(RECREM (posedge CDN) (posedge CP) (-0.197::-0.197) (0.241::0.241))
+      )
+  )
+
+  (CELL
+    (CELLTYPE  "dfcrb1")
+    (INSTANCE  cnt_reg\[0\])
+      (DELAY
+	(ABSOLUTE
+	(IOPATH CDN QN  (0.474::0.474) ())
+	(IOPATH CDN Q  () (0.274::0.274))
+	(IOPATH (posedge CP) QN  (0.447::0.447) (0.419::0.419))
+	(IOPATH (posedge CP) Q  (0.561::0.561) (0.618::0.618))
+	)
+      )
+      (TIMINGCHECK
+	(WIDTH (negedge CDN) (0.214::0.214))
+	(SETUPHOLD (posedge D) (posedge CP) (0.149::0.149) (-0.092::-0.092))
+	(SETUPHOLD (negedge D) (posedge CP) (0.200::0.200) (-0.076::-0.076))
+	(WIDTH (posedge CP) (0.361::0.361))
+	(WIDTH (negedge CP) (0.353::0.353))
+	(RECREM (posedge CDN) (posedge CP) (-0.217::-0.217) (0.304::0.304))
+      )
+  )
+)

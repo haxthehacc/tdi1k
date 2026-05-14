@@ -1,0 +1,19 @@
+
+
+// +++ CUSTOMIZATION SETTINGS START +++
+
+#define "DRC_OPT" DRC
+#define "DRC_TECH" ts18scl
+#define "4M1L" 
+#define "USG" 
+#define "DRC_TYPE" CHIP
+#undefine "DFM_CHECK"
+#define "DRC_VOLTAGE" 1.8V/3V
+#undefine "MORE_SWITCHES"
+#undefine "BIT_CELL_RUNSETS"
+
+// +++ CUSTOMIZATION SETTINGS END +++
+
+DRC ICSTATION YES
+
+INCLUDE "/home/cmos/projects/tdi1k_repo/rules/calibre/tdi_drc_wrapper.svrf"

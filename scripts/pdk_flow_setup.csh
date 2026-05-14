@@ -9,8 +9,7 @@ endif
 
 setenv KIT_DIR /home/install/SCL180/SCLPDK_V3.0_KIT/scl180/pdk/cdns/sclpdk_v3/
 setenv RDS_ROOT $KIT_DIR/HOTCODE
-setenv MGC_CALIBRE_CUSTOMIZATION_FILE \
-    $RDS_ROOT/techs/generic/calibre/calibre_ts_drc.custom
+setenv MGC_CALIBRE_CUSTOMIZATION_FILE $RDS_ROOT/techs/generic/calibre/calibre_ts_drc.custom
 setenv PERL5 /usr/bin/perl
 
 source $RDS_ROOT/etc/RDS.cshrc
